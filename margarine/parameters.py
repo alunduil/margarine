@@ -7,3 +7,6 @@ import os
 
 CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, "etc", "margarine")
 
+class Parameters(object):
+    pass
+
