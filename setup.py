@@ -5,21 +5,18 @@
 
 from distutils.core import setup
 
+from margarine import information
+
 PARAMS = {}
 
-PARAMS["name"] = "margarine"
-PARAMS["version"] = "9999"
-PARAMS["description"] = \
-        "Python application to enhance the web browsing experience and " \
-        "display cloud application design."
-PARAMS["long_description"] = \
-        "A demonstration application that showcases application design for " \
-        "cloud deployments.  This application is an amalgamation of the " \
-        "functionality found in delicious and readability."
-PARAMS["author"] = "Alex Brandt"
-PARAMS["author_email"] = "alunduil@alunduil.com"
-PARAMS["url"] = "https://github.com/alunduil/margarine"
-PARAMS["license"] = "MIT"
+PARAMS["name"] = information.NAME
+PARAMS["version"] = information.VERSION
+PARAMS["description"] = information.DESCRIPTION
+PARAMS["long_description"] = information.LONG_DESCRIPTION
+PARAMS["author"] = information.AUTHOR
+PARAMS["author_email"] = information.AUTHOR_EMAIL
+PARAMS["url"] = information.URL
+PARAMS["license"] = information.LICENSE
 
 PARAMS["classifiers"] = [
         "Development Status :: 2 - Pre-Alpha",
