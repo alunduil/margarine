@@ -44,7 +44,7 @@ class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
         def parameters_to_dict(**kwargs):
             return kwargs
 
-        self.assertEqual(parameters_to_dict(self.parameters), { "example": "bar" })
+        self.assertEqual(parameters_to_dict(**self.parameters), { "example": "bar" })
 
 class ParametersResolutionTest(unittest2.TestCase):
     def setUp(self):
