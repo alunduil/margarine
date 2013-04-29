@@ -37,3 +37,13 @@ class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
 
         self.assertEqual(parameters_to_dict(self.parameters), { "example": "bar" })
 
+class ParametersResolutionTest(unittest2.TestCase):
+    def test_command_line(self):
+        self.fail()
+
+    def test_configuration_file(self):
+        self.fail()
+
+    def test_default(self):
+        self.fail()
+
