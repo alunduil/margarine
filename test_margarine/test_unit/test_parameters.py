@@ -6,6 +6,7 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import unittest2
+import tempfile
 
 from margarine.parameters import Parameters
 
@@ -25,11 +26,19 @@ class ParametersConstructionTest(unittest2.TestCase):
         self.parameters = get_mock_parameters()
 
     def test_construction(self):
-        parameters = Parameters(self.parameters)
+        temp = tempfile.NamedTemporaryFile()
+
+        parameters = Parameters(temp.name, self.parameters)
+
+        temp.close()
 
 class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
     def setUp(self):
-        self.parameters = Parameters(self.parameters)
+        self.temp = tempfile.NamedTemporaryFile()
+
+        self.addCleanup(self.temp.close)
+
+        self.parameters = Parameters(temp.name, self.parameters)
 
     def test_dict_expansion(self):
         def parameters_to_dict(**kwargs):
@@ -38,6 +47,13 @@ class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
         self.assertEqual(parameters_to_dict(self.parameters), { "example": "bar" })
 
 class ParametersResolutionTest(unittest2.TestCase):
+    def setUp(self):
+        self.temp = tempfile.NamedTemporaryFile()
+
+        self.addCleanup(self.temp.close)
+
+        self.parameters = Parameters(temp.name, self.parameters)
+
     def test_command_line(self):
         self.fail()
 
