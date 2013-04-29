@@ -5,8 +5,16 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from margarine.application import APPLICATION
+import logging
+
+from margarine.parameters import Parameters
+
+from margarine.api.application import APPLICATION
+from margarine.api.parameters import PARAMETERS
+
+def main():
+    parameters = Parameters(PARAMETERS)
 
 if __name__ == "__main__":
-    APPLICATION.run()
+    APPLICATION.run(host = parameters["host"], debug = parameters["debug"])
 
