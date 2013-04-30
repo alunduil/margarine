@@ -91,7 +91,6 @@ class CreateConfigurationParserTest(unittest2.TestCase):
         temp = tempfile.NamedTemporaryFile()
 
         temp.write("[test]\n")
-        temp.write("example = bar\n")
 
         temp.seek(0)
 
@@ -103,6 +102,7 @@ class CreateConfigurationParserTest(unittest2.TestCase):
         temp = tempfile.NamedTemporaryFile()
 
         temp.write("[test]\n")
+        temp.write("example = foo\n")
 
         temp.seek(0)
 
