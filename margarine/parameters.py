@@ -25,6 +25,9 @@ def create_argument_parser(parameters = (), *args, **kwargs):
     :``parameters``: The parameter definitions (list of dicts) with the form
                      shown in the Examples_ section of Parameters.__init__.
 
+    .. note::
+        All other arguments are passed directly to argparse.ArgumentParser.
+
     """
 
     parser = argparse.ArgumentParser(*args, **kwargs)
@@ -103,60 +106,60 @@ class Parameters(object):
         if not hasattr(self, "configuration"):
             self.reinitialize()
 
-    def keys():
+    def reinitialize(self):
         pass
 
-    def values():
+    def keys(self):
         pass
 
-    def items():
+    def values(self):
         pass
 
-    def has_key():
+    def items(self):
         pass
 
-    def get():
+    def has_key(self):
         pass
 
-    def clear():
+    def get(self):
         pass
 
-    def setdefault():
+    def clear(self):
         pass
 
-    def iterkeys():
+    def setdefault(self):
         pass
 
-    def itervalues():
+    def iterkeys(self):
         pass
 
-    def iteritems():
+    def itervalues(self):
         pass
 
-    def pop():
+    def iteritems(self):
         pass
 
-    def popitem():
+    def pop(self):
         pass
 
-    def copy():
+    def popitem(self):
         pass
 
-    def update():
+    def copy(self):
         pass
 
-    def __contains__():
+    def update(self):
+        pass
+
+    def __contains__(self):
         return has_key()
 
-    def __iter__():
+    def __iter__(self):
         return iterkeys()
 
-    def __len__():
+    def __len__(self):
         pass
 
-    def __getitem__():
+    def __getitem__(self):
         pass
-
-
-
 
