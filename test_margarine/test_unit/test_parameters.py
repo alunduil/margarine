@@ -62,6 +62,54 @@ class CreateArgumentParserTest(unittest2.TestCase):
 
         self.assertEqual(arguments.example, "foo")
 
+class CreateConfigurationParserTest(unittest2.TestCase):
+    def test_create_configuration_parser(self):
+        temp = tempfile.NamedTemporaryFile()
+
+        parser = create_configuration_parser(temp.name)
+
+        self.assertIsInstance(parser, ConfigParser.SafeConfigParser)
+
+        temp.close()
+
+    def test_create_argument_parser_idempotent(self):
+        parameters = get_mock_parameters()
+
+        temp = tempfile.NamedTemporaryFile()
+        
+        parser_a = create_configuration_parser(temp.name, parameters)
+
+        self.assertEqual(parameters, get_mock_parameters())
+
+        parser_b = create_configuration_parser(temp.name, parameters)
+
+        self.assertEqual(str(parser_a), str(parser_b))
+
+        temp.close()
+
+    def test_create_configuration_parser_properties_default(self):
+        temp = tempfile.NamedTemporaryFile()
+
+        temp.write("[test]\n")
+        temp.write("example = bar\n")
+
+        temp.seek(0)
+
+        parser = create_configuration_parser(temp.name, get_mock_parameters())
+
+        self.assertEqual(parser.get("test", "example"), "bar")
+
+    def test_create_argument_parser_properties(self):
+        temp = tempfile.NamedTemporaryFile()
+
+        temp.write("[test]\n")
+
+        temp.seek(0)
+
+        parser = create_argument_parser(temp.name, get_mock_parameters())
+
+        self.assertEqual(parser.get("test", "example"), "foo")
+
 class ParametersConstructionTest(unittest2.TestCase):
     def setUp(self):
         self.parameters = get_mock_parameters()
