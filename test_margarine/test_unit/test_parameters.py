@@ -9,6 +9,7 @@ import unittest2
 import tempfile
 import argparse
 import sys
+import ConfigParser
 
 from margarine.parameters import Parameters
 from margarine.parameters import create_argument_parser
