@@ -134,8 +134,7 @@ class Parameters(object):
         self.file_path = file_path
 
         if not hasattr(self, "arguments"):
-            self.arguments = create_argument_parser(self.parameters)
-            self.arguments.parse_args()
+            self.arguments = create_argument_parser(self.parameters).parse_args()
 
         if not hasattr(self, "configuration"):
             self.reinitialize()
