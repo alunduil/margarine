@@ -36,11 +36,11 @@ class CreateArgumentParserTest(unittest2.TestCase):
         
         parser_a = create_argument_parser(parameters)
 
-        self.assertEqual(parameters, get_mock_parameters)
+        self.assertEqual(parameters, get_mock_parameters())
 
         parser_b = create_argument_parser(parameters)
 
-        self.assertEqual(parser_a, parser_b)
+        self.assertEqual(str(parser_a), str(parser_b))
 
     def test_create_argument_parser_properties_default(self):
         parameters = get_mock_parameters()
