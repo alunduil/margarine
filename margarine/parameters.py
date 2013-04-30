@@ -81,6 +81,9 @@ def create_configuration_parser(file_path, parameters = (), *args, **kwargs):
     defaults = dict([ (item["options"][0][2:], item["default"]) for item in parameters if "default" in item ])
 
     configuration_parser = ConfigParser.SafeConfigParser(defaults)
+
+    logger.debug("file_path: %s", file_path)
+
     configuration_parser.read(file_path)
 
     return configuration_parser
@@ -141,6 +144,7 @@ class Parameters(object):
 
     def reinitialize(self):
         if self.file_path is not None:
+            logger.debug("file_path: %s", self.file_path)
             self.configuration = create_configuration_parser(self.file_path, self.parameters) # pylint: disable=C0301
 
     def keys(self):

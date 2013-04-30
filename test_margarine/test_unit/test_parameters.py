@@ -75,7 +75,7 @@ class ParametersConstructionTest(unittest2.TestCase):
     def test_construction(self):
         temp = tempfile.NamedTemporaryFile()
 
-        parameters = Parameters(temp.name, self.parameters)
+        parameters = Parameters("test", temp.name, self.parameters)
 
         temp.close()
 
@@ -85,7 +85,7 @@ class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
 
         self.addCleanup(self.temp.close)
 
-        self.parameters = Parameters(self.temp.name, get_mock_parameters())
+        self.parameters = Parameters("test", self.temp.name, get_mock_parameters())
 
     def test_dict_expansion(self):
         def parameters_to_dict(**kwargs):
@@ -99,7 +99,7 @@ class ParametersResolutionTest(unittest2.TestCase):
 
         self.addCleanup(self.temp.close)
 
-        self.parameters = Parameters(self.temp.name, get_mock_parameters())
+        self.parameters = Parameters("test", self.temp.name, get_mock_parameters())
 
     def test_command_line(self):
         self.fail()
