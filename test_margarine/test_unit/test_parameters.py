@@ -7,8 +7,10 @@
 
 import unittest2
 import tempfile
+import argparse
 
 from margarine.parameters import Parameters
+from margarine.parameters import create_argument_parser
 
 def get_mock_parameters():
     parameters = [
@@ -20,6 +22,12 @@ def get_mock_parameters():
                 },
             ]
     return parameters
+
+class CreateArgumentParserTest(unittest2.TestCase):
+    def test_create_argument_parser(self):
+        parser = create_argument_parser()
+
+        self.assertIsInstance(parser, argparse.ArgumentParser)
 
 class ParametersConstructionTest(unittest2.TestCase):
     def setUp(self):

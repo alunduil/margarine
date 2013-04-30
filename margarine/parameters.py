@@ -31,7 +31,7 @@ def create_argument_parser(parameters = (), *args, **kwargs):
     version = \
             "%(prog)s-{i.VERSION}\n" \
             "\n" \
-            "Copyright {i.COPY_YEAR} by (i.AUTHOR} <{i.AUTHOR_EMAIL}> and " \
+            "Copyright {i.COPY_YEAR} by {i.AUTHOR} <{i.AUTHOR_EMAIL}> and " \
             "contributors.  This is free software; see the source for " \
             "copying conditions.  There is NO warranty; not even for " \
             "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
