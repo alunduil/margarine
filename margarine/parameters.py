@@ -163,9 +163,6 @@ class Parameters(object):
     def get(self):
         pass
 
-    def clear(self):
-        pass
-
     def setdefault(self):
         pass
 
