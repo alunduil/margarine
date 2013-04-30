@@ -60,10 +60,10 @@ class CreateArgumentParserTest(unittest2.TestCase):
 
         orig = sys.argv
         sys.argv = ["foo", "--example", "foo"]
-        parser.parse_args()
+        arguments = parser.parse_args()
         sys.argv = orig
 
-        self.assertEqual(parser.example, "foo")
+        self.assertEqual(arguments.example, "foo")
 
 class ParametersConstructionTest(unittest2.TestCase):
     def setUp(self):
