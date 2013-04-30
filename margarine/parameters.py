@@ -136,11 +136,8 @@ class Parameters(object):
         self.parameters = parameters
         self.file_path = file_path
 
-        if not hasattr(self, "arguments"):
-            self.arguments = create_argument_parser(self.parameters).parse_args()
-
-        if not hasattr(self, "configuration"):
-            self.reinitialize()
+        self.arguments = create_argument_parser(self.parameters).parse_args()
+        self.reinitialize()
 
     def reinitialize(self):
         if self.file_path is not None:
@@ -157,7 +154,6 @@ class Parameters(object):
         return list(self.iteritems())
 
     def has_key(self):
-        return 
         pass
 
     def get(self):
@@ -182,7 +178,8 @@ class Parameters(object):
         pass
 
     def copy(self):
-        pass
+        # TODO Think of a way to remove the re-read of files …
+        return Paramaters(self.name, self.file_path, self.parameters)
 
     def update(self):
         pass
