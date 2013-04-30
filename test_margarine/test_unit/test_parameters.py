@@ -8,7 +8,7 @@
 import unittest2
 import tempfile
 import argparse
-import mock
+import sys
 
 from margarine.parameters import Parameters
 from margarine.parameters import create_argument_parser
@@ -56,17 +56,14 @@ class CreateArgumentParserTest(unittest2.TestCase):
         patcher.stop()
 
     def test_create_argument_parser_properties(self):
-        parameters = get_mock_parameters()
+        parser = create_argument_parser(get_mock_parameters())
 
-        patcher = mock.patch("margarine.parameters.sys")
-        mock_sys = patcher.start()
-        mock_sys = mock.MagickMock(argv = ["foo", "--example", "foo"])
+        orig = sys.argv
+        sys.argv = ["foo", "--example", "foo"]
+        parser.parse_args()
+        sys.argv = orig
 
-        parameters.parse_args()
-
-        self.assertEqual(parameters.example, "foo")
-
-        patcher.stop()
+        self.assertEqual(parser.example, "foo")
 
 class ParametersConstructionTest(unittest2.TestCase):
     def setUp(self):
