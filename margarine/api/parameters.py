@@ -7,7 +7,7 @@ import os
 
 from margarine.parameters import CONFIGURATION_DIRECTORY
 
-COMMON_API_PARAMETERS = [
+PARAMETERS = [
         { # --host=HOST, -h=HOST; HOST ← "127.0.0.1:5000"
             "options": [ "--host", "-h" ],
             "help": \
