@@ -184,7 +184,7 @@ class ParametersResolutionTest(unittest2.TestCase):
 
     def test_configuration_file(self):
         self.assertEqual(self.parameters["configuration"], "configuration")
-        self.assertNotEqual(self.parameters["configuration"], "configuration")
+        self.assertNotEqual(self.parameters["all"], "configuration")
 
     def test_default(self):
         self.assertEqual(self.parameters["default"], "default")
