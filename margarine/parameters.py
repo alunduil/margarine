@@ -56,6 +56,34 @@ def create_argument_parser(parameters = (), *args, **kwargs):
 
     return parser
 
+def create_configuration_parser(file_path, parameters = (), *args, **kwargs):
+    """Create a fully initialized configuration parser with the parameters.
+
+    All of the function parameters besides ``parameters`` and ``file_path``
+    will be directly passed to ConfigParser.SafeConfigParser.  The returned
+    value from this function is the properly prepared SafeConfigParser that
+    has already been initialized and loaded.
+
+    Arguments
+    ---------
+
+    :``file_path``:  The path to the configuration file to load.
+    :``parameters``: The parameter definitions (list of dicts) with the form
+                     shown in the Examples_ section of Parameters.__init__.
+
+    .. note::
+        All other parameters are passed directly to
+        ConfigParser.SafeConfigParser.
+
+    """
+    
+    defaults = dict([ (item["options"][0][2:], item["default"]) for item in parameters if "default" in item ])
+
+    configuration_parser = ConfigParser.SafeConfigParser(defaults)
+    configuration_parser.read(file_path)
+
+    return configuration_parser
+
 class Parameters(object):
     def __init__(self, name = "default", file_path = None, parameters = ()):
         """Turn configuration file path and parameters into a dict-like.
@@ -101,16 +129,19 @@ class Parameters(object):
         """
 
         self.name = name
+        self.parameters = parameters
+        self.file_path = file_path
 
         if not hasattr(self, "arguments"):
-            self.arguments = create_argument_parser()
+            self.arguments = create_argument_parser(self.parameters)
             self.arguments.parse_args()
 
         if not hasattr(self, "configuration"):
             self.reinitialize()
 
     def reinitialize(self):
-        pass
+        if self.file_path is not None:
+            self.configuration = create_configuration_parser(self.file_path, self.parameters) # pylint: disable=C0301
 
     def keys(self):
         pass
