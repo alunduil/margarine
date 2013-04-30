@@ -50,6 +50,7 @@ def create_argument_parser(parameters = (), *args, **kwargs):
             version = version.format(i = information))
 
     parameters = copy.deepcopy(parameters)
+    logger.debug("parameters: %s", parameters)
     parameters = dict([ (item["options"][0][2:], { "args": item.pop("options"), "kwargs": item }) for item in parameters ]) # pylint: disable=C0301
     
     for name, options in parameters.iteritems():

@@ -106,7 +106,7 @@ class CreateConfigurationParserTest(unittest2.TestCase):
 
         temp.seek(0)
 
-        parser = create_argument_parser(temp.name, get_mock_parameters())
+        parser = create_configuration_parser(temp.name, get_mock_parameters())
 
         self.assertEqual(parser.get("test", "example"), "foo")
 
