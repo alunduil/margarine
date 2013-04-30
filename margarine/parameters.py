@@ -148,15 +148,16 @@ class Parameters(object):
             self.configuration = create_configuration_parser(self.file_path, self.parameters) # pylint: disable=C0301
 
     def keys(self):
-        pass
+        return list(self.iterkeys())
 
     def values(self):
-        pass
+        return list(self.itervalues())
 
     def items(self):
-        pass
+        return list(self.iteritems())
 
     def has_key(self):
+        return 
         pass
 
     def get(self):

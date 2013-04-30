@@ -96,10 +96,11 @@ class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
 class ParametersResolutionTest(unittest2.TestCase):
     def setUp(self):
         self.temp = tempfile.NamedTemporaryFile()
+        self.name = "test"
 
         self.addCleanup(self.temp.close)
 
-        self.parameters = Parameters("test", self.temp.name, get_mock_parameters())
+        self.parameters = Parameters(self.name, self.temp.name, get_mock_parameters())
 
     def test_command_line(self):
         self.fail()
