@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+#
 # Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
 #
 # pycore is freely distributable under the terms of an MIT-style license.
@@ -80,7 +82,7 @@ def create_configuration_parser(file_path, parameters = (), *args, **kwargs):
     
     defaults = dict([ (item["options"][0][2:], item["default"]) for item in parameters if "default" in item ])
 
-    configuration_parser = ConfigParser.SafeConfigParser(defaults)
+    configuration_parser = ConfigParser.SafeConfigParser(defaults, *args, **kwargs)
 
     logger.debug("file_path: %s", file_path)
 
