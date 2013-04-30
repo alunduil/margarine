@@ -18,6 +18,23 @@ logger = logging.getLogger(__name__)
 
 CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, "etc", "margarine")
 
+def extract_defaults(parameters):
+    """Extract the default values for the passed parameters.
+
+    This function will pull the default values from the parameters provided and
+    associate them with their names.  Obviously, the returned dict maps the
+    parameter's name to its default value(s).
+
+    Arguments
+    ---------
+
+    :``parameters``: The parameter definitions (list of dicts) with the form
+                     shown in the Examples_ section of Parameters.__init__.
+
+    """
+
+    return dict([ (item["options"][0][2:], item["default"]) for item in parameters if "default" in item ])
+
 def create_argument_parser(parameters = (), *args, **kwargs):
     """Create a fully initialized argument parser with the passed parameters.
 
@@ -81,7 +98,7 @@ def create_configuration_parser(file_path, parameters = (), *args, **kwargs):
 
     """
     
-    defaults = dict([ (item["options"][0][2:], item["default"]) for item in parameters if "default" in item ])
+    defaults = extract_defaults(parameters)
 
     configuration_parser = ConfigParser.SafeConfigParser(defaults, *args, **kwargs)
 
@@ -143,59 +160,90 @@ class Parameters(object):
         self.reinitialize()
 
     def reinitialize(self):
+        """Load the configuration file from disk.
+
+        If a file path is set in this object, we will use it to load a
+        configuration parser that we can retrieve keys with.  Otherwise, we
+        ignore the configuration file completely.
+
+        """
+
         if self.file_path is not None:
             logger.debug("file_path: %s", self.file_path)
             self.configuration = create_configuration_parser(self.file_path, self.parameters) # pylint: disable=C0301
+
+    def __len__(self):
+        return len(self.parameters)
+
+    def __getitem__(self, key):
+        if key not in self:
+            raise KeyError(key)
+
+        logger.info("Searching for key: %s", key)
+
+        defaults = extract_defaults(self.parameters)
+
+        value = None
+
+        default = None 
+        if key in defaults:
+            default = defaults[key]
+        logger.debug("default: %s", default)
+
+        value = default
+
+        try:
+            if hasattr(self, "configuration"):
+                value = self.configuration.get(self.name, key)
+        except ConfigParser.NoOptionError:
+            pass
+
+        logger.debug("value: %s", value)
+
+        if hasattr(self.arguments, key):
+            if getattr(self.arguments, key) != default:
+                value = getattr(self.arguments, key)
+
+        logger.debug("value: %s", value)
+
+        return value 
+
+    def __contains__(self, key):
+        return key in self.iterkeys()
+
+    def __iter__(self):
+        return self.iterkeys()
+
+    def copy(self):
+        # TODO Think of a way to remove the re-read of files …
+        return Paramaters(self.name, self.file_path, self.parameters)
+
+    def get(self, key, default = None):
+        if key in self:
+            return self[key]
+        return default
+
+    def has_key(self, key):
+        return key in self
+
+    def items(self):
+        return list(self.iteritems())
+
+    def iteritems(self):
+        for key in self.iterkeys():
+            yield (key, self[key])
+
+    def iterkeys(self):
+        for item in self.parameters:
+            yield item["options"][0][2:]
+
+    def itervalues(self):
+        for key in self.iterkeys():
+            yield self[key]
 
     def keys(self):
         return list(self.iterkeys())
 
     def values(self):
         return list(self.itervalues())
-
-    def items(self):
-        return list(self.iteritems())
-
-    def has_key(self):
-        pass
-
-    def get(self):
-        pass
-
-    def setdefault(self):
-        pass
-
-    def iterkeys(self):
-        pass
-
-    def itervalues(self):
-        pass
-
-    def iteritems(self):
-        pass
-
-    def pop(self):
-        pass
-
-    def popitem(self):
-        pass
-
-    def copy(self):
-        # TODO Think of a way to remove the re-read of files …
-        return Paramaters(self.name, self.file_path, self.parameters)
-
-    def update(self):
-        pass
-
-    def __contains__(self):
-        return has_key()
-
-    def __iter__(self):
-        return iterkeys()
-
-    def __len__(self):
-        pass
-
-    def __getitem__(self):
-        pass
 
