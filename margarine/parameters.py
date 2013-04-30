@@ -6,6 +6,7 @@
 import os
 import sys
 import argparse
+import copy
 
 from margarine import information
 
@@ -38,6 +39,16 @@ def create_argument_parser(parameters = (), *args, **kwargs):
 
     parser.add_argument("--version", action = "version",
             version = version.format(i = information))
+
+    parameters = copy.deepcopy(parameters)
+    parameters = dict([ (item["options"][0][2:], { "args": item.pop("options"), "kwargs": item }) for item in parameters ]) # pylint: disable=C0301
+    
+    for name, options in parameters.iteritems():
+        logger.debug("Adding option, %s, with options, %s and %s", name, options["args"], options["kwargs"]) # pylint: disable=C0301
+
+        parser.add_argument(*options["args"], **options["kwargs"])
+
+    return parser
 
 class Parameters(object):
     def __init__(self, name = "default", file_path = None, parameters = ()):

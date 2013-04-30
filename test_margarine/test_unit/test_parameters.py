@@ -29,6 +29,17 @@ class CreateArgumentParserTest(unittest2.TestCase):
 
         self.assertIsInstance(parser, argparse.ArgumentParser)
 
+    def test_create_argument_parser_idempotent(self):
+        parameters = get_mock_parameters()
+        
+        parser_a = create_argument_parser(parameters)
+
+        self.assertEqual(parameters, get_mock_parameters)
+
+        parser_b = create_argument_parser(parameters)
+
+        self.assertEqual(parser_a, parser_b)
+
 class ParametersConstructionTest(unittest2.TestCase):
     def setUp(self):
         self.parameters = get_mock_parameters()
