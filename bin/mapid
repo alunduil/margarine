@@ -6,8 +6,7 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import logging
-
-logger = logging.getLogger(__name__)
+import os
 
 from margarine.parameters import Parameters
 from margarine.parameters import CONFIGURATION_DIRECTORY
@@ -15,7 +14,9 @@ from margarine.parameters import CONFIGURATION_DIRECTORY
 from margarine.api.application import APPLICATION
 from margarine.api.parameters import PARAMETERS
 
+logger = logging.getLogger(__name__)
+
 if __name__ == "__main__":
-    parameters = Parameters(__name__, os.path.join(CONFIGURATION_DIRECTORY, __name__ + ".conf", PARAMETERS))
+    parameters = Parameters(__name__, os.path.join(CONFIGURATION_DIRECTORY, __name__ + ".conf"), PARAMETERS)
     APPLICATION.run(**parameters)
 
