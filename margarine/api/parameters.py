@@ -11,7 +11,7 @@ from margarine.parameters import CONFIGURATION_DIRECTORY
 
 PARAMETERS = [
         { # --host=HOST, -h=HOST; HOST ← "127.0.0.1:5000"
-            "options": [ "--host", "-h" ],
+            "options": [ "--host", "-H" ],
             "help": \
                     "The host to bind the API daemon to and the address " \
                     "plus port that will be listened on.",
