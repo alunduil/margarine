@@ -7,8 +7,11 @@ import os
 import sys
 import argparse
 import copy
+import logging
 
 from margarine import information
+
+logger = logging.getLogger(__name__)
 
 CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, "etc", "margarine")
 
