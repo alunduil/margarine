@@ -193,7 +193,7 @@ class Parameters(object):
         value = default
 
         try:
-            if hasattr(self, "configuration"):
+            if hasattr(self, "configuration") and self.configuration.has_section(self.name):
                 value = self.configuration.get(self.name, key)
         except ConfigParser.NoOptionError:
             pass
