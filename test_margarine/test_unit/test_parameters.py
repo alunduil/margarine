@@ -46,7 +46,7 @@ class CreateArgumentParserTest(unittest2.TestCase):
         parser = create_argument_parser(get_mock_parameters())
 
         orig = sys.argv
-        sys.argv = ["foo", "--example"]
+        sys.argv = ["foo"]
         arguments = parser.parse_args()
         sys.argv = orig
 
