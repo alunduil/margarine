@@ -66,6 +66,12 @@ class ParametersConstructionTest(unittest2.TestCase):
     def setUp(self):
         self.parameters = get_mock_parameters()
 
+        self.orig_argv = sys.argv
+        sys.argv = [ "foo"]
+        
+    def tearDown(self):
+        sys.argv = self.orig_argv
+
     def test_construction(self):
         temp = tempfile.NamedTemporaryFile()
 
