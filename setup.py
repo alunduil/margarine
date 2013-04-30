@@ -46,6 +46,10 @@ PARAMS["provides"] = [
         "margarine",
         ]
 
+PARAMS["scripts"] = [
+        "bin/mapid",
+        ]
+
 PARAMS["packages"] = [
         "margarine",
         "margarine.api",
