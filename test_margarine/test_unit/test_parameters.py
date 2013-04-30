@@ -83,7 +83,7 @@ class CreateConfigurationParserTest(unittest2.TestCase):
 
         parser_b = create_configuration_parser(temp.name, parameters)
 
-        self.assertEqual(str(parser_a), str(parser_b))
+        self.assertEqual(parser_a.sections(), parser_b.sections())
 
         temp.close()
 
