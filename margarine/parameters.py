@@ -68,8 +68,8 @@ def create_argument_parser(parameters = (), *args, **kwargs):
 
     parameters = copy.deepcopy(parameters)
     logger.debug("parameters: %s", parameters)
-    parameters = dict([ (item["options"][0][2:], { "args": item.pop("options"), "kwargs": item }) for item in parameters ]) # pylint: disable=C0301
-    
+    parameters = dict([ (parameter["options"][0][2:], { "args": parameter.pop("options"), "kwargs": parameter }) for parameter in parameters if parameter.get("only") in [ "arguments", None ] ]) # pylint: disable=C0301
+
     for name, options in parameters.iteritems():
         logger.debug("Adding option, %s, with options, %s and %s", name, options["args"], options["kwargs"]) # pylint: disable=C0301
 
@@ -98,7 +98,7 @@ def create_configuration_parser(file_path, parameters = (), *args, **kwargs):
 
     """
     
-    defaults = extract_defaults(parameters)
+    defaults = extract_defaults(filter(lambda p: p.get("only") in [ "configuration", None ], parameters))
 
     configuration_parser = ConfigParser.SafeConfigParser(defaults, *args, **kwargs)
 
