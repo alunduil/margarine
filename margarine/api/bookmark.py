@@ -3,8 +3,8 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from margarine.api import APPLICATION
 from margarine.api import information
+from margarine.api.application import APPLICATION
 
 @APPLICATION.route('/{i.API_VERSION}/bookmarks/'.format(i = information))
 def create_article():
@@ -14,7 +14,7 @@ def create_article():
 def show_bookmark(uuid):
     pass
 
-@APPLICATION.route('/{i.API_VERSION}/bookmarks/<uuid>/<property'.format(i = information))
+@APPLICATION.route('/{i.API_VERSION}/bookmarks/<uuid>/<property>'.format(i = information))
 def show_bookmark_property(uuid, property):
     pass
 

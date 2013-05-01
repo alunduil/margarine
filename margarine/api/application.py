@@ -7,3 +7,6 @@ from flask import Flask
 
 APPLICATION = Flask(__name__)
 
+import user
+import bookmark
+

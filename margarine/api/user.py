@@ -3,8 +3,8 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from margarine.api import APPLICATION
 from margarine.api import information
+from margarine.api.application import APPLICATION
 
 @APPLICATION.route('/{i.API_VERSION}/users/'.format(i = information))
 def create_user():
@@ -14,11 +14,11 @@ def create_user():
 def show_user(username):
     pass
 
-@APPLICATION.route('{i.API_VERSION}/users/<username>/token'.format(i = information))
+@APPLICATION.route('/{i.API_VERSION}/users/<username>/token'.format(i = information))
 def show_user_login_token(username):
     pass
 
-@APPLICATION.route('{i.API_VERSION}/users/<username>/<property>'.format(i = information))
+@APPLICATION.route('/{i.API_VERSION}/users/<username>/<property>'.format(i = information))
 def show_user_property(username, property):
     pass
 
