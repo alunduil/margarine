@@ -19,6 +19,9 @@ logger = logging.getLogger(__name__)
 CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, "etc", "margarine")
 
 BASE_PARAMETERS = [
+        ]
+
+UNUSED_PARAMETERS = [
         { # --logging_configuration=FILE, -L=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.conf
             "options": [ "--logging_configuration", "-L" ],
             "default": os.path.join(CONFIGURATION_DIRECTORY, "logging.conf"),
