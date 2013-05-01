@@ -5,5 +5,5 @@
 
 from flask import Flask
 
-APPLICATION = Flask("margarine")
+APPLICATION = Flask(__name__)
 

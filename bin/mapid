@@ -7,7 +7,6 @@
 
 import logging
 import os
-import logging.config
 import argparse
 
 from margarine.parameters import Parameters
@@ -27,10 +26,6 @@ def get_parameters():
 
     return Parameters(__name__, pre_arguments.configuration, PARAMETERS)
 
-def configure_logging(parameters):
-    if os.access(parameters["logging_configuration"], os.R_OK):
-        logging.config.fileConfig(parameters["logging_configuration"])
-
 def extract_flask_parameters(parameters):
     flask_parameters = {}
 
@@ -47,8 +42,6 @@ def extract_flask_parameters(parameters):
 
 if __name__ == "__main__":
     parameters = get_parameters()
-
-    configure_logging(parameters)
 
     APPLICATION.run(**extract_flask_parameters(parameters))
 
