@@ -10,11 +10,16 @@ import os
 from margarine.parameters import BASE_PARAMETERS
 
 PARAMETERS = [
-        { # --host=HOST, -h=HOST; HOST ← "127.0.0.1:5000"
-            "options": [ "--host", "-H" ],
-            "help": \
-                    "The host to bind the API daemon to and the address " \
-                    "plus port that will be listened on.",
+        { # --host=HOST, -h=HOST; HOST ← "127.0.0.1"
+            "options": [ "--host" ],
+            "default": "127.0.0.1",
+            "help": "The IP to bind the API daemon; default: %(default)s.",
+            },
+        { # --port=PORT, -p=PORT; PORT ← "5000"
+            "options": [ "--port" ],
+            "type": int,
+            "default": 5000,
+            "help": "The port to bind the API daemon; default: %(default)s.",
             },
         ]
 
