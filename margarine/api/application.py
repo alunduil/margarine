@@ -7,6 +7,7 @@ from flask import Flask
 
 APPLICATION = Flask(__name__)
 
+import errors
 import user
 import bookmark
 
