@@ -157,21 +157,89 @@ def manipulate_user(username):
     """
 
     if request.method == 'PUT':
-        pass
+        user = {
+                "username": username,
+                "email": request.form["email"],
+                "name": request.form.get("name"),
+                "bio": request.form.get("bio"),
+                "password": request.form.get("password"),
+                }
+        
+        # TODO Drop user in message queue for user creation/updates
+
+        return ("", 202,)
+
     elif request.method == 'GET':
-        pass
+        user = None # TODO Lookup user in data store.
+
+        return json.dumps(user)
+
     elif request.method == 'DELETE':
-        pass
+        # TODO Delete user from database.
+
+        return ""
 
 @APPLICATION.route('/{i.API_VERSION}/users/<username>/token'.format(i = information))
 def get_user_token(username):
     """Get an authorized token for subsequent API calls.
 
+    This is the login method and must be called to get the token required for
+    all calls making a note that they require the X-Auth-Token header.
+
+    This call does require a password to be provided (digest authentication is
+    used to improve security).
+
+    An authentication challenge has the following form:
+
+    ::
+
+        401 Unauthorized
+        WWW-Authenticate: Digest realm="Margarine API",
+          qop="auth",
+          nonce="0cc175b9c0f1b6a831c399e269772661",
+          opaque="92eb5ffee6ae2fec3ad71c777531578f"
+
+    This challenge is provided every time the API returns a 401 Unauthorized.
+    It is not only presented when requesting this particular URL.
+
     Request
     -------
 
+    After the above challenge the client should make a request like the
+    following to authenticate and receive their token:
+
+    ::
+      
+        GET /v1/users/alunduil/token HTTP/1.1
+        Host: www.example.com
+        Authorization: Digest username="alunduil",
+          realm="Margarine API",
+          nonce="0cc175b9c0f1b6a831c399e269772661",
+          uri="/v1/users/alunduil/token",
+          qop=auth,
+          nc=00000001,
+          cnonce="4a8a08f09d37b73795649038408b5f33",
+          response="2370039ff8a9fb83b4293210b5fb53e3",
+          opaque="92eb5ffee6ae2fec3ad71c777531578f"
+
     Response
     --------
+
+    Once the authentication has been validated in this three step process, the
+    application continues and provides the token that was requested.  The token
+    is again encrypted (TODO How?) during transit using the exchange that just
+    occurred.
+
+    ::
+
+        HTTP/1.1 200 OK
+
+        0b4fb639-edd1-44fe-b757-589a099097a5
+
+    .. note::
+        The aforementioned encryption of the token is not currently in effect
+        and will be added to this documentation example and implementation
+        when it is functional.
 
     """
 
