@@ -3,6 +3,9 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import uuid
+import socket
+
 NAME = "margarine"
 VERSION = "9999"
 DESCRIPTION = \
@@ -19,3 +22,4 @@ LICENSE = "MIT"
 
 COPY_YEAR = "2013"
 
+HOST_UUID = uuid.uuid5(uuid.NAMESPACE_DNS, socket.gethostname())

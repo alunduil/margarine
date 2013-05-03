@@ -13,8 +13,7 @@ A user in margarine has the following properties:
     * email
     * name (optional)
     * bio (optional)
-    * password (optional)
-    * token
+    * password (optional) → md5(username:realm:password)
 
 Authenticated requests include an ``X-Auth-Token`` header with a token returned
 from ``/v1/users/<username>/token``.
@@ -22,6 +21,7 @@ from ``/v1/users/<username>/token``.
 """
 
 from flask import request
+from flask import abort
 
 from margarine.api import information
 from margarine.api.application import APPLICATION
@@ -167,7 +167,7 @@ def manipulate_user(username):
         
         # TODO Drop user in message queue for user creation/updates
 
-        return ("", 202,)
+        abort(202)
 
     elif request.method == 'GET':
         user = None # TODO Lookup user in data store.
@@ -177,7 +177,7 @@ def manipulate_user(username):
     elif request.method == 'DELETE':
         # TODO Delete user from database.
 
-        return ""
+        abort(200)
 
 @APPLICATION.route('/{i.API_VERSION}/users/<username>/token'.format(i = information))
 def get_user_token(username):
@@ -194,6 +194,7 @@ def get_user_token(username):
     ::
 
         401 Unauthorized
+        Location: /v1/users/${USERNAME}/token
         WWW-Authenticate: Digest realm="Margarine API",
           qop="auth",
           nonce="0cc175b9c0f1b6a831c399e269772661",
@@ -242,8 +243,20 @@ def get_user_token(username):
         when it is functional.
 
     """
+    
+    if request.authorization.opaque != HOST_UUID.hex:
+        abort(401)
 
-    pass
+    ha1 = None # TODO Retrieve user.hash for this portion.
+
+    ha2 = hashlib.md5("{request.method}:{request.script_path}{request.path}".format(request = request)).hexdigest()
+
+    ha3 = hashlib.md5("{ha1}:{a.nonce}:{a.nc}:{a.cnonce}:{a.qop}:{ha2}".format(ha1 = ha1, a = request.authorization, ha2 = ha2)).hexdigest()
+
+    if request.authorization.response != ha3:
+        abort(401)
+
+    return uuid.uuid4()
 
 @APPLICATION.route('/{i.API_VERSION}/users/<username>/<property>'.format(i = information), methods = [ 'GET', 'PUT', 'DELETE' ])
 def manipulate_user_property(username, property):
