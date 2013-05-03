@@ -258,21 +258,3 @@ def get_user_token(username):
 
     return uuid.uuid4()
 
-@APPLICATION.route('/{i.API_VERSION}/users/<username>/<property>'.format(i = information), methods = [ 'GET', 'PUT', 'DELETE' ])
-def manipulate_user_property(username, property):
-    """Manipulate particular properties of a user.
-
-    Request
-    -------
-
-    Response
-    --------
-
-    .. note::
-        Not all properties are allowed to be deleted and so some may return a
-        405 Method Not Allowed when DELETE is used.
-
-    """
-
-    pass
-
