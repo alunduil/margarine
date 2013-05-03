@@ -13,7 +13,6 @@ from margarine.information import HOST_UUID
 
 @APPLICATION.errorhandler(401)
 def unauthorized(error):
-    request.
     response = make_response("", 401)
 
     response.headers["Location"] = url_for('get_user_token')
