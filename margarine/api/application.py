@@ -31,6 +31,9 @@ Models:
     * similar (fuzzy matching)
     * bundle (category?)
 
+The data looks relational at first glance but that doesn't require a relational
+system to maintain it.
+
 Recommendations for new bookmarks use a neighbor function based on tag edges
 and subscriber edges.  Graph database for this type of report.
 
@@ -38,6 +41,25 @@ Accessing the objects themselves…doesn't matter?
 
 De-normalizing required to use a non-RDBMS?
 
+Data Requirements
+-----------------
+
+Reports:
+
+  * Recommended articles (bookmarks)
+
+Current Data Formats:
+
+  * key/value
+  * document
+  * column family
+  * graph
+  * RDBMS
+
+Potential Data stores:
+
+  * redis
+  
 """
 
 from flask import Flask
