@@ -56,9 +56,33 @@ Current Data Formats:
   * graph
   * RDBMS
 
+Column family is for massive tables (billions of rows and millions of columns).
+
 Potential Data stores:
 
   * redis
+
+    :cons: scalability, fault tolerance
+    :pros: keys can be uuids and partitioning with replication
+
+  * mongodb
+
+    :cons: Objects as collections of documents (relations?)
+    :pros: built-in map/reduce, auto-scaling (nearly)
+
+    .. note::
+        References are possible client-side:
+        http://docs.mongodb.org/manual/reference/database-references/
+
+  * hypergraphdb or neo4j
+
+    :cons: only java implementations
+    :pros: relationships are first-order items, graph theory!
+
+  * postgresql
+
+    :cons: difficult to scale (paritioning and slaves work though)
+    :pros: ORM (SQLAlchemy)
   
 """
 
