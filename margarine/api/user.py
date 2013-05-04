@@ -9,11 +9,12 @@
 
 A user in margarine has the following properties:
 
-    * username (in URL)
+    * username (from URL)
     * email
     * name (optional)
-    * bio (optional)
-    * password (optional) → md5(username:realm:password)
+    * password → md5(username:realm:password)
+    * bookmarks
+    * tags
 
 Authenticated requests include an ``X-Auth-Token`` header with a token returned
 from ``/v1/users/<username>/token``.
@@ -157,6 +158,8 @@ def manipulate_user(username):
     """
 
     if request.method == 'PUT':
+        # TODO Check for existing user and auth token …
+
         user = {
                 "username": username,
                 "email": request.form["email"],
