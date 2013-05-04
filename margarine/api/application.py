@@ -47,6 +47,9 @@ Data Requirements
 Reports:
 
   * Recommended articles (bookmarks)
+  * Recent articles
+  * Similar articles
+  * Tags
 
 Current Data Formats:
 
