@@ -18,13 +18,13 @@ Models:
   * Bookmark (never deleted) (just spider?)
 
     * url
+    * text
     * tags
     * notations
-    * text
-    * parsed_at
     * votes
     * subscribers
     * original_etag
+    * parsed_at
 
   * Notation
 
@@ -33,34 +33,34 @@ Models:
     * note
 
 The data looks relational at first glance but that doesn't require a relational
-system to maintain it.
-
-Recommendations for new bookmarks use a neighbor function based on tag edges
-and subscriber edges.  Graph database for this type of report.
-
-Accessing the objects themselves…doesn't matter?
-
-De-normalizing required to use a non-RDBMS?
+system to maintain it.  The question is how parallel does the data need to be
+it would be nice to not give a crap about partition tolerance and allow for
+availability and consistency.
 
 Data Requirements
 -----------------
 
 Reports:
 
-  * Recommended articles (bookmarks)
-  * Recent articles
-  * Similar articles
-  * Similar tags (fuzzy string match) [Not mappable and reducable]
+  * Recommended articles (bookmarks) 
+  * Recent articles (Ordering on bookmarks)
+  * Similar articles [Not mappable and reducable?]
+  * Similar tags (fuzzy string match) [Not mappable and reducable?]
+
+Recommendations for new bookmarks use a neighbor function based on tag edges
+and subscriber edges.  Graph database for this type of report.
 
 Current Data Formats:
 
   * key/value
   * document
-  * column family
   * graph
-  * RDBMS
+  * column family (not appropriate due to the small column space)
+  * RDBMS (doesn't lend to any parallel processing)
 
-Column family is for massive tables (billions of rows and millions of columns).
+Parallelism in the larger reports would be nice but it's not obvious if this is
+achievable or not.  More research into map/reduce algorithms is required to
+determine if double loops lend themselves to this pattern.
 
 Potential Data stores:
 
