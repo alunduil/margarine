@@ -19,17 +19,18 @@ Models:
 
     * url
     * tags
+    * notations
     * text
     * parsed_at
     * votes
     * subscribers
     * original_etag
 
-  * Tag (need to be a separate collection?)
-    
-    * name
-    * similar (fuzzy matching)
-    * bundle (category?)
+  * Notation
+
+    * bookmark
+    * location
+    * note
 
 The data looks relational at first glance but that doesn't require a relational
 system to maintain it.
@@ -49,7 +50,7 @@ Reports:
   * Recommended articles (bookmarks)
   * Recent articles
   * Similar articles
-  * Tags
+  * Similar tags (fuzzy string match) [Not mappable and reducable]
 
 Current Data Formats:
 
