@@ -26,7 +26,7 @@ Models:
     * original_etag
     * parsed_at
 
-  * Notation
+  * Notation (includes references at bottom)
 
     * bookmark
     * location
