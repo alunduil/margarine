@@ -55,6 +55,6 @@ The installer simply installs all the pieces with the current build system but
 future work shall include splitting these up into separate bundles.  Due to the
 single installer, installation is very easy:
 
-:source: ``pythonn setup.py install``
+:source: ``python setup.py install``
 :pip:    ''pip install margarine``
 
