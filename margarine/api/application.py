@@ -14,28 +14,29 @@ Models:
     * name
     * password → md5(username:realm:password)
     * bookmarks (ordered list of bookmark submissions)
+
+      * uuid
+      * url
+      * subscribed_at
     
   * Bookmark (never deleted) (just spider?)
 
+    * uuid
     * url
     * text
     * tags
     * notations
+
+      * location
+      * note
+
     * votes
     * subscribers
+     
+      * username
+
     * original_etag
     * parsed_at
-
-  * Notation (includes references at bottom)
-
-    * bookmark
-    * location
-    * note
-
-The data looks relational at first glance but that doesn't require a relational
-system to maintain it.  The question is how parallel does the data need to be
-it would be nice to not give a crap about partition tolerance and allow for
-availability and consistency.
 
 Data Requirements
 -----------------
@@ -43,12 +44,13 @@ Data Requirements
 Reports:
 
   * Recommended articles (bookmarks) 
+
+    Recommendations for new bookmarks use a neighbor function based on tags and
+    subscribers.  A graph database would make this report ridiculously easy?
+
   * Recent articles (Ordering on bookmarks)
   * Similar articles [Not mappable and reducable?]
   * Similar tags (fuzzy string match) [Not mappable and reducable?]
-
-Recommendations for new bookmarks use a neighbor function based on tag edges
-and subscriber edges.  Graph database for this type of report.
 
 Current Data Formats:
 
