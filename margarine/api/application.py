@@ -9,21 +9,17 @@ Models:
 
   * User
   
+    * uuid4
     * username
     * email
     * name
     * password → md5(username:realm:password)
-    * bookmarks (ordered list of bookmark submissions)
-
-      * uuid
-      * url
-      * subscribed_at
     
   * Bookmark (never deleted) (just spider?)
 
-    * uuid
+    * uuid5(url)
     * url
-    * text
+    * text → sync to object store
     * tags
     * notations
 
@@ -33,8 +29,10 @@ Models:
     * votes
     * subscribers
      
-      * username
+      * uuid4
+      * subscribed_at
 
+    * created_at
     * original_etag
     * parsed_at
 
@@ -73,7 +71,7 @@ Potential Data stores:
     :cons: scalability, fault tolerance
     :pros: keys can be uuids and partitioning with replication
 
-  * mongodb
+  * mongodb (likely candidate)
 
     :cons: Objects as collections of documents (relations?)
     :pros: built-in map/reduce, auto-scaling (nearly)
