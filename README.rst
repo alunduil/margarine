@@ -56,5 +56,5 @@ future work shall include splitting these up into separate bundles.  Due to the
 single installer, installation is very easy:
 
 :source: ``python setup.py install``
-:pip:    ''pip install margarine``
+:pip:    ``pip install margarine``
 
