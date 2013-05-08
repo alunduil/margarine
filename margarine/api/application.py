@@ -38,6 +38,8 @@ Models:
     * original_etag
     * parsed_at
 
+Simply normalize the above to get back to aggregate agnostic representations.
+
 Data Requirements
 -----------------
 
