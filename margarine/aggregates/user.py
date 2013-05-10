@@ -48,39 +48,18 @@ class User(BaseAggregate):
         entire aggregate when the object goes out of scope or is explicitly
         saved (self.save).
 
+        .. note::
+            We don't want to use UUID5 as the identifier.  If we did use UUID5
+            we would need to change the identifier when we changed the user's
+            username.
+
         """
 
         super().__init__()
 
-        self.uuid4 = uuid.uuid4() if "uuid4" not in kwargs else kwargs["uuid4"]
-
-        self.username = kwargs["username"]
-
-    @property
-    def uuid(self):
-        """UUID property of User.
-
-        Currently, the UUID4 algorithm is in use but if the UUID5 algorithm
-        adds an appropriate namespace, then UUID5 should be used instead.
-
-        """
-
-        pass
-
-    @property
-    def username(self):
-        pass
-
-    @property
-    def email(self):
-        pass
-
-    @property
-    def name(self):
-        pass
-
-    @property
-    def authentication_hash(self):
-        pass
-
+        self.uuid = kwargs.get("uuid", uuid.uuid4())
+        self.username = kwargs.get("username")
+        self.email = kwargs.get("email")
+        self.name = kwargs.get("name")
+        self.authentication_hash = kwargs.get("authentication_hash")
 

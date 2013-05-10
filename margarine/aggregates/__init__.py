@@ -3,9 +3,12 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# TODO Think of a good synonym for dirty (verb).
 def dirty(decorated):
     """Decorate the function with logic to mark the object dirty.
+
+    .. note::
+        Should only be applied to setters for properties of child classes of
+        BaseAggregate.
 
     Arguments
     ---------
@@ -14,8 +17,9 @@ def dirty(decorated):
 
     """
 
-    def internal(self, *args, **kwargs):
-        self._dirty = True
+    def internal(self, value, *args, **kwargs):
+        if value is not None:
+            self._dirty = True 
 
         return decorated(self, *args, **kwargs)
 
@@ -45,9 +49,11 @@ class BaseAggregate(object):
 
         """
 
-        super().__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-        self._dirty = False
+        super().__setattr__("autosave", True)
+
+        super().__setattr__("_properties", {})
 
     def __del__(self, *args, **kwargs):
         """Garbage collect an Aggregate.
@@ -57,22 +63,33 @@ class BaseAggregate(object):
 
         """
 
-        if self._dirty:
+        if any([ dirty for value, dirty in self._properties.itervalues() ]) and self.autosave:
             self.save()
 
-        super().__del__(self, *args, **kwargs)
+        super().__del__(*args, **kwargs)
 
-    @classmethod
-    def find(cls, *args, **kwargs):
-        """Generic search for the Aggregate.
+    def __getattr__(self, name):
+        if name not in self._properties:
+            raise AttributeError("'{0}' object has no attribute '{1}'".format(self.__class__.__name__, name))
 
-        Given the criteria in ``kwargs`` we should be able to find a particular
-        object or a set of objects and return them.  This always returns a list
-        of Aggregates and never a particular Aggregate.
+        return self._properties[name][0]
+
+    def __setattr__(self, name, value):
+        """Set the specified property to the given value.
+
+        The value is not only stored in our internal properties map but also
+        marked dirty.  If the value is None, the item is instead removed from
+        the properties as we don't store ø values in document stores.
 
         """
 
-        pass # TODO Create generic query interface to data store.
+        if value is None:
+            del self._properties[name]
+        else:
+            self._properties[name] = (value, True)
+
+    def __delattr__(self, name):
+        del self._properties[name]
 
     def save(self):
         """Flush the Aggregate to the data store.
@@ -87,5 +104,33 @@ class BaseAggregate(object):
 
         # TODO Save to data store.
 
-        self._dirty = False
+        # Mark all items as not dirty.
+        for item in self._properties.iteritems():
+            item[-1] = False
+
+    def delete(self):
+        """Remove the aggregate from the data store.
+
+        Ensures that the Aggregate is removed from the data store.
+
+        A method should be determined to bypass the save on delete so this
+        method does not leave empty documents in the collection.
+
+        """
+
+        self.autosave = False
+
+        # TODO Remove the document from the collection.
+
+    @classmethod
+    def find(cls, *args, **kwargs):
+        """Generic search for the Aggregate.
+
+        Given the criteria in ``kwargs`` we should be able to find a particular
+        object or a set of objects and return them.  This always returns a list
+        of Aggregates and never a particular Aggregate.
+
+        """
+
+        pass # TODO Create generic query interface to data store.
 
