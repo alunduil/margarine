@@ -9,7 +9,9 @@ import os
 
 from margarine.parameters import BASE_PARAMETERS
 
-PARAMETERS = [
+PARAMETERS = []
+
+FLASK_PARAMETERS = [
         { # --host=HOST; HOST ← "127.0.0.1"
             "options": [ "--host" ],
             "default": "127.0.0.1",
@@ -28,5 +30,16 @@ PARAMETERS = [
             },
         ]
 
+TOKEN_PARAMETERS = [
+        { # --token-store-url=TOKEN_STORE_URL; TOKEN_STORE_URL ← "redis://localhost:6739"
+            "options": [ "--token-store-url" ],
+            "metavar": "TOKEN_STORE_URL",
+            "default": "redis://localhost:6739",
+            "help": "The token storage system to use; defaults: %(default)s.",
+            },
+        ]
+
 PARAMETERS.extend(BASE_PARAMETERS)
+PARAMETERS.extend(FLASK_PARAMETERS)
+PARAMETERS.extend(TOKEN_PARAMETERS)
 
