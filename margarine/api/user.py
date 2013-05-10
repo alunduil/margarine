@@ -169,7 +169,7 @@ def manipulate_user(username):
     if request.method == 'PUT':
         if user is None:
             user = aggregates.User(username = username, email = request.form["email"])
-        elif (username, request.headers["X-Auth-Token"]) not in TOKENS:
+        elif TOKENS.get(request.headers["X-Auth-Token"]) != username:
             abort(401)
 
         user.name = request.form.get("name", user.name)
@@ -282,7 +282,7 @@ def get_user_token(username):
 
     token = uuid.uuid4()
 
-    TOKENS.append((username, token))
+    TOKENS[token] = username
 
     return token
 
