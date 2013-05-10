@@ -157,28 +157,40 @@ def manipulate_user(username):
 
     """
 
-    if request.method == 'PUT':
-        # TODO Check for existing user and auth token …
+    user = None
+    users = aggregates.User.find(username = username)
 
-        user = {
-                "username": username,
-                "email": request.form["email"],
-                "name": request.form.get("name"),
-                "bio": request.form.get("bio"),
-                "password": request.form.get("password"),
-                }
+    if len(users) > 1:
+        logger.error("Found duplicate username: %s", username)
+        abort(500)
+    elif len(users):
+        user = users[0]
+
+    if request.method == 'PUT':
+        if user is None:
+            user = aggregates.User(username = username, email = request.form["email"])
+        elif (username, request.headers["X-Auth-Token"]) not in TOKENS:
+            abort(401)
+
+        user.name = request.form.get("name", user.name)
+
+        if "password" in request.form:
+            # TODO Factor out realm.
+            user.authentication_hash = hashlib.md5("{0}:Margarine API:{1}".format(username, request.form["password"])).hexdigest()
         
         # TODO Drop user in message queue for user creation/updates
 
         abort(202)
 
     elif request.method == 'GET':
-        user = None # TODO Lookup user in data store.
+        if user is None:
+            abort(404)
 
         return json.dumps(user)
 
     elif request.method == 'DELETE':
-        # TODO Delete user from database.
+        if user is not None:
+            user.delete()
 
         abort(200)
 
@@ -250,7 +262,16 @@ def get_user_token(username):
     if request.authorization.opaque != HOST_UUID.hex:
         abort(401)
 
-    ha1 = None # TODO Retrieve user.hash for this portion.
+    user = None
+    users = aggregates.User.find(username = username)
+
+    if len(users) > 1:
+        logger.error("Found duplicate username: %s", username)
+        abort(500)
+    elif len(users):
+        user = users[0]
+
+    ha1 = user.authentication_hash
 
     ha2 = hashlib.md5("{request.method}:{request.script_path}{request.path}".format(request = request)).hexdigest()
 
@@ -259,5 +280,9 @@ def get_user_token(username):
     if request.authorization.response != ha3:
         abort(401)
 
-    return uuid.uuid4()
+    token = uuid.uuid4()
+
+    TOKENS.append((username, token))
+
+    return token
 
