@@ -176,7 +176,7 @@ def manipulate_user(username):
         # TODO Drop user.uuid in MQ as a new user function:
         #   * Send verification e-mail.
         
-        abort(202)
+        return "", 202
 
     elif request.method == 'GET':
         if user is None:

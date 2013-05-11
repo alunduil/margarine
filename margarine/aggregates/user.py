@@ -20,13 +20,14 @@ The properties we're starting with are the following:
 
 """
 
-from margarine.aggregates import dirty
+import uuid
+
 from margarine.aggregates import BaseAggregate
 
 USER_SCHEMA_VERSION = 1
 
 class User(BaseAggregate):
-    def __init__(**kwargs):
+    def __init__(self, *args, **kwargs):
         """Create a new user object from the properties passed.
 
         If no properties are passed, a blank initialized User object will be
@@ -57,7 +58,7 @@ class User(BaseAggregate):
 
         """
 
-        super().__init__()
+        super(User, self).__init__()
 
         self.uuid = kwargs.get("uuid", uuid.uuid4())
         self.username = kwargs.get("username")
@@ -69,5 +70,5 @@ class User(BaseAggregate):
         return self.username
 
     def __repr__(self):
-        return "<User:{self.username}—{self.uuid}>".format(self)
+        return "<User:{self.username}-{self.uuid}>".format(self)
 

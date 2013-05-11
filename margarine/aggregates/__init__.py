@@ -5,32 +5,6 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-def dirty(decorated):
-    """Decorate the function with logic to mark the object dirty.
-
-    .. note::
-        Should only be applied to setters for properties of child classes of
-        BaseAggregate.
-
-    Arguments
-    ---------
-
-    :decorated: The function we are wrapping.
-
-    """
-
-    def internal(self, value, *args, **kwargs):
-        if value is not None:
-            self._dirty = True 
-
-        return decorated(self, *args, **kwargs)
-
-    internal.__name__ = decorated.__name__
-    internal.__doc__ = decorated.__doc__
-    internal.__dict__.update(decorated.__dict__)
-
-    return internal
-
 class BaseAggregate(object):
     """Provide base implementations that are common to all aggregates.
 
@@ -51,11 +25,11 @@ class BaseAggregate(object):
 
         """
 
-        super().__init__(*args, **kwargs)
+        super(BaseAggregate, self).__init__(*args, **kwargs)
 
-        super().__setattr__("autosave", True)
+        super(BaseAggregate, self).__setattr__("autosave", True)
 
-        super().__setattr__("_properties", {})
+        super(BaseAggregate, self).__setattr__("_properties", {})
 
     def __del__(self):
         """Garbage collect an Aggregate.
@@ -64,6 +38,12 @@ class BaseAggregate(object):
         needs to be flushed to the data store.
 
         """
+
+        # TODO Where is the recursion coming from?
+        #
+        # Exception RuntimeError: 'maximum recursion depth exceeded while
+        # calling a Python object' in <bound method User.__del__ of 
+        # <margarine.aggregates.user.User object at 0x1e7e410>> ignored
 
         if any([ dirty for _, dirty in self._properties.itervalues() ]) and self.autosave:
             self.save()
@@ -85,7 +65,7 @@ class BaseAggregate(object):
 
         """
 
-        if value is None:
+        if value is None and name in self._properties:
             del self._properties[name]
         else:
             self._properties[name] = (value, True)
