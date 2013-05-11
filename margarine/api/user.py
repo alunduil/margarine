@@ -158,14 +158,7 @@ def manipulate_user(username):
 
     """
 
-    user = None
-    users = User.find(username = username)
-
-    if len(users) > 1:
-        logger.error("Found duplicate username: %s", username)
-        abort(500)
-    elif len(users):
-        user = users[0]
+    user = User.find_one(username = username)
 
     if request.method == 'PUT':
         if user is None:
@@ -265,14 +258,10 @@ def get_user_token(username):
     if request.authorization.opaque != HOST_UUID.hex:
         abort(401)
 
-    user = None
-    users = User.find(username = username)
+    user = User.find_one(username = username)
 
-    if len(users) > 1:
-        logger.error("Found duplicate username: %s", username)
-        abort(500)
-    elif len(users):
-        user = users[0]
+    if user is None:
+        abort(404)
 
     ha1 = user.authentication_hash
 

@@ -136,3 +136,23 @@ class BaseAggregate(object):
 
         return [] # TODO Create generic query interface to data store.
 
+    @classmethod
+    def find_one(cls, *args, **kwargs):
+        """Generic search for the Aggregate that returns one result.
+
+        Given the criteria in ``kwargs`` we should be able to find a particular
+        object or set of objects and return them.  This always returns a list
+        of Aggregates and never a particular Aggregate.
+
+        The difference between this method and the ``find`` method is that if
+        less then or more than one result is found the result is ``None``.
+
+        """
+
+        results = cls.find(*args, **kwargs)
+
+        if len(results) != 1:
+            return None
+
+        return results[0] 
+
