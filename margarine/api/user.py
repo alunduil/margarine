@@ -188,6 +188,9 @@ def manipulate_user(username):
         if user is not None:
             user.delete()
 
+            # TODO Drop user.uuid in MQ as a drop user function:
+            #   * Remove all outstanding login tokens for user
+
         return ""
 
 @APPLICATION.route('/{i.API_VERSION}/users/<username>/token'.format(i = information))
