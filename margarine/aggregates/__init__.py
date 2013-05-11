@@ -57,7 +57,7 @@ class BaseAggregate(object):
 
         super().__setattr__("_properties", {})
 
-    def __del__(self, *args, **kwargs):
+    def __del__(self):
         """Garbage collect an Aggregate.
 
         If the Aggregate is marked as dirty then it has not been saved and
@@ -68,7 +68,7 @@ class BaseAggregate(object):
         if any([ dirty for value, dirty in self._properties.itervalues() ]) and self.autosave:
             self.save()
 
-        super().__del__(*args, **kwargs)
+        super().__del__()
 
     def __getattr__(self, name):
         if name not in self._properties:
