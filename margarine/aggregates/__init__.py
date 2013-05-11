@@ -65,10 +65,10 @@ class BaseAggregate(object):
 
         """
 
-        if any([ dirty for value, dirty in self._properties.itervalues() ]) and self.autosave:
+        if any([ dirty for _, dirty in self._properties.itervalues() ]) and self.autosave:
             self.save()
 
-        super().__del__()
+        super(BaseAggregate, self).__del__()
 
     def __getattr__(self, name):
         if name not in self._properties:

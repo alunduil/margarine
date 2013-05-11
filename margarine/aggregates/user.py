@@ -65,3 +65,9 @@ class User(BaseAggregate):
         self.name = kwargs.get("name")
         self.authentication_hash = kwargs.get("authentication_hash")
 
+    def __str__(self):
+        return self.username
+
+    def __repr__(self):
+        return "<User:{self.username}—{self.uuid}>".format(self)
+
