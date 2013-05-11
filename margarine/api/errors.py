@@ -9,6 +9,7 @@ import socket
 from flask import url_for
 
 from margarine.api.application import APPLICATION
+from margarine.api import information
 from margarine.information import HOST_UUID
 
 @APPLICATION.errorhandler(401)
@@ -17,11 +18,12 @@ def unauthorized(error):
 
     response.headers["Location"] = url_for('get_user_token')
     response.headers["WWW-Authenticate"] = \
-            "Digest realm=\"Margarine API\"," \
+            "Digest realm=\"{realm}\"," \
             "qop=\"auth\"," \
             "nonce=\"{nonce}\"," \
             "opaque=\"{host_identifier}\""
     repoonse.headers["WWW-Authenticate"].format(
+            realm = information.AUTHENTICATION_REALM,
             nonce = uuid.uuid4().hex,
             opaque = HOST_UUID.hex,
             )

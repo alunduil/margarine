@@ -134,5 +134,5 @@ class BaseAggregate(object):
 
         """
 
-        pass # TODO Create generic query interface to data store.
+        return [] # TODO Create generic query interface to data store.
 

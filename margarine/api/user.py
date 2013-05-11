@@ -170,17 +170,19 @@ def manipulate_user(username):
     if request.method == 'PUT':
         if user is None:
             user = User(username = username, email = request.form["email"])
-        elif TOKENS.get(request.headers["X-Auth-Token"]) != username:
-            abort(401)
+        else:
+            if TOKENS.get(request.headers["X-Auth-Token"]) != username:
+                abort(401)
 
         user.name = request.form.get("name", user.name)
 
+        # TODO Put the password in the verification e-mail?
         if "password" in request.form:
-            # TODO Factor out realm.
-            user.authentication_hash = hashlib.md5("{0}:Margarine API:{1}".format(username, request.form["password"])).hexdigest()
-        
-        # TODO Drop user in message queue for user creation/updates
+            user.authentication_hash = hashlib.md5("{0}:{1}:{2}".format(username, information.AUTHENTICATION_REALM, request.form["password"])).hexdigest()
 
+        # TODO Drop user.uuid in MQ as a new user function:
+        #   * Send verification e-mail.
+        
         abort(202)
 
     elif request.method == 'GET':
@@ -211,7 +213,7 @@ def get_user_token(username):
 
         401 Unauthorized
         Location: /v1/users/${USERNAME}/token
-        WWW-Authenticate: Digest realm="Margarine API",
+        WWW-Authenticate: Digest realm="margarine.api",
           qop="auth",
           nonce="0cc175b9c0f1b6a831c399e269772661",
           opaque="92eb5ffee6ae2fec3ad71c777531578f"
@@ -230,7 +232,7 @@ def get_user_token(username):
         GET /v1/users/alunduil/token HTTP/1.1
         Host: www.example.com
         Authorization: Digest username="alunduil",
-          realm="Margarine API",
+          realm="margarine.api",
           nonce="0cc175b9c0f1b6a831c399e269772661",
           uri="/v1/users/alunduil/token",
           qop=auth,

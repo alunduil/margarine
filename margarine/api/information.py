@@ -5,3 +5,5 @@
 
 API_VERSION = "v1"
 
+AUTHENTICATION_REALM = "margarine.api"
+
