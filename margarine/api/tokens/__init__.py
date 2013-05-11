@@ -11,7 +11,7 @@ provide a consistent interface that accesses an external store for the tokens.
 
 """
 
-from margarine.parameters import CONFIGURATION_DIRECTORY
+from margarine.parameters import CONFIGURATION_FILE
 
 from margarine.api.parameters import PARAMETERS
 
@@ -84,7 +84,8 @@ class Tokens(object):
         return list(self.itervalues())
 
 def generate_token_store():
-    parameters = Parameters("authentication", os.path.join(CONFIGURATION_DIRECTORY, "margarine.conf"), PARAMETERS)
+    # TODO Get specified configuration file somehow.
+    parameters = Parameters("authentication", CONFIGURATION_FILE, PARAMETERS)
 
     if parameters["debug"]:
         return {}
