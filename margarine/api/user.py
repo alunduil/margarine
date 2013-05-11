@@ -195,7 +195,7 @@ def manipulate_user(username):
         if user is not None:
             user.delete()
 
-        abort(200)
+        return ""
 
 @APPLICATION.route('/{i.API_VERSION}/users/<username>/token'.format(i = information))
 def get_user_token(username):
