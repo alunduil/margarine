@@ -24,6 +24,7 @@ from ``/v1/users/<username>/token``.
 from flask import request
 from flask import abort
 
+from margarine.aggregates.user import User
 from margarine.api import information
 from margarine.api.application import APPLICATION
 
@@ -158,7 +159,7 @@ def manipulate_user(username):
     """
 
     user = None
-    users = aggregates.User.find(username = username)
+    users = User.find(username = username)
 
     if len(users) > 1:
         logger.error("Found duplicate username: %s", username)
@@ -168,7 +169,7 @@ def manipulate_user(username):
 
     if request.method == 'PUT':
         if user is None:
-            user = aggregates.User(username = username, email = request.form["email"])
+            user = User(username = username, email = request.form["email"])
         elif TOKENS.get(request.headers["X-Auth-Token"]) != username:
             abort(401)
 
@@ -263,7 +264,7 @@ def get_user_token(username):
         abort(401)
 
     user = None
-    users = aggregates.User.find(username = username)
+    users = User.find(username = username)
 
     if len(users) > 1:
         logger.error("Found duplicate username: %s", username)
