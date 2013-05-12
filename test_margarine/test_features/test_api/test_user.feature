@@ -1,9 +1,14 @@
+# Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
+#
+# pycore is freely distributable under the terms of an MIT-style license.
+# See COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 Feature: Interact with Margarine's User API
   In order to verify that the user's API functions correctly, we'll run various
   requests against it.
 
   Scenario: Retrieve a known user that does not exist
-    Given that I have a username alunduil
+    Given that I have a username, alunduil
     When I request its information
     Then I receive a 404 Not Found
 
