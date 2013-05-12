@@ -28,7 +28,6 @@ class BaseAggregate(object):
         super(BaseAggregate, self).__init__(*args, **kwargs)
 
         super(BaseAggregate, self).__setattr__("autosave", True)
-
         super(BaseAggregate, self).__setattr__("_properties", {})
 
     def __del__(self):
@@ -38,12 +37,6 @@ class BaseAggregate(object):
         needs to be flushed to the data store.
 
         """
-
-        # TODO Where is the recursion coming from?
-        #
-        # Exception RuntimeError: 'maximum recursion depth exceeded while
-        # calling a Python object' in <bound method User.__del__ of 
-        # <margarine.aggregates.user.User object at 0x1e7e410>> ignored
 
         if any([ dirty for _, dirty in self._properties.itervalues() ]) and self.autosave:
             self.save()
@@ -68,7 +61,7 @@ class BaseAggregate(object):
         if value is None and name in self._properties:
             del self._properties[name]
         else:
-            self._properties[name] = (value, True)
+            self._properties[name] = [value, True]
 
     def __delattr__(self, name):
         del self._properties[name]

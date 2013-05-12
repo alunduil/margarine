@@ -39,10 +39,24 @@ def extract_flask_parameters(parameters):
     return flask_parameters
 
 def configure_logging(parameters):
-    pass
+    handlers = []
+
+    if parameters["debug"]:
+        APPLICATION.logger.setLevel(logging.DEBUG)
+
+        handlers += [ logging.StreamHandler() ]
+
+        handlers[-1].setLevel(logging.DEBUG)
+
+    logger.debug("Handlers: {0}".format(handlers))
+
+    for handler in handlers:
+        APPLICATION.logger.addHandler(handler)
 
 if __name__ == "__main__":
     parameters = get_parameters()
+
+    configure_logging(parameters)
 
     APPLICATION.run(**extract_flask_parameters(parameters))
 
