@@ -16,12 +16,11 @@ from margarine.parameters import CONFIGURATION_FILE
 from margarine.api.parameters import PARAMETERS
 
 class Tokens(object):
-    def __init__(self, parameters = None):
+    def __init__(self, token_store_url):
         """Create a connection with the specified token store.
 
-        Using the passed Parameters object we should be able to retrieve the
-        ``token-store-url`` key.  This key should decompose into the following
-        pieces of information:
+        Using the passed token_store_url we should be able to decompose it into
+        the following pieces of information:
 
         :protocol: Which data store to use.  If this matches the registered
                    name of a backend plugin that backend plugin will be used
@@ -87,10 +86,10 @@ def generate_token_store():
     # TODO Get specified configuration file somehow.
     parameters = Parameters("authentication", CONFIGURATION_FILE, PARAMETERS)
 
-    if parameters["debug"]:
+    if parameters["debug"] or "token-store-url" not in parameters:
         return {}
     else:
-        return Tokens(parameters)
+        return Tokens(token_store_url = parameters["token-store-url"])
 
 TOKENS = generate_token_store()
 
