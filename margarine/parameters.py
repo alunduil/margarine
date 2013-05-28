@@ -222,7 +222,10 @@ class Parameters(object):
 
         self.name = name # TODO Make this less anti-pattern…
 
-        self.parameters += parameters
+        if hasattr(self, "parameters"):
+            self.parameters += parameters 
+        else:
+            self.parameters = []
 
         assert(not getattr(self, "parsed", False))
 
