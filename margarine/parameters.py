@@ -56,37 +56,6 @@ def extract_defaults(parameters, keep = lambda _: _):
 
     return dict([ (item["options"][0][2:], item["default"]) for item in filter(keep, parameters) if "default" in item ])
 
-def create_configuration_parser(file_path, parameters = (), *args, **kwargs):
-    """Create a fully initialized configuration parser with the parameters.
-
-    All of the function parameters besides ``parameters`` and ``file_path``
-    will be directly passed to ConfigParser.SafeConfigParser.  The returned
-    value from this function is the properly prepared SafeConfigParser that
-    has already been initialized and loaded.
-
-    Arguments
-    ---------
-
-    :``file_path``:  The path to the configuration file to load.
-    :``parameters``: The parameter definitions (list of dicts) with the form
-                     shown in the Examples_ section of Parameters.__init__.
-
-    .. note::
-        All other parameters are passed directly to
-        ConfigParser.SafeConfigParser.
-
-    """
-    
-    defaults = extract_defaults(filter(lambda p: p.get("only") in [ "configuration", None ], parameters))
-
-    configuration_parser = configparser.SafeConfigParser(defaults, *args, **kwargs)
-
-    logger.debug("file_path: %s", file_path)
-
-    configuration_parser.read(file_path)
-
-    return configuration_parser
-
 class Parameters(object):
     """Provide a dict-like interface to the parameters added.
 
@@ -191,10 +160,37 @@ class Parameters(object):
 
         if file_path not in self._configuration_files:
             self._configuration_files[file_path] = self._create_configuration_parser(file_path, self.parameters)
-            self.parse(component = { "file" }, configuration_file = self._configuration_files[file_path])
+            self.parse(components = { "file" }, configuration_file = self._configuration_files[file_path])
 
         self.parse(components = { "environment" })
+
+    def _create_configuration_parser(self, file_path, parameters = (), *args, **kwargs):
+        """Create a fully initialized configuration parser with the parameters.
+
+        All of the function parameters besides ``parameters`` and ``file_path``
+        will be directly passed to ConfigParser.SafeConfigParser.  The returned
+        value from this function is the properly prepared SafeConfigParser that
+        has already been initialized and loaded.
+
+        Arguments
+        ---------
+
+        :``file_path``:  The path to the configuration file to load.
+        :``parameters``: The parameter definitions (list of dicts) with the
+                         form shown in the Examples_ section of
+                         Parameters.__init__.
+
+        .. note::
+            All other parameters are passed directly to
+            ConfigParser.SafeConfigParser.
+
+        """
         
+        defaults = extract_defaults(self.parameters, keep = lambda _: _.get("only") in [ "configuration", None ])
+
+        self._configuration_files[file_path] = configparser.SafeConfigParser(defaults, *args, **kwargs)
+        self._configuration_files[file_path].read(file_path)
+
     def reinitialize(self, file_path = None):
         """Load the configuration file(s) from disk.
 
@@ -207,7 +203,7 @@ class Parameters(object):
         if file_path is not None:
             self._configuration_files[file_path] = self._create_configuration_parser(file_path, self.parameters)
         else:
-            for file_path in self._configuration_files.iterkeys():
+            for file_path in self._configuration_files.keys():
                 self.reinitialize(file_path)
 
     def parse(self, components = { "cli", "file", "environment" }, only_known = False, configuration_file = None):
@@ -248,8 +244,6 @@ class Parameters(object):
             All other arguments are passed directly to argparse.ArgumentParser.
 
         """
-
-        # TODO Use partial parsing to accomplish this?
 
         if not hasattr(self, "argument_parser"):
             self.argument_parser = argparse.ArgumentParser(*args, **kwargs)
