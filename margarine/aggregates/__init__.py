@@ -14,6 +14,9 @@ class BaseAggregate(object):
     The entire purpose of this class is to keep margarine's aggregates as DRY
     as possible.
 
+    .. note::
+        MongoDB dcouments are limited to 16MB in size.
+
     """
 
     def __init__(self, *args, **kwargs):

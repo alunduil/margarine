@@ -17,14 +17,15 @@ The properties we're starting with are the following:
       * note
 
     * votes
-    * subscribers
-
-      * uuid4 (uuid5 one day?)
-      * subscribed_at
-
     * created_at
     * original_etag
     * parsed_at
+    
+    * subscribers—Psuedo parameter, maps to join collection.
+
+      * uuid4—user 
+      * uuid5—bookmark
+      * subscribed_at
 
 """
 
