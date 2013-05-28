@@ -10,7 +10,11 @@ import sys
 import argparse
 import copy
 import logging
-import ConfigParser
+
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser
 
 from margarine import information
 
@@ -120,7 +124,7 @@ def create_configuration_parser(file_path, parameters = (), *args, **kwargs):
     
     defaults = extract_defaults(filter(lambda p: p.get("only") in [ "configuration", None ], parameters))
 
-    configuration_parser = ConfigParser.SafeConfigParser(defaults, *args, **kwargs)
+    configuration_parser = configparser.SafeConfigParser(defaults, *args, **kwargs)
 
     logger.debug("file_path: %s", file_path)
 
@@ -285,7 +289,7 @@ class Parameters(object):
         try:
             if hasattr(self, "configuration") and self.configuration.has_section(self.name):
                 value = self.configuration.get(self.name, key)
-        except ConfigParser.NoOptionError:
+        except configparser.NoOptionError:
             pass
 
         logger.debug("value: %s", value)

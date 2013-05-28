@@ -9,7 +9,11 @@ import unittest2
 import tempfile
 import argparse
 import sys
-import ConfigParser
+
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser
 
 from margarine.parameters import Parameters
 from margarine.parameters import create_argument_parser
@@ -83,7 +87,7 @@ class CreateConfigurationParserTest(unittest2.TestCase):
 
         parser = create_configuration_parser(temp.name)
 
-        self.assertIsInstance(parser, ConfigParser.SafeConfigParser)
+        self.assertIsInstance(parser, configparser.SafeConfigParser)
 
         temp.close()
 
