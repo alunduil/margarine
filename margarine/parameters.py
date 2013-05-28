@@ -56,51 +56,6 @@ def extract_defaults(parameters, keep = lambda _: _):
 
     return dict([ (item["options"][0][2:], item["default"]) for item in filter(keep, parameters) if "default" in item ])
 
-def create_argument_parser(parameters = (), *args, **kwargs):
-    """Create a fully initialized argument parser with the passed parameters.
-
-    All of the function parameters besides ``parameters`` will be directly
-    passed to argparse.ArgumentParser.  The returned value from this function
-    is the properly prepared ArgumentParser but the parser has not been run.
-
-    Arguments
-    ---------
-
-    :``parameters``: The parameter definitions (list of dicts) with the form
-                     shown in the Examples_ section of Parameters.__init__.
-
-    .. note::
-        All other arguments are passed directly to argparse.ArgumentParser.
-
-    """
-
-    # TODO Add groups for namespaces.
-    # TODO Use partial parsing to accomplish this?
-
-    parser = argparse.ArgumentParser(*args, **kwargs)
-
-    version = \
-            "%(prog)s-{i.VERSION}\n" \
-            "\n" \
-            "Copyright {i.COPY_YEAR} by {i.AUTHOR} <{i.AUTHOR_EMAIL}> and " \
-            "contributors.  This is free software; see the source for " \
-            "copying conditions.  There is NO warranty; not even for " \
-            "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
-
-    parser.add_argument("--version", action = "version",
-            version = version.format(i = information))
-
-    parameters = copy.deepcopy(parameters)
-    logger.debug("parameters: %s", parameters)
-    parameters = dict([ (parameter["options"][0][2:], { "args": parameter.pop("options"), "kwargs": parameter }) for parameter in parameters if parameter.get("only") in [ "arguments", None ] ]) # pylint: disable=C0301
-
-    for name, options in parameters.iteritems():
-        logger.debug("Adding option, %s, with options, %s and %s", name, options["args"], options["kwargs"]) # pylint: disable=C0301
-
-        parser.add_argument(*options["args"], **options["kwargs"])
-
-    return parser
-
 def create_configuration_parser(file_path, parameters = (), *args, **kwargs):
     """Create a fully initialized configuration parser with the parameters.
 
@@ -231,6 +186,9 @@ class Parameters(object):
 
         self._add_argument_parameters(name, parameters)
 
+        if not hasattr(self, "_configuration_files"):
+            self._configuration_files = {}
+
         if file_path not in self._configuration_files:
             self._configuration_files[file_path] = self._create_configuration_parser(file_path, self.parameters)
             self.parse(component = { "file" }, configuration_file = self._configuration_files[file_path])
@@ -268,6 +226,59 @@ class Parameters(object):
             prefix = "{0}_{1}_".format(sys.argv[0].upper(), self.name)
             logger.debug("environment variable prefix: %s", prefix)
             self.environ = dict([ (key.replace(prefix, ""), value) for key, value in os.environ.items() if key.startswith(prefix) ])
+
+    def _add_argument_parameters(self, name, parameters, *args, **kwargs):
+        """Add arguments to the argument parser.
+
+        .. note::
+            If the parser hasn't been created, the first call to this method
+            will create it.
+        
+        All of the function parameters besides ``parameters`` will be directly
+        passed to argparse.ArgumentParser.  The returned value from this function
+        is the properly prepared ArgumentParser but the parser has not been run.
+
+        Arguments
+        ---------
+
+        :``parameters``: The parameter definitions (list of dicts) with the form
+                         shown in the Examples_ section of Parameters.__init__.
+
+        .. note::
+            All other arguments are passed directly to argparse.ArgumentParser.
+
+        """
+
+        # TODO Use partial parsing to accomplish this?
+
+        if not hasattr(self, "argument_parser"):
+            self.argument_parser = argparse.ArgumentParser(*args, **kwargs)
+
+            version = \
+                    "%(prog)s-{i.VERSION}\n" \
+                    "\n" \
+                    "Copyright {i.COPY_YEAR} by {i.AUTHOR} <{i.AUTHOR_EMAIL}> and " \
+                    "contributors.  This is free software; see the source for " \
+                    "copying conditions.  There is NO warranty; not even for " \
+                    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+
+            parser.add_argument("--version", action = "version",
+                    version = version.format(i = information))
+
+        parameters = copy.deepcopy(parameters)
+        logger.debug("parameters: %s", parameters)
+        parameters = [ { "args": parameter.pop("options"), "kwargs": parameter } for parameter in parameters if parameter.get("only") in [ "arguments", None ] ] # pylint: disable=C0301
+
+        parser = self.argument_parser
+
+        if name != "default":
+            if not hasattr(self, "group_parsers"):
+                self.group_parsers = {}
+
+            parser = self.group_parsers.get(name, self.argument_parser.add_argument_group(name))
+
+        for options in parameters:
+            parser.add_argument(*options["args"], **options["kwargs"])
 
     def __len__(self):
         return len(self.parameters)
