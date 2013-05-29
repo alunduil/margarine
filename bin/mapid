@@ -9,6 +9,8 @@ import logging
 import os
 import argparse
 
+logging.basicConfig(level = logging.DEBUG)
+
 from margarine.parameters import Parameters
 
 from margarine.api.application import APPLICATION

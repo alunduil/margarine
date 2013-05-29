@@ -255,6 +255,10 @@ class Parameters(object):
 
         """
 
+        logger.info("Adding parameters to %s.", name)
+        logger.debug("name: %s", name)
+        logger.debug("parameters: %s", parameters)
+
         if not hasattr(self, "argument_parser"):
             self.argument_parser = argparse.ArgumentParser()
 
@@ -269,23 +273,33 @@ class Parameters(object):
             self.argument_parser.add_argument("--version", action = "version",
                     version = version.format(i = information))
 
+            logger.info("Created base argument parser, %s", self.argument_parser)
+
         parameters = copy.deepcopy(parameters)
         parameters = [ { "args": parameter.pop("options"), "kwargs": parameter } for parameter in parameters if parameter.get("only") in [ "arguments", None ] ] # pylint: disable=C0301
 
         for options in parameters:
             parser = self.argument_parser
 
+            logger.debug("name: %s", name)
+
             if name != "default":
                 if not hasattr(self, "group_parsers"):
                     self.group_parsers = {}
 
+                logger.debug("Group Parsers: %s", self.group_parsers)
+
+                logger.debug("options[args]: %s", options["args"])
+
                 if len(options["args"]) > 1:
-                    logger.warn("Ignored short option, %s, for %s", options["args"][1], options["args"][0])
+                    logger.warn("Ignoring short option(s), %s, for %s", options["args"][1], options["args"][0])
 
                 del options["args"][1:]
-                options["args"][0].replace("--", "--" + name + "-")
+                options["args"][0] = options["args"][0].replace("--", "--" + name + "-", 1)
 
-                parser = self.group_parsers.get(name, self.argument_parser.add_argument_group(name))
+                logger.debug("options[args]: %s", options["args"])
+
+                parser = self.group_parsers.setdefault(name, self.argument_parser.add_argument_group(name))
 
             del options["kwargs"]["group"]
 
@@ -387,7 +401,7 @@ Parameters(parameters = [
         "options": [ "--configuration", "-f" ],
         "default": CONFIGURATION_FILE,
         "help": \
-                "Configuration file to use to configure %(prog) as a whole.",
+                "Configuration file to use to configure %(prog)s as a whole.",
         },
     ])
 
