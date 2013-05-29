@@ -96,6 +96,27 @@ Potential Data stores:
 
 from flask import Flask
 
+from margarine.parameters import Parameters
+
+Parameters("flask", parameters = [
+    { # --flask-host=HOST; HOST ← "127.0.0.1"
+        "options": [ "--host" ],
+        "default": "127.0.0.1",
+        "help": "The IP to bind the API daemon; default: %(default)s.",
+        },
+    { # --flask-port=PORT; PORT ← "5000"
+        "options": [ "--port" ],
+        "type": int,
+        "default": 5000,
+        "help": "The port to bind the API daemon; default: %(default)s.",
+        },
+    { # --flask-debug
+        "options": [ "--debug" ],
+        "action": "store_true",
+        "help": "Enable debugging of the flask application.",
+        },
+    ])
+
 APPLICATION = Flask(__name__)
 
 import errors

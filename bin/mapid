@@ -10,10 +10,8 @@ import os
 import argparse
 
 from margarine.parameters import Parameters
-from margarine.parameters import CONFIGURATION_FILE
 
 from margarine.api.application import APPLICATION
-from margarine.api.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 

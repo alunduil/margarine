@@ -11,9 +11,16 @@ provide a consistent interface that accesses an external store for the tokens.
 
 """
 
-from margarine.parameters import CONFIGURATION_FILE
+from margarine.parameters import Parameters
 
-from margarine.api.parameters import PARAMETERS
+Parameters("authentication", parameters = [
+    { # --authentication-url=TOKEN_STORE_URL; TOKEN_STORE_URL ← "redis://localhost:6739"
+        "options": [ "--url" ],
+        "metavar": "TOKEN_STORE_URL",
+        "default": "redis://localhost:6739",
+        "help": "The token storage system to use; defaults: %(default)s.",
+        },
+    ])
 
 class Tokens(object):
     def __init__(self, token_store_url):
