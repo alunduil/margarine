@@ -136,7 +136,11 @@ class Parameters(object):
         if not hasattr(self, "defaults"):
             self.defaults = {}
 
-        self.defaults.update(extract_defaults(parameters, prefix = name + "."))
+        prefix = ""
+        if name != "default":
+            prefix = name + "."
+
+        self.defaults.update(extract_defaults(parameters, prefix = prefix))
 
         for parameter in parameters:
             parameter.setdefault("group", name)
@@ -359,7 +363,12 @@ class Parameters(object):
 
     def iterkeys(self):
         for item in self.parameters:
-            yield item["group"] + item["options"][0][2:]
+            value = item["options"][0][2:]
+
+            if item["group"] != "default":
+                value = item["group"] + value
+
+            yield value
 
     def itervalues(self):
         for key in self.iterkeys():
@@ -372,6 +381,15 @@ class Parameters(object):
         return list(self.itervalues())
 
 # General Parameters for all applications:
+
+Parameters(parameters = [
+    { # --configuration=FILE, -f=FILE; FILE ← CONFIGURATION_FILE
+        "options": [ "--configuration", "-f" ],
+        "default": CONFIGURATION_FILE,
+        "help": \
+                "Configuration file to use to configure %(prog) as a whole.",
+        },
+    ])
 
 Parameters("logging", parameters = [
     { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.conf
