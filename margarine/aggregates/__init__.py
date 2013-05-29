@@ -5,6 +5,19 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+from margarine.parameters import Parameters
+
+Parameters("datastore", parameters = [
+    { # --datastore-url=URL; URL ← "sqlite:///tmp/APP.sql
+        "options": [ "--url" ],
+        "default": "sqlite:///tmp/{0}.sql".format(sys.argv[0].rsplit('/', 1)[-1]),
+        "help": \
+                "The URL endpoint of the data store mechanism.  This can be " \
+                "a local sqlite database but typically will be set to a " \
+                "MongoDB instance.",
+        }
+    ])
+
 class BaseAggregate(object):
     """Provide base implementations that are common to all aggregates.
 

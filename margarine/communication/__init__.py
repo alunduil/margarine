@@ -3,7 +3,18 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from margarine.parameters import CONFIGURATION_FILE
+from margarine.parameters import Parameters
+
+Parameters("communication", parameters = [
+    { # --communication-url=URL; URL ← socket:///tmp/APP_NAME
+        "options": [ "--url" ],
+        "default": "socket:///tmp/{0}".format(sys.argv[0].rsplit('/', 1)[-1]),
+        "help": \
+                "The URL endpoint of the intra-service communication " \
+                "mechanism.  This can be a socket (the default) or an AMQP " \
+                "endpoint or anything between that's supported.",
+        },
+    ])
 
 class Queue(object):
     def __init__(self, queue_url = None):

@@ -10,11 +10,6 @@ import tempfile
 import argparse
 import sys
 
-try:
-    import ConfigParser as configparser
-except ImportError:
-    import configparser
-
 from margarine.parameters import Parameters
 
 def get_mock_parameters():
@@ -38,6 +33,14 @@ def get_mock_parameters():
             { # --all=ALL, -a=ALL; ALL ← "default"
                 "options": [ "--all", "-A" ],
                 "default": "default",
+                },
+            { # --configuration_only=CONFIGURATION, -C=CONFIGURATION
+                "options": [ "--configuration_only", "-C" ],
+                "only": "configuration",
+                },
+            { # --argument_only=ARGUMENT, -A=ARGUMENT
+                "options": [ "--argument_only", "-O" ],
+                "only": "arguments",
                 },
             ]
     return parameters

@@ -23,20 +23,7 @@ logger = logging.getLogger(__name__)
 CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, "etc", "margarine")
 CONFIGURATION_FILE = os.path.join(CONFIGURATION_DIRECTORY, "margarine.conf")
 
-BASE_PARAMETERS = [
-        ]
-
-UNUSED_PARAMETERS = [
-        { # --logging_configuration=FILE, -L=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.conf
-            "options": [ "--logging_configuration", "-L" ],
-            "default": os.path.join(CONFIGURATION_DIRECTORY, "logging.conf"),
-            "help": \
-                    "The configuration file containing the logging " \
-                    "mechanism used by %(prog)s.  Default: %(default)s.",
-            },
-        ]
-
-def extract_defaults(parameters, keep = lambda _: _):
+def extract_defaults(parameters, prefix = "", keep = lambda _: _):
     """Extract the default values for the passed parameters.
 
     This function will pull the default values from the parameters provided and
@@ -54,7 +41,7 @@ def extract_defaults(parameters, keep = lambda _: _):
 
     """
 
-    return dict([ (item["options"][0][2:], item["default"]) for item in filter(keep, parameters) if "default" in item ])
+    return dict([ (prefix + item["options"][0][2:], (item["default"], item.get("only"))) for item in filter(keep, parameters) if "default" in item ])
 
 class Parameters(object):
     """Provide a dict-like interface to the parameters added.
@@ -143,15 +130,21 @@ class Parameters(object):
         """
 
         self.__dict__ = self.__shared_state
+        
+        assert(not getattr(self, "parsed", False))
 
-        self.name = name # TODO Make this less anti-pattern…
+        if not hasattr(self, "defaults"):
+            self.defaults = {}
+
+        self.defaults.update(extract_defaults(parameters, prefix = name + "."))
+
+        for parameter in parameters:
+            parameter.setdefault("group", name)
 
         if hasattr(self, "parameters"):
             self.parameters += parameters 
         else:
             self.parameters = []
-
-        assert(not getattr(self, "parsed", False))
 
         self._add_argument_parameters(name, parameters)
 
@@ -159,12 +152,59 @@ class Parameters(object):
             self._configuration_files = {}
 
         if file_path not in self._configuration_files:
-            self._configuration_files[file_path] = self._create_configuration_parser(file_path, self.parameters)
-            self.parse(components = { "file" }, configuration_file = self._configuration_files[file_path])
+            self.parse(components = { "file" }, file_path = file_path)
 
         self.parse(components = { "environment" })
 
-    def _create_configuration_parser(self, file_path, parameters = (), *args, **kwargs):
+    def reinitialize(self, file_path = None):
+        """Load the configuration file(s) from disk.
+
+        If a file path is set in this object, we will use it to load a
+        configuration parser that we can retrieve keys with.  Otherwise, we
+        ignore the configuration file completely.
+
+        """
+
+        if file_path is not None:
+            self._configuration_files[file_path] = self._create_configuration_parser(file_path)
+        else:
+            for file_path in self._configuration_files.keys():
+                self.reinitialize(file_path)
+
+    def parse(self, components = { "cli", "file", "environment" }, only_known = False, file_path = None):
+        """Parse the specified components' arguments.
+
+        This makes the specified components' parameters available in the
+        dictionary.  The only compononent required to be parsed is "cli" but
+        calling this before any accesses is generally a good idea.
+
+        Arguments
+        ---------
+
+        :``components``: The components to include in this parse of the
+                         parameters.
+        :``only_known``: Specifies that the command line parser should only 
+                         parse the currenly known arguments and not all of the 
+                         possible arguments (stalling errors due to improper 
+                         usage until later).
+        :``file_path``:  The specific configuration file to re-read in this
+                         parse action.
+
+        """
+
+        if "cli" in components:
+            if only_known:
+                self.argument_parser.parse_known_args()
+            else:
+                self.parsed = True
+                self.argument_parser.parse_args()
+
+        if "file" in components:
+            self.reinitialize(file_path)
+
+        # Environment doesn't need to be pre-parsed.
+
+    def _create_configuration_parser(self, file_path):
         """Create a fully initialized configuration parser with the parameters.
 
         All of the function parameters besides ``parameters`` and ``file_path``
@@ -186,44 +226,10 @@ class Parameters(object):
 
         """
         
-        defaults = extract_defaults(self.parameters, keep = lambda _: _.get("only") in [ "configuration", None ])
-
-        self._configuration_files[file_path] = configparser.SafeConfigParser(defaults, *args, **kwargs)
+        self._configuration_files[file_path] = configparser.SafeConfigParser()
         self._configuration_files[file_path].read(file_path)
 
-    def reinitialize(self, file_path = None):
-        """Load the configuration file(s) from disk.
-
-        If a file path is set in this object, we will use it to load a
-        configuration parser that we can retrieve keys with.  Otherwise, we
-        ignore the configuration file completely.
-
-        """
-
-        if file_path is not None:
-            self._configuration_files[file_path] = self._create_configuration_parser(file_path, self.parameters)
-        else:
-            for file_path in self._configuration_files.keys():
-                self.reinitialize(file_path)
-
-    def parse(self, components = { "cli", "file", "environment" }, only_known = False, configuration_file = None):
-        if "cli" in components:
-            if only_known:
-                self.argument_parser.parse_known_args()
-            else:
-                self.parsed = True
-                self.argument_parser.parse_args()
-
-        if "file" in components:
-            self.reinitialize(configuration_file)
-
-        # TODO Make this a view on environ so we don't need to re-parse.
-        if "environment" in components:
-            prefix = "{0}_{1}_".format(sys.argv[0].upper(), self.name)
-            logger.debug("environment variable prefix: %s", prefix)
-            self.environ = dict([ (key.replace(prefix, ""), value) for key, value in os.environ.items() if key.startswith(prefix) ])
-
-    def _add_argument_parameters(self, name, parameters, *args, **kwargs):
+    def _add_argument_parameters(self, name, parameters):
         """Add arguments to the argument parser.
 
         .. note::
@@ -246,7 +252,7 @@ class Parameters(object):
         """
 
         if not hasattr(self, "argument_parser"):
-            self.argument_parser = argparse.ArgumentParser(*args, **kwargs)
+            self.argument_parser = argparse.ArgumentParser()
 
             version = \
                     "%(prog)s-{i.VERSION}\n" \
@@ -256,22 +262,29 @@ class Parameters(object):
                     "copying conditions.  There is NO warranty; not even for " \
                     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
 
-            parser.add_argument("--version", action = "version",
+            self.argument_parser.add_argument("--version", action = "version",
                     version = version.format(i = information))
 
         parameters = copy.deepcopy(parameters)
-        logger.debug("parameters: %s", parameters)
         parameters = [ { "args": parameter.pop("options"), "kwargs": parameter } for parameter in parameters if parameter.get("only") in [ "arguments", None ] ] # pylint: disable=C0301
 
-        parser = self.argument_parser
-
-        if name != "default":
-            if not hasattr(self, "group_parsers"):
-                self.group_parsers = {}
-
-            parser = self.group_parsers.get(name, self.argument_parser.add_argument_group(name))
-
         for options in parameters:
+            parser = self.argument_parser
+
+            if name != "default":
+                if not hasattr(self, "group_parsers"):
+                    self.group_parsers = {}
+
+                if len(options["args"]) > 1:
+                    logger.warn("Ignored short option, %s, for %s", options["args"][1], options["args"][0])
+
+                del options["args"][1:]
+                options["args"][0].replace("--", "--" + name + "-")
+
+                parser = self.group_parsers.get(name, self.argument_parser.add_argument_group(name))
+
+            del options["kwargs"]["group"]
+
             parser.add_argument(*options["args"], **options["kwargs"])
 
     def __len__(self):
@@ -281,30 +294,39 @@ class Parameters(object):
         if key not in self:
             raise KeyError(key)
 
-        logger.info("Searching for key: %s", key)
+        if not self.parsed:
+            logger.warn("Parameters not parsed…parsing now.")
+            self.parse()
 
-        defaults = extract_defaults(self.parameters)
+        logger.info("Searching for key: %s", key)
 
         value = None
 
         default = None 
-        if key in defaults:
-            default = defaults[key]
+        if key in self.defaults:
+            default = self.defaults[key]
         logger.debug("default: %s", default)
 
-        value = self.environ.get(key, default)
-
-        try:
-            if hasattr(self, "configuration") and self.configuration.has_section(self.name):
-                value = self.configuration.get(self.name, key)
-        except configparser.NoOptionError:
-            pass
+        value = os.environ.get("{0}_{1}_{2}".format(sys.argv[0].upper(), *[ _.upper() for _ in key.split(".", 1) ]), default)
 
         logger.debug("value: %s", value)
 
-        if hasattr(self.arguments, key):
-            if getattr(self.arguments, key) != default:
-                value = getattr(self.arguments, key)
+        for configuration_file in self._configuration_files:
+            try:
+                configuration_value = configuration_file.get(*key.split(".", 1))
+                if configuration_value != default:
+                    value = configuration_value
+                    break
+            except (configparser.NoOptionError, configparser.NoSectionError):
+                pass
+
+        logger.debug("value: %s", value)
+
+        argument_key = "-".join(key.split(".", 1))
+        if hasattr(self.argument_parser, argument_key):
+            argument_value = getattr(self.arguments, argument_key)
+            if argument_value != default:
+                value = argument_value
 
         logger.debug("value: %s", value)
 
@@ -337,7 +359,7 @@ class Parameters(object):
 
     def iterkeys(self):
         for item in self.parameters:
-            yield item["options"][0][2:]
+            yield item["group"] + item["options"][0][2:]
 
     def itervalues(self):
         for key in self.iterkeys():
@@ -348,4 +370,16 @@ class Parameters(object):
 
     def values(self):
         return list(self.itervalues())
+
+# General Parameters for all applications:
+
+Parameters("logging", parameters = [
+    { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.conf
+        "options": [ "--configuration" ],
+        "default": os.path.join(CONFIGURATION_DIRECTORY, "logging.conf"),
+        "help": \
+                "The configuration file containing the logging " \
+                "mechanism used by %(prog)s.  Default: %(default)s.",
+        },
+    ])
 
