@@ -142,6 +142,8 @@ class Parameters(object):
 
         self.defaults.update(extract_defaults(parameters, prefix = prefix))
 
+        logger.debug("self.defaults: %s", self.defaults)
+
         for parameter in parameters:
             parameter.setdefault("group", name)
 
@@ -149,6 +151,8 @@ class Parameters(object):
             self.parameters += parameters 
         else:
             self.parameters = []
+
+        logger.debug("self.parameters: %s", self.parameters)
 
         self._add_argument_parameters(name, parameters)
 
@@ -312,7 +316,7 @@ class Parameters(object):
         if key not in self:
             raise KeyError(key)
 
-        if not self.parsed:
+        if not getattr(self, "parsed", False):
             logger.warn("Parameters not parsed…parsing now.")
             self.parse()
 
@@ -378,6 +382,8 @@ class Parameters(object):
     def iterkeys(self):
         logger.debug("parameters: %s", self.parameters)
 
+        seen = []
+
         for item in self.parameters:
             logger.info("Inspecting Key %s", item)
 
@@ -392,7 +398,17 @@ class Parameters(object):
 
             logger.debug("value: %s", value)
 
+            seen += [value]
+
             yield value
+
+        for item in self.defaults:
+            if item in seen:
+                continue
+
+            logger.info("Inspecting Key %s", item)
+
+            yield item
 
     def itervalues(self):
         for key in self.iterkeys():
