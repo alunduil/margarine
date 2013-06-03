@@ -43,6 +43,8 @@ def extract_defaults(parameters, prefix = "", keep = lambda _: _):
 
     return dict([ (prefix + item["options"][0][2:], (item["default"], item.get("only"))) for item in filter(keep, parameters) if "default" in item ])
 
+# TODO Refactor for testability.
+
 class Parameters(object):
     """Provide a dict-like interface to the parameters added.
 
@@ -131,7 +133,11 @@ class Parameters(object):
 
         self.__dict__ = self.__shared_state
         
-        assert(not getattr(self, "parsed", False))
+        logger.debug("len(parameters): %s", len(parameters))
+        logger.debug("parsed? %s", getattr(self, "parsed", False))
+
+        if len(parameters):
+            assert(not getattr(self, "parsed", False))
 
         if not hasattr(self, "defaults"):
             self.defaults = {}
@@ -160,6 +166,8 @@ class Parameters(object):
             self._configuration_files = {}
 
         if file_path not in self._configuration_files:
+            logger.debug("file_path: %s", file_path)
+
             self.parse(components = { "file" }, file_path = file_path)
 
         self.parse(components = { "environment" })
@@ -204,6 +212,7 @@ class Parameters(object):
             if only_known:
                 self.argument_parser.parse_known_args()
             else:
+                logger.info("Marking Parameters as parsed.")
                 self.parsed = True
                 self.argument_parser.parse_args()
 
@@ -235,7 +244,11 @@ class Parameters(object):
         """
         
         self._configuration_files[file_path] = configparser.SafeConfigParser()
-        self._configuration_files[file_path].read(file_path)
+
+        logger.debug("file_path: %s", file_path)
+
+        if os.access(file_path, os.R_OK):
+            self._configuration_files[file_path].read(file_path)
 
     def _add_argument_parameters(self, name, parameters):
         """Add arguments to the argument parser.
@@ -326,10 +339,14 @@ class Parameters(object):
 
         default = None 
         if key in self.defaults:
-            default = self.defaults[key]
+            default = self.defaults[key][0] # TODO Consider only?
         logger.debug("default: %s", default)
 
-        value = os.environ.get("{0}_{1}_{2}".format(sys.argv[0].upper(), *[ _.upper() for _ in key.split(".", 1) ]), default)
+        split = key.split('.', 1)
+
+        fmt = "{0}_{1}_{2}" if len(split) > 1 else "{0}_{1}"
+
+        value = os.environ.get(fmt.format(sys.argv[0].upper(), *[ _.upper() for _ in split ]), default)
 
         logger.debug("value: %s", value)
 
