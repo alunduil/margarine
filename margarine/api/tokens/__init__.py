@@ -14,10 +14,10 @@ provide a consistent interface that accesses an external store for the tokens.
 from margarine.parameters import Parameters
 
 Parameters("authentication", parameters = [
-    { # --authentication-url=TOKEN_STORE_URL; TOKEN_STORE_URL ← "redis://localhost:6739"
+    { # --authentication-url=TOKEN_STORE_URL; TOKEN_STORE_URL ← "local"
         "options": [ "--url" ],
         "metavar": "TOKEN_STORE_URL",
-        "default": "redis://localhost:6739",
+        "default": "local",
         "help": "The token storage system to use; defaults: %(default)s.",
         },
     ])
@@ -90,13 +90,12 @@ class Tokens(object):
         return list(self.itervalues())
 
 def generate_token_store():
-    # TODO Get specified configuration file somehow.
-    parameters = Parameters("authentication", CONFIGURATION_FILE, PARAMETERS)
-
-    if parameters["debug"] or "token-store-url" not in parameters:
+    parameters = Parameters()
+    
+    if parameters["authentication.url"] == "local":
         return {}
     else:
-        return Tokens(token_store_url = parameters["token-store-url"])
+        return Tokens(token_store_url = parameters["authentication.url"])
 
 TOKENS = generate_token_store()
 

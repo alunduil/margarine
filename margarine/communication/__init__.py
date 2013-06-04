@@ -68,3 +68,5 @@ class Queue(object):
     def join(self):
         pass
 
+QUEUE = Queue(Parameters()["communication.url"])
+
