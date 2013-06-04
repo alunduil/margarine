@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: UTF-8 -*-
 #
 # Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
 #
@@ -6,10 +7,24 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import logging
+import logging.config
 import os
 import argparse
 
 from margarine.parameters import Parameters
+from margarine.parameters import CONFIGURATION_DIRECTORY
+
+logging.basicConfig(level = logging.DEBUG)
+
+Parameters("logging", parameters = [
+    { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.conf
+        "options": [ "--configuration" ],
+        "default": os.path.join(CONFIGURATION_DIRECTORY, "logging.conf"),
+        "help": \
+                "The configuration file containing the logging " \
+                "mechanism used by %(prog)s.  Default: %(default)s.",
+        },
+    ])
 
 PARAMETERS = Parameters()
 PARAMETERS.parse(only_known = True)

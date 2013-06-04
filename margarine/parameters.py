@@ -142,6 +142,9 @@ class Parameters(object):
         if not hasattr(self, "defaults"):
             self.defaults = {}
 
+        if not hasattr(self, "arguments"):
+            self.arguments = argparse.Namespace()
+
         prefix = ""
         if name != "default":
             prefix = name + "."
@@ -210,11 +213,14 @@ class Parameters(object):
 
         if "cli" in components:
             if only_known:
-                self.argument_parser.parse_known_args()
+                logger.info("Parsing Known Arguments")
+                self.argument_parser.parse_known_args(namespace = self.arguments)
+                logger.debug("self.arguments: %s", self.arguments)
             else:
                 logger.info("Marking Parameters as parsed.")
                 self.parsed = True
-                self.argument_parser.parse_args()
+                self.argument_parser.parse_args(namespace = self.arguments)
+                logger.debug("self.arguments: %s", self.arguments)
 
         if "file" in components:
             self.reinitialize(file_path)
@@ -330,8 +336,7 @@ class Parameters(object):
             raise KeyError(key)
 
         if not getattr(self, "parsed", False):
-            logger.warn("Parameters not parsed…parsing now.")
-            self.parse()
+            logger.warn("Parameters not parsed.")
 
         logger.info("Searching for key: %s", key)
 
@@ -342,6 +347,8 @@ class Parameters(object):
             default = self.defaults[key][0] # TODO Consider only?
         logger.debug("default: %s", default)
 
+        logger.info("Checking Environment")
+
         split = key.split('.', 1)
 
         fmt = "{0}_{1}_{2}" if len(split) > 1 else "{0}_{1}"
@@ -349,6 +356,8 @@ class Parameters(object):
         value = os.environ.get(fmt.format(sys.argv[0].upper(), *[ _.upper() for _ in split ]), default)
 
         logger.debug("value: %s", value)
+
+        logger.info("Checking Configuration File")
 
         for configuration_file in self._configuration_files:
             try:
@@ -361,9 +370,17 @@ class Parameters(object):
 
         logger.debug("value: %s", value)
 
-        argument_key = "-".join(key.split(".", 1))
-        if hasattr(self.argument_parser, argument_key):
+        logger.info("Checking CLI Arguments")
+
+        argument_key = "_".join(key.split(".", 1))
+
+        logger.debug("self.arguments.%s: %s", argument_key, getattr(self.arguments, argument_key, None))
+
+        if hasattr(self.arguments, argument_key):
             argument_value = getattr(self.arguments, argument_key)
+
+            logger.debug("argument_value: %s", argument_value)
+
             if argument_value != default:
                 value = argument_value
 
@@ -445,16 +462,6 @@ Parameters(parameters = [
         "default": CONFIGURATION_FILE,
         "help": \
                 "Configuration file to use to configure %(prog)s as a whole.",
-        },
-    ])
-
-Parameters("logging", parameters = [
-    { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.conf
-        "options": [ "--configuration" ],
-        "default": os.path.join(CONFIGURATION_DIRECTORY, "logging.conf"),
-        "help": \
-                "The configuration file containing the logging " \
-                "mechanism used by %(prog)s.  Default: %(default)s.",
         },
     ])
 
