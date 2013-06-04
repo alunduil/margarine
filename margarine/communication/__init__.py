@@ -6,9 +6,9 @@
 from margarine.parameters import Parameters
 
 Parameters("communication", parameters = [
-    { # --communication-url=URL; URL ← socket:///tmp/APP_NAME
+    { # --communication-url=URL; URL ← local
         "options": [ "--url" ],
-        "default": "socket:///tmp/{0}".format(sys.argv[0].rsplit('/', 1)[-1]),
+        "default": "local",
         "help": \
                 "The URL endpoint of the intra-service communication " \
                 "mechanism.  This can be a socket (the default) or an AMQP " \
@@ -68,5 +68,13 @@ class Queue(object):
     def join(self):
         pass
 
-QUEUE = Queue(Parameters()["communication.url"])
+def generate_queue():
+    parameters = Parameters()
+
+    if parameters["communication.url"] == "local":
+        pass # TODO Add a default local queue.
+    else:
+        return Queue(queue_url = parameters["communication.url"])
+
+QUEUE = generate_queue()
 
