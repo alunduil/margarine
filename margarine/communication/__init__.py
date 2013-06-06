@@ -16,6 +16,8 @@ Parameters("communication", parameters = [
         },
     ])
 
+# TODO Use factory or skip it?
+
 class Queue(object):
     def __init__(self, queue_url = None):
         """Create a connection with the specified queue.
