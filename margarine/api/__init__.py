@@ -3,41 +3,97 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-"""Main API application for Margarine.
+"""API for Margarine.
 
-Models:
+This API provides three resources with various actions (outlined more
+completely in the appropriate module).  The resources are articles, users, and
+tags.  The structure of these data types is shown below and have been optimized
+in this form for a document store such as MongoDB.
 
-  * User
-  
-    * uuid4
-    * username
-    * email
-    * name
-    * password → md5(username:realm:password)
-    
-  * Bookmark (never deleted) (just spider?)
+Data Aggregates
+===============
 
-    * uuid5(url)
-    * url
-    * text → sync to object store
-    * tags
-    * notations
+User
+----
 
-      * location
-      * note
+Fields
+''''''
 
-    * votes
-    * subscribers
-     
-      * uuid4
-      * subscribed_at
+:_id:      Default MongoDB ID
+:username: User's handle
+:email:    User's email address
+:name:     User's full name
+:hash:     User's hash for HTTP Digest ← md5(username:realm:password)
 
-    * created_at
-    * original_etag
-    * parsed_at
+Actions
+'''''''
 
-Simply normalize the above to get back to aggregate agnostic representations.
-  
+* Sign-Up (Create a User)
+* Change Username (thus, username is not _id)
+* Delete Account
+* View Meta-information
+* Login (Retrieve a token)
+
+Article
+-------
+
+Fields
+''''''
+
+:_id:              UUID5 of the URL
+:original:         Sub-document with original meta-information:
+
+  :url:            Original article's URL
+  :etag:           Original article's ETAG
+
+:tags:             List of tags for this article
+:notations:        List of notations (sub-documents):
+
+  :location:       Where the notation is attached
+  :note:           Text of the notation
+
+:subscriber_count: Count of subscribers (article:user map is stored elsewhere)
+:created_at:       Time of creation
+:parsed_at:        Last time of parsing
+
+:text:             Sanitized text of the article (stored in an object store)
+
+.. note::
+    The ``text`` field of an article is not stored in the same datastore
+    (assuming a document store) but is stored in an object store such as riak,
+    rackspace's cloud files, &c.  This choice is due to the 16MB document limit
+    present in MongoDB and allows us to potentially serve this in alternative
+    method and not worry about GridFS.
+
+Actions
+'''''''
+
+* Submit URL (Create an Article)
+* Subscribe (favorite, star, &c) to an article
+* Tag an article
+* View an article
+
+Subscription
+------------
+
+A structure created to simplify storage of subscription information.  This
+places subscriptions into an atomic unit of work without fear of hitting
+MongoDB's 16MB document size limit.
+
+This structure doesn't have any of its own actions as a result and simply helps
+the other structures' actions.
+
+Fields
+''''''
+
+:article_id: ID of the article for this subscription
+:user_id:    ID of the user for this subscription
+:created_at: Time of creation
+
+.. note::
+    The ``_id`` field is ignored and both ``article_id`` and ``user_id`` are
+    indexed for sorting searches.
+
 """
 
 import logging
@@ -79,9 +135,26 @@ Parameters("flask", parameters = [
 
 APPLICATION = Flask(__name__)
 
-APPLICATION.register_blueprint(USER, prefix = "{i.API_VERSION}/users".format(i = information))
-APPLICATION.register_blueprint(ARTICLE, prefix = "{i.API_VERSION}/articles".format(i = information))
-APPLICATION.register_blueprint(TAG, prefix = "{i.API_VERSION}/tags".format(i = information))
+def _prefix(name):
+    """Return the prefix for the API endpoint name given.
+
+    Parameters
+    ----------
+
+    :name: The name of the API prefix.
+
+    Returns
+    -------
+
+    The true prefix for the API section given the prefix name.
+
+    """
+
+    return "{i.API_VERISON}/{name}".format(i = information, name = name)
+
+APPLICATION.register_blueprint(USER, prefix = _prefix("users"))
+APPLICATION.register_blueprint(ARTICLE, prefix = _prefix("articles"))
+APPLICATION.register_blueprint(TAG, prefix = _prefix("tags"))
 
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
@@ -90,6 +163,11 @@ def _extract_flask_parameters(parameters):
     Parameters object to parameters to flask.  This does not need to be used
     otherwise and is used internally to start the flask service as part of this
     module.
+
+    Parameters
+    ----------
+
+    :parameters: The Parameters object to extract flask parameters from.
 
     """
 
@@ -108,7 +186,7 @@ def _extract_flask_parameters(parameters):
 
 if __name__ == "__main__":
     parameters = Parameters()
-    parameters.parse()
+    parameters.parse() # TODO Have parse return self?
 
     APPLICATION.run(**extract_flask_parameters(parameters))
 
