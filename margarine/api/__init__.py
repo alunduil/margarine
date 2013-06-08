@@ -51,8 +51,10 @@ import margarine.logging
 
 from margarine.parameters import Parameters
 
-from margarine.api.user import UserBluePrint
-from margarine.api.article import ArticleBluePrint
+from margarine.api import information
+from margarine.api.user import USER
+from margarine.api.article import ARTICLE
+from margarine.api.tag import TAG
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +78,10 @@ Parameters("flask", parameters = [
     ])
 
 APPLICATION = Flask(__name__)
+
+APPLICATION.register_blueprint(USER, prefix = "{i.API_VERSION}/users".format(i = information))
+APPLICATION.register_blueprint(ARTICLE, prefix = "{i.API_VERSION}/articles".format(i = information))
+APPLICATION.register_blueprint(TAG, prefix = "{i.API_VERSION}/tags".format(i = information))
 
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
