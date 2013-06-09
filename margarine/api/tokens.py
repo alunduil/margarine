@@ -3,17 +3,9 @@
 # pycore is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-"""Create the token storage for keeping track of who has a valid token.
-
-Unless we need to worry about being distributed we can get away with a simple
-dict as the token store.  Of course, if we do need to be distributed, we should
-provide a consistent interface that accesses an external store for the tokens.
-
-"""
-
 from margarine.parameters import Parameters
 
-Parameters("authentication", parameters = [
+Parameters("tokens", parameters = [
     { # --authentication-url=TOKEN_STORE_URL; TOKEN_STORE_URL ← "local"
         "options": [ "--url" ],
         "metavar": "TOKEN_STORE_URL",
@@ -88,14 +80,4 @@ class Tokens(object):
 
     def values(self):
         return list(self.itervalues())
-
-def generate_token_store():
-    parameters = Parameters()
-    
-    if parameters["authentication.url"] == "local":
-        return {}
-    else:
-        return Tokens(token_store_url = parameters["authentication.url"])
-
-TOKENS = generate_token_store()
 
