@@ -6,10 +6,10 @@
 from margarine.parameters import Parameters
 
 Parameters("tokens", parameters = [
-    { # --authentication-url=TOKEN_STORE_URL; TOKEN_STORE_URL ← "local"
+    { # --tokens-url=TOKENS_URL; TOKENS_URL ← "local"
         "options": [ "--url" ],
-        "metavar": "TOKEN_STORE_URL",
-        "default": "local",
+        "metavar": "TOKENS_URL",
+        "default": "redis://localhost",
         "help": "The token storage system to use; defaults: %(default)s.",
         },
     ])
