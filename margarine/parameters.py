@@ -465,3 +465,6 @@ Parameters(parameters = [
         },
     ])
 
+# Add our configuration file to the parameters.
+Parameters(file_path = Parameters().parse(only_known = True)["configuration"])
+
