@@ -32,6 +32,19 @@ from flask import MethodView
 
 from margarine.aggregates.user import User
 from margarine.api import information
+from margarine.parameters import Parameters
+
+Parameters("api", parameters = [
+    { # --api-uuid=UUID; UUID ← uuid.uuid4()
+        "options": [ "--uuid" ],
+        "default": uuid.uuid4(),
+        "help": \
+                "The UUID used for the HTTP Digest Authentication " \
+                "Mechanism.  This should be set to a static string that is " \
+                "the same on every deployment but will default to a " \
+                "randomly generated UUID4.",
+        },
+    ])
 
 def http_401_handler(error):
     """Sends an appropriate 401 Unauthorized page for HTTP Digest.

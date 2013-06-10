@@ -22,4 +22,3 @@ LICENSE = "MIT"
 
 COPY_YEAR = "2013"
 
-HOST_UUID = uuid.uuid5(uuid.NAMESPACE_DNS, socket.gethostname())
