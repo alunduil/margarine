@@ -111,7 +111,10 @@ from margarine.parameters import configure_logging
 configure_logging()
 
 from margarine.api import information
+
 from margarine.api.user import USER
+from margarine.api.user import http_401_handler
+
 from margarine.api.article import ARTICLE
 from margarine.api.tag import TAG
 
@@ -153,11 +156,13 @@ def _prefix(name):
 
     """
 
-    return "{i.API_VERSION}/{name}".format(i = information, name = name)
+    return "/{i.API_VERSION}/{name}".format(i = information, name = name)
 
 MARGARINE_API.register_blueprint(USER, prefix = _prefix("users"))
 MARGARINE_API.register_blueprint(ARTICLE, prefix = _prefix("articles"))
 MARGARINE_API.register_blueprint(TAG, prefix = _prefix("tags"))
+
+MARGARINE_API.error_handler_spec[None][401] = http_401_handler
 
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
