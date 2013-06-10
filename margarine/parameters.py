@@ -209,6 +209,11 @@ class Parameters(object):
         :``file_path``:  The specific configuration file to re-read in this
                          parse action.
 
+        Returns
+        -------
+
+        Returns self for method chaining.
+
         """
 
         if "cli" in components:
@@ -226,6 +231,8 @@ class Parameters(object):
             self.reinitialize(file_path)
 
         # Environment doesn't need to be pre-parsed.
+
+        return self
 
     def _create_configuration_parser(self, file_path):
         """Create a fully initialized configuration parser with the parameters.

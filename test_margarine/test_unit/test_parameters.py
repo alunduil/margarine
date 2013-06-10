@@ -79,7 +79,7 @@ class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
     def setUp(self):
         self.parameters = Parameters()
 
-    def tearDown():
+    def tearDown(self):
         Parameters().__dict__ = {}
 
     def test_dict_expansion(self):
