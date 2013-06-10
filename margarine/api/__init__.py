@@ -136,7 +136,7 @@ Parameters("flask", parameters = [
         },
     ])
 
-APPLICATION = Flask(__name__)
+MARGARINE_API = Flask(__name__)
 
 def _prefix(name):
     """Return the prefix for the API endpoint name given.
@@ -155,9 +155,9 @@ def _prefix(name):
 
     return "{i.API_VERSION}/{name}".format(i = information, name = name)
 
-APPLICATION.register_blueprint(USER, prefix = _prefix("users"))
-APPLICATION.register_blueprint(ARTICLE, prefix = _prefix("articles"))
-APPLICATION.register_blueprint(TAG, prefix = _prefix("tags"))
+MARGARINE_API.register_blueprint(USER, prefix = _prefix("users"))
+MARGARINE_API.register_blueprint(ARTICLE, prefix = _prefix("articles"))
+MARGARINE_API.register_blueprint(TAG, prefix = _prefix("tags"))
 
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
@@ -187,9 +187,9 @@ def _extract_flask_parameters(parameters):
 
     return flask_parameters
 
-if __name__ == "__main__":
+def main():
     parameters = Parameters()
     parameters.parse() # TODO Have parse return self?
 
-    APPLICATION.run(**extract_flask_parameters(parameters))
+    MARGARINE_API.run(**_extract_flask_parameters(parameters))
 
