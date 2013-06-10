@@ -366,8 +366,16 @@ class Parameters(object):
 
         logger.info("Checking Configuration File")
 
-        for configuration_file in self._configuration_files:
+        logger.debug("self._configuration_files: %s", self._configuration_files)
+
+        for configuration_file in self._configuration_files.values():
+            if configuration_file is None:
+                continue
+
             try:
+                logger.debug("type(configuration_file): %s", type(configuration_file))
+                logger.debug("configuration_file: %s", configuration_file)
+
                 configuration_value = configuration_file.get(*key.split(".", 1))
                 if configuration_value != default:
                     value = configuration_value
