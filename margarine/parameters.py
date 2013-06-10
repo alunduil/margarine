@@ -10,6 +10,7 @@ import sys
 import argparse
 import copy
 import logging
+import logging.config
 
 try:
     import ConfigParser as configparser
@@ -500,7 +501,8 @@ def configure_logging():
 
     """
 
-    Parameters().parse(only_known = True)
+    logging_configuration_path = Parameters().parse(only_known = True)["logging.configuration"]
 
-    logging.config.fileConfig(Parameters()["logging.configuration"])
+    if os.access(logging_configuration_path, os.R_OK):
+        logging.config.fileConfig(Parameters()["logging.configuration"])
 
