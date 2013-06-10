@@ -7,6 +7,7 @@
 
 import unittest2
 import tempfile
+import sys
 
 from margarine.parameters import Parameters
 
@@ -95,7 +96,7 @@ class ParametersResolutionTest(unittest2.TestCase):
 
         # TODO Mock the environment.
 
-        self.temp = tempfile.NamedTemporaryFile()
+        self.temp = tempfile.NamedTemporaryFile(mode = "w")
 
         self.temp.write("[{0}]\n".format(self.name))
         self.temp.write("configuration = configuration\n")
