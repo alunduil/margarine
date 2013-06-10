@@ -2,189 +2,234 @@
 #
 # Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
 #
-# pycore is freely distributable under the terms of an MIT-style license.
+# margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 """URL endpoints and functions related to user management in margarine.
 
-A user in margarine has the following properties:
+A User in margarine has the following fields:
 
-    * username (from URL)
-    * email
-    * name (optional)
-    * password → md5(username:realm:password)
-    * bookmarks
-    * tags
+:_id:      Default MongoDB ID
+:username: User's handle
+:email:    User's email address
+:name:     User's full name
+:hash:     User's hash for HTTP Digest ← md5(username:realm:password)
 
-Authenticated requests include an ``X-Auth-Token`` header with a token returned
-from ``/v1/users/<username>/token``.
-    
+Any request decorated with login_required requires the ``X-Auth-Token`` header
+with the value set to a valid token.  This token can be acquired by doing a GET
+on /<username>/token.
+
+.. note::
+    This blueprint has all methods documented with an assumed prefix.  Thus,
+    the path '/' is in fact something like (defined elsewhere) '/v1/users/'.
+
 """
 
 from flask import request
 from flask import abort
+from flask import Blueprint
+from flask import MethodView
 
 from margarine.aggregates.user import User
 from margarine.api import information
-from margarine.api.application import APPLICATION
 
-@APPLICATION.route('/{i.API_VERSION}/users/<username>'.format(i = information), methods = [ 'GET', 'PUT', 'DELETE' ])
-def manipulate_user(username):
-    """Manipulate users directly.
-
-    The various user manipulation operations one would expect are exposed
-    through this URL endpoint.
-
-    Creating a User
-    ---------------
-
-    To create a new user in the system, perform a PUT on the particular user's
-    URL that you want created with any parameters (required and optional)
-    specified in the form data.
-
-    User Creation Request (New User)
-    ''''''''''''''''''''''''''''''''
-
-    ::
-
-        PUT /v1/users/alunduil
-        Content-Type: application/x-www-form-urlencoded
-
-        email=alunduil%40alunduil.com
-
-    User Creation Request (Existing User)
-    '''''''''''''''''''''''''''''''''''''
-
-    ::
-
-        PUT /v1/users/alunduil
-        Content-Type: application/x-www-form-urlencoded
-        X-Auth-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
-
-        email=alunduil%40alunduil.com
-
-    User Creation Response
-    ''''''''''''''''''''''
-
-    ::
-
-        HTTP/1.0 202 Accepted
-
-    Once the request for a new user has been accepted (and not rejected), the
-    following process occurs:
-
-    #. The user information is verified for correctness
-    #. The user information is passed to the message queue
-    #. A backend processor pops the user off of the message queue
-    #. The backend processor creates the user entry in the database
-    #. The backend processor sends an e-mail to the user for verification
+def http_401_handler(error):
+    """Sends an appropriate 401 Unauthorized page for HTTP Digest.
     
-    The verification e-mail tells the user to visit a link (shown in the
-    verification section below) with a particular verification code (secured by
-    captcha of some sort).
-
-    Possible Errors
-    '''''''''''''''
-
-    :400: Bad Request—A required option was not passed or is improperly
-          formatted.
-    :401: Unauthorized—An attempt to create an existing user was detected.
-
-    The following are also used when updating a user:
-
-    :409: Conflict—The new username requested is already in use.
-
-    Retrieving a User
-    -----------------
-
-    .. note::
-        This is an authenticated action that requires an access token from the
-        user's token property.
-
-    User Retrieval Request
-    ''''''''''''''''''''''
-
-    ::
-
-        GET /v1/users/alunduil
-        X-Auth-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
-
-    User Retrieval Response
-    '''''''''''''''''''''''
-
-    ::
-
-        HTTP/1.0 200 OK
-
-        {
-          "username": "alunduil",
-          "name": "Alex Brandt",
-          "email": "alunduil@alunduil.com"
-        }
-
-    Possible Errors
-    '''''''''''''''
-
-    :401: Unauthorized—Requested a profile that isn't associated with the
-          passed token.
-
-    Deleting a User
-    ---------------
-
-    .. note::
-        This is an authenticated action that requires an access token from the
-        user's token property.
-
-    User Deletion Request
-    '''''''''''''''''''''
-
-    ::
-
-        DELETE /v1/users/alunduil
-        X-Auth-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
-
-    User Deletion Response
-    ''''''''''''''''''''''
-
-    ::
-
-        HTTP/1.0 200 OK
-
-    Possible Errors
-    '''''''''''''''
-
-    :401: Unauthorized—Requested a user be deleted that isn't associated with
-          the passed token.
+    Working handler for the user login method defined below.  This handler
+    does not need to be used but some assumptions about what the handler does
+    are made and this handler fits those assumptions.
 
     """
 
-    user = User.find_one(username = username)
+    response = make_response("", 401)
 
-    if request.method == 'PUT':
+    response.headers["Location"] = url_for('user.login')
+
+    response.headers["WWW-Authenticate"] = \
+            "Digest realm=\"{realm}\"," \
+            "qop=\"auth\"," \
+            "nonce=\"{nonce}\"," \
+            "opaque=\"{host_identifier}\""
+    repoonse.headers["WWW-Authenticate"].format(
+            realm = information.AUTHENTICATION_REALM,
+            nonce = uuid.uuid4().hex,
+            opaque = HOST_UUID.hex,
+            )
+
+    return response
+
+USER = Blueprint("user", __name__)
+
+class UserInterface(MethodView):
+    """User manipulation interface.
+
+    :create: PUT a non-existent username
+    :read;   GET an existing username
+    :update: PUT an existing username
+    :delete: DELETE an existing username
+
+    """
+
+    def put(self, username):
+        """Create an User or modify an existing User.
+
+        Create an User
+        =============
+
+        To create a new user in the system, perform a PUT on the particular
+        user's URL that want created with any parameters (required and
+        optional) specified in the form data.
+
+        Request
+        -------
+
+        ::
+        
+            PUT /alunduil
+            Content-Type: application/x-www-form-urlencoded
+
+            email=alunduil%40alunduil.com
+
+        Response
+        --------
+
+        ::
+
+            HTTP/1.0 202 Accepted
+
+        Modify an User
+        ==============
+
+        This method can also be used to modify an existing user—not just for
+        creating new users.
+
+        Request
+        -------
+
+        ::
+
+            PUT /alunduil
+            Content-Type: application/x-www-form-urlencoded
+            X-Auth-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
+
+            email=alunduil%40alunduil.com
+
+        Response
+        --------
+
+        ::
+
+            HTTP/1.0 200 OK
+
+        Possible Errors
+        ===============
+
+        :400: Bad Request—A required option was not passed or is improperly
+              formatted
+        :401: Unauthorized—An attempt to create an existing user was detected
+
+        The following are also used when updating a user:
+
+        :409: Conflict—The new username requested is already in use.
+
+        """
+
+        if TOKENS.get(request.headers["X-Auth-Token"]) != username:
+            abort(401)
+
+        user = User.find_one(username = username)
+
         if user is None:
             user = User(username = username, email = request.form["email"])
-        else:
-            if TOKENS.get(request.headers["X-Auth-Token"]) != username:
-                abort(401)
 
         user.name = request.form.get("name", user.name)
 
         # TODO Put the password in the verification e-mail?
+
         if "password" in request.form:
-            user.authentication_hash = hashlib.md5("{0}:{1}:{2}".format(username, information.AUTHENTICATION_REALM, request.form["password"])).hexdigest()
+            user.hash = hashlib.md5("{0}:{1}:{2}".format(username, information.AUTHENTICATION_REALM, request.form["password"])).hexdigest()
 
         # TODO Drop user.uuid in MQ as a new user function:
         #   * Send verification e-mail.
         
         return "", 202
+    
+    def get(self, username):
+        """Retrieve an User's information.
 
-    elif request.method == 'GET':
+        Request
+        -------
+
+        ::
+
+            GET /alunduil
+
+        Response
+        --------
+
+        ::
+
+            HTTP/1.0 200 OK
+
+            {
+              "username": "alunduil",
+              "name": "Alex Brandt",
+              "email": "alunduil@alunduil.com"
+            }
+
+        Possible Errors
+        ---------------
+
+        :401: Unauthorized—Requested a profile that isn't associated with the
+              passed token.
+
+        """
+
+        user = User.find_one(username = username)
+
+        # TODO Should this be an authenticated action?
+
         if user is None:
             abort(404)
 
-        return json.dumps(user)
+        return json.dumps(unicode(user))
 
-    elif request.method == 'DELETE':
+    def delete(self, username):
+        """Delete an User.
+
+        .. note::
+            This is an authenticated action that requires an access token from
+            the user's token property.
+
+        Request
+        -------
+
+        ::
+
+            DELETE /alunduil
+            X-Auth-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
+
+        Response
+        --------
+
+        ::
+
+            HTTP/1.0 200 OK
+
+        Possible Errors
+        ---------------
+
+        :401: Unauthorized—Requested a user be deleted that isn't associated
+              with the passed token.
+
+        """
+
+        if TOKENS.get(request.headers["X-Auth-Token"]) != username:
+            abort(401)
+
+        user = User.find_one(username = username)
+
         if user is not None:
             user.delete()
 
@@ -193,39 +238,47 @@ def manipulate_user(username):
 
         return ""
 
-@APPLICATION.route('/{i.API_VERSION}/users/<username>/token'.format(i = information))
-def get_user_token(username):
+USER.add_url_rule('/<username>', view_func = UserInterface.as_view("users_api"))
+
+@USER.route('/<username>/token')
+def login(username):
     """Get an authorized token for subsequent API calls.
 
     This is the login method and must be called to get the token required for
     all calls making a note that they require the X-Auth-Token header.
 
     This call does require a password to be provided (digest authentication is
-    used to improve security).
+    used to improve security).  This also means that one cannot simply pass in
+    their username and password and get the resulting token.  This token
+    request requires two invocations:
 
-    An authentication challenge has the following form:
+    1. Returns the HTTP Digest parameters
+    2. Returns the X-Auth-Token value
+
+    Challenge-Response
+    ------------------
+
+    A challenge is sent every time the API returns a 401 Unauthoried.  This
+    is the first step in getting a token.
+
+    Response (Challenge)
+    ''''''''''''''''''''
 
     ::
 
         401 Unauthorized
-        Location: /v1/users/${USERNAME}/token
+        Location: /alunduil/token
         WWW-Authenticate: Digest realm="margarine.api",
           qop="auth",
           nonce="0cc175b9c0f1b6a831c399e269772661",
           opaque="92eb5ffee6ae2fec3ad71c777531578f"
 
-    This challenge is provided every time the API returns a 401 Unauthorized.
-    It is not only presented when requesting this particular URL.
-
-    Request
-    -------
-
-    After the above challenge the client should make a request like the
-    following to authenticate and receive their token:
+    Request (Client Authentication Response)
+    ''''''''''''''''''''''''''''''''''''''''
 
     ::
       
-        GET /v1/users/alunduil/token HTTP/1.1
+        GET /alunduil/token HTTP/1.1
         Host: www.example.com
         Authorization: Digest username="alunduil",
           realm="margarine.api",
@@ -237,24 +290,14 @@ def get_user_token(username):
           response="2370039ff8a9fb83b4293210b5fb53e3",
           opaque="92eb5ffee6ae2fec3ad71c777531578f"
 
-    Response
-    --------
-
-    Once the authentication has been validated in this three step process, the
-    application continues and provides the token that was requested.  The token
-    is again encrypted (TODO How?) during transit using the exchange that just
-    occurred.
+    Response (Token)
+    ''''''''''''''''
 
     ::
 
         HTTP/1.1 200 OK
 
         0b4fb639-edd1-44fe-b757-589a099097a5
-
-    .. note::
-        The aforementioned encryption of the token is not currently in effect
-        and will be added to this documentation example and implementation
-        when it is functional.
 
     """
     
@@ -266,13 +309,15 @@ def get_user_token(username):
     if user is None:
         abort(404)
 
-    ha1 = user.authentication_hash
+    h1 = user.hash
 
-    ha2 = hashlib.md5("{request.method}:{request.script_path}{request.path}".format(request = request)).hexdigest()
+    _ = "{request.method}:{request.script_path}{request.path}"
+    h2 = hashlib.md5(_.format(request = request)).hexdigest()
 
-    ha3 = hashlib.md5("{ha1}:{a.nonce}:{a.nc}:{a.cnonce}:{a.qop}:{ha2}".format(ha1 = ha1, a = request.authorization, ha2 = ha2)).hexdigest()
+    _ = "{h1}:{a.nonce}:{a.nc}:{a.cnonce}:{a.qop}:{h2}"
+    h3 = hashlib.md5(_.format(h1 = h1, a = request.authorization, h2 = h2)).hexdigest()
 
-    if request.authorization.response != ha3:
+    if request.authorization.response != h3:
         abort(401)
 
     token = uuid.uuid4()
