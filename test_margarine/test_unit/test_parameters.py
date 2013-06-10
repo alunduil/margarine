@@ -96,7 +96,7 @@ class ParametersResolutionTest(unittest2.TestCase):
     def setUp(self):
         Parameters._Parameters__shared_state = {}
 
-        self.name = "test_section"
+        self.name = "test-section"
 
         # TODO Mock the environment.
 
@@ -111,7 +111,7 @@ class ParametersResolutionTest(unittest2.TestCase):
         self.addCleanup(self.temp.close)
 
         self.orig_argv = sys.argv
-        sys.argv = [ "test_script", "--argument=argument" ]
+        sys.argv = [ "test_script", "--test-section-argument=argument" ]
 
         self.parameters = Parameters(self.name, self.temp.name, TEST_PARAMETERS)
         self.parameters.parse()
