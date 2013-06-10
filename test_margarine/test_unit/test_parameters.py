@@ -8,8 +8,11 @@
 import unittest2
 import tempfile
 import sys
+import logging
 
 from margarine.parameters import Parameters
+
+logger = logging.getLogger(__name__)
 
 TEST_PARAMETERS = [
         { # --default=DEFAULT, -d=DEFAULT; DEFAULT ← "default"
@@ -46,8 +49,8 @@ TEST_PARAMETERS = [
         ]
             
 class ParametersConstructionTest(unittest2.TestCase):
-    def tearDown(self):
-        Parameters().__dict__ = {}
+    def setUp(self):
+        Parameters._Parameters__shared_state = {}
 
     def test_zero_parameters_construction(self):
         parameters = Parameters()
@@ -79,10 +82,9 @@ class ParametersConstructionTest(unittest2.TestCase):
 
 class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
     def setUp(self):
-        self.parameters = Parameters()
+        Parameters._Parameters__shared_state = {}
 
-    def tearDown(self):
-        Parameters().__dict__ = {}
+        self.parameters = Parameters()
 
     def test_dict_expansion(self):
         def parameters_to_dict(**kwargs):
@@ -92,6 +94,8 @@ class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
 
 class ParametersResolutionTest(unittest2.TestCase):
     def setUp(self):
+        Parameters._Parameters__shared_state = {}
+
         self.name = "test_section"
 
         # TODO Mock the environment.
@@ -114,8 +118,6 @@ class ParametersResolutionTest(unittest2.TestCase):
 
     def tearDown(self):
         sys.argv = self.orig_argv
-
-        self.parameters.__dict__ = {}
 
     def test_default(self):
         self.assertEqual(self.parameters["{0}.default".format(self.name)], "default")
