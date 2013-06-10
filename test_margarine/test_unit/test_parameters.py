@@ -65,7 +65,7 @@ class ParametersConstructionTest(unittest2.TestCase):
     def test_passed_parameters_construction(self):
         parameters = Parameters(parameters = TEST_PARAMETERS)
 
-        self.assertIsInstance(parameters, Paraemters)
+        self.assertIsInstance(parameters, Parameters)
 
     def test_passed_file_construction(self):
         fh = tempfile.NamedTemporaryFile()
