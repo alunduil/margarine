@@ -104,6 +104,7 @@ if __name__ == "__main__":
     logging.basicConfig(level = logging.DEBUG)
 
 from flask import Flask
+from flask import url_for
 
 from margarine.parameters import Parameters
 from margarine.parameters import configure_logging
@@ -158,9 +159,9 @@ def _prefix(name):
 
     return "/{i.API_VERSION}/{name}".format(i = information, name = name)
 
-MARGARINE_API.register_blueprint(USER, prefix = _prefix("users"))
-MARGARINE_API.register_blueprint(ARTICLE, prefix = _prefix("articles"))
-MARGARINE_API.register_blueprint(TAG, prefix = _prefix("tags"))
+MARGARINE_API.register_blueprint(USER, url_prefix = _prefix("users"))
+MARGARINE_API.register_blueprint(ARTICLE, url_prefix = _prefix("articles"))
+MARGARINE_API.register_blueprint(TAG, url_prefix = _prefix("tags"))
 
 MARGARINE_API.error_handler_spec[None][401] = http_401_handler
 
