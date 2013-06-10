@@ -25,10 +25,12 @@ on /<username>/token.
 
 """
 
+import uuid
+
 from flask import request
 from flask import abort
 from flask import Blueprint
-from flask import MethodView
+from flask.views import MethodView
 
 from margarine.aggregates.user import User
 from margarine.api import information
