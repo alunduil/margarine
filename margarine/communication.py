@@ -16,8 +16,6 @@ Parameters("communication", parameters = [
         },
     ])
 
-# TODO Use factory or skip it?
-
 class Queue(object):
     def __init__(self, queue_url = None):
         """Create a connection with the specified queue.
@@ -69,14 +67,4 @@ class Queue(object):
 
     def join(self):
         pass
-
-def generate_queue():
-    parameters = Parameters()
-
-    if parameters["communication.url"] == "local":
-        pass # TODO Add a default local queue.
-    else:
-        return Queue(queue_url = parameters["communication.url"])
-
-QUEUE = generate_queue()
 
