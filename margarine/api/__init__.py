@@ -153,7 +153,7 @@ def _prefix(name):
 
     """
 
-    return "{i.API_VERISON}/{name}".format(i = information, name = name)
+    return "{i.API_VERSION}/{name}".format(i = information, name = name)
 
 APPLICATION.register_blueprint(USER, prefix = _prefix("users"))
 APPLICATION.register_blueprint(ARTICLE, prefix = _prefix("articles"))
