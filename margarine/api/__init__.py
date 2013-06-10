@@ -103,9 +103,10 @@ if __name__ == "__main__":
 
 from flask import Flask
 
-import margarine.logging
-
 from margarine.parameters import Parameters
+from margarine.parameters import configure_logging
+
+configure_logging()
 
 from margarine.api import information
 from margarine.api.user import USER

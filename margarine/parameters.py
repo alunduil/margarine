@@ -483,3 +483,24 @@ Parameters(parameters = [
 # Add our configuration file to the parameters.
 Parameters(file_path = Parameters().parse(only_known = True)["configuration"])
 
+Parameters("logging", parameters = [
+    { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.conf
+        "options": [ "--configuration" ],
+        "default": os.path.join(CONFIGURATION_DIRECTORY, "logging.conf"),
+        "help": \
+                "The configuration file containing the logging " \
+                "mechanism used by %(prog)s.  Default: %(default)s.",
+        },
+    ])
+
+def configure_logging():
+    """Configure the system loggers using the Parameters' file provided.
+
+    Uses Parameters[logging.configuration] to setup all logging mechanisms.
+
+    """
+
+    Parameters().parse(only_known = True)
+
+    logging.config.fileConfig(Parameters()["logging.configuration"])
+
