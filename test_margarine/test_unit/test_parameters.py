@@ -6,6 +6,7 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import unittest2
+import tempfile
 
 from margarine.parameters import Parameters
 
