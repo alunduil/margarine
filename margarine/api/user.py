@@ -26,6 +26,8 @@ on /<username>/token.
 """
 
 import uuid
+import pika
+import json
 
 from flask import request
 from flask import abort
@@ -35,6 +37,7 @@ from flask.views import MethodView
 from margarine.aggregates.user import User
 from margarine.api import information
 from margarine.parameters import Parameters
+from margarine.communication import get_channel
 
 Parameters("api", parameters = [
     { # --api-uuid=UUID; UUID ← uuid.uuid4()
@@ -152,22 +155,34 @@ class UserInterface(MethodView):
 
         user = User.find_one(username = username)
 
-        if user is None:
-            user = User(username = username, email = request.form["email"])
-        else:
+        channel = get_channel()
+
+        message_properties = pika.BasicProperties()
+        message_properties.content_type = "application/json"
+        message_properties.durable = False
+
+        message = {}
+
+        message["username"] = request.form.get("username")
+        message["email"] = request.form.get("email")
+        message["name"] = request.form.get("name")
+        message["password"] = request.form.get("password")
+
+        message = json.dumps(message)
+
+        routing_key = "users.create"
+
+        if user is not None:
+            routing_key = "users.update"
+
             if TOKENS.get(request.headers["X-Auth-Token"]) != username:
                 abort(401)
 
-        user.name = request.form.get("name", user.name)
+        channel.exchange_declare(exchange = "users", type = "topic", auto_delete = False)
+        channel.basic_publish(body = message, exchange = "users", properties = message_properties, routing_key = routing_key)
 
-        # TODO Put the password in the verification e-mail?
+        # user.hash = hashlib.md5("{0}:{1}:{2}".format(username, information.AUTHENTICATION_REALM, request.form["password"])).hexdigest()
 
-        if "password" in request.form:
-            user.hash = hashlib.md5("{0}:{1}:{2}".format(username, information.AUTHENTICATION_REALM, request.form["password"])).hexdigest()
-
-        # TODO Drop user.uuid in MQ as a new user function:
-        #   * Send verification e-mail.
-        
         return "", 202
     
     def get(self, username):

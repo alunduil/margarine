@@ -16,7 +16,7 @@ The properties we're starting with are the following:
     * username
     * email
     * name
-    * password → md5(username:realm:password)
+    * hash → md5(username:realm:password)
 
     * bookmarks—Psuedo property maps to join collection.
 
