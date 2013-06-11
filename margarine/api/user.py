@@ -150,13 +150,13 @@ class UserInterface(MethodView):
 
         """
 
-        if TOKENS.get(request.headers["X-Auth-Token"]) != username:
-            abort(401)
-
         user = User.find_one(username = username)
 
         if user is None:
             user = User(username = username, email = request.form["email"])
+        else:
+            if TOKENS.get(request.headers["X-Auth-Token"]) != username:
+                abort(401)
 
         user.name = request.form.get("name", user.name)
 
