@@ -31,11 +31,11 @@ class URI(object):
 
         logger.debug("Net Location: %s", _)
 
-        _ = _.netloc.rsplit('@', 1)
+        _ = filter(lambda _: len(_), _.netloc.rsplit('@', 1))
 
         logger.debug("Split Net Location: %s", _)
 
-        self.username, self.password = _[0].split(':', 1)
+        self.username, self.password = _[0].split(':', 1) if len(_) > 1 else None, None
 
-        self.host, self.port = _[1].rsplit(':', 1)
+        self.host, self.port = _[1].rsplit(':', 1) if len(_) > 0 else None, None
 
