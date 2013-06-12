@@ -5,6 +5,7 @@
 
 import unittest2
 import logging
+import mock
 
 from margarine.api import information
 from margarine.api import MARGARINE_API
@@ -17,7 +18,12 @@ class UserCreationTest(unittest2.TestCase):
         self.application = MARGARINE_API.test_client()
         self.account_name = "test_user"
 
-        # TODO Mock the queue connection.
+        patcher = mock.patch("margarine.api.user.get_channel")
+        mock_get_channel = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        mock_get_channel.return_value = mock.MagicMock()
 
     def test_user_creation_request(self):
         """Create a new (non-existent) user."""

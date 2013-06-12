@@ -48,7 +48,7 @@ def get_channel():
 
     logger.debug("CONNECTION_BROKER: %s", CONNECTION_BROKER)
 
-    if CONNECTION_BROKER is None:
+    if CONNECTION_BROKER is None or not CONNECTION_BROKER.is_open:
         uri = URI(Parameters()["communication.url"])
 
         credentials = None
@@ -64,9 +64,6 @@ def get_channel():
                 )
 
         CONNECTION_BROKER = pika.BlockingConnection(connection_parameters)
-
-    if not CONNECTION_BROKER.is_open:
-        CONNECTION_BROKER.connect()
 
     return CONNECTION_BROKER.channel()
 
