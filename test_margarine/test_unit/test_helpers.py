@@ -33,32 +33,32 @@ class URIParsingTest(unittest2.TestCase):
         self.assertIsNone(uri.fragment)
         self.assertIsNone(uri.username)
         self.assertIsNone(uri.password)
-        self.assertIsEqual(uri.host, "hostname")
+        self.assertEqual(uri.host, "hostname")
         self.assertIsNone(uri.port)
 
     def test_localhost_uri(self):
         uri = URI("scheme://localhost")
 
-        self.assertIsEqual(uri.scheme, "scheme")
+        self.assertEqual(uri.scheme, "scheme")
         self.assertIsNone(uri.path)
         self.assertIsNone(uri.params)
         self.assertIsNone(uri.query)
         self.assertIsNone(uri.fragment)
         self.assertIsNone(uri.username)
         self.assertIsNone(uri.password)
-        self.assertIsEqual(uri.host, "localhost")
+        self.assertEqual(uri.host, "localhost")
         self.assertIsNone(uri.port)
 
     def test_amqp_uri(self):
         uri = URI("amqp://rabbit:3bbd445d@example.com:8000/vhost1")
 
-        self.assertIsEqual(uri.scheme, "amqp")
-        self.assertIsEqual(uri.path, "/vhost1")
+        self.assertEqual(uri.scheme, "amqp")
+        self.assertEqual(uri.path, "/vhost1")
         self.assertIsNone(uri.params)
         self.assertIsNone(uri.query)
         self.assertIsNone(uri.fragment)
-        self.assertIsEqual(uri.username, "rabbit")
-        self.assertIsEqual(uri.password, "3bbd445")
-        self.assertIsEqual(uri.host, "example.com")
-        self.assertIsEqual(uri.port, "8000")
+        self.assertEqual(uri.username, "rabbit")
+        self.assertEqual(uri.password, "3bbd445")
+        self.assertEqual(uri.host, "example.com")
+        self.assertEqual(uri.port, "8000")
 
