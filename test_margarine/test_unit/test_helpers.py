@@ -15,9 +15,6 @@ class URIParsingTest(unittest2.TestCase):
 
         self.assertIsNone(uri.scheme)
         self.assertIsNone(uri.path)
-        self.assertIsNone(uri.params)
-        self.assertIsNone(uri.query)
-        self.assertIsNone(uri.fragment)
         self.assertIsNone(uri.username)
         self.assertIsNone(uri.password)
         self.assertIsNone(uri.host)
@@ -28,9 +25,6 @@ class URIParsingTest(unittest2.TestCase):
 
         self.assertIsNone(uri.scheme)
         self.assertIsNone(uri.path)
-        self.assertIsNone(uri.params)
-        self.assertIsNone(uri.query)
-        self.assertIsNone(uri.fragment)
         self.assertIsNone(uri.username)
         self.assertIsNone(uri.password)
         self.assertEqual(uri.host, "hostname")
@@ -41,9 +35,6 @@ class URIParsingTest(unittest2.TestCase):
 
         self.assertEqual(uri.scheme, "scheme")
         self.assertIsNone(uri.path)
-        self.assertIsNone(uri.params)
-        self.assertIsNone(uri.query)
-        self.assertIsNone(uri.fragment)
         self.assertIsNone(uri.username)
         self.assertIsNone(uri.password)
         self.assertEqual(uri.host, "localhost")
@@ -54,9 +45,6 @@ class URIParsingTest(unittest2.TestCase):
 
         self.assertEqual(uri.scheme, "amqp")
         self.assertEqual(uri.path, "/vhost1")
-        self.assertIsNone(uri.params)
-        self.assertIsNone(uri.query)
-        self.assertIsNone(uri.fragment)
         self.assertEqual(uri.username, "rabbit")
         self.assertEqual(uri.password, "3bbd445d")
         self.assertEqual(uri.host, "example.com")
