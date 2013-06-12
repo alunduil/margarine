@@ -23,11 +23,11 @@ class URI(object):
 
         _ = urlparse.urlparse(self.uri)
 
-        self.scheme = _.scheme
-        self.path = _.path
-        self.params = _.params
-        self.query = _.query
-        self.fragment = _.fragment
+        self.scheme = _.scheme if len(_.scheme) else None
+        self.path = _.path if len(_.path) else None
+        self.params = _.params if len(_.params) else None
+        self.query = _.query if len(_.query) else None
+        self.fragment = _.fragment if len(_.fragment) else None
 
         logger.debug("Net Location: %s", _)
 
