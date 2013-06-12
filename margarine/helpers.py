@@ -24,6 +24,11 @@ class URI(object):
         _ = urlparse.urlparse(self.uri)
 
         self.scheme = _.scheme if len(_.scheme) else None
+
+        if len(_.path) and not len(_.netloc):
+            _.netloc = _.path
+            _.path = ""
+
         self.path = _.path if len(_.path) else None
         self.params = _.params if len(_.params) else None
         self.query = _.query if len(_.query) else None
@@ -35,7 +40,15 @@ class URI(object):
 
         logger.debug("Split Net Location: %s", _)
 
-        self.username, self.password = _[0].split(':', 1) if len(_) > 1 else None, None
+        if len(_) > 1:
+            creds = _[0].split(':', 1)
 
-        self.host, self.port = _[1].rsplit(':', 1) if len(_) > 0 else None, None
+            self.username = creds[0] if len(creds) > 0 else None
+            self.password = creds[1] if len(creds) > 1 else None
+
+        if len(_) > 0:
+            _ = _[1].rsplit(':', 1)
+
+            self.host = _[0] if len(_) > 0 else None
+            self.port = _[1] if len(_) > 1 else None
 
