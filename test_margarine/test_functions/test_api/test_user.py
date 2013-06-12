@@ -17,9 +17,13 @@ class UserCreationTest(unittest2.TestCase):
         self.application = MARGARINE_API.test_client()
         self.account_name = "test_user"
 
+        # TODO Mock the queue connection.
+
     def test_signup_request(self):
         url = "/{i.API_VERSION}/users/{username}"
-        url.format(username = self.account_name, i = information)
+        url = url.format(username = self.account_name, i = information)
+
+        logger.debug("url: %s", url)
         
         response = self.application.put(url, data = {
             "email": "test@example.com",
@@ -28,6 +32,7 @@ class UserCreationTest(unittest2.TestCase):
         logger.debug("response: %s", response)
         logger.debug("response.status: %s", response.status)
         logger.debug("response.__dict__: %s", response.__dict__.keys())
+        logger.debug("response.data: %s", response.data)
 
         self.assertIn("202", response.status)
 

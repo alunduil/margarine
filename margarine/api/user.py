@@ -178,8 +178,8 @@ class UserInterface(MethodView):
             if TOKENS.get(request.headers["X-Auth-Token"]) != username:
                 abort(401)
 
-        channel.exchange_declare(exchange = "users", type = "topic", auto_delete = False)
-        channel.basic_publish(body = message, exchange = "users", properties = message_properties, routing_key = routing_key)
+        channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
+        channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = routing_key)
 
         # user.hash = hashlib.md5("{0}:{1}:{2}".format(username, information.AUTHENTICATION_REALM, request.form["password"])).hexdigest()
 
