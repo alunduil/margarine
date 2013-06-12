@@ -47,6 +47,8 @@ PARAMS["provides"] = [
         ]
 
 PARAMS["scripts"] = [
+        "bin/mapid",
+        "bin/spread",
         ]
 
 PARAMS["packages"] = [
