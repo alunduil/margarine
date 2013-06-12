@@ -23,8 +23,8 @@ class URIParsingTest(unittest2.TestCase):
         self.assertIsNone(uri.host)
         self.assertIsNone(uri.port)
 
-    def test_localhost_uri(self):
-        uri = URI("localhost")
+    def test_host_only(self):
+        uri = URI("hostname")
 
         self.assertIsNone(uri.scheme)
         self.assertIsNone(uri.path)
@@ -33,7 +33,20 @@ class URIParsingTest(unittest2.TestCase):
         self.assertIsNone(uri.fragment)
         self.assertIsNone(uri.username)
         self.assertIsNone(uri.password)
-        self.assertIsNone(uri.host)
+        self.assertIsEqual(uri.host, "hostname")
+        self.assertIsNone(uri.port)
+
+    def test_localhost_uri(self):
+        uri = URI("scheme://localhost")
+
+        self.assertIsEqual(uri.scheme, "scheme")
+        self.assertIsNone(uri.path)
+        self.assertIsNone(uri.params)
+        self.assertIsNone(uri.query)
+        self.assertIsNone(uri.fragment)
+        self.assertIsNone(uri.username)
+        self.assertIsNone(uri.password)
+        self.assertIsEqual(uri.host, "localhost")
         self.assertIsNone(uri.port)
 
     def test_amqp_uri(self):
