@@ -1,17 +1,19 @@
+# -*- coding: UTF-8 -*-
+#
 # Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
 #
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import pika
-import urllib.parse
 
 from margarine.parameters import Parameters
+from margarine.helpers import URI
 
 Parameters("communication", parameters = [
     { # --communication-url=URL; URL ← local
         "options": [ "--url" ],
-        "default": "local",
+        "default": "amqp://localhost",
         "help": \
                 "The URL endpoint of the intra-service communication " \
                 "mechanism.  This can be a socket (the default) or an AMQP " \
@@ -22,19 +24,39 @@ Parameters("communication", parameters = [
 CONNECTION_BROKER = None
 
 def get_channel():
-    """Using the communication.url parameter get a channel on the queue.
+    """Using the communication.url parameter get a channel for the queue.
 
-    Returns a channel on the pre-established connection to the queue.
+    If a connection has already been established we'll simply re-use that
+    connection; otherwise, we'll create the connection and return a channel.
+
+    .. note::
+        Currently, we only work with an amqp queue and use pika as the
+        interaction layer.  If we decide to use other queues we'll have to
+        re-evaluate the architecture.
+
+    Returns
+    -------
+
+    A channel for queue interaction.
 
     """
 
+    global CONNECTION_BROKER
+
     if CONNECTION_BROKER is None:
-        components = urllib.parse.urlparse(Parameters()["communication.url"])
+        uri = URI(Parameters()["communication.url"])
 
-        username, password = components.netloc.split('@', 1)[0].split(':', 1)
-        credentials = pika.PlainCredentials(username, password)
+        credentials = None
+        if None not in (uri.username, uri.password):
+            credentials = pika.PlainCredentials(uri.username, uri.password)
 
-        connection_parameters = pika.ConnectionParameters(components.netloc.split('@', 1)[-1], virtual_host = components.path, credentials = credentials)
+        # TODO Add SSL support?
+        connection_parameters = pika.ConnectionParameters(
+                host = uri.host,
+                port = uri.port,
+                virtual_host = uri.path,
+                credentials = credentials
+                )
 
         CONNECTION_BROKER = pika.BlockingConnection(connection_parameters)
 
