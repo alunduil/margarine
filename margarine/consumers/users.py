@@ -35,10 +35,14 @@ def create_user_consumer(channel, method, header, body):
 
     logger.debug("hash: %s", user_information["hash"])
 
+    # TODO Save the user in the datastore.
+
     verification = uuid.uuid4()
     TOKENS[verification] = user_information["username"]
 
     # TODO Email the user the password and verification token.
+
+    channel.basic_ack(delivery_tag = method.delivery_tag)
 
 def register(channel):
     """Register the user worker functions on the passed channel.

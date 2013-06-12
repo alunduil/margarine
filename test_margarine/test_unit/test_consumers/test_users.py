@@ -30,7 +30,14 @@ class UserCreationTest(unittest2.TestCase):
 
         message = '{"username": "test_user", "password": null, "email": "test@example.com", "name": null}'
 
-        create_user_consumer(None, None, None, message)
+        method = MagickMock()
+        method.delivery_tag.return_value = "create"
+
+        create_user_consumer(None, method, None, message)
+
+        # TODO Verify the data store insertion.
 
         self.mock_verifications.assert_called_once_with(mock.ANY, 'test_user')
+
+        # TODO Verify the email sender.
 
