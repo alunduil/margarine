@@ -6,9 +6,12 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import pika
+import logging
 
 from margarine.parameters import Parameters
 from margarine.helpers import URI
+
+logger = logging.getLogger(__name__)
 
 Parameters("communication", parameters = [
     { # --communication-url=URL; URL ← local
@@ -62,7 +65,7 @@ def get_channel():
 
         CONNECTION_BROKER = pika.BlockingConnection(connection_parameters)
 
-    if not CONNECTION_BROKER.is_open():
+    if not CONNECTION_BROKER.is_open:
         CONNECTION_BROKER.connect()
 
     return CONNECTION_BROKER.channel()
