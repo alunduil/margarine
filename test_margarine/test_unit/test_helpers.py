@@ -58,7 +58,7 @@ class URIParsingTest(unittest2.TestCase):
         self.assertIsNone(uri.query)
         self.assertIsNone(uri.fragment)
         self.assertEqual(uri.username, "rabbit")
-        self.assertEqual(uri.password, "3bbd445")
+        self.assertEqual(uri.password, "3bbd445d")
         self.assertEqual(uri.host, "example.com")
         self.assertEqual(uri.port, "8000")
 
