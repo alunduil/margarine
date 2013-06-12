@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+#
 # Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
 #
 # margarine is freely distributable under the terms of an MIT-style license.
@@ -5,9 +7,12 @@
 
 import hashlib
 import logging
+import json
+import uuid
 
 from margarine.aggregates.user import User
 from margarine.api import information
+from margarine.api.tokens import TOKENS
 
 logger = logging.getLogger(__name__)
 
