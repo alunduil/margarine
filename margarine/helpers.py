@@ -25,18 +25,21 @@ class URI(object):
 
         self.scheme = _.scheme if len(_.scheme) else None
 
-        if len(_.path) and not len(_.netloc):
-            _.netloc = _.path
-            _.path = ""
+        path = _.path
+        netloc = _.netloc
 
-        self.path = _.path if len(_.path) else None
+        if len(path) and not len(netloc):
+            netloc = path
+            path = ""
+
+        self.path = path if len(path) else None
         self.params = _.params if len(_.params) else None
         self.query = _.query if len(_.query) else None
         self.fragment = _.fragment if len(_.fragment) else None
 
-        logger.debug("Net Location: %s", _)
+        logger.debug("Net Location: %s", netloc)
 
-        _ = filter(lambda _: len(_), _.netloc.rsplit('@', 1))
+        _ = filter(lambda _: len(_), netloc.rsplit('@', 1))
 
         logger.debug("Split Net Location: %s", _)
 
