@@ -13,7 +13,7 @@ from margarine.helpers import URI
 Parameters("communication", parameters = [
     { # --communication-url=URL; URL ← local
         "options": [ "--url" ],
-        "default": "amqp://localhost",
+        "default": "amqp://guest:guest@localhost",
         "help": \
                 "The URL endpoint of the intra-service communication " \
                 "mechanism.  This can be a socket (the default) or an AMQP " \
@@ -43,6 +43,8 @@ def get_channel():
 
     global CONNECTION_BROKER
 
+    logger.debug("CONNECTION_BROKER: %s", CONNECTION_BROKER)
+
     if CONNECTION_BROKER is None:
         uri = URI(Parameters()["communication.url"])
 
@@ -59,6 +61,9 @@ def get_channel():
                 )
 
         CONNECTION_BROKER = pika.BlockingConnection(connection_parameters)
+
+    if not CONNECTION_BROKER.is_open():
+        CONNECTION_BROKER.connect()
 
     return CONNECTION_BROKER.channel()
 

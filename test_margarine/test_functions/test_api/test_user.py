@@ -19,7 +19,9 @@ class UserCreationTest(unittest2.TestCase):
 
         # TODO Mock the queue connection.
 
-    def test_signup_request(self):
+    def test_user_creation_request(self):
+        """Create a new (non-existent) user."""
+
         url = "/{i.API_VERSION}/users/{username}"
         url = url.format(username = self.account_name, i = information)
 
