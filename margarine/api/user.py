@@ -166,7 +166,7 @@ class UserInterface(MethodView):
         message["username"] = request.form.get("username")
         message["email"] = request.form.get("email")
         message["name"] = request.form.get("name")
-        message["password"] = request.form.get("password")
+        message["password"] = request.form.get("password") # TODO Remove this and not allow custom passwords?
 
         message = json.dumps(message)
 

@@ -31,16 +31,27 @@ class UserCreationTest(unittest2.TestCase):
         url = "/{i.API_VERSION}/users/{username}"
         url = url.format(username = self.account_name, i = information)
 
-        logger.debug("url: %s", url)
-        
         response = self.application.put(url, data = {
             "email": "test@example.com",
             })
 
-        logger.debug("response: %s", response)
-        logger.debug("response.status: %s", response.status)
-        logger.debug("response.__dict__: %s", response.__dict__.keys())
-        logger.debug("response.data: %s", response.data)
+        self.assertIn("202", response.status)
+
+        # Ensure publish has a routing_key parameter of users.create.
+
+    def test_user_update_request(self):
+        """Update an existing user."""
+
+        # TODO Ensure user exists.
+
+        url = "/{i.API_VERSION}/users/{username}"
+        url = url.format(username = self.account_name, i = information)
+
+        response = self.application.put(url, data = {
+            "email": "test@example.com",
+            })
 
         self.assertIn("202", response.status)
+
+        # Ensure publish has a routing_key parameter of users.update.
 
