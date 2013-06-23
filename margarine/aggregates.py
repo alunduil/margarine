@@ -42,10 +42,12 @@ def get_collection(collection):
 
     global DATASTORE_CONNECTION
 
-    uri = URI(Parameters()["datastore.url"])
+    url = Parameters()["datastore.url"]
+
+    uri = URI(url)
 
     if DATASTORE_CONNECTION is None:
-        DATASTORE_CONNECTION = MongoClient(uri.host)
+        DATASTORE_CONNECTION = MongoClient(url)
 
     database = DATASTORE_CONNECTION[uri.path]
 
