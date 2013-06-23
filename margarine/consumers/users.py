@@ -10,9 +10,9 @@ import logging
 import json
 import uuid
 
-from margarine.aggregates import get_collection
 from margarine.api import information
-from margarine.api.tokens import TOKENS
+from margarine.aggregates import get_collection
+from margarine.keystores import get_keystore
 
 logger = logging.getLogger(__name__)
 
