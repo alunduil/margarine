@@ -46,6 +46,12 @@ PARAMS["provides"] = [
         "margarine",
         ]
 
+PARAMS["requires"] = [
+        "redis-py",
+        "pymongo",
+        "flask",
+        ]
+
 PARAMS["scripts"] = [
         "bin/mapid",
         "bin/spread",
