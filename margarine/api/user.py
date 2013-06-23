@@ -7,6 +7,19 @@
 
 """URL endpoints and functions related to user management in margarine.
 
+The data schema we're starting with is simple and could potentially be moved
+to a key-value datastore with pickling as a marshalling technique.
+
+The properties we're starting with are the following:
+
+    * uuid4 (uuid5 username namespace?)
+    * username—unique index
+    * email
+    * name
+    * hash → md5(username:realm:password)
+
+    * bookmarks—Psuedo property maps to join collection.
+
 A User in margarine has the following fields:
 
 :_id:      Default MongoDB ID
@@ -214,7 +227,7 @@ class UserInterface(MethodView):
 
         """
 
-        user = User.find_one(username = username)
+        user = get_collection("users").find_one({ "username": username })
 
         # TODO Should this be an authenticated action?
 

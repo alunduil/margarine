@@ -5,6 +5,28 @@
 
 """Provide the blueprint for an articles API for flask.
 
+The properties we're starting with are the following:
+
+    * uuid5 (url)
+    * url—unique index
+    * text → sent to object store upon save (MQ)
+    * tags—index
+    * notations
+
+      * location
+      * note
+
+    * votes—index
+    * created_at—index
+    * original_etag
+    * parsed_at—index
+    
+    * subscribers—Psuedo parameter, maps to join collection.
+
+      * uuid4—user 
+      * uuid5—bookmark
+      * subscribed_at
+
 .. note::
 
     This blueprint has all methods documented with an assumed prefix.  Thus, 
