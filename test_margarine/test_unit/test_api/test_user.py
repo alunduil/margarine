@@ -12,7 +12,7 @@ from margarine.api import MARGARINE_API
 
 logger = logging.getLogger(__name__)
 
-class UserCreationTest(unittest2.TestCase):
+class BaseUserTest(unittest2.TestCase):
     def setUp(self):
         MARGARINE_API.config["TESTING"] = True
         self.application = MARGARINE_API.test_client()
@@ -22,12 +22,9 @@ class UserCreationTest(unittest2.TestCase):
         self.url = "/{i.API_VERSION}/users/{username}"
         self.url = self.url.format(username = self.account_name, i = information)
 
-        patcher = mock.patch("margarine.api.user.get_collection")
-        mock_get_collection = patcher.start()
-
-        self.addCleanup(patcher.stop)
-
-        mock_get_collection.return_value = mock.MagickMock()
+class UserCreationTest(BaseUserTest):
+    def setUp(self):
+        super().setUp()
 
         patcher = mock.patch("margarine.api.user.get_channel")
         mock_get_channel = patcher.start()
@@ -49,6 +46,17 @@ class UserCreationTest(unittest2.TestCase):
 
         # Ensure publish has a routing_key parameter of users.create.
 
+class UserReadTest(BaseUserTest):
+    def setUp(self):
+        super().setUp()
+
+        patcher = mock.patch("margarine.api.user.get_collection")
+        mock_get_collection = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        mock_get_collection.return_value = mock.MagickMock()
+
     def test_existing_user_read_request(self):
         """Read an existing user."""
 
@@ -67,6 +75,10 @@ class UserCreationTest(unittest2.TestCase):
 
         self.assertIn("404", response.status)
 
+class UserUpdateTest(BaseUserTest):
+    def setUp(self):
+        super().setUp()
+
     def test_user_update_request(self):
         """Update an existing user."""
 
@@ -80,6 +92,10 @@ class UserCreationTest(unittest2.TestCase):
         self.assertIn("202", response.status)
 
         # Ensure publish has a routing_key parameter of users.update.
+
+class UserDeleteTest(BaseUserTest):
+    def setUp(self):
+        super().setUp()
 
     def test_user_delete_request(self):
         """Delete an existing user."""
