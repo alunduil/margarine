@@ -4,6 +4,7 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import unittest2
+import mock
 
 from margarine.consumers.users import create_user_consumer
 
