@@ -47,10 +47,10 @@ from flask import abort
 from flask import Blueprint
 from flask.views import MethodView
 
-from margarine.aggregates.user import User
 from margarine.api import information
 from margarine.parameters import Parameters
 from margarine.communication import get_channel
+from margarine.aggregates import get_collection
 
 Parameters("api", parameters = [
     { # --api-uuid=UUID; UUID ← uuid.uuid4()
