@@ -22,6 +22,13 @@ class UserCreationTest(unittest2.TestCase):
         self.url = "/{i.API_VERSION}/users/{username}"
         self.url = self.url.format(username = self.account_name, i = information)
 
+        patcher = mock.patch("margarine.api.user.get_collection")
+        mock_get_collection = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        mock_get_collection.return_value = mock.MagickMock()
+
         patcher = mock.patch("margarine.api.user.get_channel")
         mock_get_channel = patcher.start()
 
