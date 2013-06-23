@@ -12,7 +12,7 @@ import uuid
 
 from margarine.api import information
 from margarine.aggregates import get_collection
-from margarine.keystores import get_keystore
+from margarine.keystores import get_keyspace
 
 logger = logging.getLogger(__name__)
 
