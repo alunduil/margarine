@@ -10,7 +10,7 @@ import logging
 import json
 import uuid
 
-from margarine.aggregates.user import User
+from margarine.aggregates import get_collection
 from margarine.api import information
 from margarine.api.tokens import TOKENS
 
