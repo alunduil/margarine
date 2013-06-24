@@ -11,9 +11,9 @@ from margarine.parameters import Parameters
 from margarine.helpers import URI
 
 Parameters("datastore", parameters = [
-    { # --datastore-url=URL; URL ← mongo://localhost:27017/test
+    { # --datastore-url=URL; URL ← mongodb://localhost:27017/test
         "options": [ "--url" ],
-        "default": "mongo://localhost:27017/test",
+        "default": "mongodb://localhost:27017/test",
         "help": \
                 "The URL endpoint of the data store mechanism.  This can be " \
                 "a local sqlite database but typically will be set to a " \
