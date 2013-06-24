@@ -9,6 +9,7 @@ import redis
 import logging
 
 from margarine.parameters import Parameters
+from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +59,7 @@ def get_keyspace(keyspace):
                 "verifications": 1,
                 }
             
-        KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(url + "/" + databases[keyspace])
+        KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(url + "/" + str(databases[keyspace]))
 
     return KEYSTORE_CONNECTIONS[keyspace]
     
