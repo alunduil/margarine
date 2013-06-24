@@ -19,10 +19,7 @@ class UserCreationTest(unittest2.TestCase):
 
         # TODO Mock the datastore insertion
 
-        patcher = mock.patch("margarine.consumers.users.VERIFICATIONS")
-        self.mock_verficiations = patcher.start()
-
-        self.addCleanup(patcher.stop)
+        # TODO Mock the keystore insertion
 
         # TODO Mock the email sender
 
@@ -31,7 +28,7 @@ class UserCreationTest(unittest2.TestCase):
 
         message = '{"username": "test_user", "password": null, "email": "test@example.com", "name": null}'
 
-        method = MagickMock()
+        method = mock.MagicMock()
         method.delivery_tag.return_value = "create"
 
         create_user_consumer(None, method, None, message)
