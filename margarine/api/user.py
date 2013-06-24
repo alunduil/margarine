@@ -51,6 +51,7 @@ from margarine.api import information
 from margarine.parameters import Parameters
 from margarine.communication import get_channel
 from margarine.aggregates import get_collection
+from margarine.keystores import get_keyspace
 
 Parameters("api", parameters = [
     { # --api-uuid=UUID; UUID ← uuid.uuid4()
@@ -188,7 +189,8 @@ class UserInterface(MethodView):
         if user is not None:
             routing_key = "users.update"
 
-            if TOKENS.get(request.headers["X-Auth-Token"]) != username:
+            tokens = get_keyspace("tokens")
+            if tokens.get(request.headers["X-Auth-Token"]) != username:
                 abort(401)
 
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
