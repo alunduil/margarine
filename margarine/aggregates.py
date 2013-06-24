@@ -8,6 +8,7 @@
 import pymongo
 
 from margarine.parameters import Parameters
+from margarine.helpers import URI
 
 Parameters("datastore", parameters = [
     { # --datastore-url=URL; URL ← mongo://localhost:27017/test
