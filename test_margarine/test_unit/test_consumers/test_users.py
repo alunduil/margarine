@@ -19,7 +19,12 @@ class UserCreationTest(unittest2.TestCase):
 
         # TODO Mock the datastore insertion
 
-        # TODO Mock the keystore insertion
+        patcher = mock.patch("margarine.consumers.users.get_keyspace")
+        mock_get_keyspace = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        mock_get_keyspace.return_value = mock.MagicMock()
 
         # TODO Mock the email sender
 
