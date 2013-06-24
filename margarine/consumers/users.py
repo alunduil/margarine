@@ -38,7 +38,9 @@ def create_user_consumer(channel, method, header, body):
     # TODO Save the user in the datastore.
 
     verification = uuid.uuid4()
-    TOKENS[verification] = user_information["username"]
+
+    verifications = get_keyspace("verifications")
+    verifications.setex(verification, user_information["username"], datetime.timedelta(hours = 6))
 
     # TODO Email the user the password and verification token.
 
