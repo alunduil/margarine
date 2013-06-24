@@ -48,7 +48,7 @@ def get_collection(collection):
     uri = URI(url)
 
     if DATASTORE_CONNECTION is None:
-        DATASTORE_CONNECTION = MongoClient(url)
+        DATASTORE_CONNECTION = pymongo.MongoClient(url)
 
     database = DATASTORE_CONNECTION[uri.path]
 
