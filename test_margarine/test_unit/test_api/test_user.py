@@ -77,7 +77,7 @@ class UserReadTest(BaseUserTest):
 
 class UserUpdateTest(BaseUserTest):
     def setUp(self):
-        super().setUp()
+        super(UserUpdateTest, self).setUp()
 
     def test_user_update_request(self):
         """Update an existing user."""
