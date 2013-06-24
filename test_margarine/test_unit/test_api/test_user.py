@@ -86,6 +86,13 @@ class UserUpdateTest(BaseUserTest):
 
         mock_get_collection.return_value = mock.MagicMock()
 
+        patcher = mock.patch("margarine.api.user.get_channel")
+        self.mock_get_channel = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        self.mock_get_channel.return_value = mock.MagicMock()
+
     def test_user_update_request(self):
         """Update an existing user."""
 
@@ -96,7 +103,7 @@ class UserUpdateTest(BaseUserTest):
 
         self.assertIn("202", response.status)
 
-        # Ensure publish has a routing_key parameter of users.update.
+        self.mock_get_channel.basic_publish.assert_called_with(routing_key = "users.update")
 
 class UserDeleteTest(BaseUserTest):
     def setUp(self):
