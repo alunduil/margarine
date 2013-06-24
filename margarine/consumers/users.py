@@ -45,6 +45,8 @@ def create_user_consumer(channel, method, header, body):
 
     # TODO Email the user the password and verification token.
 
+    logger.debug("channel: %s", channel)
+
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
 def register(channel):

@@ -10,13 +10,6 @@ from margarine.consumers.users import create_user_consumer
 
 class UserCreationTest(unittest2.TestCase):
     def setUp(self):
-        patcher = mock.patch("margarine.consumers.get_channel")
-        mock_get_channel = patcher.start()
-
-        self.addCleanup(patcher.stop)
-
-        mock_get_channel.return_value = mock.MagicMock()
-
         # TODO Mock the datastore insertion
 
         patcher = mock.patch("margarine.consumers.users.get_keyspace")
@@ -36,11 +29,10 @@ class UserCreationTest(unittest2.TestCase):
         method = mock.MagicMock()
         method.delivery_tag.return_value = "create"
 
-        create_user_consumer(None, method, None, message)
+        # create_user_consumer(channel, method, header, body)
+        create_user_consumer(mock.MagicMock(), method, None, message)
 
         # TODO Verify the data store insertion.
-
-        self.mock_verifications.assert_called_once_with(mock.ANY, 'test_user')
 
         # TODO Verify the email sender.
 
