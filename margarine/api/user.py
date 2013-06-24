@@ -166,7 +166,7 @@ class UserInterface(MethodView):
 
         """
 
-        user = User.find_one(username = username)
+        user = get_collection("users").find_one({ "username": username })
 
         channel = get_channel()
 
