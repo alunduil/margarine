@@ -79,10 +79,15 @@ class UserUpdateTest(BaseUserTest):
     def setUp(self):
         super(UserUpdateTest, self).setUp()
 
+        patcher = mock.patch("margarine.api.user.get_collection")
+        mock_get_collection = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        mock_get_collection.return_value = mock.MagicMock()
+
     def test_user_update_request(self):
         """Update an existing user."""
-
-        # TODO Mock user retrieval.
 
         response = self.application.put(self.url, data = {
             "email": "test@example.com",
