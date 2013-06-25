@@ -33,7 +33,7 @@ class UserCreationTest(BaseUserTest):
 
         mock_get_channel.return_value = mock.MagicMock()
 
-    def test_user_creation_request(self):
+    def test_nonexsitent_user_creation_request(self):
         """Create a new (non-existent) user."""
 
         # TODO Mock user retrieval (non-existent user).
@@ -45,6 +45,17 @@ class UserCreationTest(BaseUserTest):
         self.assertIn("202", response.status)
 
         # Ensure publish has a routing_key parameter of users.create.
+
+    def test_existing_user_creation_request(self):
+        """Create an existing user."""
+
+        # TODO Mock user retrieval (existing user).
+
+        response = self.application.put(self.url, data = {
+            "email": "test@example.com",
+            })
+
+        self.assertIn("401", response.status)
 
 class UserReadTest(BaseUserTest):
     def setUp(self):

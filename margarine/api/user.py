@@ -78,7 +78,7 @@ def http_401_handler(error):
 
     response = make_response("", 401)
 
-    response.headers["Location"] = url_for('user.login')
+    response.headers["Location"] = url_for('users.login', username = None) # TODO Username
 
     response.headers["WWW-Authenticate"] = \
             "Digest realm=\"{realm}\"," \
