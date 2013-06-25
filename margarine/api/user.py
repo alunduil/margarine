@@ -190,7 +190,7 @@ class UserInterface(MethodView):
             routing_key = "users.update"
 
             tokens = get_keyspace("tokens")
-            if tokens.get(request.headers["X-Auth-Token"]) != username:
+            if tokens.get(request.headers.get("X-Auth-Token")) != username:
                 abort(401)
 
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
