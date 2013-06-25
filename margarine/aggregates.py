@@ -6,9 +6,12 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import pymongo
+import logging
 
 from margarine.parameters import Parameters
 from margarine.helpers import URI
+
+logger = logging.getLogger(__name__)
 
 Parameters("datastore", parameters = [
     { # --datastore-url=URL; URL ← mongodb://localhost:27017/test
@@ -52,8 +55,10 @@ def get_collection(collection):
 
     database_name = uri.path
 
-    if database_name.startswith("/"):
-        database_name.replace("/", "")
+    logger.debug("database_name: %s", database_name)
+
+    if "/" in database_name:
+        database_name = database_name.replace("/", "", 1).replace("/", "_")
 
     database = DATASTORE_CONNECTION[database_name]
 
