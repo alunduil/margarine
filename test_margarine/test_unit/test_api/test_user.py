@@ -93,6 +93,13 @@ class UserUpdateTest(BaseUserTest):
 
         self.mock_get_channel.return_value = mock.MagicMock()
 
+        patcher = mock.patch("margarine.api.user.get_keyspace")
+        self.mock_get_keyspace = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        self.mock_get_keyspace.return_value = mock.MagicMock()
+
     def test_user_update_request(self):
         """Update an existing user."""
 
