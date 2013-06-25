@@ -50,7 +50,12 @@ def get_collection(collection):
     if DATASTORE_CONNECTION is None:
         DATASTORE_CONNECTION = pymongo.MongoClient(url)
 
-    database = DATASTORE_CONNECTION[uri.path]
+    database_name = uri.path
+
+    if database_name.startswith("/"):
+        database_name.replace("/", "")
+
+    database = DATASTORE_CONNECTION[database_name]
 
     return database[collection]
 
