@@ -261,6 +261,8 @@ class UserInterface(MethodView):
 
         # TODO Should this be an authenticated action?
 
+        logger.debug("user: %s", user)
+
         if user is None:
             abort(404)
 

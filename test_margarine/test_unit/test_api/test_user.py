@@ -66,7 +66,8 @@ class UserReadTest(BaseUserTest):
 
         self.addCleanup(patcher.stop)
 
-        mock_get_collection.return_value = mock.MagicMock()
+        self.mock_collection = mock.MagicMock()
+        mock_get_collection.return_value = self.mock_collection
 
     def test_existing_user_read_request(self):
         """Read an existing user."""
@@ -81,6 +82,8 @@ class UserReadTest(BaseUserTest):
         """Read a non-existent user."""
 
         # TODO Mock user retrieval (non-existent user).
+
+        self.mock_collection.find_one.return_value = None
 
         response = self.application.get(self.url)
 
