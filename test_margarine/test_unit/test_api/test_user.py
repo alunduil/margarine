@@ -59,7 +59,7 @@ class UserCreationTest(BaseUserTest):
 
 class UserReadTest(BaseUserTest):
     def setUp(self):
-        super().setUp()
+        super(UserReadTest, self).setUp()
 
         patcher = mock.patch("margarine.api.user.get_collection")
         mock_get_collection = patcher.start()
