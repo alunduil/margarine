@@ -198,8 +198,6 @@ class UserInterface(MethodView):
 
         user = get_collection("users").find_one({ "username": username })
 
-        channel = get_channel()
-
         message_properties = pika.BasicProperties()
         message_properties.content_type = "application/json"
         message_properties.durable = False
@@ -222,6 +220,7 @@ class UserInterface(MethodView):
             if tokens.get(request.headers.get("X-Auth-Token")) != username:
                 raise UnauthorizedError(username = username)
 
+        channel = get_channel()
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
         channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = routing_key)
 
