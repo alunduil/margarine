@@ -109,11 +109,12 @@ class UserUpdateTest(BaseUserTest):
         self.mock_keyspace.get.return_value = self.account_name
 
         patcher = mock.patch("margarine.api.user.get_channel")
-        self.mock_get_channel = patcher.start()
+        mock_get_channel = patcher.start()
 
         self.addCleanup(patcher.stop)
 
-        self.mock_get_channel.return_value = mock.MagicMock()
+        self.mock_channel = mock.MagicMock()
+        mock_get_channel.return_value = self.mock_channel
 
     def test_user_update_request(self):
         """Update an existing user."""
@@ -129,7 +130,7 @@ class UserUpdateTest(BaseUserTest):
 
         self.mock_keyspace.get.assert_called_with(self.token)
 
-        self.mock_get_channel.basic_publish.assert_called_with(routing_key = "users.update")
+        self.mock_channel.basic_publish.assert_called_with(routing_key = "users.update")
 
         self.assertIn("202", response.status)
 
