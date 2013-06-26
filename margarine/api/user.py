@@ -41,6 +41,8 @@ on /<username>/token.
 import uuid
 import pika
 import json
+import logging
+import werkzeug.exceptions
 
 from flask import request
 from flask import make_response
@@ -55,6 +57,8 @@ from margarine.communication import get_channel
 from margarine.aggregates import get_collection
 from margarine.keystores import get_keyspace
 
+logger = logging.getLogger(__name__)
+
 Parameters("api", parameters = [
     { # --api-uuid=UUID; UUID ← uuid.uuid4()
         "options": [ "--uuid" ],
@@ -67,6 +71,24 @@ Parameters("api", parameters = [
         },
     ])
 
+class UnauthorizedError(werkzeug.exceptions.Unauthorized):
+    """Custom unauthorized exception.
+
+    This is identical to the normal werkzeug exception minus one addition.
+    This exception also captures the username so it can be used from the error
+    handling function as well.
+
+    """
+
+    def __init__(self, description = None, response = None, username = None):
+        super(UnauthorizedError, self).__init__(description, response)
+
+        self._username = username
+
+    @property
+    def username(self):
+        return self._username
+
 def http_401_handler(error):
     """Sends an appropriate 401 Unauthorized page for HTTP Digest.
     
@@ -76,9 +98,14 @@ def http_401_handler(error):
 
     """
 
+    logger.debug("type(error): %s", type(error))
+    logger.debug("error.keys: %s", error.__dict__.keys())
+    
+    logger.debug("error.username: %s", error.username)
+
     response = make_response("", 401)
 
-    response.headers["Location"] = url_for('users.login', username = None) # TODO Username
+    response.headers["Location"] = url_for('users.login', username = error.username)
 
     response.headers["WWW-Authenticate"] = \
             "Digest realm=\"{realm}\"," \
@@ -193,7 +220,7 @@ class UserInterface(MethodView):
 
             tokens = get_keyspace("tokens")
             if tokens.get(request.headers.get("X-Auth-Token")) != username:
-                abort(401)
+                raise UnauthorizedError(username = username)
 
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
         channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = routing_key)
@@ -271,7 +298,7 @@ class UserInterface(MethodView):
         """
 
         if TOKENS.get(request.headers["X-Auth-Token"]) != username:
-            abort(401)
+            raise UnauthorizedError(username = username)
 
         user = User.find_one(username = username)
 
@@ -347,7 +374,7 @@ def login(username):
     """
     
     if request.authorization.opaque != HOST_UUID.hex:
-        abort(401)
+        raise UnauthorizedError(username = username)
 
     user = User.find_one(username = username)
 
@@ -363,7 +390,7 @@ def login(username):
     h3 = hashlib.md5(_.format(h1 = h1, a = request.authorization, h2 = h2)).hexdigest()
 
     if request.authorization.response != h3:
-        abort(401)
+        raise UnauthorizedError(username = username)
 
     token = uuid.uuid4()
 

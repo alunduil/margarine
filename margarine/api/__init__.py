@@ -114,6 +114,7 @@ configure_logging()
 from margarine.api import information
 
 from margarine.api.user import USER
+from margarine.api.user import UnauthorizedError
 from margarine.api.user import http_401_handler
 
 from margarine.api.article import ARTICLE
@@ -163,7 +164,7 @@ MARGARINE_API.register_blueprint(USER, url_prefix = _prefix("users"))
 MARGARINE_API.register_blueprint(ARTICLE, url_prefix = _prefix("articles"))
 MARGARINE_API.register_blueprint(TAG, url_prefix = _prefix("tags"))
 
-MARGARINE_API.error_handler_spec[None][401] = http_401_handler
+MARGARINE_API.error_handler_spec[None][UnauthorizedError] = http_401_handler
 
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
