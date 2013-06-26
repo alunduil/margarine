@@ -82,7 +82,7 @@ class UserReadTest(BaseUserTest):
 
         # TODO Mock user retrieval (non-existent user).
 
-        resposne = self.application.get(self.url)
+        response = self.application.get(self.url)
 
         self.assertIn("404", response.status)
 
