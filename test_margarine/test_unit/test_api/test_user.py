@@ -104,22 +104,30 @@ class UserUpdateTest(BaseUserTest):
 
         self.mock_get_channel.return_value = mock.MagicMock()
 
+        self.token = "c2d52150-08d1-4ae3-b19c-323c9e37813d"
+
         patcher = mock.patch("margarine.api.user.get_keyspace")
         self.mock_get_keyspace = patcher.start()
 
         self.addCleanup(patcher.stop)
 
-        self.mock_get_keyspace.return_value = mock.MagicMock()
+        self.mock_get_keyspace.get.return_value = self.account_name
 
     def test_user_update_request(self):
         """Update an existing user."""
 
-        response = self.application.put(self.url, data = {
-            "email": "test@example.com",
-            "name": "Test User",
-            })
+        response = self.application.put(self.url,
+                headers = {
+                    "X-Auth-Token": self.token,
+                    },
+                data = {
+                    "email": "test@example.com",
+                    "name": "Test User",
+                    })
 
         self.assertIn("202", response.status)
+
+        self.mock_get_keyspace.get.assert_called_with(self.token)
 
         self.mock_get_channel.basic_publish.assert_called_with(routing_key = "users.update")
 
