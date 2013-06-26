@@ -216,8 +216,7 @@ class UserInterface(MethodView):
         if user is not None:
             routing_key = "users.update"
 
-            tokens = get_keyspace("tokens")
-            if tokens.get(request.headers.get("X-Auth-Token")) != username:
+            if get_keyspace("tokens").get(request.headers.get("X-Auth-Token")) != username:
                 raise UnauthorizedError(username = username)
 
         channel = get_channel()
@@ -298,16 +297,15 @@ class UserInterface(MethodView):
 
         """
 
-        if TOKENS.get(request.headers["X-Auth-Token"]) != username:
+        if get_keyspace("tokens").get(request.headers.get("X-Auth-Token")) != username:
             raise UnauthorizedError(username = username)
 
-        user = User.find_one(username = username)
+        users = get_collection("users")
+
+        user = users.find_one({ "username": username})
 
         if user is not None:
-            user.delete()
-
-            # TODO Drop user.uuid in MQ as a drop user function:
-            #   * Remove all outstanding login tokens for user
+            users.remove({ "_id": user["_id"] })
 
         return ""
 
