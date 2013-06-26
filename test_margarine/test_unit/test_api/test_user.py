@@ -125,11 +125,11 @@ class UserUpdateTest(BaseUserTest):
                     "name": "Test User",
                     })
 
-        self.assertIn("202", response.status)
-
         self.mock_get_keyspace.get.assert_called_with(self.token)
 
         self.mock_get_channel.basic_publish.assert_called_with(routing_key = "users.update")
+
+        self.assertIn("202", response.status)
 
 class UserDeleteTest(BaseUserTest):
     def setUp(self):
