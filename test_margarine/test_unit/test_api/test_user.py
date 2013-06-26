@@ -144,7 +144,7 @@ class UserUpdateTest(BaseUserTest):
 
 class UserDeleteTest(BaseUserTest):
     def setUp(self):
-        super().setUp()
+        super(UserDeleteTest, self).setUp()
 
     def test_user_delete_request(self):
         """Delete an existing user."""
