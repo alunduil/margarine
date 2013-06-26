@@ -204,7 +204,7 @@ class UserInterface(MethodView):
 
         message = {}
 
-        message["username"] = request.form.get("username")
+        message["username"] = request.form.get("username", username)
         message["email"] = request.form.get("email")
         message["name"] = request.form.get("name")
         message["password"] = request.form.get("password") # TODO Remove this and not allow custom passwords?
