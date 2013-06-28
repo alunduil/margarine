@@ -90,6 +90,7 @@ class UserCreationTest(BaseUserTest):
 
         self.mock_collection = self.get_mock_collection()
         self.mock_channel = self.get_mock_channel()
+        self.mock_keyspace = self.get_mock_keyspace()
 
     def test_nonexistent_user_creation_request(self):
         """Create a new (non-existent) user."""
@@ -117,6 +118,8 @@ class UserCreationTest(BaseUserTest):
                 "username": self.account_name,
                 "email": "test@example.com",
                 }
+
+        self.mock_keyspace.get.return_value = None
 
         response = self.application.put(self.url, data = {
             "email": "test@example.com",
