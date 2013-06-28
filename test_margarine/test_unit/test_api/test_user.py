@@ -102,7 +102,12 @@ class UserCreationTest(BaseUserTest):
 
         self.assertIn("202", response.status)
 
-        self.mock_channel.basic_publish.assert_called_once_with() # TODO Add parameters to assertion.
+        self.mock_channel.basic_publish.assert_called_once_with(
+                body = '{"username": "test_user", "password": null, "email": "test@example.com", "name": null}',
+                exchange = 'margarine.users.topic',
+                properties = mock.ANY,
+                routing_key = 'users.create'
+                )
 
     def test_existing_user_creation_request(self):
         """Create an existing user."""
