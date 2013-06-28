@@ -5,19 +5,27 @@
 
 import unittest2
 import mock
+import json
 
 from margarine.consumers.users import create_user_consumer
 
 class UserCreationTest(unittest2.TestCase):
     def setUp(self):
-        # TODO Mock the datastore insertion
+        patcher = mock.patch("margarine.consumers.users.get_collection")
+        mock_get_channel = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        self.mock_channel = mock.MagicMock()
+        mock_get_channel.return_value = self.mock_channel
 
         patcher = mock.patch("margarine.consumers.users.get_keyspace")
         mock_get_keyspace = patcher.start()
 
         self.addCleanup(patcher.stop)
 
-        mock_get_keyspace.return_value = mock.MagicMock()
+        self.mock_keyspace = mock.MagicMock()
+        mock_get_keyspace.return_value = self.mock_keyspace
 
         # TODO Mock the email sender
 
@@ -32,7 +40,9 @@ class UserCreationTest(unittest2.TestCase):
         # create_user_consumer(channel, method, header, body)
         create_user_consumer(mock.MagicMock(), method, None, message)
 
-        # TODO Verify the data store insertion.
+        self.mock_channel.insert.assert_called_once_with(json.loads(message))
+
+        self.mock_keyspace.setex.assert_called_once_with(mock.ANY, "test_user", mock.ANY)
 
         # TODO Verify the email sender.
 
