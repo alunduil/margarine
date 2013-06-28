@@ -302,9 +302,7 @@ class UserInterface(MethodView):
 
         users = get_collection("users")
 
-        user = users.find_one({ "username": username})
-
-        if user is not None:
+        if users.find_one({ "username": username}).count() > 0:
             users.remove({ "_id": user["_id"] })
 
         return ""
