@@ -30,18 +30,18 @@ def create_user_consumer(channel, method, header, body):
 
     """
     
-    user_information = json.loads(body)
+    user = json.loads(body)
 
-    user_information["hash"] = hashlib.md5("{0}:{1}:{2}".format(user_information["username"], information.AUTHENTICATION_REALM, user_information.pop("password"))).hexdigest()
+    user["hash"] = hashlib.md5("{0}:{1}:{2}".format(user["username"], information.AUTHENTICATION_REALM, user.pop("password"))).hexdigest()
 
-    logger.debug("hash: %s", user_information["hash"])
+    logger.debug("hash: %s", user["hash"])
 
-    # TODO Save the user in the datastore.
+    get_collection("users").insert(user)
 
     verification = uuid.uuid4()
 
     verifications = get_keyspace("verifications")
-    verifications.setex(verification, user_information["username"], datetime.timedelta(hours = 6))
+    verifications.setex(verification, user["username"], datetime.timedelta(hours = 6))
 
     # TODO Email the user the password and verification token.
 
