@@ -211,7 +211,10 @@ class UserDeleteTest(BaseUserTest):
 
         # And again to prove idempotency:
 
-        response = self.application.delete(self.url)
+        response = self.application.delete(self.url,
+                headers = {
+                    "X-Auth-Token": token,
+                    })
 
         self.mock_keyspace.get.assert_called_with(token)
 
