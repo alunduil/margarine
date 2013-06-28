@@ -188,12 +188,19 @@ class UserDeleteTest(BaseUserTest):
     def setUp(self):
         super(UserDeleteTest, self).setUp()
 
+        self.mock_keyspace = self.get_mock_keyspace()
         self.mock_collection = self.get_mock_collection()
 
     def test_user_delete_request(self):
         """Delete an existing user."""
 
+        token = "c2d52150-08d1-4ae3-b19c-323c9e37813d"
+
+        self.mock_keyspace.get.return_value = self.account_name
+
         response = self.application.delete(self.url)
+
+        self.mock_keyspace.get.assert_called_with(token)
 
         self.assertIn("200", response.status)
 
@@ -202,4 +209,13 @@ class UserDeleteTest(BaseUserTest):
         response = self.application.delete(self.url)
 
         self.assertIn("200", response.status)
+
+    def test_unauthenticated_user_delete_request(self):
+        """Delete an existing user without a proper token."""
+
+        self.mock_keyspace.get.return_value = None
+
+        response = self.application.delete(self.url)
+
+        self.assertIn("401", response.status)
 
