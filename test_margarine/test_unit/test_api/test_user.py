@@ -86,7 +86,7 @@ class BaseUserTest(unittest2.TestCase):
 
 class UserCreationTest(BaseUserTest):
     def setUp(self):
-        super().setUp()
+        super(UserCreationTest, self).setUp()
 
         self.mock_collection = self.get_mock_collection()
         self.mock_channel = self.get_mock_channel()
