@@ -29,8 +29,30 @@ class UserCreationTest(unittest2.TestCase):
 
         # TODO Mock the email sender
 
-    def test_user_creation_request(self):
-        """Create a new (non-existent) user."""
+    def test_user_creation_with_password(self):
+        """Create a new (non-existent) user specifying password."""
+
+        message = '{"username": "test_user", "password": "balogne", "email": "test@example.com", "name": null}'
+
+        method = mock.MagicMock()
+        method.delivery_tag.return_value = "create"
+
+        # create_user_consumer(channel, method, header, body)
+        create_user_consumer(mock.MagicMock(), method, None, message)
+
+        user = json.loads(message)
+        del user["password"]
+        user.update({"hash": mock.ANY})
+
+        self.mock_channel.insert.assert_called_once_with(user)
+
+        self.mock_keyspace.setex.assert_called_once_with(mock.ANY, "test_user", mock.ANY)
+
+        # TODO Verify the email sender.
+        # TODO Don't include password in email.
+
+    def test_user_creation_without_password(self):
+        """Create a new (non-existent) user not specifying password."""
 
         message = '{"username": "test_user", "password": null, "email": "test@example.com", "name": null}'
 
@@ -40,9 +62,14 @@ class UserCreationTest(unittest2.TestCase):
         # create_user_consumer(channel, method, header, body)
         create_user_consumer(mock.MagicMock(), method, None, message)
 
-        self.mock_channel.insert.assert_called_once_with(json.loads(message))
+        user = json.loads(message)
+        del user["password"]
+        user.update({"hash": mock.ANY})
+
+        self.mock_channel.insert.assert_called_once_with(user)
 
         self.mock_keyspace.setex.assert_called_once_with(mock.ANY, "test_user", mock.ANY)
 
         # TODO Verify the email sender.
+        # TODO Verify randomly generated password included in email.
 
