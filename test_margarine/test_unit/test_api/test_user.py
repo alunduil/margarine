@@ -22,21 +22,77 @@ class BaseUserTest(unittest2.TestCase):
         self.url = "/{i.API_VERSION}/users/{username}"
         self.url = self.url.format(username = self.account_name, i = information)
 
-class UserCreationTest(BaseUserTest):
-    def setUp(self):
-        super().setUp()
+    def get_mock_channel(self):
+        """Setup and return a mock channel for further interaction.
+
+        Return
+        ------
+
+        Mocked channel for faked queue interactions.
+
+        """
 
         patcher = mock.patch("margarine.api.user.get_channel")
         mock_get_channel = patcher.start()
 
         self.addCleanup(patcher.stop)
 
-        mock_get_channel.return_value = mock.MagicMock()
+        mock_channel = mock.MagicMock()
+        mock_get_channel.return_value = mock_channel
 
-    def test_nonexsitent_user_creation_request(self):
+        return mock_channel
+
+    def get_mock_collection(self):
+        """Setup and return a mock collection for further interaction.
+
+        Return
+        ------
+
+        Mocked collection for faked Mongo interactions.
+
+        """
+
+        patcher = mock.patch("margarine.api.user.get_collection")
+        mock_get_collection = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        mock_collection = mock.MagicMock()
+        mock_get_collection.return_value = mock_collection
+
+        return mock_collection
+
+    def get_mock_keyspace(self):
+        """Setup and return a mock keyspace for further interaction.
+
+        Return
+        ------
+
+        Mocked keyspace for faked Redis interactions.
+
+        """
+
+        patcher = mock.patch("margarine.api.user.get_keyspace")
+        mock_get_keyspace = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        mock_keyspace = mock.MagicMock()
+        mock_get_keyspace.return_value = mock_keyspace
+
+        return mock_keyspace
+
+class UserCreationTest(BaseUserTest):
+    def setUp(self):
+        super().setUp()
+
+        self.mock_collection = self.get_mock_collection()
+        self.mock_channel = self.get_mock_channel()
+
+    def test_nonexistent_user_creation_request(self):
         """Create a new (non-existent) user."""
 
-        # TODO Mock user retrieval (non-existent user).
+        self.mock_collection.find_one.return_value = None # TODO Verify this return value…
 
         response = self.application.put(self.url, data = {
             "email": "test@example.com",
@@ -44,12 +100,16 @@ class UserCreationTest(BaseUserTest):
 
         self.assertIn("202", response.status)
 
-        # Ensure publish has a routing_key parameter of users.create.
+        self.mock_channel.basic_publish.assert_called_once_with() # TODO Add parameters to assertion.
 
     def test_existing_user_creation_request(self):
         """Create an existing user."""
 
-        # TODO Mock user retrieval (existing user).
+        self.mock_collection.find_one.return_value = {
+                "_id": None,
+                "username": self.account_name,
+                "email": "test@example.com",
+                }
 
         response = self.application.put(self.url, data = {
             "email": "test@example.com",
@@ -57,22 +117,22 @@ class UserCreationTest(BaseUserTest):
 
         self.assertIn("401", response.status)
 
+        self.assertFalse(self.mock_channel.basic_publish.called) 
+
 class UserReadTest(BaseUserTest):
     def setUp(self):
         super(UserReadTest, self).setUp()
 
-        patcher = mock.patch("margarine.api.user.get_collection")
-        mock_get_collection = patcher.start()
-
-        self.addCleanup(patcher.stop)
-
-        self.mock_collection = mock.MagicMock()
-        mock_get_collection.return_value = self.mock_collection
+        self.mock_collection = self.get_mock_collection()
 
     def test_existing_user_read_request(self):
         """Read an existing user."""
 
-        # TODO Mock user retrieval (existing user).
+        self.mock_collection.find_one.return_value = {
+                "_id": None,
+                "username": self.account_name,
+                "email": "test@example.com",
+                }
 
         response = self.application.get(self.url)
 
@@ -81,9 +141,7 @@ class UserReadTest(BaseUserTest):
     def test_nonexistent_user_read_request(self):
         """Read a non-existent user."""
 
-        # TODO Mock user retrieval (non-existent user).
-
-        self.mock_collection.find_one.return_value = None
+        self.mock_collection.find_one.return_value = None # TODO Verify this return value.
 
         response = self.application.get(self.url)
 
@@ -93,45 +151,27 @@ class UserUpdateTest(BaseUserTest):
     def setUp(self):
         super(UserUpdateTest, self).setUp()
 
-        patcher = mock.patch("margarine.api.user.get_collection")
-        mock_get_collection = patcher.start()
-
-        self.addCleanup(patcher.stop)
-
-        mock_get_collection.return_value = mock.MagicMock()
-
-        self.token = "c2d52150-08d1-4ae3-b19c-323c9e37813d"
-
-        patcher = mock.patch("margarine.api.user.get_keyspace")
-        mock_get_keyspace = patcher.start()
-
-        self.addCleanup(patcher.stop)
-
-        self.mock_keyspace = mock.MagicMock()
-        mock_get_keyspace.return_value = self.mock_keyspace
-        self.mock_keyspace.get.return_value = self.account_name
-
-        patcher = mock.patch("margarine.api.user.get_channel")
-        mock_get_channel = patcher.start()
-
-        self.addCleanup(patcher.stop)
-
-        self.mock_channel = mock.MagicMock()
-        mock_get_channel.return_value = self.mock_channel
+        self.mock_collection = self.get_mock_collection()
+        self.mock_keyspace = self.get_mock_keyspace()
+        self.mock_channel = self.get_mock_channel()
 
     def test_user_update_request(self):
         """Update an existing user."""
 
+        token = "c2d52150-08d1-4ae3-b19c-323c9e37813d"
+
+        self.mock_keyspace.get.return_value = self.account_name
+
         response = self.application.put(self.url,
                 headers = {
-                    "X-Auth-Token": self.token,
+                    "X-Auth-Token": token,
                     },
                 data = {
                     "email": "test@example.com",
                     "name": "Test User",
                     })
 
-        self.mock_keyspace.get.assert_called_with(self.token)
+        self.mock_keyspace.get.assert_called_with(token)
 
         self.mock_channel.basic_publish.assert_called_once_with(
                 body = '{"username": "test_user", "password": null, "email": "test@example.com", "name": "Test User"}',
@@ -146,10 +186,10 @@ class UserDeleteTest(BaseUserTest):
     def setUp(self):
         super(UserDeleteTest, self).setUp()
 
+        self.mock_collection = self.get_mock_collection()
+
     def test_user_delete_request(self):
         """Delete an existing user."""
-
-        # TODO Mock user retrieval.
 
         response = self.application.delete(self.url)
 
