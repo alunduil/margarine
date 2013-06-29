@@ -93,7 +93,7 @@ class UserCreationTest(BaseUserTest):
         self.mock_keyspace = self.get_mock_keyspace()
 
     def test_nonexistent_user_creation_request(self):
-        """Create a new (non-existent) user."""
+        """Create User—Not Existing."""
 
         self.mock_collection.find_one.return_value = None # TODO Verify this return value…
 
@@ -111,7 +111,7 @@ class UserCreationTest(BaseUserTest):
                 )
 
     def test_existing_user_creation_request(self):
-        """Create an existing user."""
+        """Create User—Existing."""
 
         self.mock_collection.find_one.return_value = {
                 "_id": None,
@@ -136,7 +136,7 @@ class UserReadTest(BaseUserTest):
         self.mock_collection = self.get_mock_collection()
 
     def test_existing_user_read_request(self):
-        """Read an existing user."""
+        """Read User—Existing."""
 
         self.mock_collection.find_one.return_value = {
                 "_id": None,
@@ -149,7 +149,7 @@ class UserReadTest(BaseUserTest):
         self.assertIn("200", response.status)
 
     def test_nonexistent_user_read_request(self):
-        """Read a non-existent user."""
+        """Read User—Not Existing."""
 
         self.mock_collection.find_one.return_value = None # TODO Verify this return value.
 
@@ -166,7 +166,7 @@ class UserUpdateTest(BaseUserTest):
         self.mock_channel = self.get_mock_channel()
 
     def test_user_update_request(self):
-        """Update an existing user."""
+        """Update User—Existing."""
 
         token = "c2d52150-08d1-4ae3-b19c-323c9e37813d"
 
@@ -200,7 +200,7 @@ class UserDeleteTest(BaseUserTest):
         self.mock_collection = self.get_mock_collection()
 
     def test_user_delete_request(self):
-        """Delete an existing user."""
+        """Delete User—Existing."""
 
         token = "c2d52150-08d1-4ae3-b19c-323c9e37813d"
 
@@ -231,7 +231,7 @@ class UserDeleteTest(BaseUserTest):
         self.assertIn("200", response.status)
 
     def test_unauthenticated_user_delete_request(self):
-        """Delete an existing user without a proper token."""
+        """Delete User—Existing and Without Token."""
 
         self.mock_keyspace.get.return_value = None
 
