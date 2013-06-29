@@ -42,6 +42,7 @@ import json
 from flask import request
 from flask import Blueprint
 from flask import abort
+from flask import make_response
 
 from margarine.aggregates import get_collection
 
