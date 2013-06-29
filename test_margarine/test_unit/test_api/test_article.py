@@ -175,7 +175,7 @@ class ArticleUpdateTest(BaseArticleTest):
     def test_article_update_existing_request(self):
         """Update Article—Existing."""
 
-        response = self.application.put(self.url + self.article_uuid)
+        response = self.application.put(self.url + str(self.article_uuid))
 
         self.assertIn("405", response.status)
 
