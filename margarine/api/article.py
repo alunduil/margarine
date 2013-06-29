@@ -41,6 +41,8 @@ import uuid
 from flask import request
 from flask import Blueprint
 
+from margarine.aggregates import get_collection
+
 ARTICLE = Blueprint("article", __name__)
 
 @ARTICLE.route('/', methods = [ "POST" ])
@@ -79,8 +81,6 @@ def submit_article():
     response.headers["Location"] = url_for("article", uuid = uuid)
 
     return response
-
-# TODO Do we need PUT for articles?
 
 @ARTICLE.route('/<uuid>')
 def article(uuid):
