@@ -143,7 +143,7 @@ class ArticleReadTest(BaseArticleTest):
 
         # TODO Ensure that the object store is not called.
 
-        response = self.application.head(self.url + self.article_uuid)
+        response = self.application.head(self.url + str(self.article_uuid))
 
         self.mock_collection.find_one.assert_called_once_with(mock.ANY, {"sanitized_url": -1})
 
