@@ -102,8 +102,9 @@ def article(uuid):
 
     """
 
-    # TODO Retrieve the document from the datastore
+    article = get_collection("articles").find_one({ "_id": uuid })
+
     # TODO Redirect to Cloud Files?
 
-    return
+    return article
 
