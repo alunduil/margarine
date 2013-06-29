@@ -156,7 +156,7 @@ class ArticleReadTest(BaseArticleTest):
 
         self.mock_collection.find_one.return_value = None # todo verify this return value.
 
-        response = self.application.get(self.url + self.article_uuid)
+        response = self.application.get(self.url + str(self.article_uuid))
 
         self.assertin("404", response.status)
 
