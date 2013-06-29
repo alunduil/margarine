@@ -37,6 +37,7 @@ The properties we're starting with are the following:
 """
 
 import uuid
+import json
 
 from flask import request
 from flask import Blueprint
@@ -106,5 +107,5 @@ def article(uuid):
 
     # TODO Redirect to Cloud Files?
 
-    return article
+    return json.dumps(article)
 
