@@ -177,14 +177,14 @@ class ArticleUpdateTest(BaseArticleTest):
 
         response = self.application.put(self.url + self.article_uuid)
 
-        self.assertIn("402", response.status)
+        self.assertIn("405", response.status)
 
     def test_article_update_nonexistent_request(self):
         """Update Article—Not Existing."""
 
         response = self.application.put(self.url + str(self.article_uuid))
 
-        self.assertIn("402", response.status)
+        self.assertIn("405", response.status)
 
 # No Deletes on Articles Allowed!
 
@@ -194,5 +194,5 @@ class ArticleDeleteTest(BaseArticleTest):
 
         response = self.application.delete(self.url + self.article_uuid)
 
-        self.assertIn("402", response.status)
+        self.assertIn("405", response.status)
 
