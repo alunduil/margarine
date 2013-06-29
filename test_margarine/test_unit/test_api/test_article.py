@@ -154,7 +154,7 @@ class ArticleReadTest(BaseArticleTest):
     def test_nonexistent_article_get_request(self):
         """read article—not existing (get)."""
 
-        self.mock_collection.find_one.return_value = none # todo verify this return value.
+        self.mock_collection.find_one.return_value = None # todo verify this return value.
 
         response = self.application.get(self.url + self.article_uuid)
 
@@ -163,7 +163,7 @@ class ArticleReadTest(BaseArticleTest):
     def test_nonexistent_article_head_request(self):
         """read article—not existing (head)."""
 
-        self.mock_collection.find_one.return_value = none # todo verify this return value.
+        self.mock_collection.find_one.return_value = None # todo verify this return value.
 
         response = self.application.head(self.url + self.article_uuid)
 
