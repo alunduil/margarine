@@ -182,7 +182,7 @@ class ArticleUpdateTest(BaseArticleTest):
     def test_article_update_nonexistent_request(self):
         """Update Article—Not Existing."""
 
-        response = self.application.put(self.url + self.article_uuid)
+        response = self.application.put(self.url + str(self.article_uuid))
 
         self.assertIn("402", response.status)
 
