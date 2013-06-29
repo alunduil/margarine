@@ -158,7 +158,7 @@ class ArticleReadTest(BaseArticleTest):
 
         response = self.application.get(self.url + str(self.article_uuid))
 
-        self.assertin("404", response.status)
+        self.assertIn("404", response.status)
 
     def test_nonexistent_article_head_request(self):
         """read article—not existing (head)."""
@@ -169,7 +169,7 @@ class ArticleReadTest(BaseArticleTest):
 
         response = self.application.head(self.url + str(self.article_uuid))
 
-        self.assertin("404", response.status)
+        self.assertIn("404", response.status)
 
 # No Updates on Articles Allowed!
 
