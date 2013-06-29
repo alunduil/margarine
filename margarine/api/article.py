@@ -41,6 +41,7 @@ import json
 
 from flask import request
 from flask import Blueprint
+from flask import abort
 
 from margarine.aggregates import get_collection
 
@@ -100,12 +101,44 @@ def article(uuid):
     ::
 
         HTTP/1.0 200 Ok
+        X-ARTICLE-URL: http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html
+        X-ARTICLE-TAGS: [ "lvm", "lvm snapshots", "snapshots", "san", "partitions" ]
+        X-ARTICLE-NOTATIONS: [ { "location": null, "note": "lorem ipsum" } ]
+        X-ARTICLE-VOTES: 37
+        X-ARTICLE-CREATED-AT: 
+        X-ARTICLE-ORIGINAL-ETAG: 5d811d796b3e8fefd62233f3772437af
+        X-ARTICLE-PARSED-AT:
+
+        <h2>Introduction</h2>
+        <p>It seems that disk snapshots have become a hot topic and a confusing
+        topic.  I intend to simply outline what snapshots look like in terms of
+        the lower layers of abstraction and nothing more.  Snapshots are built 
+        into things like LVM, SAN, &amp;c but I will not be covering those 
+        technologies.  Instead, what I intend to clarify is how snapshots work 
+        in LVM.</p>
+
+        <h2>Lower Layers</h2>
+        <h3>Layer 1: The Hard Disk</h3>
+
+    .. note::
+        When performing a HEAD operation rather than a GET the body is not
+        returned.
 
     """
 
     article = get_collection("articles").find_one({ "_id": uuid })
 
+    if article is None:
+        abort(404)
+
+    body = article.pop("sanitized_url")
+
+    headers = dict([ ("X-ARTICLE-" + header.replace("_", "-").upper(), value) for header, value in article.iteritems() ])
+
     # TODO Redirect to Cloud Files?
 
-    return json.dumps(article)
+    response = make_response(body, "200")
+    response.headers.update(headers)
+
+    return response
 
