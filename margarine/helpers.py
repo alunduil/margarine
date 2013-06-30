@@ -21,7 +21,13 @@ class URI(object):
 
         self.uri = uri
 
-        match = re.match(r'((?P<scheme>[^:]+)://)?((?P<username>[^:@]+)(:(?P<password>[^@]+))?@)?(?P<host>[^:]+)?(:(?P<port>[^/]+))?(?P<path>/\w+)?', self.uri)
+        match = re.match( \
+                r'((?P<scheme>[^:]+)://)?' \
+                r'((?P<username>[^:@]+)(:(?P<password>[^@]+))?@)?' \
+                r'(?P<host>[^:/]+)?' \
+                r'(:(?P<port>[^/]+))?' \
+                r'(?P<path>/\w+)?' \
+                , self.uri)
 
         self.scheme = match.group("scheme")
         self.username = match.group("username")
