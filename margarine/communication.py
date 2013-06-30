@@ -46,8 +46,6 @@ def get_channel():
 
     global CONNECTION_BROKER
 
-    logger.debug("CONNECTION_BROKER: %s", CONNECTION_BROKER)
-
     if CONNECTION_BROKER is None or not CONNECTION_BROKER.is_open:
         uri = URI(Parameters()["communication.url"])
 
