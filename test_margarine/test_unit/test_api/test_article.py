@@ -128,7 +128,7 @@ class ArticleReadTest(BaseArticleTest):
 
         # TODO Mock the object store access with the body.
 
-        response = self.application.get(self.url + self.article_uuid)
+        response = self.application.get(self.url + str(self.article_uuid))
 
         self.assertIn("200", response.status)
 
