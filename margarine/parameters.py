@@ -152,8 +152,6 @@ class Parameters(object):
 
         self.defaults.update(extract_defaults(parameters, prefix = prefix))
 
-        logger.debug("self.defaults: %s", self.defaults)
-
         for parameter in parameters:
             parameter.setdefault("group", name)
 
@@ -162,16 +160,12 @@ class Parameters(object):
         else:
             self.parameters = []
 
-        logger.debug("self.parameters: %s", self.parameters)
-
         self._add_argument_parameters(name, parameters)
 
         if not hasattr(self, "_configuration_files"):
             self._configuration_files = {}
 
-        if file_path not in self._configuration_files:
-            logger.debug("file_path: %s", file_path)
-
+        if file_path is not None and file_path not in self._configuration_files:
             self.parse(components = { "file" }, file_path = file_path)
 
         self.parse(components = { "environment" })
@@ -287,7 +281,6 @@ class Parameters(object):
         """
 
         logger.info("Adding parameters to %s.", name)
-        logger.debug("name: %s", name)
         logger.debug("parameters: %s", parameters)
 
         if not hasattr(self, "argument_parser"):
@@ -312,13 +305,9 @@ class Parameters(object):
         for options in parameters:
             parser = self.argument_parser
 
-            logger.debug("name: %s", name)
-
             if name != "default":
                 if not hasattr(self, "group_parsers"):
                     self.group_parsers = {}
-
-                logger.debug("Group Parsers: %s", self.group_parsers)
 
                 if len(options["args"]) > 1:
                     logger.warn("Ignoring short option(s), %s, for %s", options["args"][1], options["args"][0])
