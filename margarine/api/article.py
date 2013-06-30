@@ -38,6 +38,7 @@ The properties we're starting with are the following:
 
 import uuid
 import json
+import logger
 
 from flask import request
 from flask import Blueprint
@@ -45,6 +46,8 @@ from flask import abort
 from flask import make_response
 
 from margarine.aggregates import get_collection
+
+logger = logging.getLogger(__name__)
 
 ARTICLE = Blueprint("article", __name__)
 
@@ -134,12 +137,18 @@ def article(uuid):
 
     body = article.pop("sanitized_url")
 
+    logger.debug("body: %s", body)
+
     headers = dict([ ("X-ARTICLE-" + header.replace("_", "-").upper(), value) for header, value in article.iteritems() ])
+
+    logger.debug("headers: %s", headers)
 
     # TODO Redirect to Cloud Files?
 
     response = make_response(body, "200")
     response.headers.update(headers)
+
+    logger.debug("response: %s", response)
 
     return response
 
