@@ -50,3 +50,13 @@ class URIParsingTest(unittest2.TestCase):
         self.assertEqual(uri.host, "example.com")
         self.assertEqual(uri.port, "8000")
 
+    def test_mongodb_uri(self):
+        uri = URI("mongodb://localhost/test")
+
+        self.assertEqual(uri.scheme, "mongodb")
+        self.assertEqual(uri.path, "/test")
+        self.assertIsNone(uri.username)
+        self.assertIsNone(uri.password)
+        self.assertIsEqual(uri.host, "localhost")
+        self.assertIsNone(uri.port)
+
