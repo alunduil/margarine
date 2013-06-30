@@ -135,6 +135,8 @@ def article(uuid):
     if article is None:
         abort(404)
 
+    logger.debug("article: %s", article)
+
     body = article.pop("sanitized_url")
 
     logger.debug("body: %s", body)

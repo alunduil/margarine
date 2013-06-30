@@ -138,7 +138,13 @@ class ArticleReadTest(BaseArticleTest):
         """Read Article-Existing (HEAD)."""
 
         self.mock_collection.find_one.return_value = {
-                "sanitized_url": None, # TODO Change to proper URL.
+                "_id": self.article_uuid,
+                "url": self.article_url,
+                "notations": [],
+                "votes": 0,
+                "created_at": None,
+                "original_etag": "5d811d796b3e8fefd62233f3772437af",
+                "parsed_at": None,
                 }
 
         # TODO Ensure that the object store is not called.
