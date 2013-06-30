@@ -14,9 +14,9 @@ from margarine.helpers import URI
 logger = logging.getLogger(__name__)
 
 Parameters("datastore", parameters = [
-    { # --datastore-url=URL; URL ← mongodb://localhost:27017/test
+    { # --datastore-url=URL; URL ← mongodb://localhost/test
         "options": [ "--url" ],
-        "default": "mongodb://localhost:27017/test",
+        "default": "mongodb://localhost/test",
         "help": \
                 "The URL endpoint of the data store mechanism.  This can be " \
                 "a local sqlite database but typically will be set to a " \
@@ -49,6 +49,9 @@ def get_collection(collection):
     url = Parameters()["datastore.url"]
 
     uri = URI(url)
+
+    logger.debug("url: %s", url)
+    logger.debug("uri: %s", uri)
 
     if DATASTORE_CONNECTION is None:
         DATASTORE_CONNECTION = pymongo.MongoClient(url)
