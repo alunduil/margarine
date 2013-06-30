@@ -195,8 +195,5 @@ def _extract_flask_parameters(parameters):
     return flask_parameters
 
 def main():
-    parameters = Parameters()
-    parameters.parse() # TODO Have parse return self?
-
-    MARGARINE_API.run(**_extract_flask_parameters(parameters))
+    MARGARINE_API.run(**_extract_flask_parameters(Parameters().parse()))
 

@@ -3,8 +3,8 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+from margarine.parameters import Parameters
 from margarine.communication import get_channel
-
 from margarine.consumers import users
 
 def main():
@@ -13,6 +13,8 @@ def main():
     Create a consuming process for the various backend processes.
 
     """
+
+    Parameters().parse()
 
     # TODO Manage threads for load balancing.
 

@@ -415,23 +415,13 @@ class Parameters(object):
             yield (key, self[key])
 
     def iterkeys(self):
-        logger.debug("parameters: %s", self.parameters)
-
         seen = []
 
         for item in self.parameters:
-            logger.info("Inspecting Key %s", item)
-
             value = item["options"][0][2:]
-
-            logger.debug("value: %s", value)
-
-            logger.debug("group: %s", item["group"])
 
             if item["group"] != "default":
                 value = item["group"] + "." + value
-
-            logger.debug("value: %s", value)
 
             seen += [value]
 
