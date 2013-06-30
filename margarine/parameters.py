@@ -320,15 +320,11 @@ class Parameters(object):
 
                 logger.debug("Group Parsers: %s", self.group_parsers)
 
-                logger.debug("options[args]: %s", options["args"])
-
                 if len(options["args"]) > 1:
                     logger.warn("Ignoring short option(s), %s, for %s", options["args"][1], options["args"][0])
 
                 del options["args"][1:]
                 options["args"][0] = options["args"][0].replace("--", "--" + name + "-", 1)
-
-                logger.debug("options[args]: %s", options["args"])
 
                 parser = self.group_parsers.setdefault(name, self.argument_parser.add_argument_group(name))
 
