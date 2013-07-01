@@ -375,10 +375,10 @@ def login(username):
 
     """
     
-    if request.authorization.opaque != HOST_UUID.hex:
+    if request.authorization is None or request.authorization.opaque != Parameters()["api.uuid"]:
         raise UnauthorizedError(username = username)
 
-    user = User.find_one(username = username)
+    user = get_collection("users").find_one({ "username": username })
 
     if user is None:
         abort(404)
