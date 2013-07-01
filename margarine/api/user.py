@@ -99,13 +99,12 @@ def http_401_handler(error):
     """
 
     logger.debug("type(error): %s", type(error))
-    logger.debug("error.keys: %s", error.__dict__.keys())
     
     logger.debug("error.username: %s", error.username)
 
     response = make_response("", 401)
 
-    response.headers["Location"] = url_for('users.login', username = error.username)
+    response.headers["Location"] = url_for('user.login', username = error.username)
 
     response.headers["WWW-Authenticate"] = \
             "Digest realm=\"{realm}\"," \
