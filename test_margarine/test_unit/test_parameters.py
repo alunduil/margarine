@@ -21,15 +21,15 @@ TEST_PARAMETERS = [
             },
         { # --environment=ENV, -e=ENV; ENV ← "environment"
             "options": [ "--environment", "-e" ],
-            "default": "environment",
+            "default": "default",
             },
         { # --configuration=CONF, -c=CONF; CONF ← "configuration"
             "options": [ "--configuration", "-c" ],
-            "default": "configuration",
+            "default": "default",
             },
         { # --argument=ARG, -a=ARG; ARG ← "argument"
             "options": [ "--argument", "-a" ],
-            "default": "argument",
+            "default": "default",
             },
         { # --environment_only=ENV, -E=ENV; ENV ← "environment"
             "options": [ "--environment_only", "-E" ],
