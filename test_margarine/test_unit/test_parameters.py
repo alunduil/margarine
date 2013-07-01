@@ -8,6 +8,7 @@
 import unittest2
 import tempfile
 import sys
+import os
 import logging
 
 from margarine.parameters import Parameters
@@ -98,7 +99,9 @@ class ParametersResolutionTest(unittest2.TestCase):
 
         self.name = "test-section"
 
-        # TODO Mock the environment.
+        os.environ = {
+                "TEST_SCRIPT_TEST_SECTION_ENVIRONMENT": "environment",
+                }
 
         self.temp = tempfile.NamedTemporaryFile(mode = "w")
 
