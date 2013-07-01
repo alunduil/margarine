@@ -43,6 +43,7 @@ import pika
 import json
 import logging
 import werkzeug.exceptions
+import hashlib
 
 from flask import request
 from flask import make_response
@@ -380,12 +381,19 @@ def login(username):
 
     user = get_collection("users").find_one({ "username": username })
 
+    logger.debug("user: %s", user)
+
     if user is None:
         abort(404)
 
-    h1 = user.hash
+    h1 = user["hash"]
 
-    _ = "{request.method}:{request.script_path}{request.path}"
+    logger.debug("request: %s", request)
+    logger.debug("request.keys: %s", request.__dict__.keys())
+    logger.debug("request.method: %s", request.method)
+    logger.debug("request.path: %s", request.path)
+
+    _ = "{request.method}:{request.path}"
     h2 = hashlib.md5(_.format(request = request)).hexdigest()
 
     _ = "{h1}:{a.nonce}:{a.nc}:{a.cnonce}:{a.qop}:{h2}"
