@@ -180,8 +180,10 @@ class Parameters(object):
         """
 
         if file_path is not None:
-            self._configuration_files[file_path] = self._create_configuration_parser(file_path)
+            logger.info("Parsing %s", file_path)
+            self._create_configuration_parser(file_path)
         else:
+            logger.info("Parsing all files")
             for file_path in self._configuration_files.keys():
                 self.reinitialize(file_path)
 
@@ -222,6 +224,8 @@ class Parameters(object):
                 self.argument_parser.parse_args(namespace = self.arguments)
                 logger.debug("self.arguments: %s", self.arguments)
 
+        logger.info("Parsing Configuration Files")
+
         if "file" in components:
             self.reinitialize(file_path)
 
@@ -256,6 +260,7 @@ class Parameters(object):
         logger.debug("file_path: %s", file_path)
 
         if os.access(file_path, os.R_OK):
+            logger.debug("file is readable")
             self._configuration_files[file_path].read(file_path)
 
     def _add_argument_parameters(self, name, parameters):
