@@ -383,7 +383,7 @@ class Parameters(object):
 
         logger.info("Checking CLI Arguments")
 
-        argument_key = "_".join(key.split(".", 1))
+        argument_key = "_".join(key.split(".", 1)).replace("-", "_")
 
         logger.debug("self.arguments.%s: %s", argument_key, getattr(self.arguments, argument_key, None))
 
