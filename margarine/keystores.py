@@ -59,7 +59,7 @@ def get_keyspace(keyspace):
                 "verifications": 1,
                 }
             
-        KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(url + "/" + str(databases[keyspace]))
+        KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(host = uri.host, port = uri.port or 6379, db = databases[keyspace])
 
     return KEYSTORE_CONNECTIONS[keyspace]
     
