@@ -343,6 +343,7 @@ class Parameters(object):
         default = None 
         if key in self.defaults:
             default = self.defaults[key][0] # TODO Consider only?
+
         logger.debug("default: %s", default)
 
         logger.info("Checking Environment")
@@ -351,7 +352,11 @@ class Parameters(object):
 
         fmt = "{0}_{1}_{2}" if len(split) > 1 else "{0}_{1}"
 
-        value = os.environ.get(fmt.format(sys.argv[0].upper(), *[ _.upper() for _ in split ]), default)
+        environ_key = fmt.format(sys.argv[0].upper(), *[ _.upper() for _ in split ])
+
+        logger.debug("environ_key: %s", environ_key)
+
+        value = os.environ.get(environ_key, default)
 
         logger.debug("value: %s", value)
 
