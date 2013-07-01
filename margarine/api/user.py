@@ -197,6 +197,8 @@ class UserInterface(MethodView):
         """
 
         user = get_collection("users").find_one({ "username": username })
+        
+        logger.debug("user: %s", user)
 
         message_properties = pika.BasicProperties()
         message_properties.content_type = "application/json"
