@@ -62,7 +62,7 @@ logger = logging.getLogger(__name__)
 Parameters("api", parameters = [
     { # --api-uuid=UUID; UUID ← uuid.uuid4()
         "options": [ "--uuid" ],
-        "default": uuid.uuid4(),
+        "default": str(uuid.uuid4()),
         "help": \
                 "The UUID used for the HTTP Digest Authentication " \
                 "Mechanism.  This should be set to a static string that is " \
@@ -106,16 +106,20 @@ def http_401_handler(error):
 
     response.headers["Location"] = url_for('user.login', username = error.username)
 
-    response.headers["WWW-Authenticate"] = \
+    authentication_string = \
             "Digest realm=\"{realm}\"," \
             "qop=\"auth\"," \
             "nonce=\"{nonce}\"," \
-            "opaque=\"{host_identifier}\""
-    repoonse.headers["WWW-Authenticate"].format(
+            "opaque=\"{opaque}\""
+    authentication_string = authentication_string.format(
             realm = information.AUTHENTICATION_REALM,
             nonce = uuid.uuid4().hex,
-            opaque = HOST_UUID.hex,
+            opaque = Parameters()["api.uuid"],
             )
+
+    logger.debug("authentication_string: %s", authentication_string)
+
+    response.headers["WWW-Authenticate"] = authentication_string
 
     return response
 
