@@ -54,7 +54,7 @@ PARAMS["requires"] = [
         ]
 
 PARAMS["scripts"] = [
-        "bin/mapid",
+        "bin/blend",
         "bin/spread",
         ]
 
