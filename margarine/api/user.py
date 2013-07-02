@@ -155,6 +155,7 @@ class UserInterface(MethodView):
             Content-Type: application/x-www-form-urlencoded
 
             email=alunduil%40alunduil.com
+            name=Alex%20Brandt
 
         Response
         --------
@@ -208,12 +209,11 @@ class UserInterface(MethodView):
         message_properties.content_type = "application/json"
         message_properties.durable = False
 
-        message = {}
-
-        message["username"] = request.form.get("username", username)
-        message["email"] = request.form.get("email")
-        message["name"] = request.form.get("name")
-        message["password"] = request.form.get("password") # TODO Remove this and not allow custom passwords?
+        message = {
+                "username" = request.form.get("username", username),
+                "email" = request.form["email"],
+                "name" = request.form.get("name"),
+                }
 
         message = json.dumps(message)
 
