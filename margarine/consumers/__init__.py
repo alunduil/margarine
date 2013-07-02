@@ -4,6 +4,10 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 from margarine.parameters import Parameters
+from margarine.parameters import configure_logging
+
+configure_logging()
+
 from margarine.communication import get_channel
 from margarine.consumers import users
 

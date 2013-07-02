@@ -22,7 +22,7 @@ from margarine import information
 logger = logging.getLogger(__name__)
 
 CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, "etc", "margarine")
-CONFIGURATION_FILE = os.path.join(CONFIGURATION_DIRECTORY, "margarine.conf")
+CONFIGURATION_FILE = os.path.join(CONFIGURATION_DIRECTORY, "margarine.ini")
 
 def extract_defaults(parameters, prefix = "", keep = lambda _: _):
     """Extract the default values for the passed parameters.
