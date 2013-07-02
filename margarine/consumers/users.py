@@ -14,6 +14,7 @@ import datetime
 from margarine.api import information
 from margarine.aggregates import get_collection
 from margarine.keystores import get_keyspace
+from margarine.communication import send_user_email
 
 logger = logging.getLogger(__name__)
 
@@ -23,18 +24,13 @@ def create_user_consumer(channel, method, header, body):
     This takes the meta-information passed through the message queue and
     performs the following operations:
 
-    * Generate User Password
     * Add User to DataStore
-    * Email the Password and Verification URL to the User
     * Record the Verification URL in the Token Store
+    * Email the Password and Verification URL to the User
 
     """
     
     user = json.loads(body)
-
-    user["hash"] = hashlib.md5("{0}:{1}:{2}".format(user["username"], information.AUTHENTICATION_REALM, user.pop("password"))).hexdigest()
-
-    logger.debug("hash: %s", user["hash"])
 
     get_collection("users").insert(user)
 
@@ -43,9 +39,32 @@ def create_user_consumer(channel, method, header, body):
     verifications = get_keyspace("verifications")
     verifications.setex(verification, user["username"], datetime.timedelta(hours = 6))
 
-    # TODO Email the user the password and verification token.
+    send_user_email(user, verification)
 
-    logger.debug("channel: %s", channel)
+    channel.basic_ack(delivery_tag = method.delivery_tag)
+
+def verify_user_consumer(channel, method, header, body):
+    """Change the password—completing the bottom half of verification.
+
+    This takes the meta-information passed through a message queue and performs
+    the following operations:
+
+    * create password hash
+    * store password hash
+    * remove verification token
+   
+    """
+
+    user = json.loads(body)
+
+    h = hashlib.md5("{0}:{1}:{2}".format(user["username"], information.AUTHENTICATION_REALM, user["password"])).hexdigest()
+
+    logger.debug("hash: %s", h)
+
+    get_collection("users").update({ "username": user["username"] }, { "$set": { "hash": h } }, upsert = True)
+
+    verifications = get_keyspace("verifications")
+    verifications.delete(verification)
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
@@ -67,4 +86,9 @@ def register(channel):
     channel.queue_bind(queue = "margarine.users.create", exchange = "margarine.users.topic", routing_key = "users.create")
 
     channel.basic_consume(create_user_consumer, queue = "margarine.users.create", no_ack = False, consumer_tag = "create")
+
+    channel.queue_declare(queue = "margarine.users.password", auto_delete = False)
+    channel.queue_bind(queue = "margarine.users.password", exchange = "margarine.users.topic", routing_key = "users.password")
+
+    channel.basic_consume(verify_user_consumer, queue = "margarine.users.password", no_ack = False, consumer_tag = "password")
 
