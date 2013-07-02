@@ -54,7 +54,7 @@ def get_channel():
     global CONNECTION_BROKER
 
     if CONNECTION_BROKER is None or not CONNECTION_BROKER.is_open:
-        uri = URI(Parameters()["communication.url"])
+        uri = URI(Parameters()["queue.url"])
 
         credentials = None
         if None not in (uri.username, uri.password):
