@@ -37,6 +37,11 @@ def get_collection(collection):
         layer.  If we decide to use other datastores we'll have to re-evaluate
         this architecture.
 
+    Parameters
+    ----------
+
+    :collection: The MongoDB collection to return after connecting.
+
     Returns
     -------
 
