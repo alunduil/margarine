@@ -388,11 +388,6 @@ def login(username):
 
     h1 = user["hash"]
 
-    logger.debug("request: %s", request)
-    logger.debug("request.keys: %s", request.__dict__.keys())
-    logger.debug("request.method: %s", request.method)
-    logger.debug("request.path: %s", request.path)
-
     _ = "{request.method}:{request.path}"
     h2 = hashlib.md5(_.format(request = request)).hexdigest()
 
@@ -404,7 +399,8 @@ def login(username):
 
     token = uuid.uuid4()
 
-    TOKENS[token] = username
+    get_keyspace("tokens").setex(token, username, datetime.timedelta(hours = 6))
 
     return token
+
 

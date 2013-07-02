@@ -36,8 +36,7 @@ def create_user_consumer(channel, method, header, body):
 
     verification = uuid.uuid4()
 
-    verifications = get_keyspace("verifications")
-    verifications.setex(verification, user["username"], datetime.timedelta(hours = 6))
+    get_keyspace("verifications").setex(verification, user["username"], datetime.timedelta(hours = 6))
 
     send_user_email(user, verification)
 
@@ -63,8 +62,7 @@ def verify_user_consumer(channel, method, header, body):
 
     get_collection("users").update({ "username": user["username"] }, { "$set": { "hash": h } }, upsert = True)
 
-    verifications = get_keyspace("verifications")
-    verifications.delete(verification)
+    get_keyspace("verifications").delete(verification)
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
