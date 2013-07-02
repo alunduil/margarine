@@ -95,7 +95,9 @@ class UserCreationTest(BaseUserTest):
     def test_nonexistent_user_creation_request(self):
         """Create User—Not Existing."""
 
-        self.mock_collection.find_one.return_value = None # TODO Verify this return value…
+        mock_cursor = MagicMock()
+        self.mock_collection.find_one.return_value = mock_cursor
+        mock_cursor.count.return_value = 0
 
         response = self.application.put(self.url, data = {
             "email": "test@example.com",
@@ -151,7 +153,9 @@ class UserReadTest(BaseUserTest):
     def test_nonexistent_user_read_request(self):
         """Read User—Not Existing."""
 
-        self.mock_collection.find_one.return_value = None # TODO Verify this return value.
+        mock_cursor = MagicMock()
+        self.mock_collection.find_one.return_value = mock_cursor
+        mock_cursor.count.return_value = 0
 
         response = self.application.get(self.url)
 
