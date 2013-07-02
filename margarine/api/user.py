@@ -495,4 +495,3 @@ def password(username):
 
     return token
 
-
