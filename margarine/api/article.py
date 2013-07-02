@@ -79,9 +79,22 @@ def submit_article():
 
     """
 
-    # TODO Drop URL in queue for backend processing.
-
     uuid = uuid.uuid5(uuid.NAMESPACE_URL, request.form["url"])
+
+    message_properties = pika.BasicProperties()
+    message_properties.content_type = "application/json"
+    message_properties.durable = False
+
+    message = {
+            "_id": uuid,
+            "url": request.form["url"],
+            }
+
+    message = json.dumps(message)
+
+    channel = get_channel()
+    channel.exchange_declare(exchange = "margarine.articles.topic", type = "topic", auto_delete = False)
+    channel.basic_publish(body = message, exchange = "margarine.articles.topic", properties = message_properties, routing_key = "articles.create")
 
     response = make_response("", 202)
     response.headers["Location"] = url_for("article", uuid = uuid)
