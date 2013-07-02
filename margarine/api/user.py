@@ -210,9 +210,9 @@ class UserInterface(MethodView):
         message_properties.durable = False
 
         message = {
-                "username" = request.form.get("username", username),
-                "email" = request.form["email"],
-                "name" = request.form.get("name"),
+                "username": request.form.get("username", username),
+                "email": request.form["email"],
+                "name": request.form.get("name"),
                 }
 
         message = json.dumps(message)
