@@ -81,7 +81,7 @@ Parameters("email", parameters = [
                 "node.",
         },
     { # --email-from=EMAIL; EMAIL ← noreply@HOSTNAME
-        "options": [ "from" ],
+        "options": [ "--from" ],
         "default": "noreply@" + socket.gethostname(),
         "help": \
                 "The email address used as the FROM address on all " \
