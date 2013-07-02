@@ -188,7 +188,7 @@ class UserUpdateTest(BaseUserTest):
         self.mock_keyspace.get.assert_called_with(token)
 
         self.mock_channel.basic_publish.assert_called_once_with(
-                body = '{"username": "test_user", "password": null, "email": "test@example.com", "name": "Test User"}',
+                body = '{"username": "test_user", "email": "test@example.com", "name": "Test User"}',
                 exchange = 'margarine.users.topic',
                 properties = mock.ANY,
                 routing_key = 'users.update'
