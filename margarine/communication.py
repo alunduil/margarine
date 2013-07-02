@@ -116,7 +116,7 @@ def send_user_email(user, verification):
             "\n" \
             "\n" \
             "Thanks,\n" \
-            "\n",
+            "\n", \
             "Margarine\n"
 
     message = MIMEText(message_text.format(verification_url = url_for("user.verification", username = user["username"], verification = verification)))
