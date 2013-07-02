@@ -58,8 +58,6 @@ def verify_user_consumer(channel, method, header, body):
 
     h = hashlib.md5("{0}:{1}:{2}".format(user["username"], information.AUTHENTICATION_REALM, user["password"])).hexdigest()
 
-    logger.debug("hash: %s", h)
-
     get_collection("users").update({ "username": user["username"] }, { "$set": { "hash": h } }, upsert = True)
 
     get_keyspace("verifications").delete(verification)
