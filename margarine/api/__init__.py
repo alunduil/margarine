@@ -100,9 +100,6 @@ Fields
 
 import logging
 
-if __name__ == "__main__":
-    logging.basicConfig(level = logging.DEBUG)
-
 from flask import Flask
 from flask import url_for
 
