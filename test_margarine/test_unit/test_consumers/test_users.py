@@ -27,7 +27,19 @@ class UserCreationTest(unittest2.TestCase):
         self.mock_keyspace = mock.MagicMock()
         mock_get_keyspace.return_value = self.mock_keyspace
 
-        # TODO Mock the email sender
+        patcher = mock.patch("margarine.consumers.users.send_email")
+        self.mock_send_email = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        self.password = "423jklfds78"
+
+        patcher = mock.patch("margarine.consumers.users.generate_password")
+        self.mock_generate_password = patcher.start()
+
+        self.addCleanup(patcher.stop)
+
+        self.mock_generate_password.return_value = self.password
 
     def test_user_creation_with_password(self):
         """Create a new (non-existent) user specifying password."""
@@ -48,8 +60,7 @@ class UserCreationTest(unittest2.TestCase):
 
         self.mock_keyspace.setex.assert_called_once_with(mock.ANY, "test_user", mock.ANY)
 
-        # TODO Verify the email sender.
-        # TODO Don't include password in email.
+        self.mock_send_email.assert_called_once_with("create", user)
 
     def test_user_creation_without_password(self):
         """Create a new (non-existent) user not specifying password."""
@@ -70,6 +81,5 @@ class UserCreationTest(unittest2.TestCase):
 
         self.mock_keyspace.setex.assert_called_once_with(mock.ANY, "test_user", mock.ANY)
 
-        # TODO Verify the email sender.
-        # TODO Verify randomly generated password included in email.
+        self.mock_send_email.assert_called_once_with("create", user, self.password)
 
