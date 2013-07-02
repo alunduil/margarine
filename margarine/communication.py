@@ -13,6 +13,7 @@ This module includes queue channel acquisition and email handlers.
 
 import pika
 import logging
+import socket
 
 from margarine.parameters import Parameters
 from margarine.helpers import URI
