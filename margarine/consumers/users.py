@@ -10,6 +10,7 @@ import logging
 import json
 import uuid
 import datetime
+import pymongo
 
 from margarine.api import information
 from margarine.aggregates import get_collection
@@ -31,9 +32,17 @@ def create_user_consumer(channel, method, header, body):
     
     user = json.loads(body)
 
-    get_collection("users").insert(user)
+    try:
+        get_collection("users").insert(user) # TODO Fix race condition of multiple sign-ups.
+    except (pymongo.errors.DuplicateKeyError) as e:
+        logger.exception(e)
+        logger.error("Duplicate user request ignored!")
 
-    password_email_consumer(channel, method, header, body)
+    try:
+        password_email_consumer(channel, method, header, body)
+    except (RuntimeError) as e:
+        logger.exception(e)
+        get_collection("users").remove({ "username": user["username"] })
 
 def password_email_consumer(channel, method, header, body):
     """Send a user the link to reset their password.
@@ -47,6 +56,8 @@ def password_email_consumer(channel, method, header, body):
     """
 
     user = json.loads(body)
+
+    user = get_collection("users").find_one({ "username": user["username"] })
 
     verification = uuid.uuid4()
 
