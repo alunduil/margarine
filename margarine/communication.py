@@ -14,7 +14,10 @@ This module includes queue channel acquisition and email handlers.
 import pika
 import logging
 import socket
+import smtplib
+import email.mime.text
 
+from flask import url_for
 from margarine.parameters import Parameters
 from margarine.helpers import URI
 
@@ -117,10 +120,10 @@ def send_user_email(user, verification):
             "\n" \
             "\n" \
             "Thanks,\n" \
-            "\n", \
+            "\n" \
             "Margarine\n"
 
-    message = MIMEText(message_text.format(verification_url = url_for("user.verification", username = user["username"], verification = verification)))
+    message = email.mime.text.MIMEText(message_text.format(verification_url = url_for("user.verification", username = user["username"], verification = verification)))
 
     message["Subject"] = "Margarine Verification"
     message["From"] = "Margarine Verifications <" + Parameters()["email.from"] + ">"
