@@ -313,7 +313,7 @@ class UserInterface(MethodView):
 
         return ""
 
-USER.add_url_rule('/<username>/password', view_func = UserInterface.as_view("users_api"))
+USER.add_url_rule('/<username>', view_func = UserInterface.as_view("users_api"))
 
 class UserPasswordInterface(MethodView):
     """User Password manipulation interface.
@@ -422,7 +422,7 @@ class UserPasswordInterface(MethodView):
 
         return "", 202
 
-USER.add_url_rule('/<username>', view_func = UserPasswordInterface.as_view("users_password_api"))
+USER.add_url_rule('/<username>/password', view_func = UserPasswordInterface.as_view("users_password_api"))
         
 @USER.route('/<username>/token')
 def login(username):
@@ -440,98 +440,6 @@ def login(username):
     2. Returns the X-Auth-Token value
 
     Challenge-Response
-    ------------------
-
-    A challenge is sent every time the API returns a 401 Unauthoried.  This
-    is the first step in getting a token.
-
-    Response (Challenge)
-    ''''''''''''''''''''
-
-    ::
-
-        401 Unauthorized
-        Location: /alunduil/token
-        WWW-Authenticate: Digest realm="margarine.api",
-          qop="auth",
-          nonce="0cc175b9c0f1b6a831c399e269772661",
-          opaque="92eb5ffee6ae2fec3ad71c777531578f"
-
-    Request (Client Authentication Response)
-    ''''''''''''''''''''''''''''''''''''''''
-
-    ::
-      
-        GET /alunduil/token HTTP/1.1
-        Host: www.example.com
-        Authorization: Digest username="alunduil",
-          realm="margarine.api",
-          nonce="0cc175b9c0f1b6a831c399e269772661",
-          uri="/v1/users/alunduil/token",
-          qop=auth,
-          nc=00000001,
-          cnonce="4a8a08f09d37b73795649038408b5f33",
-          response="2370039ff8a9fb83b4293210b5fb53e3",
-          opaque="92eb5ffee6ae2fec3ad71c777531578f"
-
-    Response (Token)
-    ''''''''''''''''
-
-    ::
-
-        HTTP/1.1 200 OK
-
-        0b4fb639-edd1-44fe-b757-589a099097a5
-
-    """
-    
-    if request.authorization is None or request.authorization.opaque != Parameters()["api.uuid"]:
-        raise UnauthorizedError(username = username)
-
-    user = get_collection("users").find_one({ "username": username })
-
-    logger.debug("user: %s", user)
-
-    if user is None:
-        abort(404)
-
-    h1 = user["hash"]
-
-    _ = "{request.method}:{request.path}"
-    h2 = hashlib.md5(_.format(request = request)).hexdigest()
-
-    _ = "{h1}:{a.nonce}:{a.nc}:{a.cnonce}:{a.qop}:{h2}"
-    h3 = hashlib.md5(_.format(h1 = h1, a = request.authorization, h2 = h2)).hexdigest()
-
-    if request.authorization.response != h3:
-        raise UnauthorizedError(username = username)
-
-    token = uuid.uuid4()
-
-    get_keyspace("tokens").setex(token, username, datetime.timedelta(hours = 6))
-
-    return token
-
-@USER.route('/<username>/password')
-def password(username):
-    """Verify the user and allow a password to be set.
-
-    This verifies the username using the verification token (a randomly
-    generated UUID4).  If this token matches what we have in our keystore we
-    can provide the mechanism for setting a password for this username.
-
-    If the password is being set this URL will be hit again but rather than a
-    GET request (which provides the password change form or mechanism) it will
-    be a POST request
-
-    Request
-    -------
-
-    ::
-
-        GET /alunduil/e00e587b-0120-4346-98d2-dee86480cce7
-
-    Response
     ------------------
 
     A challenge is sent every time the API returns a 401 Unauthoried.  This
