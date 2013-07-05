@@ -18,6 +18,7 @@ import smtplib
 import email.mime.text
 
 from flask import url_for
+
 from margarine.parameters import Parameters
 from margarine.helpers import URI
 
@@ -85,7 +86,7 @@ Parameters("email", parameters = [
         },
     { # --email-from=EMAIL; EMAIL ← noreply@HOSTNAME
         "options": [ "--from" ],
-        "default": "noreply@" + socket.gethostname(),
+        "default": "noreply@" + socket.gethostname(), # TODO Parameters()["server.name"],
         "help": \
                 "The email address used as the FROM address on all " \
                 "generated emails.",
@@ -123,13 +124,21 @@ def send_user_email(user, verification):
             "\n" \
             "Margarine\n"
 
-    message = email.mime.text.MIMEText(message_text.format(verification_url = url_for("user.verification", username = user["username"], verification = verification)))
+    from margarine.api import MARGARINE_API # TODO Figure out looping import.
+    with MARGARINE_API.app_context():
+        message = email.mime.text.MIMEText(message_text.format(verification_url = url_for("user.password", username = user["username"], verification = verification)))
 
     message["Subject"] = "Margarine Verification"
     message["From"] = "Margarine Verifications <" + Parameters()["email.from"] + ">"
     message["To"] = "{user[name]} <{user[email]}>".format(user = user)
+
+    uri = URI(Parameters()["email.url"])
     
-    _ = smtplib.SMTP(Parameters()["email.url"])
+    _ = smtplib.SMTP(uri.host, uri.port)
+
+    if uri.username is not None:
+        _.login(uri.username, uri.password)
+
     _.sendmail(Parameters()["email.from"], [ user["email"] ], message.as_string())
     _.quit()
     
