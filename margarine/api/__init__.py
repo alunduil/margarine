@@ -99,6 +99,7 @@ Fields
 """
 
 import logging
+import socket
 
 from flask import Flask
 from flask import url_for
@@ -138,6 +139,16 @@ Parameters("flask", parameters = [
         },
     ])
 
+Parameters("server", parameters = [
+    { # --server-name=NAME; NAME ← HOSTNAME
+        "options": [ "--name" ],
+        "default": socket.gethostname(),
+        "help": \
+                "The base name used in URL generation.  This defaults to the" \
+                "host's FQDN.",
+        },
+    ])
+
 MARGARINE_API = Flask(__name__)
 
 def _prefix(name):
@@ -161,9 +172,15 @@ MARGARINE_API.register_blueprint(USER, url_prefix = _prefix("users"))
 MARGARINE_API.register_blueprint(ARTICLE, url_prefix = _prefix("articles"))
 MARGARINE_API.register_blueprint(TAG, url_prefix = _prefix("tags"))
 
+logger.debug("user resource directory: %s", USER.root_path)
+logger.debug("article resource directory: %s", ARTICLE.root_path)
+logger.debug("tag resource directory: %s", TAG.root_path)
+
 MARGARINE_API.error_handler_spec[None][401] = http_401_handler
 
 logger.debug("error_handlers: %s", MARGARINE_API.error_handler_spec)
+
+MARGARINE_API.config["SERVER_NAME"] = Parameters()["server.name"]
 
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
