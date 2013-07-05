@@ -313,8 +313,117 @@ class UserInterface(MethodView):
 
         return ""
 
-USER.add_url_rule('/<username>', view_func = UserInterface.as_view("users_api"))
+USER.add_url_rule('/<username>/password', view_func = UserInterface.as_view("users_api"))
 
+class UserPasswordInterface(MethodView):
+    """User Password manipulation interface.
+
+    :get:
+           * With X-Auth-Token: change password
+           * With Verification Token: change password
+           * Otherwise: 404
+    :post: Submit new password
+
+    """
+
+    def get(self, username):
+        """Begin a password change or continue after email verification.
+
+        If an X-Auth-Token header is found, no further validation needs to be
+        performed and the password change mechanism is returned.
+
+        If there is no X-Auth-Token header but a query parameter or header with
+        an emailed verification code is found (examples shown below), then no
+        further validation needs to be performed and the password change
+        mechanism is again returned.
+
+        Otherwise, the process is simply initiated and an email is sent with
+        a valid URL (including validation token) to continue this process.
+
+        Authenticated Requests
+        ----------------------
+
+        ::
+
+            GET /alunduil/password
+            X-Auth-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
+
+        ::
+
+            GET /alunduil/password
+            X-Validation-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
+
+        ::
+            
+            GET /alunduil/password?verification=6e585a2d-438d-4a33-856a-8a7c086421ee
+
+        Authenticated Response
+        ----------------------
+
+        ::
+
+            HTTP/1.0 200 OK
+
+            <!DOCTYPE html>
+            <html>
+              <body>
+                <form name="password" action="/alunduil/password?verification=6e585a2d-438d-4a33-856a-8a7c086421ee" method="post">
+                  Password: <input type="password" name="password-0">
+                  Password: <input type="password" name="password-1">
+                  <input type="submit" value="password-submit">
+                </form>
+              </body>
+            </html>
+
+        Unauthenticated Requests
+        ------------------------
+
+        ::
+
+            GET /alunduil/password
+
+        Unauthenticated Response
+        ------------------------
+
+        ::
+
+            HTTP/1.0 202 Accepted
+
+        """
+
+        tokens = [ _ for _ in [
+            request.headers.get("X-Auth-Token"),
+            request.headers.get("X-Verification-Token"),
+            request.args.get("verification"),
+            ] if _ is not None ]
+
+        logger.debug("len(tokens): %s", len(tokens))
+
+        if len(tokens) > 1:
+            abort(400)
+        elif len(tokens) == 1:
+            verification = tokens[0]
+
+            if get_keyspace("tokens").get(verification) == username:
+                get_keyspace("verifications").setex(verification, username, datetime.timedelta(minutes = 3))
+
+            return render_template("password_mechanism.html", username = username, verification = verification)
+
+        message_properties = pika.BasicProperties()
+        message_properties.content_type = "application/json"
+        message_properties.durable = False
+
+        message = { "username": username, }
+        message = json.dumps(message)
+
+        channel = get_channel()
+        channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
+        channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = "users.email")
+
+        return "", 202
+
+USER.add_url_rule('/<username>', view_func = UserPasswordInterface.as_view("users_password_api"))
+        
 @USER.route('/<username>/token')
 def login(username):
     """Get an authorized token for subsequent API calls.
