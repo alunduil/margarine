@@ -70,5 +70,18 @@ def get_collection(collection):
 
     database = DATASTORE_CONNECTION[database_name]
 
+    indexes = {
+            "users": [
+                [ "username" ],
+                { 
+                    "unique": True,
+                    "drop_dups": True,
+                    "background": True,
+                    },
+                ]
+            }
+
+    database[collection].ensure_index(indexes[collection][0], **indexes[collection][1])
+
     return database[collection]
 
