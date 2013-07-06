@@ -85,8 +85,6 @@ def password_change_consumer(channel, method, header, body):
 
     get_collection("users").update({ "username": user["username"] }, { "$set": { "hash": h } }, upsert = True)
 
-    get_keyspace("verifications").delete(verification) # TODO Move to successful password reset request.
-
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
 def register(channel):
