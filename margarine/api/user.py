@@ -408,6 +408,8 @@ class UserPasswordInterface(MethodView):
             if get_keyspace("tokens").get(verification) == username:
                 get_keyspace("verifications").setex(verification, username, datetime.timedelta(minutes = 3))
 
+            logger.debug("verification token: %s", verification)
+
             return render_template("password_mechanism.html", username = username, verification = verification)
 
         message_properties = pika.BasicProperties()
@@ -420,6 +422,70 @@ class UserPasswordInterface(MethodView):
         channel = get_channel()
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
         channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = "users.email")
+
+        return "", 202
+
+    def post(self, username):
+        """Update the password for the user and complete the password process.
+
+        Authentication is not handled the same for this method as it is for the
+        GET method of the password mechanism.  This method can only be invoked
+        properly with the verification query parameter passed from the password
+        change mechanism in the GET method.
+
+        Request
+        -------
+
+        ::
+
+            POST /alunduil/password?verification=6e585a2d-438d-4a33-856a-8a7c086421ee
+            Content-Type: multipart/form-data
+
+            password-0=PASSWORD;password-1=PASSWORD
+
+        Response
+        --------
+
+        ::
+
+            HTTP/1.0 202 Accepted
+
+        """
+
+        verification = request.args.get("verification")
+
+        if get_keyspace("verifications").get(verification) != username:
+            logger.error("verification token not valid")
+            logger.debug("verification: %s", verification)
+
+            abort(400)
+
+        password = request.form.get("password-0")
+
+        if password is None or password != request.form.get("password-1"):
+            logger.error("passwords did not match!")
+
+            logger.debug("password-0: %s", password)
+            logger.debug("password-1: %s", request.form.get("password-1"))
+
+            abort(400)
+
+        message_properties = pika.BasicProperties()
+        message_properties.content_type = "application/json"
+        message_properties.durable = False
+
+        message = { 
+                "username": username, 
+                "password": password,
+                }
+
+        message = json.dumps(message)
+
+        channel = get_channel()
+        channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
+        channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = "users.password")
+
+        get_keyspace("verifications").delete(verification)
 
         return "", 202
 
