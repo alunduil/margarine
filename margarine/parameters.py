@@ -352,7 +352,7 @@ class Parameters(object):
 
         fmt = "{0}_{1}_{2}" if len(split) > 1 else "{0}_{1}"
 
-        environ_key = fmt.format(sys.argv[0].upper(), *[ _.upper() for _ in split ]).replace("-", "_")
+        environ_key = fmt.format(sys.argv[0].rsplit('/', 1)[-1].upper(), *[ _.upper() for _ in split ]).replace("-", "_")
 
         logger.debug("environ_key: %s", environ_key)
 
