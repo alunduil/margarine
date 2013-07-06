@@ -51,6 +51,7 @@ from flask import abort
 from flask import Blueprint
 from flask import url_for
 from flask.views import MethodView
+from flask import render_template
 
 from margarine.api import information
 from margarine.parameters import Parameters
@@ -63,7 +64,7 @@ logger = logging.getLogger(__name__)
 Parameters("api", parameters = [
     { # --api-uuid=UUID; UUID ← uuid.uuid4()
         "options": [ "--uuid" ],
-        "default": str(uuid.uuid4()),
+        "default": uuid.uuid4().hex,
         "help": \
                 "The UUID used for the HTTP Digest Authentication " \
                 "Mechanism.  This should be set to a static string that is " \
