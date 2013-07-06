@@ -182,6 +182,8 @@ logger.debug("error_handlers: %s", MARGARINE_API.error_handler_spec)
 
 MARGARINE_API.config["SERVER_NAME"] = Parameters()["server.name"]
 
+logger.debug("url map: %s", MARGARINE_API.url_map)
+
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
 
