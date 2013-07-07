@@ -217,20 +217,7 @@ class UserDeleteTest(BaseUserTest):
 
         self.mock_keyspace.get.assert_called_with(token)
 
-        self.assertTrue(self.mock_collection.find_one.called)
-
-        self.assertIn("200", response.status)
-
-        # And again to prove idempotency:
-
-        response = self.application.delete(self.url,
-                headers = {
-                    "X-Auth-Token": token,
-                    })
-
-        self.mock_keyspace.get.assert_called_with(token)
-
-        self.assertTrue(self.mock_collection.find_one.called)
+        self.mock_collection.remove.assert_called_once_with({ "username": self.account_name })
 
         self.assertIn("200", response.status)
 
