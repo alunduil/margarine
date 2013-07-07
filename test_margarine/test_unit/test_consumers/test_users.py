@@ -34,28 +34,7 @@ class UserCreationTest(unittest2.TestCase):
 
         self.password = "423jklfds78"
 
-    def test_user_creation_with_password(self):
-        """Create a new (non-existent) user specifying password."""
-
-        message = '{"username": "test_user", "password": "balogne", "email": "test@example.com", "name": null}'
-
-        method = mock.MagicMock()
-        method.delivery_tag.return_value = "create"
-
-        # create_user_consumer(channel, method, header, body)
-        create_user_consumer(mock.MagicMock(), method, None, message)
-
-        user = json.loads(message)
-        del user["password"]
-        user.update({"hash": mock.ANY})
-
-        self.mock_channel.insert.assert_called_once_with(user)
-
-        self.mock_keyspace.setex.assert_called_once_with(mock.ANY, "test_user", mock.ANY)
-
-        self.mock_send_email.assert_called_once_with("create", user)
-
-    def test_user_creation_without_password(self):
+    def test_user_creation(self):
         """Create a new (non-existent) user not specifying password."""
 
         message = '{"username": "test_user", "email": "test@example.com", "name": null}'
