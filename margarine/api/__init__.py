@@ -96,6 +96,16 @@ Fields
     The ``_id`` field is ignored and both ``article_id`` and ``user_id`` are
     indexed for sorting searches.
 
+URL Summary
+-----------
+
+.. note::
+    All URLs are assumed to be prefixed with the version string (i.e. /v1).
+
+:``/users/<username>``:          GET,PUT,DELETE
+:``/users/<username>/password``: GET,POST
+:``/users/<username>/token``:    GET
+
 """
 
 import logging
