@@ -44,6 +44,20 @@ def create_user_consumer(channel, method, header, body):
         logger.exception(e)
         get_collection("users").remove({ "username": user["username"] })
 
+def update_user_consumer(channel, method, header, body):
+    """Update a user's information.
+
+    This takes the meta-information passed through the message queue and
+    updates the information in the Mongo store.
+
+    """
+
+    user = dict([ (k,v) for k,v in json.loads(body).iteritems() if v is not None ])
+
+    get_collection("users").update({ "username": user.pop("original_username") }, { "$set": user }, upsert = True)
+
+    channel.basic_ack(delivery_tag = method.delivery_tag)
+
 def password_email_consumer(channel, method, header, body):
     """Send a user the link to reset their password.
 
@@ -105,6 +119,11 @@ def register(channel):
     channel.queue_bind(queue = "margarine.users.create", exchange = "margarine.users.topic", routing_key = "users.create")
 
     channel.basic_consume(create_user_consumer, queue = "margarine.users.create", no_ack = False, consumer_tag = "create")
+
+    channel.queue_declare(queue = "margarine.users.update", auto_delete = False)
+    channel.queue_bind(queue = "margarine.users.update", exchange = "margarine.users.topic", routing_key = "users.update")
+
+    channel.basic_consume(update_user_consumer, queue = "margarine.users.update", no_ack = False, consumer_tag = "update")
 
     channel.queue_declare(queue = "margarine.users.email", auto_delete = False)
     channel.queue_bind(queue = "margarine.users.email", exchange = "margarine.users.topic", routing_key = "users.email")
