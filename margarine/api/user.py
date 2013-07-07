@@ -44,6 +44,7 @@ import json
 import logging
 import werkzeug.exceptions
 import hashlib
+import datetime
 
 from flask import request
 from flask import make_response
@@ -212,7 +213,7 @@ class UserInterface(MethodView):
 
         message = {
                 "username": request.form.get("username", username),
-                "email": request.form["email"],
+                "email": request.form.get("email"),
                 "name": request.form.get("name"),
                 }
 
@@ -223,8 +224,13 @@ class UserInterface(MethodView):
         if user is not None:
             routing_key = "users.update"
 
+            logger.debug("X-Auth-Token: %s", request.headers.get("X-Auth-Token"))
+
             if get_keyspace("tokens").get(request.headers.get("X-Auth-Token")) != username:
                 raise UnauthorizedError(username = username)
+
+        if request.form.get("email") is None and routing_key == "users.create":
+            abort(400)
 
         channel = get_channel()
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
@@ -263,7 +269,7 @@ class UserInterface(MethodView):
 
         """
 
-        user = get_collection("users").find_one({ "username": username })
+        user = get_collection("users").find_one({ "username": username }, { "hash": 0 })
 
         # TODO Should this be an authenticated action?
 
@@ -552,6 +558,8 @@ def login(username):
 
     """
     
+    logger.info("Checking authentication!")
+
     if request.authorization is None or request.authorization.opaque != Parameters()["api.uuid"]:
         raise UnauthorizedError(username = username)
 
@@ -570,12 +578,15 @@ def login(username):
     _ = "{h1}:{a.nonce}:{a.nc}:{a.cnonce}:{a.qop}:{h2}"
     h3 = hashlib.md5(_.format(h1 = h1, a = request.authorization, h2 = h2)).hexdigest()
 
+    logger.debug("response: %s", request.authorization.response)
+    logger.debug("h3: %s", h3)
+
     if request.authorization.response != h3:
         raise UnauthorizedError(username = username)
 
     token = uuid.uuid4()
 
-    get_keyspace("tokens").setex(token, username, datetime.timedelta(hours = 6))
+    get_keyspace("tokens").setex(str(token), username, datetime.timedelta(hours = 6))
 
-    return token
+    return str(token)
 
