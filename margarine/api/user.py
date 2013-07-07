@@ -224,6 +224,8 @@ class UserInterface(MethodView):
         if user is not None:
             routing_key = "users.update"
 
+            message["original_username"] = username
+
             logger.debug("X-Auth-Token: %s", request.headers.get("X-Auth-Token"))
 
             if get_keyspace("tokens").get(request.headers.get("X-Auth-Token")) != username:
