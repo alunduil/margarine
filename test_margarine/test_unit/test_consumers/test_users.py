@@ -27,7 +27,7 @@ class UserCreationTest(unittest2.TestCase):
         self.mock_keyspace = mock.MagicMock()
         mock_get_keyspace.return_value = self.mock_keyspace
 
-        patcher = mock.patch("margarine.consumers.users.send_email")
+        patcher = mock.patch("margarine.consumers.users.send_user_email")
         self.mock_send_email = patcher.start()
 
         self.addCleanup(patcher.stop)
