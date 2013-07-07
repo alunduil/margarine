@@ -227,6 +227,7 @@ class UserInterface(MethodView):
             logger.debug("X-Auth-Token: %s", request.headers.get("X-Auth-Token"))
 
             if get_keyspace("tokens").get(request.headers.get("X-Auth-Token")) != username:
+                # TODO Redirect to token URL?
                 raise UnauthorizedError(username = username)
 
         if request.form.get("email") is None and routing_key == "users.create":
@@ -311,11 +312,13 @@ class UserInterface(MethodView):
         """
 
         if get_keyspace("tokens").get(request.headers.get("X-Auth-Token")) != username:
+            # TODO Redirect to token URL?
             raise UnauthorizedError(username = username)
 
         users = get_collection("users")
 
         if users.find_one({ "username": username}).count() > 0:
+            # TODO Submit queued job and not write from this API?
             users.remove({ "_id": user["_id"] })
 
         return ""
