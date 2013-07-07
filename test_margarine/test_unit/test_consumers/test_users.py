@@ -34,13 +34,6 @@ class UserCreationTest(unittest2.TestCase):
 
         self.password = "423jklfds78"
 
-        patcher = mock.patch("margarine.consumers.users.generate_password")
-        self.mock_generate_password = patcher.start()
-
-        self.addCleanup(patcher.stop)
-
-        self.mock_generate_password.return_value = self.password
-
     def test_user_creation_with_password(self):
         """Create a new (non-existent) user specifying password."""
 
