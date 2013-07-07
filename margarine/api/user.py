@@ -217,8 +217,6 @@ class UserInterface(MethodView):
                 "name": request.form.get("name"),
                 }
 
-        message = json.dumps(message)
-
         routing_key = "users.create"
 
         if user is not None:
@@ -232,8 +230,10 @@ class UserInterface(MethodView):
                 # TODO Redirect to token URL?
                 raise UnauthorizedError(username = username)
 
-        if request.form.get("email") is None and routing_key == "users.create":
+        if message["email"] is None and routing_key == "users.create":
             abort(400)
+
+        message = json.dumps(message)
 
         channel = get_channel()
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
