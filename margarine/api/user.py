@@ -317,11 +317,8 @@ class UserInterface(MethodView):
             # TODO Redirect to token URL?
             raise UnauthorizedError(username = username)
 
-        users = get_collection("users")
-
-        if users.find_one({ "username": username}).count() > 0:
-            # TODO Submit queued job and not write from this API?
-            users.remove({ "_id": user["_id"] })
+        # TODO Submit queued job and not write from this API?
+        get_collection("users").remove({ "username": username })
 
         return ""
 
