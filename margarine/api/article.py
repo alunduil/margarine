@@ -45,6 +45,7 @@ from flask import request
 from flask import Blueprint
 from flask import abort
 from flask import make_response
+from flask import url_for
 
 from margarine.aggregates import get_collection
 from margarine.communication import get_channel
