@@ -104,7 +104,7 @@ def submit_article():
     channel.basic_publish(body = message, exchange = "margarine.articles.topic", properties = message_properties, routing_key = "articles.create")
 
     response = make_response("", 202)
-    response.headers["Location"] = url_for("article", uuid = _id)
+    response.headers["Location"] = url_for(".article", uuid = _id)
 
     return response
 
