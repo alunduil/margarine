@@ -10,6 +10,7 @@ configure_logging()
 
 from margarine.communication import get_channel
 from margarine.consumers import users
+from margarine.consumers import articles
 
 def main():
     """Set us up the bomb.
@@ -25,6 +26,7 @@ def main():
     channel = get_channel()
 
     users.register(channel)
+    articles.register(channel)
 
     channel.start_consuming()
 

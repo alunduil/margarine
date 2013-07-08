@@ -44,10 +44,11 @@ def register(channel):
     
     """
 
-    channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
+    # TODO Use a fanout exchange for article creation?
+    channel.exchange_declare(exchange = "margarine.articles.topic", type = "topic", auto_delete = False)
 
-    channel.queue_declare(queue = "margarine.users.create", auto_delete = False)
-    channel.queue_bind(queue = "margarine.users.create", exchange = "margarine.users.topic", routing_key = "users.create")
+    channel.queue_declare(queue = "margarine.articles.create", auto_delete = False)
+    channel.queue_bind(queue = "margarine.articles.create", exchange = "margarine.articles.topic", routing_key = "articles.create")
 
-    channel.basic_consume(create_user_consumer, queue = "margarine.users.create", no_ack = False, consumer_tag = "create")
+    channel.basic_consume(create_user_consumer, queue = "margarine.articles.create", no_ack = False, consumer_tag = "create")
 
