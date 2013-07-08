@@ -39,6 +39,7 @@ The properties we're starting with are the following:
 import uuid
 import json
 import logging
+import pika
 
 from flask import request
 from flask import Blueprint
