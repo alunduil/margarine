@@ -33,6 +33,16 @@ Parameters("queue", parameters = [
                 "mechanism.  This can be a socket (the default) or an AMQP " \
                 "endpoint or anything between that's supported.",
         },
+    { # --queue-wait=T; T ← 5
+        "options": [ "--wait" ],
+        "default": 5,
+        "type": int,
+        "help": \
+                "The number of seconds to wait until attempting another " \
+                "connection to the queue server.  This application " \
+                "continually retries its connection every %(metavar)s " \
+                "seconds.",
+        },
     ])
 
 CONNECTION_BROKER = None
@@ -72,7 +82,13 @@ def get_channel():
                 credentials = credentials
                 )
 
-        CONNECTION_BROKER = pika.BlockingConnection(connection_parameters)
+        while True:
+            try:
+                CONNECTION_BROKER = pika.BlockingConnection(connection_parameters)
+                break
+            except (pika.exceptions.AMQPConnectionError) as e:
+                logger.exception(e)
+                time.sleep(Parameters()["queue.wait"])
 
     return CONNECTION_BROKER.channel()
 
