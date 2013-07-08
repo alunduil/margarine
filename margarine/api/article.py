@@ -80,14 +80,18 @@ def submit_article():
 
     """
 
-    uuid = uuid.uuid5(uuid.NAMESPACE_URL, request.form["url"])
+    logger.debug("request.form[url]: '%s'", request.form["url"])
+    logger.debug("ASCII: %s", all(ord(c) < 128 for c in request.form["url"]))
+    logger.debug("type(request.form[url]): %s", type(request.form["url"]))
+
+    _id = uuid.uuid5(uuid.NAMESPACE_URL, request.form["url"].encode('ascii'))
 
     message_properties = pika.BasicProperties()
     message_properties.content_type = "application/json"
     message_properties.durable = False
 
     message = {
-            "_id": uuid,
+            "_id": _id,
             "url": request.form["url"],
             }
 
@@ -98,7 +102,7 @@ def submit_article():
     channel.basic_publish(body = message, exchange = "margarine.articles.topic", properties = message_properties, routing_key = "articles.create")
 
     response = make_response("", 202)
-    response.headers["Location"] = url_for("article", uuid = uuid)
+    response.headers["Location"] = url_for("article", uuid = _id)
 
     return response
 
