@@ -47,6 +47,7 @@ from flask import abort
 from flask import make_response
 
 from margarine.aggregates import get_collection
+from margarine.communication import get_channel
 
 logger = logging.getLogger(__name__)
 
