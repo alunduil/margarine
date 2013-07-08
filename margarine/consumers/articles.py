@@ -132,8 +132,12 @@ def sanitize_html_consumer(channel, method, header, body):
 
     article = get_collection("articles").find_one({ "_id": article["_id"] })
 
+    response = urllib2.urlopen(article["url"])
+
+    logger.debug("response: %s", response)
+    logger.debug("response.info(): %s", response.info())
+
     # TODO Implement the following general algorithm:
-    # Obtain the raw HTML for the site.
     # Record the obtained meta-information
     # Sanitize the HTML
     # Log the size of the sanitized HTML
