@@ -23,6 +23,9 @@ def create_article_consumer(channel, method, header, body):
 
     * Updates the etag for the article with a HEAD request.
     * Initializes parsed_at to Null until parsing is complete.
+
+    The following actions should be performed in parallel by a fanout:
+
     * Submits a reference job to update automatic notations in this and others.
     * Submits the sanitization request for the HTML body. 
 
@@ -30,6 +33,17 @@ def create_article_consumer(channel, method, header, body):
 
     article = json.loads(body)
 
+    logger.debug("article: %s", article)
+
+    articles = get_collection("articles")
+
+    _ = articles.find_one({ "_id": article["_id"] })
+
+    if _ is None: # Article doesn't already have meta-information.
+        article["created_at"] = datetime.datetime.now()
+
+     
+    
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
 def register(channel):
@@ -45,9 +59,9 @@ def register(channel):
     """
 
     # TODO Use a fanout exchange for article creation?
-    channel.exchange_declare(exchange = "margarine.articles.topic", type = "topic", auto_delete = False)
+    channel.exchange_declare(exchange = "margarine.articles.topic", type = "topic", auto_delete = True)
 
-    channel.queue_declare(queue = "margarine.articles.create", auto_delete = False)
+    channel.queue_declare(queue = "margarine.articles.create", auto_delete = True)
     channel.queue_bind(queue = "margarine.articles.create", exchange = "margarine.articles.topic", routing_key = "articles.create")
 
     channel.basic_consume(create_user_consumer, queue = "margarine.articles.create", no_ack = False, consumer_tag = "create")
