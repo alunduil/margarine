@@ -93,7 +93,7 @@ def submit_article():
     message_properties.durable = False
 
     message = {
-            "_id": _id.hex,
+            "_id": _id.int,
             "url": request.form["url"],
             }
 
