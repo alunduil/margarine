@@ -56,7 +56,7 @@ def create_article_consumer(channel, method, header, body):
     if _ is None or "created_at" not in _:
         article["created_at"] = datetime.datetime.now()
 
-    article = dict([ (k, v) for k, v in article.iteritems() if k not in _ or v != _[k] ])
+    article = dict([ (k, v) for k, v in article.iteritems() if _ is None or k not in _ or v != _[k] ])
 
     logger.debug("article: %s", article)
 
