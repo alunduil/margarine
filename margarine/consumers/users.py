@@ -118,20 +118,20 @@ def register(channel):
     channel.queue_declare(queue = "margarine.users.create", auto_delete = False)
     channel.queue_bind(queue = "margarine.users.create", exchange = "margarine.users.topic", routing_key = "users.create")
 
-    channel.basic_consume(create_user_consumer, queue = "margarine.users.create", no_ack = False, consumer_tag = "create")
+    channel.basic_consume(create_user_consumer, queue = "margarine.users.create", no_ack = False, consumer_tag = "user.create")
 
     channel.queue_declare(queue = "margarine.users.update", auto_delete = False)
     channel.queue_bind(queue = "margarine.users.update", exchange = "margarine.users.topic", routing_key = "users.update")
 
-    channel.basic_consume(update_user_consumer, queue = "margarine.users.update", no_ack = False, consumer_tag = "update")
+    channel.basic_consume(update_user_consumer, queue = "margarine.users.update", no_ack = False, consumer_tag = "user.update")
 
     channel.queue_declare(queue = "margarine.users.email", auto_delete = False)
     channel.queue_bind(queue = "margarine.users.email", exchange = "margarine.users.topic", routing_key = "users.email")
 
-    channel.basic_consume(password_email_consumer, queue = "margarine.users.email", no_ack = False, consumer_tag = "email")
+    channel.basic_consume(password_email_consumer, queue = "margarine.users.email", no_ack = False, consumer_tag = "user.email")
 
     channel.queue_declare(queue = "margarine.users.password", auto_delete = False)
     channel.queue_bind(queue = "margarine.users.password", exchange = "margarine.users.topic", routing_key = "users.password")
 
-    channel.basic_consume(password_change_consumer, queue = "margarine.users.password", no_ack = False, consumer_tag = "password")
+    channel.basic_consume(password_change_consumer, queue = "margarine.users.password", no_ack = False, consumer_tag = "user.password")
 

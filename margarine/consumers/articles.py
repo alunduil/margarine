@@ -160,17 +160,17 @@ def register(channel):
     channel.queue_declare(queue = "margarine.articles.create", auto_delete = False)
     channel.queue_bind(queue = "margarine.articles.create", exchange = "margarine.articles.topic", routing_key = "articles.create")
 
-    channel.basic_consume(create_article_consumer, queue = "margarine.articles.create", no_ack = False, consumer_tag = "create")
+    channel.basic_consume(create_article_consumer, queue = "margarine.articles.create", no_ack = False, consumer_tag = "article.create")
 
     channel.exchange_declare(exchange = "margarine.articles.create", type = "fanout", auto_delete = False)
 
     channel.queue_declare(queue = "margarine.articles.references", auto_delete = False)
     channel.queue_bind(queue = "margarine.articles.references", exchange = "margarine.articles.create", routing_key = "articles.create")
 
-    channel.basic_consume(update_references_consumer, queue = "margarine.articles.references", no_ack = True, consumer_tag = "references")
+    channel.basic_consume(update_references_consumer, queue = "margarine.articles.references", no_ack = True, consumer_tag = "article.references")
 
     channel.queue_declare(queue = "margarine.articles.sanitization", auto_delete = False)
     channel.queue_bind(queue = "margarine.articles.sanitization", exchange = "margarine.articles.create", routing_key = "articles.create")
 
-    channel.basic_consume(sanitize_html_consumer, queue = "margarine.articles.sanitization", no_ack = True, consume_tag = "references")
+    channel.basic_consume(sanitize_html_consumer, queue = "margarine.articles.sanitization", no_ack = True, consume_tag = "article.sanitization")
 
