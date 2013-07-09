@@ -72,20 +72,25 @@ def get_collection(collection):
 
     indexes = {
             "users": [
-                [ ( "username", pymongo.ASCENDING ), ],
-                { 
-                    "unique": True,
-                    "drop_dups": True,
-                    "background": True,
-                    },
-                ]
+                [
+                    [ ( "username", pymongo.ASCENDING ), ],
+                    { 
+                        "unique": True,
+                        "drop_dups": True,
+                        "background": True,
+                        },
+                    ],
+                ],
             }
 
     logger.debug("collection: %s", collection)
-    logger.debug("indexes—args: %s", indexes[collection][0])
-    logger.debug("indexes-kwargs: %s", indexes[collection][1])
 
-    database[collection].ensure_index(indexes[collection][0], **indexes[collection][1])
+    for index in indexes.get(collection, []):
+        logger.debug("index: %s", index)
+        logger.debug("index-args: %s", index[0])
+        logger.debug("index-kwargs: %s", index[1])
+
+        database[collection].ensure_index(index[0], **index[1])
 
     return database[collection]
 
