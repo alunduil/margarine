@@ -8,6 +8,7 @@
 import logging
 import json
 import datetime
+import pika
 
 from margarine.aggregates import get_collection
 
@@ -60,7 +61,7 @@ def create_article_consumer(channel, method, header, body):
 
     logger.debug("article: %s", article)
 
-    get_collection("articles").update({ "_id": article["_id"] }, { "$set": article }, upsert = True)
+    get_collection("articles").update({ "_id": article.pop("_id") }, { "$set": article }, upsert = True)
 
     message_properties = pika.BasicProperties()
     message_properties.content_type = "application/json"
