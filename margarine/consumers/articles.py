@@ -70,7 +70,7 @@ def create_article_consumer(channel, method, header, body):
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
-def update_reference_consumer(channel, method, header, body):
+def update_references_consumer(channel, method, header, body):
     """Update the references to and from the article specified.
 
     This takes the UUID of the article being added and searches it for links to
