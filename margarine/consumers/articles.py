@@ -9,6 +9,7 @@ import logging
 import json
 import datetime
 import pika
+import urllib2
 
 from margarine.aggregates import get_collection
 from margarine.communication import get_channel
@@ -114,6 +115,8 @@ def update_references_consumer(channel, method, header, body):
     # Update those articles with a reference reference to this article
     # Update this article with a citation reference to the remote articles.
 
+    channel.basic_ack(delivery_tag = method.delivery_tag)
+
 def sanitize_html_consumer(channel, method, header, body):
     """Download and sanitize the HTML for the given article.
 
@@ -137,18 +140,35 @@ def sanitize_html_consumer(channel, method, header, body):
 
     logger.debug("article: %s", article)
 
-    article = get_collection("articles").find_one({ "_id": article["_id"] })
+    articles = get_collection("articles")
+
+    article = articles.find_one({ "_id": article["_id"] })
 
     response = urllib2.urlopen(article["url"])
 
     logger.debug("response: %s", response)
-    logger.debug("response.info(): %s", response.info())
+    logger.debug("response.info().__class__: %s", response.info().__class__)
 
-    # TODO Implement the following general algorithm:
-    # Record the obtained meta-information
-    # Sanitize the HTML
-    # Log the size of the sanitized HTML
-    # Store the sanitized HTML somewhere and record a reference to this
+    article["etag"] = response.info().getheader("etag")
+
+    soup = bs4.BeautifulSoup(response.read())
+
+    # TODO Automatic indexing of articles:
+    #article["tags"] += extract_keywords(soup)
+
+    # TODO Use this when more is required:
+    #html = sanitize(soup)
+
+    html = soup.get_text()
+
+    article["parsed_at"] = datetime.datetime.now()
+
+    logger.debug("HTML Size: %s B", sys.getsizeof(html))
+    article["size"] = sys.getsizeof(html)
+
+    # TODO Store the sanitized HTML somewhere and record a reference to this
+
+    channel.basic_ack(delivery_tag = method.delivery_tag)
 
 def register(channel):
     """Register the article worker functions on the passed channel.
@@ -172,12 +192,12 @@ def register(channel):
     channel.exchange_declare(exchange = "margarine.articles.create", type = "fanout", auto_delete = False)
 
     channel.queue_declare(queue = "margarine.articles.references", auto_delete = False)
-    channel.queue_bind(queue = "margarine.articles.references", exchange = "margarine.articles.create", routing_key = "articles.create")
+    channel.queue_bind(queue = "margarine.articles.references", exchange = "margarine.articles.create", routing_key = "articles.update")
 
-    channel.basic_consume(update_references_consumer, queue = "margarine.articles.references", no_ack = True, consumer_tag = "article.references")
+    channel.basic_consume(update_references_consumer, queue = "margarine.articles.references", no_ack = False, consumer_tag = "article.references")
 
     channel.queue_declare(queue = "margarine.articles.sanitization", auto_delete = False)
-    channel.queue_bind(queue = "margarine.articles.sanitization", exchange = "margarine.articles.create", routing_key = "articles.create")
+    channel.queue_bind(queue = "margarine.articles.sanitization", exchange = "margarine.articles.create", routing_key = "articles.update")
 
-    channel.basic_consume(sanitize_html_consumer, queue = "margarine.articles.sanitization", no_ack = True, consumer_tag = "article.sanitization")
+    channel.basic_consume(sanitize_html_consumer, queue = "margarine.articles.sanitization", no_ack = False, consumer_tag = "article.sanitization")
 
