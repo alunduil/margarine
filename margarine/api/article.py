@@ -88,12 +88,15 @@ def submit_article():
 
     _id = uuid.uuid5(uuid.NAMESPACE_URL, request.form["url"].encode('ascii'))
 
+    logger.debug("type(_id): %s", type(_id.hex))
+    logger.debug("_id: %s", _id.hex)
+
     message_properties = pika.BasicProperties()
     message_properties.content_type = "application/json"
     message_properties.durable = False
 
     message = {
-            "_id": _id.int,
+            "_id": str(_id.hex),
             "url": request.form["url"],
             }
 
