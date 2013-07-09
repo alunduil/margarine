@@ -51,6 +51,7 @@ PARAMS["requires"] = [
         "pymongo",
         "pika",
         "flask",
+        "beautifulsoup",
         ]
 
 PARAMS["scripts"] = [
