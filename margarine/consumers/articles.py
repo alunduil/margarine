@@ -11,6 +11,7 @@ import datetime
 import pika
 
 from margarine.aggregates import get_collection
+from margarine.communication import get_channel
 
 logger = logging.getLogger(__name__)
 
@@ -46,11 +47,11 @@ def create_article_consumer(channel, method, header, body):
 
     logger.debug("article: %s", article)
 
-    _id = article["_id"]
+    _id = article.pop("_id")
 
     articles = get_collection("articles")
 
-    _ = articles.find_one({ "_id": article["_id"] })
+    _ = articles.find_one({ "_id": _id })
 
     logger.debug("Found: %s", _)
 
@@ -60,14 +61,15 @@ def create_article_consumer(channel, method, header, body):
     article = dict([ (k, v) for k, v in article.iteritems() if _ is None or k not in _ or v != _[k] ])
 
     logger.debug("article: %s", article)
+    logger.debug("_id: %s", _id)
 
-    get_collection("articles").update({ "_id": article.pop("_id") }, { "$set": article }, upsert = True)
+    get_collection("articles").update({ "_id": _id }, { "$set": article }, upsert = True)
 
     message_properties = pika.BasicProperties()
     message_properties.content_type = "application/json"
     message_properties.durable = False
 
-    message = json.dumps({ "_id": article["_id"] })
+    message = json.dumps({ "_id": _id })
 
     _ = get_channel()
     _.exchange_declare(exchange = "margarine.articles.create", type = "fanout", auto_delete = False)
