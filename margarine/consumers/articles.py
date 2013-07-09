@@ -6,6 +6,9 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import logging
+import json
+
+from margarine.aggregates import get_collection
 
 logger = logging.getLogger(__name__)
 
