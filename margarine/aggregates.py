@@ -9,6 +9,7 @@ import pymongo
 import logging
 
 from margarine.parameters import Parameters
+from margarine.parameters import CONFIGURATION_DIRECTORY
 from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
@@ -93,4 +94,40 @@ def get_collection(collection):
         database[collection].ensure_index(index[0], **index[1])
 
     return database[collection]
+
+Parameters("pyrax", parameters = [
+    { # --pyrax-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/pyrax.ini
+        "options": [ "--configuration" ],
+        "default": os.path.join(CONFIGURATION_DIRECTORY, "pyrax.ini"),
+        "help": \
+                "The configuration file containing the pyrax credentials " \
+                "used by %(prog)s.  Default: %(default)s.",
+        },
+    ])
+
+def get_container(container):
+    """Using the pyrax interface retrieve a container object for storing data.
+
+    Reconnects for every container provided.  
+
+    .. note::
+        This needs to be checked for correctness.  This needs to be checked
+        that the container does indeed hold open the connection and that the
+        connection is closed properly when the container goes out of scope.
+
+    Parameters
+    ----------
+
+    :container: The name of the container to return for interaction.
+
+    Returns
+    -------
+
+    A container for datastore interaction.
+
+    """
+
+    pyrax.set_credential_file(Parameters()["pyrax.configuration"])
+
+    return pyrax.cloudfiles.create_container(container)
 
