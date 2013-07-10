@@ -52,6 +52,7 @@ PARAMS["requires"] = [
         "pika",
         "flask",
         "beautifulsoup",
+        "pyrax",
         ]
 
 PARAMS["scripts"] = [
