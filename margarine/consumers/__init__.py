@@ -28,5 +28,9 @@ def main():
     users.register(channel)
     articles.register(channel)
 
-    channel.start_consuming()
+    while True:
+        try:
+            channel.start_consuming()
+        except (pika.exceptions.ChannelClosed) as e:
+            logger.exception(e)
 
