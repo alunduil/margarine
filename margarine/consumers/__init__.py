@@ -3,6 +3,8 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import pika
+
 from margarine.parameters import Parameters
 from margarine.parameters import configure_logging
 
