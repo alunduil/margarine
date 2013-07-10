@@ -12,6 +12,7 @@ import pika
 import urllib2
 
 from margarine.aggregates import get_collection
+from margarine.aggregates import get_container
 from margarine.communication import get_channel
 
 logger = logging.getLogger(__name__)
@@ -115,6 +116,9 @@ def update_references_consumer(channel, method, header, body):
     # Update those articles with a reference reference to this article
     # Update this article with a citation reference to the remote articles.
 
+    # TODO Automatic indexing of articles:
+    #article["tags"] += extract_keywords(soup)
+
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
 def sanitize_html_consumer(channel, method, header, body):
@@ -136,37 +140,54 @@ def sanitize_html_consumer(channel, method, header, body):
 
     """
 
-    article = json.loads(body)
+    _id = json.loads(body)["_id"]
 
-    logger.debug("article: %s", article)
+    logger.debug("article._id: %s", _id)
 
     articles = get_collection("articles")
 
-    article = articles.find_one({ "_id": article["_id"] })
+    article = articles.find_one({ "_id": _id }, { "_id": 0 })
 
-    response = urllib2.urlopen(article["url"])
+    request = urllib2.Request(article["url"])
+    request.get_method = lambda: "HEAD"
+
+    response = urllib2.urlopen(request)
 
     logger.debug("response: %s", response)
+    logger.debug("response.info(): %s", response.info())
     logger.debug("response.info().__class__: %s", response.info().__class__)
 
-    article["etag"] = response.info().getheader("etag")
+    etag = response.info().getheader("etag")
 
-    soup = bs4.BeautifulSoup(response.read())
+    # TODO Check Last-Modified?
+    # TODO Use expires to set the next poll?
+    # TODO Respect Cache-Control?
+    # TODO Other header considerations.
 
-    # TODO Automatic indexing of articles:
-    #article["tags"] += extract_keywords(soup)
+    if article.get("etag") != etag:
+        article["etag"] = etag
 
-    # TODO Use this when more is required:
-    #html = sanitize(soup)
+        response = urllib2.urlopen(article["url"])
 
-    html = soup.get_text()
+        soup = bs4.BeautifulSoup(response.read())
 
-    article["parsed_at"] = datetime.datetime.now()
+        # TODO Use this when more is required:
+        #html = sanitize(soup)
+        html = soup.get_text()
 
-    logger.debug("HTML Size: %s B", sys.getsizeof(html))
-    article["size"] = sys.getsizeof(html)
+        article["parsed_at"] = datetime.datetime.now()
 
-    # TODO Store the sanitized HTML somewhere and record a reference to this
+        logger.debug("HTML Size: %s B", sys.getsizeof(html))
+        article["size"] = sys.getsizeof(html)
+
+        container_part, object_part = str(article["uuid"]).split("-", 1)
+
+        article["text_container_name"] = "margarine-" + container_part
+        article["text_object_name"] = object_part
+
+        get_container(article["text_container_name"]).store_object(article["text_object_name"], html, content_type = "text/html", etag = etag)
+
+        articles.update({ "_id": _id }, { "$set": article }, upsert = True)
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
