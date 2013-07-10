@@ -7,6 +7,7 @@
 
 import pymongo
 import logging
+import os
 
 from margarine.parameters import Parameters
 from margarine.parameters import CONFIGURATION_DIRECTORY
