@@ -470,7 +470,7 @@ Parameters(parameters = [
 Parameters(file_path = Parameters().parse(only_known = True)["configuration"])
 
 Parameters("logging", parameters = [
-    { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.conf
+    { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.ini
         "options": [ "--configuration" ],
         "default": os.path.join(CONFIGURATION_DIRECTORY, "logging.ini"),
         "help": \
