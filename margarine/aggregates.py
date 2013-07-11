@@ -105,6 +105,15 @@ Parameters("pyrax", parameters = [
                 "The configuration file containing the pyrax credentials " \
                 "used by %(prog)s.  Default: %(default)s.",
         },
+    { # --pyrax-type=TYPE; TYPE ← rackspace
+        "options": [ "--type" ],
+        "default": "rackspace",
+        "help": \
+                "The identity type for pyrax.  This needs to be set outside " \
+                "of the pyrax configuration due to the pyrax " \
+                "implementation.  This defaults to %(default)s but can be " \
+                "over-ridden if required.",
+        },
     ])
 
 def get_container(container):
@@ -128,6 +137,8 @@ def get_container(container):
     A container for datastore interaction.
 
     """
+
+    pyrax.settings.set('identity_type', Parameters()["pyrax.type"])
 
     pyrax.set_credential_file(Parameters()["pyrax.configuration"])
 
