@@ -8,6 +8,7 @@
 import pymongo
 import logging
 import os
+import pyrax
 
 from margarine.parameters import Parameters
 from margarine.parameters import CONFIGURATION_DIRECTORY
