@@ -13,7 +13,6 @@ import urllib2
 import bs4
 import sys
 import uuid
-import pyrax
 
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
@@ -167,6 +166,7 @@ def sanitize_html_consumer(channel, method, header, body):
     # TODO Use expires to set the next poll?
     # TODO Respect Cache-Control?
     # TODO Other header considerations.
+    # TODO Use Content-Type to set encoding?
 
     if article.get("etag") != etag:
         logger.info("Parsing full HTML of %s", article["url"])
