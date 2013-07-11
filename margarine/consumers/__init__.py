@@ -4,6 +4,7 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import pika
+import logging
 
 from margarine.parameters import Parameters
 from margarine.parameters import configure_logging
@@ -13,6 +14,8 @@ configure_logging()
 from margarine.communication import get_channel
 from margarine.consumers import users
 from margarine.consumers import articles
+
+logger = logging.getLogger(__name__)
 
 def main():
     """Set us up the bomb.

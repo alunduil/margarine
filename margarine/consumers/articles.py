@@ -10,6 +10,10 @@ import json
 import datetime
 import pika
 import urllib2
+import bs4
+import sys
+import uuid
+import pyrax
 
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
@@ -165,6 +169,8 @@ def sanitize_html_consumer(channel, method, header, body):
     # TODO Other header considerations.
 
     if article.get("etag") != etag:
+        logger.info("Parsing full HTML of %s", article["url"])
+
         article["etag"] = etag
 
         response = urllib2.urlopen(article["url"])
@@ -180,7 +186,7 @@ def sanitize_html_consumer(channel, method, header, body):
         logger.debug("HTML Size: %s B", sys.getsizeof(html))
         article["size"] = sys.getsizeof(html)
 
-        container_part, object_part = str(article["uuid"]).split("-", 1)
+        container_part, object_part = str(uuid.UUID(_id)).split("-", 1)
 
         article["text_container_name"] = "margarine-" + container_part
         article["text_object_name"] = object_part
