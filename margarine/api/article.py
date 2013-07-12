@@ -40,6 +40,7 @@ import uuid
 import json
 import logging
 import pika
+import re
 
 from flask import request
 from flask import Blueprint
@@ -48,6 +49,7 @@ from flask import make_response
 from flask import url_for
 
 from margarine.aggregates import get_collection
+from margarine.aggregates import get_container
 from margarine.communication import get_channel
 
 logger = logging.getLogger(__name__)
@@ -111,8 +113,8 @@ def submit_article():
 
     return response
 
-@ARTICLE.route('/<uuid>')
-def article(uuid):
+@ARTICLE.route('/<article_id>')
+def article(article_id):
     """Retrieve a sanitized article.
 
     Request
@@ -153,27 +155,39 @@ def article(uuid):
 
     """
 
-    article = get_collection("articles").find_one({ "_id": uuid })
-
-    if article is None:
-        abort(404)
+    article = get_collection("articles").find_one({ "_id": uuid.UUID(article_id).hex })
 
     logger.debug("article: %s", article)
 
-    body = article.pop("sanitized_url")
+    if article is None or "etag" not in article:
+        # 404 not only if the object doesn't exist but also if we haven't
+        # sanitized the body yet.
+        abort(404)
 
-    logger.debug("body: %s", body)
+    container_name, object_name = article.pop("text_container_name"), article.pop("text_object_name")
 
-    headers = dict([ ("X-ARTICLE-" + header.replace("_", "-").upper(), value) for header, value in article.iteritems() ])
+    logger.debug("article: %s", article)
+
+    headers = dict([ ("X-ARTICLE-" + re.sub(r'-+', '-', header.replace("_", "-").upper()), value) for header, value in article.iteritems() ])
 
     logger.debug("headers: %s", headers)
 
-    # TODO Redirect to Cloud Files?
+    response = make_response("200")
 
-    response = make_response(body, "200")
-    response.headers.update(headers)
+    for header, value in headers.iteritems():
+        response.headers[header] = value
 
     logger.debug("response: %s", response)
+
+    if request.method == "GET":
+        data = get_container(container_name).get_object(object_name).fetch()
+
+        logger.debug("type(data): %s", type(data))
+        logger.debug("len(data): %s", len(data))
+
+        response.set_data(data)
+    elif request.method == "HEAD":
+        response.headers["Content-Length"] = 0
 
     return response
 
