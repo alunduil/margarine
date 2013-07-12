@@ -107,6 +107,7 @@ def submit_article():
     channel = get_channel()
     channel.exchange_declare(exchange = "margarine.articles.topic", type = "topic", auto_delete = False)
     channel.basic_publish(body = message, exchange = "margarine.articles.topic", properties = message_properties, routing_key = "articles.create")
+    channel.close()
 
     response = make_response("", 202)
     response.headers["Location"] = url_for(".article", article_id = _id)

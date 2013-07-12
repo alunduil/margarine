@@ -79,6 +79,7 @@ def create_article_consumer(channel, method, header, body):
     _ = get_channel()
     _.exchange_declare(exchange = "margarine.articles.create", type = "fanout", auto_delete = False)
     _.basic_publish(body = message, exchange = "margarine.articles.create", properties = message_properties, routing_key = "articles.create")
+    _.close()
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
 

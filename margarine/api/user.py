@@ -238,6 +238,7 @@ class UserInterface(MethodView):
         channel = get_channel()
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
         channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = routing_key)
+        channel.close()
 
         return "", 202
     
@@ -430,6 +431,7 @@ class UserPasswordInterface(MethodView):
         channel = get_channel()
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
         channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = "users.email")
+        channel.close()
 
         return "", 202
 
@@ -492,6 +494,7 @@ class UserPasswordInterface(MethodView):
         channel = get_channel()
         channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
         channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = "users.password")
+        channel.close()
 
         get_keyspace("verifications").delete(verification)
 

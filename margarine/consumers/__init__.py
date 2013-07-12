@@ -38,4 +38,6 @@ def main():
             channel.start_consuming()
         except (pika.exceptions.ChannelClosed) as e:
             logger.exception(e)
+        finally:
+            channel.close()
 
