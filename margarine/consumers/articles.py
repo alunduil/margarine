@@ -191,7 +191,7 @@ def sanitize_html_consumer(channel, method, header, body):
         article["text_container_name"] = "margarine-" + container_part
         article["text_object_name"] = object_part
 
-        get_container(article["text_container_name"]).store_object(article["text_object_name"], html, content_type = "text/html", etag = etag)
+        get_container(article["text_container_name"]).store_object(article["text_object_name"], html, content_type = "text/html")
 
         articles.update({ "_id": _id }, { "$set": article }, upsert = True)
 
