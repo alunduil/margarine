@@ -63,11 +63,17 @@ PARAMS["scripts"] = [
 PARAMS["packages"] = [
         "margarine",
         "margarine.api",
+        "margarine.consumers",
         ]
 
 PARAMS["data_files"] = [
         ("share/doc/{P[name]}-{P[version]}".format(P = PARAMS), [
-            "README.md",
+            "README.rst",
+            ]),
+        ("share/doc/{P[name]}-{P[version]}/config".format(P = PARAMS), [
+            "conf/logging.ini",
+            "conf/margarine.ini",
+            "conf/pyrax.ini",
             ]),
         ]
 
