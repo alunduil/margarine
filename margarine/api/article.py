@@ -168,14 +168,14 @@ def article(article_id):
 
     logger.debug("article: %s", article)
 
-    headers = dict([ ("X-ARTICLE-" + re.sub(r'-+', '-', header.replace("_", "-").upper()), value) for header, value in article.iteritems() ])
+    headers = dict([ ("X-ARTICLE-" + header.replace("_", "-").upper(), value) for header, value in article.iteritems() ])
 
     logger.debug("headers: %s", headers)
 
     response = make_response("200")
 
     for header, value in headers.iteritems():
-        response.headers[header] = value
+        response.headers[re.sub(r'-+', '-', header)] = value
 
     logger.debug("response: %s", response)
 
