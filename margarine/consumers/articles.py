@@ -199,6 +199,8 @@ def sanitize_html_consumer(channel, method, header, body):
 
         articles.update({ "_id": _id }, { "$set": article }, upsert = True)
 
+    logger.info("finished processing article: %s", article["url"])
+
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
 def register(channel):
