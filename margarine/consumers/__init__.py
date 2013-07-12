@@ -28,13 +28,13 @@ def main():
 
     # TODO Manage threads for load balancing.
 
-    channel = get_channel()
-
-    users.register(channel)
-    articles.register(channel)
-
     while True:
         try:
+            channel = get_channel()
+
+            users.register(channel)
+            articles.register(channel)
+
             channel.start_consuming()
         except (pika.exceptions.ChannelClosed) as e:
             logger.exception(e)
