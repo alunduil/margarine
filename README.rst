@@ -39,9 +39,9 @@ be running in order to provide all of the intended functionality:
          to the application.
 :spread: The backend daemon process that does non-interactive processing.
 
-The ``blend`` process can be deployed as a WSGI service if desired (it is 
-written with flask) but also has a built in web service that can be used for 
-small or development deployments.
+The ``tinge`` and ``blend`` processes can be deployed as a WSGI service if 
+desired (it is written with flask) but also has a built in web service that 
+can be used for small or development deployments.
 
 The ``spread`` daemon is designed to work with ``start-stop-daemon`` to run in
 the background on a server.  The ``spread`` daemon listens to a configurable 
