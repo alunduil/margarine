@@ -159,7 +159,7 @@ Parameters("server", parameters = [
         },
     ])
 
-MARGARINE_API = Flask(__name__)
+BLEND = Flask(__name__)
 
 def _prefix(name):
     """Return the prefix for the API endpoint name given.
@@ -178,21 +178,21 @@ def _prefix(name):
 
     return "/{i.API_VERSION}/{name}".format(i = information, name = name)
 
-MARGARINE_API.register_blueprint(USER, url_prefix = _prefix("users"))
-MARGARINE_API.register_blueprint(ARTICLE, url_prefix = _prefix("articles"))
-MARGARINE_API.register_blueprint(TAG, url_prefix = _prefix("tags"))
+BLEND.register_blueprint(USER, url_prefix = _prefix("users"))
+BLEND.register_blueprint(ARTICLE, url_prefix = _prefix("articles"))
+BLEND.register_blueprint(TAG, url_prefix = _prefix("tags"))
 
 logger.debug("user resource directory: %s", USER.root_path)
 logger.debug("article resource directory: %s", ARTICLE.root_path)
 logger.debug("tag resource directory: %s", TAG.root_path)
 
-MARGARINE_API.error_handler_spec[None][401] = http_401_handler
+BLEND.error_handler_spec[None][401] = http_401_handler
 
-logger.debug("error_handlers: %s", MARGARINE_API.error_handler_spec)
+logger.debug("error_handlers: %s", BLEND.error_handler_spec)
 
-MARGARINE_API.config["SERVER_NAME"] = Parameters()["server.name"]
+BLEND.config["SERVER_NAME"] = Parameters()["server.name"]
 
-logger.debug("url map: %s", MARGARINE_API.url_map)
+logger.debug("url map: %s", BLEND.url_map)
 
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
@@ -223,5 +223,5 @@ def _extract_flask_parameters(parameters):
     return flask_parameters
 
 def main():
-    MARGARINE_API.run(**_extract_flask_parameters(Parameters().parse()))
+    BLEND.run(**_extract_flask_parameters(Parameters().parse()))
 
