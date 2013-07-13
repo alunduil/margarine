@@ -141,8 +141,8 @@ def send_user_email(user, verification):
             "\n" \
             "Margarine\n"
 
-    from margarine.api import MARGARINE_API # TODO Figure out looping import.
-    with MARGARINE_API.app_context():
+    from margarine.blend import BLEND # TODO Figure out looping import.
+    with BLEND.app_context():
         message = email.mime.text.MIMEText(message_text.format(verification_url = url_for("user.users_password_api", username = user["username"], verification = verification)))
 
     message["Subject"] = "Margarine Verification"
