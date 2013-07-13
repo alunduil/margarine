@@ -10,8 +10,8 @@ import logging
 if __name__ == "__main__":
     logging.basicConfig(level = logging.DEBUG)
 
-import margarine.api
+import margarine.blend
 
 if __name__ == "__main__":
-    margarine.api.main()
+    margarine.blend.main()
 

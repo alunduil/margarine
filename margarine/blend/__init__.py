@@ -119,14 +119,14 @@ from margarine.parameters import configure_logging
 
 configure_logging()
 
-from margarine.api import information
+from margarine.blend import information
 
-from margarine.api.user import USER
-from margarine.api.user import UnauthorizedError
-from margarine.api.user import http_401_handler
+from margarine.blend.user import USER
+from margarine.blend.user import UnauthorizedError
+from margarine.blend.user import http_401_handler
 
-from margarine.api.article import ARTICLE
-from margarine.api.tag import TAG
+from margarine.blend.article import ARTICLE
+from margarine.blend.tag import TAG
 
 logger = logging.getLogger(__name__)
 

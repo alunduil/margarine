@@ -54,7 +54,7 @@ from flask import url_for
 from flask.views import MethodView
 from flask import render_template
 
-from margarine.api import information
+from margarine.blend import information
 from margarine.parameters import Parameters
 from margarine.communication import get_channel
 from margarine.aggregates import get_collection
