@@ -70,6 +70,11 @@ Parameters("server", parameters = [
 TINGE = Flask(__name__)
 
 # TODO Add tinge methods.
+#
+# /articles/<uuid> GET
+# / GET
+# 
+# Anything else required for the frontend?
 
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
 
