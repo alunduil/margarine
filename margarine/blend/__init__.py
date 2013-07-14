@@ -139,7 +139,7 @@ Parameters("flask", parameters = [
     { # --flask-port=PORT; PORT ← "5000"
         "options": [ "--port" ],
         "type": int,
-        "default": 5000,
+        "default": 5050,
         "help": "The port to bind the API daemon; default: %(default)s.",
         },
     { # --flask-debug
