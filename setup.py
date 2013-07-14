@@ -30,6 +30,8 @@ PARAMS["classifiers"] = [
         "Natural Language :: English",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7", # only tested on 2.7
+        "Programming Language :: Python :: 2 :: Only", # pika is not 3.* ready
         "Topic :: Education",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ]
@@ -75,6 +77,9 @@ PARAMS["data_files"] = [
             "conf/margarine.ini",
             "conf/pyrax.ini",
             ]),
+        ("share/doc/{P[name]}-{P[version]}/wsgi".format(P = PARAMS), [
+            "conf/blend.wsgi",
+            ])
         ]
 
 setup(**PARAMS)
