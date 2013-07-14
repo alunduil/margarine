@@ -136,7 +136,7 @@ Parameters("flask", parameters = [
         "default": "127.0.0.1",
         "help": "The IP to bind the API daemon; default: %(default)s.",
         },
-    { # --flask-port=PORT; PORT ← "5000"
+    { # --flask-port=PORT; PORT ← "5050"
         "options": [ "--port" ],
         "type": int,
         "default": 5050,
@@ -211,14 +211,14 @@ def _extract_flask_parameters(parameters):
 
     flask_parameters = {}
 
-    if "host" in parameters:
-        flask_parameters["host"] = parameters["host"]
+    if "flask.host" in parameters:
+        flask_parameters["host"] = parameters["flask.host"]
 
-    if "port" in parameters:
-        flask_parameters["port"] = parameters["port"]
+    if "flask.port" in parameters:
+        flask_parameters["port"] = parameters["flask.port"]
     
-    if "debug" in parameters:
-        flask_parameters["debug"] = parameters["debug"]
+    if "flask.debug" in parameters:
+        flask_parameters["debug"] = parameters["flask.debug"]
 
     return flask_parameters
 
