@@ -77,6 +77,51 @@ TINGE = Flask(__name__)
 # 
 # Anything else required for the frontend?
 
+@TINGE.route('/articles/<article_id>')
+def view_article(article_id):
+    """Return the sanitized view of the article with interface elements.
+
+    The interface elements are a sidebar including the following functions:
+
+    * article star (subscribe)
+    * tag cloud (add tags)
+    * profile interaction
+
+    If the user isn't logged in they'll see a login form instead of profile
+    interaction and will have a grayed out unusable star.
+
+    .. note::
+        Should tags be only addable by authenticated users?
+
+    A search box should be shown in the sidebar as well.
+
+    Perhaps the following layout:
+
+    +--------+------------------+
+    | SEARCH | STAR             |
+    +--------+------------------+
+    | TAG CLOUD                 |
+    +---------------------------+
+    | Sign In | Sign Up | Login |
+    +---------------------------+
+
+    """
+
+    return render_template('articles.html', article_id = article_id)
+
+@TINGE.route('/')
+def home_page():
+    """Return a simple homepage outlining Margarine and allowing signups.
+
+    This is split into two sides:
+
+    * Login and sign-up form on the left
+    * Small about and small list of recently added article subjects
+
+    """
+
+    return render_template('home.html')
+
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
 
 TINGE.config["SERVER_NAME"] = Parameters()["server.name"]
