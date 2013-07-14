@@ -79,6 +79,7 @@ PARAMS["data_files"] = [
             ]),
         ("share/doc/{P[name]}-{P[version]}/wsgi".format(P = PARAMS), [
             "conf/blend.wsgi",
+            "conf/tinge.wsgi",
             ])
         ]
 
