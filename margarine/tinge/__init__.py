@@ -145,14 +145,14 @@ def _extract_flask_parameters(parameters):
 
     flask_parameters = {}
 
-    if "host" in parameters:
-        flask_parameters["host"] = parameters["host"]
+    if "flask.host" in parameters:
+        flask_parameters["host"] = parameters["flask.host"]
 
-    if "port" in parameters:
-        flask_parameters["port"] = parameters["port"]
+    if "flask.port" in parameters:
+        flask_parameters["port"] = parameters["flask.port"]
     
-    if "debug" in parameters:
-        flask_parameters["debug"] = parameters["debug"]
+    if "flask.debug" in parameters:
+        flask_parameters["debug"] = parameters["flask.debug"]
 
     return flask_parameters
 
