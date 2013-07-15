@@ -29,6 +29,7 @@ import logging
 import socket
 
 from flask import Flask
+from flask import render_template
 
 from margarine.parameters import Parameters
 from margarine.parameters import configure_logging
