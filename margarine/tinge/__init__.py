@@ -121,7 +121,7 @@ def home_page():
 
     """
 
-    return render_template('home.html')
+    return render_template('index.html')
 
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
 
