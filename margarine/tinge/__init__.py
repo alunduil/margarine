@@ -84,8 +84,8 @@ TINGE = Flask(__name__)
 # 
 # Anything else required for the frontend?
 
-@TINGE.route('/articles/<article_id>')
-def view_article(article_id):
+@TINGE.route('/article')
+def view_article():
     """Return the sanitized view of the article with interface elements.
 
     The interface elements are a sidebar including the following functions:
@@ -118,7 +118,7 @@ def view_article(article_id):
 
     """
 
-    return render_template('article.html', article_id = article_id)
+    return render_template('article.html', _id = request.args["id"])
 
 @TINGE.route('/')
 def home_page():
