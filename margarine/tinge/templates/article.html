@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Margarine—{{ article['title'] }}{% endblock title %}
+
+{# TODO Add Description Block #}
+{# TODO Macro for getting article properties #}
+
+{% block body %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      {% include "sidebar.html" %}
+    </div>
+    <div class="span9">
+      <!-- TODO Use Javascript to get text from API. -->
+      {{ article['text'] }}
+    </div>
+  </div>
+</div>

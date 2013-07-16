@@ -8,43 +8,11 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span6">
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please Sign In</h2>
-        <input type="text" class="input-block-level" placeholder="Username">
-        <input type="password" class="input-block-level" placeholer="Password">
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember Me
-        </label>
-        <button class="btn btn-large btn-primary" type="submit">Sign In</button>
-      </form>
-      <!-- TODO Add Sign Up Form -->
+      {% include "form.signin.html" ignore missing %}
+      {% include "form.signup.html" ignore missing %}
     </div>
     <div class="span6">
-      <div class="hero-unit">
-        <p>
-          Margarine is a demonstration application for
-          <a href="http://unlocked.io/">Unlocked</a>.  It showcases the
-          Pillars of Cloudiness (below) while being a fully usable
-          application.
-
-          <ul>
-            <li>Parallel</li>
-            <li>Modular</li>
-            <li>Horizontally Scalable</li>
-            <li>Agile</li>
-            <li>Secure</li>
-          </ul>
-        </p>
-
-        <p>
-          While being fully functional, this application provides similar
-          (but not a superset of) functionality to that provided by the 
-          fantastic services, 
-          <a href="http://www.readability.com">Readability</a> &amp;
-          <a href="https://delicious.com/">Delicious</a>.
-          <!-- TODO Update the above phrasing -->
-        </p>
-      </div>
+      {% include "about.html" %}
       <!-- TODO Article Teaser -->
     </div>
   </div>

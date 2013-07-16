@@ -98,17 +98,17 @@ def view_article(article_id):
 
     Perhaps the following layout:
 
-    +--------+------------------+
-    | SEARCH | STAR             |
-    +--------+------------------+
-    | TAG CLOUD                 |
-    +---------------------------+
-    | Sign In | Sign Up | Login |
-    +---------------------------+
+    +--------+----------+
+    | SEARCH | STAR     |
+    +--------+----------+
+    | TAG CLOUD         |
+    +-------------------+
+    | Sign In | Sign Up |
+    +-------------------+
 
     """
 
-    return render_template('articles.html', article_id = article_id)
+    return render_template('article.html', article_id = article_id)
 
 @TINGE.route('/')
 def home_page():
