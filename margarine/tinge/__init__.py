@@ -23,6 +23,12 @@ that plan:
   does contain functionality that allows us to interpret the URL and perform
   the appropriate dynamic programming.
 
+.. note::
+    Simple testing with CloudFiles public URLs did show that retrieval of the
+    same resource happened if a query string was appended to the URL.  Once,
+    we have an acceptable interface we can decompose it to just the raw HTML
+    (with javascript being the binding) for a truly scalable SOA application.
+
 """
 
 import logging
@@ -105,6 +111,10 @@ def view_article(article_id):
     +-------------------+
     | Sign In | Sign Up |
     +-------------------+
+
+    .. note::
+        Should the URL schema change to reflect a scheme that will work with
+        the pure static page layout (i.e. /article?id=UUID5)?
 
     """
 
