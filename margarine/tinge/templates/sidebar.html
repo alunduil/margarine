@@ -8,12 +8,13 @@
       <!-- If logged in (macro) and user is subscribed; full star -->
       <!-- If logged in (macro) and user not subscribed; empty star -->
       <!-- If not logged in; grayed star -->
-      <img src="{{ url_for('static', filename = 'images/star-gray.png') }}" alt="Subscription Not Available">
+      <!-- TODO Look into CanvasMage for image handling -->
+      <img src="{{ url_for('static', filename = 'images/star-gray.svg') }}" alt="Subscription Not Available">
     </div>
   </div>
   <div class="row-fluid">
-    <div class="span12">
-      {{ article["tags"]|upper|join(', ') }}
+    <div class="span12 article-tags">
+      <!-- Update DOM from Javascript -->
     </div>
   </div>
   <div class="row-fluid">
@@ -21,7 +22,7 @@
       <!-- TODO Logic for profile access -->
       <!-- If not logged in (macro); link to home page -->
       <!-- If logged in (macro); link to user's profile -->
-      <a href="{{ url_for(home_page) }}">Sign In or Sign Up</a>
+      <a class="sidebar profile-link" href="{{ url_for("home_page") }}">Sign In or Sign Up</a>
     </div>
   </div>
 </div>
