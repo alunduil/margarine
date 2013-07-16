@@ -77,12 +77,30 @@ Parameters("server", parameters = [
 
 TINGE = Flask(__name__)
 
-# TODO Add tinge methods.
-#
-# /articles/<uuid> GET
-# / GET
-# 
-# Anything else required for the frontend?
+# TODO Anything else required for the frontend?
+
+@TINGE.route('/')
+def home_page():
+    """Return a simple homepage outlining Margarine and allowing signups.
+
+    This is split into two sides:
+
+    * Login and sign-up form on the left
+    * Small about and small list of recently added article subjects
+
+    """
+
+    return render_template('index.html')
+
+Parameters("api", parameters = [
+    { # --api-endpoint=URL; URL ← http://HOSTNAME:5050
+        "options": [ "--endpoint" ],
+        "default": "http://" + socket.gethostname() + ":5050",
+        "help": \
+                "The API endpoint or rather the URL endpoint for the blend " \
+                "processes.  Defaults to %(default)s",
+        },
+    ])
 
 @TINGE.route('/article')
 def view_article():
@@ -124,20 +142,7 @@ def view_article():
 
     """
 
-    return render_template('article.html')
-
-@TINGE.route('/')
-def home_page():
-    """Return a simple homepage outlining Margarine and allowing signups.
-
-    This is split into two sides:
-
-    * Login and sign-up form on the left
-    * Small about and small list of recently added article subjects
-
-    """
-
-    return render_template('index.html')
+    return render_template('article.html', api_endpoint = Parameters()["api.endpoint"])
 
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
 
