@@ -116,9 +116,15 @@ def view_article():
         Should the URL schema change to reflect a scheme that will work with
         the pure static page layout (i.e. /article?id=UUID5)?
 
+    Expectations
+    ------------
+
+    A query parameter, ``_id``, will be passed with the UUID5 of the article
+    to be viewed.
+
     """
 
-    return render_template('article.html', _id = request.args["id"])
+    return render_template('article.html')
 
 @TINGE.route('/')
 def home_page():
