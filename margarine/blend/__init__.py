@@ -145,6 +145,8 @@ Parameters("flask", parameters = [
     { # --flask-debug
         "options": [ "--debug" ],
         "action": "store_true",
+        "type": bool,
+        "default": False,
         "help": "Enable debugging of the flask application.",
         },
     ])
