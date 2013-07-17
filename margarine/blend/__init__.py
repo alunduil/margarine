@@ -190,7 +190,8 @@ BLEND.error_handler_spec[None][401] = http_401_handler
 
 logger.debug("error_handlers: %s", BLEND.error_handler_spec)
 
-BLEND.config["SERVER_NAME"] = Parameters()["server.name"]
+# TODO Find out why this might be necessary.
+#BLEND.config["SERVER_NAME"] = Parameters()["server.name"]
 
 logger.debug("url map: %s", BLEND.url_map)
 
