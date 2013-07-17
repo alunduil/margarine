@@ -2,7 +2,7 @@
  * Update the DOM with API information about the current article.
  */
 function updateArticle(apiEndpoint) {
-  $.get(apiEndpoint + "/articles/" + getUrlVars()["id"],
+  $.get(apiEndpoint + "articles/" + getUrlVars()["id"],
       function(data) {
         $('@article-title').append(data.title);
         $('@article-author').append(data.author);

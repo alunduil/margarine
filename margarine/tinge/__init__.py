@@ -146,7 +146,8 @@ def view_article():
 
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
 
-TINGE.config["SERVER_NAME"] = Parameters()["server.name"]
+# TODO Find out why this might be necessary.
+#TINGE.config["SERVER_NAME"] = Parameters()["server.name"]
 
 logger.debug("url map: %s", TINGE.url_map)
 
