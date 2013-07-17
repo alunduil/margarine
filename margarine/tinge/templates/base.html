@@ -23,5 +23,7 @@
     <!-- TODO Keep this at the bottom of the page! -->
     <script src="{{ url_for('static', filename = 'js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}"></script>
+
+    {% block js %}{% endblock js %}
   </body>
 </html>
