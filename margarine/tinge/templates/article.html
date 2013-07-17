@@ -30,5 +30,5 @@
 
 <script src="{{ url_for('static', filename = 'js/article.js') }}"></script>
 <!-- TODO Ordering of scripts correct? -->
-<script type="text/javascript">updateArticle({{ api_endpoint }})</script>
+<script type="text/javascript">updateArticle("{{ api_endpoint }}")</script>
 {% endblock body %}
