@@ -68,6 +68,12 @@ PARAMS["packages"] = [
         "margarine.consumers",
         ]
 
+PARAMS["package_data"] = {
+        "margarine.blend": [
+            "templates/*.html",
+            ],
+        }
+
 PARAMS["data_files"] = [
         ("share/doc/{P[name]}-{P[version]}".format(P = PARAMS), [
             "README.rst",
