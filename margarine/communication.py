@@ -75,7 +75,7 @@ def get_channel():
         if None not in (uri.username, uri.password):
             credentials = pika.PlainCredentials(uri.username, uri.password)
 
-        logger.debug("uri: %s", uri)
+        logger.debug("uri.port: %s", uri.port)
 
         # TODO Add SSL support?
         connection_parameters = pika.ConnectionParameters(
