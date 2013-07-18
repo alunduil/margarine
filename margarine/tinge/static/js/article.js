@@ -8,6 +8,7 @@ function updateArticle(apiEndpoint) {
 
         $('@article-title').append(data.title);
         $('@article-author').append(data.author);
+        $('@article-date').append(data.date);
 
         $('@article-tags').append(data.tags.join());
 
