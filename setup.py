@@ -60,16 +60,24 @@ PARAMS["requires"] = [
 PARAMS["scripts"] = [
         "bin/blend",
         "bin/spread",
+        "bin/tinge",
         ]
 
 PARAMS["packages"] = [
         "margarine",
         "margarine.blend",
         "margarine.consumers",
+        "margarine.tinge",
         ]
 
 PARAMS["package_data"] = {
         "margarine.blend": [
+            "templates/*.html",
+            ],
+        "margarine.tinge": [
+            "static/js/*.js",
+            "static/img/*.png",
+            "static/css/*.css",
             "templates/*.html",
             ],
         }
