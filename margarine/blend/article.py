@@ -47,6 +47,7 @@ from flask import Blueprint
 from flask import abort
 from flask import make_response
 from flask import url_for
+from bson import json_util
 
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
@@ -128,31 +129,24 @@ def article(article_id):
     Response
     --------
 
+    .. note::
+        The following is formatted for readability and does not match the 
+        actual response from the API.  Also, the body parameter has been
+        shortened to fit this example more concisely.
+
     ::
 
         HTTP/1.0 200 Ok
-        X-ARTICLE-URL: http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html
-        X-ARTICLE-TAGS: [ "lvm", "lvm snapshots", "snapshots", "san", "partitions" ]
-        X-ARTICLE-NOTATIONS: [ { "location": null, "note": "lorem ipsum" } ]
-        X-ARTICLE-VOTES: 37
-        X-ARTICLE-CREATED-AT: 
-        X-ARTICLE-ORIGINAL-ETAG: 5d811d796b3e8fefd62233f3772437af
-        X-ARTICLE-PARSED-AT:
 
-        <h2>Introduction</h2>
-        <p>It seems that disk snapshots have become a hot topic and a confusing
-        topic.  I intend to simply outline what snapshots look like in terms of
-        the lower layers of abstraction and nothing more.  Snapshots are built 
-        into things like LVM, SAN, &amp;c but I will not be covering those 
-        technologies.  Instead, what I intend to clarify is how snapshots work 
-        in LVM.</p>
-
-        <h2>Lower Layers</h2>
-        <h3>Layer 1: The Hard Disk</h3>
-
-    .. note::
-        When performing a HEAD operation rather than a GET the body is not
-        returned.
+        {
+          "body": "…Singularity, an Alternative Openstack Guest Agent | Hackery &c…
+          "url": "http://blog.alunduil.com/posts/singularity-an-alternative-openstack-guest-agent.html",
+          "created_at": {"$date": 1374007667571},
+          "etag": "6e2f69536ca15cc18260bffe7583b849",
+          "_id": "03db19bb92205b4fb5fc3c4c0e4b1279",
+          "parsed_at": {"$date": 1374008521414},
+          "size": 9964
+        }
 
     """
 
@@ -169,26 +163,12 @@ def article(article_id):
 
     logger.debug("article: %s", article)
 
-    headers = dict([ ("X-ARTICLE-" + header.replace("_", "-").upper(), value) for header, value in article.iteritems() ])
+    data = get_container(container_name).get_object(object_name).fetch()
 
-    logger.debug("headers: %s", headers)
+    logger.debug("type(data): %s", type(data))
+    logger.debug("len(data): %s", len(data))
 
-    response = make_response("200")
+    article["body"] = data
 
-    for header, value in headers.iteritems():
-        response.headers[re.sub(r'-+', '-', header)] = value
-
-    logger.debug("response: %s", response)
-
-    if request.method == "GET":
-        data = get_container(container_name).get_object(object_name).fetch()
-
-        logger.debug("type(data): %s", type(data))
-        logger.debug("len(data): %s", len(data))
-
-        response.set_data(data)
-    elif request.method == "HEAD":
-        response.headers["Content-Length"] = 0
-
-    return response
+    return json.dumps(article, default = json_util.default)
 
