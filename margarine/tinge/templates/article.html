@@ -32,9 +32,6 @@
 {% endblock body %}
 
 {% block js %}
-<!-- TODO Update security if necessary -->
-<script type="text/javascript">document.write(document.domain)</script>
-<!--<script type="text/javascript">document.domain = "{{ domain }}"</script>-->
 <script src="{{ url_for('static', filename = 'js/article.js') }}"></script>
 <!-- TODO Ordering of scripts correct? -->
 <script type="text/javascript">updateArticle("{{ api_endpoint }}")</script>
