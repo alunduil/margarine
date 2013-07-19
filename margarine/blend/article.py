@@ -184,6 +184,8 @@ def article(article_id):
 
     response = make_response(json.dumps(article, default = json_util.default), 200)
 
+    response.mimetype = "application/json"
+
     response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
 
     return response
