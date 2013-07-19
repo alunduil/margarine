@@ -6,13 +6,13 @@ function updateArticle(apiEndpoint) {
       function(data) {
         document.title = data.title;
 
-        $('@article-title').append(data.title);
-        $('@article-author').append(data.author);
-        $('@article-date').append(data.date);
+        $('.article-title').append(data.title);
+        $('.article-author').append(data.author);
+        $('.article-date').append(data.date);
 
-        $('@article-tags').append(data.tags.join());
+        $('.article-tags').append(data.tags.join());
 
-        $('@article-text').append(data.text);
+        $('.article-text').append(data.text);
       }, "json" )
 }
 
