@@ -41,6 +41,7 @@ import json
 import logging
 import pika
 import re
+import socket
 
 from flask import request
 from flask import Blueprint
@@ -52,6 +53,7 @@ from bson import json_util
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
 from margarine.communication import get_channel
+from margarine.parameters import Parameters
 
 logger = logging.getLogger(__name__)
 
