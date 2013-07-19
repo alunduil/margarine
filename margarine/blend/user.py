@@ -282,6 +282,8 @@ class UserInterface(MethodView):
         if user is None:
             abort(404)
 
+        # TODO Set JSON mimetype?
+
         return json.dumps(unicode(user))
 
     def delete(self, username):
