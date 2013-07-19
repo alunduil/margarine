@@ -115,6 +115,16 @@ def submit_article():
 
     return response
 
+Parameters("server", parameters = [
+    { # --server-domain=FQDN; FQDN ← HOSTNAME (TLD)
+        "options": [ "--domain" ],
+        "default": ".".join(socket.gethostname().rsplit('.', 2)[1:]),
+        "help": \
+                "The base name used in URL generation.  This defaults to the" \
+                "host's FQDN.",
+        }, # TODO Fix this help message.
+    ])
+
 @ARTICLE.route('/<article_id>')
 def article(article_id):
     """Retrieve a sanitized article.
@@ -170,5 +180,9 @@ def article(article_id):
 
     article["body"] = data
 
-    return json.dumps(article, default = json_util.default)
+    response = make_response(json.dumps(article, default = json_util.default), 200)
+
+    response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
+
+    return response
 
