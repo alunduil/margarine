@@ -4,13 +4,13 @@
 function updateArticle(apiEndpoint) {
   $.get(apiEndpoint + "articles/" + getUrlVars()["id"],
       function(data) {
-        document.title = data.title;
+        $('.article-text').append(data.body);
 
         $('.article-title').append(data.title);
+        document.title = "Margarine—" + data.title; 
+
         $('.article-author').append(data.author);
         $('.article-date').append(data.date);
-
-        $('.article-text').append(data.body);
 
         $('.article-tags').append(data.tags ? data.tags.join() : "");
       }, "json" )
