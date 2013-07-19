@@ -10,9 +10,9 @@ function updateArticle(apiEndpoint) {
         $('.article-author').append(data.author);
         $('.article-date').append(data.date);
 
-        $('.article-tags').append(data.tags.join());
-
         $('.article-text').append(data.text);
+
+        $('.article-tags').append(data.tags ? data.tags.join() : "");
       }, "json" )
 }
 
