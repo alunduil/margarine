@@ -41,6 +41,7 @@ import json
 import logging
 import pika
 import re
+import socket
 
 from flask import request
 from flask import Blueprint
