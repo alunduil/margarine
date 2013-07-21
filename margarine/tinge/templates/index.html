@@ -8,8 +8,9 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span6">
-      {% include "form.signin.html" ignore missing %}
-      {% include "form.signup.html" ignore missing %}
+      <div class="span6 offset3">
+        {% include "form.signin.html" ignore missing %}
+      </div>
     </div>
     <div class="span6">
       {% include "about.html" %}
