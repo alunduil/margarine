@@ -51,9 +51,9 @@ PARAMS["provides"] = [
 PARAMS["requires"] = [
         "redis-py",
         "pymongo",
-        "pika",
+        "pika (>=0.9.12)",
         "flask",
-        "beautifulsoup",
+        "beautifulsoup (>=4)",
         "pyrax",
         ]
 
