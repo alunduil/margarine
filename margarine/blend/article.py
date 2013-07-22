@@ -175,6 +175,7 @@ def article(article_id):
 
     logger.debug("article: %s", article)
 
+    # TODO Catch connection issues and return Temporarily Unavailable.
     data = get_container(container_name).get_object(object_name).fetch()
 
     logger.debug("type(data): %s", type(data))
