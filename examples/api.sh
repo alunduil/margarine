@@ -25,3 +25,7 @@ curl -v -X GET http://api.margarine.com/v1/articles/7d7dae0b-2ed6-53ed-a1c5-5b12
 # Delete an Article
 # Deletes will be handled automatically by the backend parsing system.
 
+
+# User Authentication
+curl -v -X GET --digest -u ${USERNAME} http://api.margarine.com/v1/users/${USERNAME}/token
+
