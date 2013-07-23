@@ -49,7 +49,7 @@ PARAMS["provides"] = [
         ]
 
 PARAMS["requires"] = [
-        "redis-py",
+        "redis-py (>=2.7.6)",
         "pymongo",
         "pika (>=0.9.12)",
         "flask",
