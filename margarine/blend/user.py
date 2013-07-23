@@ -498,6 +498,8 @@ class UserPasswordInterface(MethodView):
         channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = "users.password")
         channel.close()
 
+        logger.info("Sent Password Update")
+
         get_keyspace("verifications").delete(verification)
 
         return "", 202

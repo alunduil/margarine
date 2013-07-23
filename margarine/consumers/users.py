@@ -97,6 +97,8 @@ def password_change_consumer(channel, method, header, body):
 
     h = hashlib.md5("{0}:{1}:{2}".format(user["username"], information.AUTHENTICATION_REALM, user["password"])).hexdigest()
 
+    logger.debug("h: %s", h)
+
     get_collection("users").update({ "username": user["username"] }, { "$set": { "hash": h } }, upsert = True)
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
