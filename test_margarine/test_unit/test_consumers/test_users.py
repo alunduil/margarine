@@ -3,13 +3,13 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import unittest2
+import unittest
 import mock
 import json
 
 from margarine.consumers.users import create_user_consumer
 
-class UserCreationTest(unittest2.TestCase):
+class UserCreationTest(unittest.TestCase):
     def setUp(self):
         patcher = mock.patch("margarine.consumers.users.get_collection")
         mock_get_channel = patcher.start()

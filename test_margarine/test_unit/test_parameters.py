@@ -5,7 +5,7 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import unittest2
+import unittest
 import tempfile
 import sys
 import os
@@ -49,7 +49,7 @@ TEST_PARAMETERS = [
             },
         ]
             
-class ParametersConstructionTest(unittest2.TestCase):
+class ParametersConstructionTest(unittest.TestCase):
     def setUp(self):
         Parameters._Parameters__shared_state = {}
 
@@ -81,7 +81,7 @@ class ParametersConstructionTest(unittest2.TestCase):
 
         self.assertIs(p1.__dict__, p2.__dict__)
 
-class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
+class ParametersRespectsDoubleAsteriskTest(unittest.TestCase):
     def setUp(self):
         Parameters._Parameters__shared_state = {}
 
@@ -93,7 +93,7 @@ class ParametersRespectsDoubleAsteriskTest(unittest2.TestCase):
 
         self.assertEqual(parameters_to_dict(**self.parameters), {})
 
-class ParametersResolutionTest(unittest2.TestCase):
+class ParametersResolutionTest(unittest.TestCase):
     def setUp(self):
         Parameters._Parameters__shared_state = {}
 

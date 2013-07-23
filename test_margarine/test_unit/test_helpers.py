@@ -5,11 +5,11 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import unittest2
+import unittest
 
 from margarine.helpers import URI
 
-class URIParsingTest(unittest2.TestCase):
+class URIParsingTest(unittest.TestCase):
     def test_minimal_uri(self):
         uri = URI("")
 

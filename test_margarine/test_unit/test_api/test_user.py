@@ -5,7 +5,7 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import unittest2
+import unittest
 import logging
 import mock
 
@@ -14,7 +14,7 @@ from margarine.api import MARGARINE_API
 
 logger = logging.getLogger(__name__)
 
-class BaseUserTest(unittest2.TestCase):
+class BaseUserTest(unittest.TestCase):
     def setUp(self):
         MARGARINE_API.config["TESTING"] = True
         self.application = MARGARINE_API.test_client()
