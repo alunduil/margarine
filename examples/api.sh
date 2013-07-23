@@ -7,7 +7,7 @@ curl -v -X PUT http://api.margarine.com/v1/users/${USERNAME} -F "email=username@
 curl -v -X GET http://api.margarine.com/v1/users/${USERNAME}
 
 # Update an User
-curl -v -X PUT http://api.margarine.com/v1/users/${USERNAEM} -F "name=Fabio Lanzoni" -H "X-Auth-Token: 1e13e9e5-445b-4509-a8a4-bb4a1657f431"
+curl -v -X PUT http://api.margarine.com/v1/users/${USERNAME} -F "name=Fabio Lanzoni" -H "X-Auth-Token: 1e13e9e5-445b-4509-a8a4-bb4a1657f431"
 
 # Delete an User
 curl -v -X DELETE http://api.margarine.com/v1/users/${USERNAME} -H "X-Auth-Token: 1e13e9e5-445b-4509-a8a4-bb4a1657f431"
