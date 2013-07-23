@@ -23,7 +23,7 @@ class URI(object):
 
         match = re.match( \
                 r'((?P<scheme>[^:]+)://)?' \
-                r'((?P<username>[^:@]+)(:(?P<password>[^@]+))?@)?' \
+                r'((?P<username>[^:]+)(:(?P<password>[^@]+))?@)?' \
                 r'(?P<host>[^:/]+)?' \
                 r'(:(?P<port>[^/]+))?' \
                 r'(?P<path>/\w+)?' \
