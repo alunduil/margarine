@@ -53,7 +53,7 @@ PARAMS["requires"] = [
         "pymongo",
         "pika (==0.9.12)",
         "flask",
-        "bs4 (>=4)",
+        "bs4",
         "pyrax",
         ]
 
