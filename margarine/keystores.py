@@ -66,7 +66,7 @@ def get_keyspace(keyspace):
         if uri.port is not None:
             port = int(uri.port)
             
-        KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(host = uri.host, port = port, db = databases[keyspace])
+        KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(host = uri.host, port = port, username = uri.username, password = uri.password, db = databases[keyspace])
 
     return KEYSTORE_CONNECTIONS[keyspace]
     
