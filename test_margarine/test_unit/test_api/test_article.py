@@ -10,15 +10,16 @@ import logging
 import mock
 import uuid
 
-from margarine.api import information
-from margarine.api import MARGARINE_API
+from margarine.blend import information
+from margarine.blend import BLEND
+
 
 logger = logging.getLogger(__name__)
 
 class BaseArticleTest(unittest.TestCase):
     def setUp(self):
-        MARGARINE_API.config["TESTING"] = True
-        self.application = MARGARINE_API.test_client()
+        BLEND.config["TESTING"] = True
+        self.application = BLEND.test_client()
 
         self.article_url = "http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html"
         self.article_uuid = uuid.uuid5(uuid.NAMESPACE_DNS, self.article_url)
@@ -36,7 +37,7 @@ class BaseArticleTest(unittest.TestCase):
 
         """
 
-        patcher = mock.patch("margarine.api.article.get_channel")
+        patcher = mock.patch("margarine.blend.article.get_channel")
         mock_get_channel = patcher.start()
 
         self.addCleanup(patcher.stop)
@@ -56,7 +57,7 @@ class BaseArticleTest(unittest.TestCase):
 
         """
 
-        patcher = mock.patch("margarine.api.article.get_collection")
+        patcher = mock.patch("margarine.blend.article.get_collection")
         mock_get_collection = patcher.start()
 
         self.addCleanup(patcher.stop)
@@ -76,7 +77,7 @@ class BaseArticleTest(unittest.TestCase):
 
         """
 
-        patcher = mock.patch("margarine.api.article.get_keyspace")
+        patcher = mock.patch("margarine.blend.article.get_keyspace")
         mock_get_keyspace = patcher.start()
 
         self.addCleanup(patcher.stop)
@@ -100,7 +101,7 @@ class ArticleCreationTest(BaseArticleTest):
             })
 
         self.mock_channel.basic_publish.assert_called_once_with(
-                body = '{"url": "' + self.article_url + '", _id: "' + self.article_uuid + '"}',
+                body = '{"url": "' + self.article_url + '", _id: "' + str(self.article_uuid) + '"}',
                 exchange = 'margarine.articles.topic',
                 properties = mock.ANY,
                 routing_key = 'articles.create'
@@ -200,7 +201,7 @@ class ArticleDeleteTest(BaseArticleTest):
     def test_article_delete_request(self):
         """Delete Article—Existing."""
 
-        response = self.application.delete(self.url + self.article_uuid)
+        response = self.application.delete(self.url + str(self.article_uuid))
 
         self.assertIn("405", response.status)
 

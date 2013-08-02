@@ -9,15 +9,15 @@ import unittest
 import logging
 import mock
 
-from margarine.api import information
-from margarine.api import MARGARINE_API
+from margarine.blend import information
+from margarine.blend import BLEND
 
 logger = logging.getLogger(__name__)
 
 class BaseUserTest(unittest.TestCase):
     def setUp(self):
-        MARGARINE_API.config["TESTING"] = True
-        self.application = MARGARINE_API.test_client()
+        BLEND.config["TESTING"] = True
+        self.application = BLEND.test_client()
 
         self.account_name = "test_user"
 
@@ -34,7 +34,7 @@ class BaseUserTest(unittest.TestCase):
 
         """
 
-        patcher = mock.patch("margarine.api.user.get_channel")
+        patcher = mock.patch("margarine.blend.user.get_channel")
         mock_get_channel = patcher.start()
 
         self.addCleanup(patcher.stop)
@@ -54,7 +54,7 @@ class BaseUserTest(unittest.TestCase):
 
         """
 
-        patcher = mock.patch("margarine.api.user.get_collection")
+        patcher = mock.patch("margarine.blend.user.get_collection")
         mock_get_collection = patcher.start()
 
         self.addCleanup(patcher.stop)
@@ -74,7 +74,7 @@ class BaseUserTest(unittest.TestCase):
 
         """
 
-        patcher = mock.patch("margarine.api.user.get_keyspace")
+        patcher = mock.patch("margarine.blend.user.get_keyspace")
         mock_get_keyspace = patcher.start()
 
         self.addCleanup(patcher.stop)
@@ -95,7 +95,7 @@ class UserCreationTest(BaseUserTest):
     def test_nonexistent_user_creation_request(self):
         """Create User—Not Existing."""
 
-        mock_cursor = MagicMock()
+        mock_cursor = mock.MagicMock()
         self.mock_collection.find_one.return_value = mock_cursor
         mock_cursor.count.return_value = 0
 
@@ -153,7 +153,7 @@ class UserReadTest(BaseUserTest):
     def test_nonexistent_user_read_request(self):
         """Read User—Not Existing."""
 
-        mock_cursor = MagicMock()
+        mock_cursor = mock.MagicMock()
         self.mock_collection.find_one.return_value = mock_cursor
         mock_cursor.count.return_value = 0
 
