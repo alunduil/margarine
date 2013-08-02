@@ -2,9 +2,9 @@
 
 Feature: Login
   In order to login to margarine
-  As a valid user
-  We'll retrieve a valid token
-  Using valid credentials
+  As a user
+  We'll attempt to retrieve a valid token
+  Using credentials
 
   # GET /v1/users/alunduil/token
   # Insert token and username into token store (EXPAND)
