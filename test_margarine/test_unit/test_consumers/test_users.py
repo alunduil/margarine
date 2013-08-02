@@ -45,7 +45,7 @@ class UserCreationTest(unittest.TestCase):
         # create_user_consumer(channel, method, header, body)
         create_user_consumer(mock.MagicMock(), method, None, message)
 
-        self.mock_channel.insert.assert_called_once_with(json.loads(message)
+        self.mock_channel.insert.assert_called_once_with(json.loads(message))
 
         self.mock_keyspace.setex.assert_called_once_with(mock.ANY, "test_user", mock.ANY)
 
