@@ -29,15 +29,15 @@ class BaseMargarineTest(unittest.TestCase):
 
         '''
 
-        logger.debug('patching: __module__.__name__: %s', __module__.__name__)
-        logger.debug('patching: __class__.__name__: %s', __class__.__name__)
-        logger.debug('patching: __name__: %s', __name__)
-
-        patcher = mock.patch([
-            __module__.__name__.replace('test_', '').replace('unit', ''),
-            __class__.__name__.replace('test_', ''),
+        logger.debug('patching: %s', '.'.join([
+            self.__module__.replace('test_', '').replace('unit.', ''),
             mock_function,
-            ].join('.'))
+            ]))
+
+        patcher = mock.patch('.'.join([
+            self.__module__.replace('test_', '').replace('unit.', ''),
+            mock_function,
+            ]))
 
         self.addCleanup(patcher.stop)
 
