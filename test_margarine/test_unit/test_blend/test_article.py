@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 class BaseBlendArticleTest(BaseBlendTest):
     def setUp(self):
-        super(BaseArticleTest, self).setUp()
+        super(BaseBlendArticleTest, self).setUp()
 
         self.articles = [
                 'http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html',
