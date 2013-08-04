@@ -18,7 +18,7 @@ Feature: Article Update
       | parsed_at  | 1375629049416                                                 |
       | size       | 31052                                                         |
       | url        | http://developer.rackspace.com/blog/got-python-questions.html |
-    When I PUT /v1/articles/
+    When I PUT /v1/articles/ to blend
     Then I receive a 405 status code
 
   Scenario: Update a non-existant article in margarine.
@@ -31,6 +31,6 @@ Feature: Article Update
       | parsed_at  | 1375629049416                                                 |
       | size       | 31052                                                         |
       | url        | http://developer.rackspace.com/blog/got-python-questions.html |
-    When I PUT /v1/articles/
+    When I PUT /v1/articles/ to blend
     Then I receive a 405 status code
 

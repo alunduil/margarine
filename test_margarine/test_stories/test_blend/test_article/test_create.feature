@@ -11,7 +11,7 @@ Feature: Article Create
   Scenario: Add an article to margarine.
     Given a header, Content-Type, with a value of multipart/form-data
     And an URL, http://developer.rackspace.com/blog/got-python-questions.html
-    When I POST /v1/articles/
+    When I POST /v1/articles/ to blend
     Then I receive a 202 status code
     And a message with the following JSON keys has been published:
       | key | value                                                         |

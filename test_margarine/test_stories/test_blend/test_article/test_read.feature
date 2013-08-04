@@ -18,7 +18,7 @@ Feature: Article Read
       | _id        | 0fb5c88e87535bc3a2514343b63682b0                              |
       | created_at | 1375629048391                                                 |
       | url        | http://developer.rackspace.com/blog/got-python-questions.html |
-    When I GET /v1/articles/
+    When I GET /v1/articles/ to blend
     Then I receive a 404 status code
     
   Scenario: Read an existing article from margarine. (Default Content-Type)
@@ -31,7 +31,7 @@ Feature: Article Read
       | parsed_at  | 1375629049416                                                 |
       | size       | 31052                                                         |
       | url        | http://developer.rackspace.com/blog/got-python-questions.html |
-    When I GET /v1/articles/
+    When I GET /v1/articles/ to blend
     Then I receive a 200 status code
     And I receive a header, Access-Control-Allow-Origin, with a value of FRONTEND_URL
     And I receive a body with the following JSON keys:
@@ -54,7 +54,7 @@ Feature: Article Read
       | parsed_at  | 1375629049416                                                 |
       | size       | 31052                                                         |
       | url        | http://developer.rackspace.com/blog/got-python-questions.html |
-    When I GET /v1/articles/
+    When I GET /v1/articles/ to blend
     Then I receive a 200 status code
     And I receive a header, Access-Control-Allow-Origin, with a value of FRONTEND_URL
     And I receive a header, Content-Type, with the value application/json

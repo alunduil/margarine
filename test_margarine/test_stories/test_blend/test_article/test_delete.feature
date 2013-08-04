@@ -18,10 +18,10 @@ Feature: Article Delete
       | parsed_at  | 1375629049416                                                 |
       | size       | 31052                                                         |
       | url        | http://developer.rackspace.com/blog/got-python-questions.html |
-    When I DELETE /v1/articles/
+    When I DELETE /v1/articles/ to blend
     Then I receive a 405 status code
 
   Scenario: Delete a non-existant article in margarine.
-    When I DELETE /v1/articles/
+    When I DELETE /v1/articles/ to blend
     Then I receive a 405 status code
 
