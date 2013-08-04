@@ -84,7 +84,7 @@ class BaseMargarineTest(unittest.TestCase):
 
         # TODO Update to datastores
         if 'collection' not in mock_mask:
-            self.mock_collection_ = self._get_attached_mock(self._get_patch_mock('get_collection'))
+            self.mock_collection = self._get_attached_mock(self._get_patch_mock('get_collection'))
 
         # TODO Update to datastores
         if 'keyspace' not in mock_mask:
