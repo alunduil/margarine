@@ -131,6 +131,15 @@ class BlendArticleReadTest(BaseBlendArticleTest):
             self.assertEqual('http://margarine.raxsavvy.com', response.headers.get('Access-Control-Allow-Origin'))
 
 class BlendArticleUpdateTest(BaseBlendArticleTest):
+    def setUp(self):
+        self.mock_mask = [
+                'collection',
+                'channel',
+                'keyspace',
+                ]
+
+        super(BlendArticleUpdateTest, self).setUp()
+        
     def test_article_update(self):
         '''Article Update'''
 
@@ -140,6 +149,15 @@ class BlendArticleUpdateTest(BaseBlendArticleTest):
             self.assertIn('405', response.status)
 
 class BlendArticleDeleteTest(BaseBlendArticleTest):
+    def setUp(self):
+        self.mock_mask = [
+                'collection',
+                'channel',
+                'keyspace',
+                ]
+
+        super(BlendArticleDeleteTest, self).setUp()
+        
     def test_article_delete(self):
         '''Article Delete'''
 
