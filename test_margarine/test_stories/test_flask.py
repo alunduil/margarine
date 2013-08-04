@@ -9,4 +9,4 @@ def blend_http_request(step, method, url):
     BLEND.config["TESTING"] = True
     world.application = BLEND.test_client()
 
-    world.response = getattr(world.application, method.lower())(url), data = world.data)
+    world.response = getattr(world.application, method.lower())(url, data = world.data)
