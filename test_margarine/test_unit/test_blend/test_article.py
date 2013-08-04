@@ -10,6 +10,7 @@ import mock
 
 import logging
 import uuid
+import datetime
 
 from test_margarine.test_unit.test_blend import BaseBlendTest
 
