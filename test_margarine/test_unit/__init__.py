@@ -80,13 +80,13 @@ class BaseMargarineTest(unittest.TestCase):
         '''
 
         if 'channel' not in mock_mask:
-            self.mock_channel = _get_attached_mock(_get_patch_mock('get_channel'))
+            self.mock_channel = self._get_attached_mock(self._get_patch_mock('get_channel'))
 
         # TODO Update to datastores
         if 'collection' not in mock_mask:
-            self.mock_collection_ = _get_attached_mock(_get_patch_mock('get_collection'))
+            self.mock_collection_ = self._get_attached_mock(self._get_patch_mock('get_collection'))
 
         # TODO Update to datastores
         if 'keyspace' not in mock_mask:
-            self.mock_keyspace = _get_attached_mock(_get_patch_mock('get_keyspace'))
+            self.mock_keyspace = self._get_attached_mock(self._get_patch_mock('get_keyspace'))
 
