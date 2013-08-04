@@ -54,6 +54,14 @@ class BlendArticleCreateTest(BaseBlendArticleTest):
             self.assertEqual(url + str(uuid), response.headers.get('Location'))
 
 class BlendArticleReadTest(BaseBlendArticleTest):
+    def setUp(self):
+        self.mock_mask = [
+                'channel',
+                'keyspace',
+                ]
+
+        super(BlendArticleReadTest, self).setUp()
+        
     def test_article_read_unsubmitted(self):
         '''Article Read—Unsubmitted
 
