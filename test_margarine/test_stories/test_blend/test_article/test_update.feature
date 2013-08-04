@@ -1,6 +1,6 @@
 # Language: en
 
-Feature: Article Read
+Feature: Article Update
   API SPECIFICATION:
     → PUT /v1/articles/UUID5 (with hyphens)
     ← 405 Method Not Allowed
