@@ -29,11 +29,6 @@ class BaseMargarineTest(unittest.TestCase):
 
         '''
 
-        logger.debug('patching: %s', '.'.join([
-            self.__module__.replace('test_', '').replace('unit.', ''),
-            mock_function,
-            ]))
-
         patcher = mock.patch('.'.join([
             self.__module__.replace('test_', '').replace('unit.', ''),
             mock_function,
