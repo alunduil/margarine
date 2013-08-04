@@ -39,12 +39,12 @@ TEST_PARAMETERS = [
             },
         { # --configuration-only=CONF, -C=CONF; CONF ← "configuration"
             "options": [ "--configuration-only", "-C" ],
-            "defaults": "configuration",
+            "default": "configuration",
             "only": "configuration",
             },
         { # --argument-only=ARG, -A=ARG; ARG ← "argument"
             "options": [ "--argument-only", "-A" ],
-            "defaults": "argument",
+            "default": "argument",
             "only": "argument",
             },
         ]
