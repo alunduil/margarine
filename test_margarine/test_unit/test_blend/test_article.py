@@ -121,7 +121,6 @@ class BlendArticleReadTest(BaseBlendArticleTest):
                     '_id': uuid.hex,
                     'url': url,
                     'created_at': datetime.datetime(2013, 8, 4, 14, 16, 20, 77773),
-                    'body': 'Redacted for testing purposes',
                     'etag': 'bf6285d832a356e1bf509a63edc8870f',
                     'parsed_at': datetime.datetime(2013, 8, 4, 14, 16, 21, 77773),
                     'size': 31052,
@@ -129,11 +128,15 @@ class BlendArticleReadTest(BaseBlendArticleTest):
                     'text_object_name': '248d-5899-b8ca-ac2bd8233755',
                     }
 
+            mock_object = self._get_attached_mock(self.mock_container)
+            mock_object.fetch.return_value = 'Redacted for testing purposes'
+
             response = self.application.get(self.base_url + str(uuid))
 
             self.mock_collection.assert_called_once_with({ '_id': uuid.hex })
-
             self.mock_collection.reset_mock()
+
+            logger.debug('mock_container.mock_calls: %s', self.mock_container.mock_calls)
 
             self.assertIn('200', response.status)
 
