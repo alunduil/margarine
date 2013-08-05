@@ -28,7 +28,7 @@ class BaseBlendArticleTest(BaseBlendTest):
                 'http://developer.rackspace.com/blog/got-python-questions.html',
                 ]
 
-        self.articles = dict([ (uuid.uuid5(uuid.NAMESPACE_DNS, _), _) for _ in self.articles ])
+        self.articles = dict([ (uuid.uuid5(uuid.NAMESPACE_URL, _), _) for _ in self.articles ])
 
         self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
 
@@ -49,7 +49,7 @@ class BlendArticleCreateTest(BaseBlendArticleTest):
                 })
 
             self.mock_channel.basic_publish.assert_called_once_with(
-                    body = '{"url": "' + url + '", _id: "' + uuid.hex + '"}',
+                    body = '{"url": "' + url + '", "_id": "' + uuid.hex + '"}',
                     exchange = 'margarine.articles.topic',
                     properties = mock.ANY,
                     routing_key = 'articles.create'
