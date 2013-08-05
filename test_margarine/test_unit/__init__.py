@@ -85,3 +85,7 @@ class BaseMargarineTest(unittest.TestCase):
         if 'keyspace' not in mock_mask:
             self.mock_keyspace = self._get_attached_mock(self._get_patch_mock('get_keyspace'))
 
+        # TODO Update to datastores
+        if 'container' not in mock_mask:
+            self.mock_container = self._get_attached_mock(self._get_patch_mock('get_container'))
+
