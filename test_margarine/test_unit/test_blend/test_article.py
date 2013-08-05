@@ -99,7 +99,7 @@ class BlendArticleReadTest(BaseBlendArticleTest):
 
             response = self.application.get(self.base_url + str(uuid))
 
-            self.mock_collection.assert_called_once_with({ '_id': uuid.hex })
+            self.mock_collection.find_one.assert_called_once_with({ '_id': uuid.hex })
 
             self.mock_collection.reset_mock()
 
