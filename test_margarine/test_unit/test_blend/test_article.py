@@ -128,7 +128,7 @@ class BlendArticleReadTest(BaseBlendArticleTest):
                     'text_object_name': '248d-5899-b8ca-ac2bd8233755',
                     }
 
-            mock_object = self._get_attached_mock(self.mock_container)
+            mock_object = self._get_attached_mock(self.mock_container.get_object)
             mock_object.fetch.return_value = 'Redacted for testing purposes'
 
             response = self.application.get(self.base_url + str(uuid))
