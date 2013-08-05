@@ -137,6 +137,13 @@ class BlendUserUpdateTest(BaseBlendUserTest):
 
     '''
 
+    def setUp(self):
+        self.mock_mask = [
+                'container',
+                ]
+
+        super(BlendUserUpdateTest, self).setUp()
+
     def test_user_update_submitted_complete_authorized(self):
         '''User Update—Submitted,Complete,Authorized'''
 
