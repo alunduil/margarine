@@ -125,6 +125,8 @@ class BlendArticleReadTest(BaseBlendArticleTest):
                     'etag': 'bf6285d832a356e1bf509a63edc8870f',
                     'parsed_at': datetime.datetime(2013, 8, 4, 14, 16, 21, 77773),
                     'size': 31052,
+                    'text_container_name': '44d85795',
+                    'text_object_name': '248d-5899-b8ca-ac2bd8233755',
                     }
 
             response = self.application.get(self.base_url + str(uuid))
