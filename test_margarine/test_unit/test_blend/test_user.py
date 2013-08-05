@@ -29,7 +29,7 @@ class BaseBlendUserTest(BaseBlendTest):
 
         self.base_url = '/{i.API_VERSION}/users/'.format(i = information)
 
-class BlendUserCreateTest(BaseBlendArticleTest):
+class BlendUserCreateTest(BaseBlendUserTest):
     '''User Create
 
     .. note::
