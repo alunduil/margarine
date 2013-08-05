@@ -59,7 +59,7 @@ class BlendArticleCreateTest(BaseBlendArticleTest):
 
             self.assertIn('202', response.status)
 
-            self.assertEqual(self.base_url + str(uuid), response.headers.get('Location'))
+            self.assertIn(self.base_url + str(uuid), response.headers.get('Location'))
 
 class BlendArticleReadTest(BaseBlendArticleTest):
     def setUp(self):
