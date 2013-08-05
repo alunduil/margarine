@@ -5,17 +5,15 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import unittest
 import mock
 
 import logging
-import uuid
-import datetime
+import bson
+import json
 
 from test_margarine.test_unit.test_blend import BaseBlendTest
 
 from margarine.blend import information
-from margarine.blend import BLEND
 
 logger = logging.getLogger(__name__)
 
