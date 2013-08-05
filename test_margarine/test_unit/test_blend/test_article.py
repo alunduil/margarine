@@ -33,6 +33,13 @@ class BaseBlendArticleTest(BaseBlendTest):
         self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
 
 class BlendArticleCreateTest(BaseBlendArticleTest):
+    def setUp(self):
+        self.mock_mask = [
+                'keyspace',
+                ]
+
+        super(BlendArticleCreateTest, self).setUp()
+
     def test_article_create(self):
         '''Article Create'''
 
