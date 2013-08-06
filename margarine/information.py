@@ -7,7 +7,7 @@ import uuid
 import socket
 
 NAME = "margarine"
-VERSION = "9999"
+VERSION = "1.0.0_alpha"
 DESCRIPTION = \
         "Python application to enhance the web browsing experience and " \
         "display cloud application design."
