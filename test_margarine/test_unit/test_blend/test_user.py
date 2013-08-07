@@ -91,6 +91,13 @@ class BlendUserCreateTest(BaseBlendUserTest):
             self.assertIn('401', response.status)
 
 class BlendUserReadTest(BaseBlendUserTest):
+    def setUp(self):
+        self.mock_mask = [
+                'container',
+                ]
+
+        super(BlendUserReadTest, self).setUp()
+
     def test_user_read_unsubmitted(self):
         '''User Read—Unsubmitted'''
 
