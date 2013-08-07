@@ -58,6 +58,8 @@ class BlendUserCreateTest(BaseBlendUserTest):
         
         '''
 
+        self.mock_collection.find_one.return_value = None
+
         for account, properties in self.accounts.iteritems():
             response = self.application.put(self.base_url + account, data = properties)
 
