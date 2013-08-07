@@ -121,7 +121,7 @@ class BlendUserReadTest(BaseBlendUserTest):
 
             response = self.application.get(self.base_url + account)
 
-            self.mock_collection.find_one.assert_called_once_with({ 'username': account })
+            self.mock_collection.find_one.assert_called_once_with({ 'username': account }, { 'hash': 0 })
             self.mock_collection.reset_mock()
 
             self.assertIn('200', response.status)
