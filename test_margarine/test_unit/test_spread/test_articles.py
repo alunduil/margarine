@@ -30,7 +30,7 @@ class BaseSpreadArticleTest(BaseSpreadTest):
                 'http://developer.rackspace.com/blog/got-python-questions.html',
                 ]
 
-        self.articles = [ { '_id': uuid.uuid5(uuid.NAMESPACE_URL, _), 'url': _ } for _ in self.articles ]
+        self.articles = [ { '_id': uuid.uuid5(uuid.NAMESPACE_URL, _).hex, 'url': _ } for _ in self.articles ]
 
 class SpreadArticleCreate(BaseSpreadArticleTest):
     def test_article_create_unsubmitted(self):
