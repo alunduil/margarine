@@ -43,6 +43,13 @@ class BlendUserCreateTest(BaseBlendUserTest):
 
     '''
 
+    def setUp(self):
+        self.mock_mask = [
+                'container',
+                ]
+
+        super(BlendUserCreateTest, self).setUp()
+
     def test_user_create_unsubmitted(self):
         '''User Create—Unsubmitted
         
