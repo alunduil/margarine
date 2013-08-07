@@ -41,19 +41,19 @@ class SpreadArticleCreate(BaseSpreadArticleTest):
 
         '''
 
-        self.mock_channel.find_one.return_value = None
-
         method = mock.MagicMock()
         method.delivery_tag.return_value = 'create'
 
         for article in self.articles:
+            self.mock_collection.find_one.return_value = None
+
             create_article_consumer(mock.MagicMock(), method, None, json.dumps(article))
 
             _id = article.pop('_id')
 
-            self.mock_channel.find_one.assert_called_once_with({ '_id': _id })
-            self.mock_channel.update.assert_called_once_with({ '_id': _id }, { '$set': article }, upsert = True)
-            self.mock_channel.reset_mock()
+            self.mock_collection.find_one.assert_called_once_with({ '_id': _id })
+            self.mock_collection.update.assert_called_once_with({ '_id': _id }, { '$set': article }, upsert = True)
+            self.mock_collection.reset_mock()
 
             self.mock_channel.basic_publish.assert_called_once_with(
                     body = json.dumps({ '_id': _id }),
