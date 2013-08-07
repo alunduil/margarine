@@ -199,6 +199,13 @@ class BlendUserUpdateTest(BaseBlendUserTest):
             self.assertIn('202', response.status)
 
 class BlendUserDeleteTest(BaseBlendUserTest):
+    def setUp(self):
+        self.mock_mask = [
+                'container',
+                ]
+
+        super(BlendUserDeleteTest, self).setUp()
+
     def test_user_delete_unauthorized(self):
         '''User Delete—Unauthorized'''
 
