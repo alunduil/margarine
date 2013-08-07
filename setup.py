@@ -66,7 +66,7 @@ PARAMS["scripts"] = [
 PARAMS["packages"] = [
         "margarine",
         "margarine.blend",
-        "margarine.consumers",
+        "margarine.spread",
         "margarine.tinge",
         ]
 
