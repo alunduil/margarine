@@ -170,6 +170,7 @@ class BlendUserUpdateTest(BaseBlendUserTest):
             self.mock_collection.reset_mock()
 
             properties.update({ 'username': account })
+            properties['requested_username'] = modifications[account].pop('username', account)
             message = json.dumps(properties)
 
             self.mock_channel.basic_publish.assert_called_once_with(
