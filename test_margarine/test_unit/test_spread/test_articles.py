@@ -8,6 +8,7 @@
 import mock
 
 import logging
+import uuid
 import json
 
 from test_margarine.test_unit.test_spread import BaseSpreadTest
