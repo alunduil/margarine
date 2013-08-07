@@ -19,6 +19,8 @@ logger = logging.getLogger(__name__)
 
 class BaseBlendArticleTest(BaseBlendTest):
     def setUp(self):
+        self.add_mock_to_mask('keyspace')
+
         super(BaseBlendArticleTest, self).setUp()
 
         self.articles = [
@@ -31,15 +33,8 @@ class BaseBlendArticleTest(BaseBlendTest):
         self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
 
 class BlendArticleCreateTest(BaseBlendArticleTest):
-    def setUp(self):
-        self.mock_mask = [
-                'keyspace',
-                ]
-
-        super(BlendArticleCreateTest, self).setUp()
-
     def test_article_create(self):
-        '''Article Create'''
+        '''Blend::Article Create'''
 
         for uuid, url in self.articles.iteritems():
             response = self.application.post(self.base_url, data = {
@@ -61,15 +56,12 @@ class BlendArticleCreateTest(BaseBlendArticleTest):
 
 class BlendArticleReadTest(BaseBlendArticleTest):
     def setUp(self):
-        self.mock_mask = [
-                'channel',
-                'keyspace',
-                ]
+        self.add_mock_to_mask('channel')
 
         super(BlendArticleReadTest, self).setUp()
         
     def test_article_read_unsubmitted(self):
-        '''Article Read—Unsubmitted
+        '''Blend::Article Read—Unsubmitted
 
         .. note::
             The article in question has not been submitted and thus nothing
@@ -85,7 +77,7 @@ class BlendArticleReadTest(BaseBlendArticleTest):
             self.assertIn('404', response.status)
 
     def test_article_read_submitted_incomplete(self):
-        '''Article Read—Submitted,Incomplete
+        '''Blend::Article Read—Submitted,Incomplete
 
         .. note::
             The article in question has been submitted but the spread process
@@ -111,7 +103,7 @@ class BlendArticleReadTest(BaseBlendArticleTest):
             self.assertIn('404', response.status)
 
     def test_article_read_submitted_complete(self):
-        '''Article Read—Submitted,Complete
+        '''Blend::Article Read—Submitted,Complete
 
         .. note::
             The article in question has been submitted and the spread process
@@ -151,16 +143,13 @@ class BlendArticleReadTest(BaseBlendArticleTest):
 
 class BlendArticleUpdateTest(BaseBlendArticleTest):
     def setUp(self):
-        self.mock_mask = [
-                'collection',
-                'channel',
-                'keyspace',
-                ]
+        self.add_mock_to_mask('collection')
+        self.add_mock_to_mask('channel')
 
         super(BlendArticleUpdateTest, self).setUp()
 
     def test_article_update(self):
-        '''Article Update'''
+        '''Blend::Article Update'''
 
         for uuid, url in self.articles.iteritems():
             response = self.application.put(self.base_url + str(uuid))
@@ -169,16 +158,13 @@ class BlendArticleUpdateTest(BaseBlendArticleTest):
 
 class BlendArticleDeleteTest(BaseBlendArticleTest):
     def setUp(self):
-        self.mock_mask = [
-                'collection',
-                'channel',
-                'keyspace',
-                ]
+        self.add_mock_to_mask('collection')
+        self.add_mock_to_mask('channel')
 
         super(BlendArticleDeleteTest, self).setUp()
 
     def test_article_delete(self):
-        '''Article Delete'''
+        '''Blend::Article Delete'''
 
         for uuid, url in self.articles.iteritems():
             response = self.application.delete(self.base_url + str(uuid))

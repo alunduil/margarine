@@ -16,6 +16,20 @@ class BaseMargarineTest(unittest.TestCase):
 
         self._set_up_mocks(getattr(self, 'mock_mask', ()))
 
+    def add_mock_to_mask(self, mock_name):
+        '''Add the specified mock name to the mock mask list.
+
+        Parameters
+        ----------
+
+        :``mock_name``: The mock name to skip during mock setup
+
+        '''
+
+        self.mock_mask = getattr(self, 'mock_mask', [])
+
+        self.mock_mask.append(mock_name)
+
     def _get_patch_mock(self, mock_function):
         '''Patch and return a mock for the specified function.
 

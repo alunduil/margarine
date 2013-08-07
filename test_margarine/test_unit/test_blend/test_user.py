@@ -19,6 +19,8 @@ logger = logging.getLogger(__name__)
 
 class BaseBlendUserTest(BaseBlendTest):
     def setUp(self):
+        self.add_mock_to_mask('container')
+
         super(BaseBlendUserTest, self).setUp()
 
         self.accounts = {
@@ -28,7 +30,7 @@ class BaseBlendUserTest(BaseBlendTest):
         self.base_url = '/{i.API_VERSION}/users/'.format(i = information)
 
 class BlendUserCreateTest(BaseBlendUserTest):
-    '''User Create
+    '''Blend::User Create
 
     .. note::
         Possible race condition if two people nearly simultaneously submit a
@@ -43,15 +45,8 @@ class BlendUserCreateTest(BaseBlendUserTest):
 
     '''
 
-    def setUp(self):
-        self.mock_mask = [
-                'container',
-                ]
-
-        super(BlendUserCreateTest, self).setUp()
-
     def test_user_create_unsubmitted(self):
-        '''User Create—Unsubmitted
+        '''Blend::User Create—Unsubmitted
         
         .. note::
             This is also User Update—Unsubmitted
@@ -78,7 +73,7 @@ class BlendUserCreateTest(BaseBlendUserTest):
             self.assertIn('202', response.status)
 
     def test_user_create_submitted_complete(self):
-        '''User Create—Submitted,Complete
+        '''Blend::User Create—Submitted,Complete
 
         .. note::
             This is also User Update—Submitted,Complete,Unauthorized
@@ -100,15 +95,8 @@ class BlendUserCreateTest(BaseBlendUserTest):
             self.assertIn('401', response.status)
 
 class BlendUserReadTest(BaseBlendUserTest):
-    def setUp(self):
-        self.mock_mask = [
-                'container',
-                ]
-
-        super(BlendUserReadTest, self).setUp()
-
     def test_user_read_unsubmitted(self):
-        '''User Read—Unsubmitted'''
+        '''Blend::User Read—Unsubmitted'''
 
         self.mock_collection.find_one.return_value = None
 
@@ -119,7 +107,7 @@ class BlendUserReadTest(BaseBlendUserTest):
 
     # TODO Add other Content-Type
     def test_user_read_submitted_complete(self):
-        '''User Read—Submitted,Complete'''
+        '''Blend::User Read—Submitted,Complete'''
 
         for account, properties in self.accounts.iteritems():
             self.mock_collection.find_one.return_value = {
@@ -142,7 +130,7 @@ class BlendUserReadTest(BaseBlendUserTest):
             # TODO Body Check
 
 class BlendUserUpdateTest(BaseBlendUserTest):
-    '''User Update
+    '''Blend::User Update
 
     .. note::
         See User Create for the following cases:
@@ -151,15 +139,8 @@ class BlendUserUpdateTest(BaseBlendUserTest):
 
     '''
 
-    def setUp(self):
-        self.mock_mask = [
-                'container',
-                ]
-
-        super(BlendUserUpdateTest, self).setUp()
-
     def test_user_update_submitted_complete_authorized(self):
-        '''User Update—Submitted,Complete,Authorized'''
+        '''Blend::User Update—Submitted,Complete,Authorized'''
 
         modifications = {
                 'alunduil': { 'name': 'Alex Brandt' },
@@ -201,15 +182,8 @@ class BlendUserUpdateTest(BaseBlendUserTest):
             self.assertIn('202', response.status)
 
 class BlendUserDeleteTest(BaseBlendUserTest):
-    def setUp(self):
-        self.mock_mask = [
-                'container',
-                ]
-
-        super(BlendUserDeleteTest, self).setUp()
-
     def test_user_delete_unauthorized(self):
-        '''User Delete—Unauthorized'''
+        '''Blend::User Delete—Unauthorized'''
 
         for account, properties in self.accounts.iteritems():
             response = self.application.delete(self.base_url + account)
@@ -217,7 +191,7 @@ class BlendUserDeleteTest(BaseBlendUserTest):
             self.assertIn('401', response.status)
 
     def test_user_delete_authorized(self):
-        '''User Delete—Authorized'''
+        '''Blend::User Delete—Authorized'''
 
         token = 'c2d52150-08d1-4ae3-b19c-323c9e37813d'
         headers = { 'X-Auth-Token': token }
