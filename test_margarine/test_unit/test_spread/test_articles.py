@@ -191,8 +191,3 @@ class SpreadArticleCreate(BaseSpreadArticleTest):
         '''
 
         pass # TODO Add more functionality.
-
-
-        '''
-
-        for artic
