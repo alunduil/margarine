@@ -136,7 +136,7 @@ class SpreadArticleCreate(BaseSpreadArticleTest):
 
         '''
 
-        pass # TODO Implement this stub.
+        self.fail('Implement this stub!')
 
     def test_article_create_submitted_incomplete_sanitization(self):
         '''Spread::Article Create—Submitted,Incomplete - Sanitization
@@ -191,7 +191,7 @@ class SpreadArticleCreate(BaseSpreadArticleTest):
 
         '''
 
-        pass # TODO Add more functionality.
+        self.fail('Implement this stub!')
 
 class SpreadArticleReferencesTest(BaseSpreadArticleTest):
     def setUp(self):
@@ -202,7 +202,7 @@ class SpreadArticleReferencesTest(BaseSpreadArticleTest):
     def test_article_references(self):
         '''Spread::Article References'''
 
-        pass
+        self.fail('Implement this stub!')
     
 class SpreadArticleSanitizationTest(BaseSpreadArticleTest):
     def setUp(self):
@@ -213,4 +213,4 @@ class SpreadArticleSanitizationTest(BaseSpreadArticleTest):
     def test_article_sanitize(self):
         '''Spread::Article Sanitize'''
 
-        pass # TODO Refactor sanitization into a proper module.
+        self.fail('Implement this stub! Refactor sanitization.')
