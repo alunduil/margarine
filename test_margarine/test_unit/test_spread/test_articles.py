@@ -34,6 +34,32 @@ class BaseSpreadArticleTest(BaseSpreadTest):
         self.articles = [ { '_id': uuid.uuid5(uuid.NAMESPACE_URL, _).hex, 'url': _ } for _ in self.articles ]
 
 class SpreadArticleCreate(BaseSpreadArticleTest):
+    def setUp(self):
+        super(SpreadArticleCreate, self).setUp()
+
+        self.method = mock.MagicMock()
+        self.method.delivery_tag.return_value = 'create'
+
+        self.test_datetime = datetime.datetime(2013, 8, 7, 20, 25, 41, 596627)
+
+    def _validate_mocks(self, _id, article):
+        '''Validate mock calls.
+
+        A simple helper method to reduce code duplication in these tests.
+
+        '''
+
+        self.mock_collection.find_one.assert_called_once_with({ '_id': _id })
+        self.mock_collection.update.assert_called_once_with({ '_id': _id }, { '$set': article }, upsert = True)
+        self.mock_collection.reset_mock()
+
+        self.mock_channel.basic_publish.assert_called_once_with(
+                body = json.dumps({ '_id': _id }),
+                exchange = 'margarine.articles.create',
+                properties = mock.ANY,
+                routing_key = 'articles.create')
+        self.mock_channel.reset_mock()
+
     def test_article_create_unsubmitted(self):
         '''Spread::Article Create—Unsubmitted
 
@@ -41,11 +67,6 @@ class SpreadArticleCreate(BaseSpreadArticleTest):
             Tests first submission of the article (nothing stored yet).
 
         '''
-
-        test_datetime = datetime.datetime(2013, 8, 7, 20, 25, 41, 596627)
-
-        method = mock.MagicMock()
-        method.delivery_tag.return_value = 'create'
 
         for article in self.articles:
             self.mock_collection.find_one.return_value = None
@@ -55,20 +76,41 @@ class SpreadArticleCreate(BaseSpreadArticleTest):
                 'datetime',
                 ])) as mock_datetime:
 
-                mock_datetime.datetime.now.return_value = test_datetime
+                mock_datetime.datetime.now.return_value = self.test_datetime
 
-                create_article_consumer(mock.MagicMock(), method, None, json.dumps(article))
+                create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article))
 
             _id = article.pop('_id')
-            article['created_at'] = test_datetime
+            article['created_at'] = self.test_datetime
 
-            self.mock_collection.find_one.assert_called_once_with({ '_id': _id })
-            self.mock_collection.update.assert_called_once_with({ '_id': _id }, { '$set': article }, upsert = True)
-            self.mock_collection.reset_mock()
+            self._validate_mocks(_id, article)
 
-            self.mock_channel.basic_publish.assert_called_once_with(
-                    body = json.dumps({ '_id': _id }),
-                    exchange = 'margarine.articles.create',
-                    properties = mock.ANY,
-                    routing_key = 'articles.create')
-            self.mock_channel.reset_mock()
+    def test_article_create_submitted_incomplete(self):
+        '''Spread::Article Create—Submitted,Incomplete
+
+        .. note::
+            The article has been submitted but only the top portion of the
+            bottom half (consumer) has been run.
+
+        Complete Actions
+        ----------------
+
+        * create_article_consumer
+
+        Incopmlete Actions
+        ------------------
+
+        * update_references_consumer
+        * sanitize_html_consumer
+
+        '''
+
+        for article in self.articles:
+            self.mock_collection.find_one.return_value = article
+            self.mock_collection.find_one.return_value['created_at'] = self.test_datetime
+
+            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article))
+
+            _id = article.pop('_id')
+
+            self._validate_mocks(_id, article)
