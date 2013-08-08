@@ -33,14 +33,15 @@ class BaseSpreadArticleTest(BaseSpreadTest):
 
         self.articles = [ { '_id': uuid.uuid5(uuid.NAMESPACE_URL, _).hex, 'url': _ } for _ in self.articles ]
 
+        self.method = mock.MagicMock()
+
+        self.test_datetime = datetime.datetime(2013, 8, 7, 20, 25, 41, 596627)
+
 class SpreadArticleCreate(BaseSpreadArticleTest):
     def setUp(self):
         super(SpreadArticleCreate, self).setUp()
 
-        self.method = mock.MagicMock()
         self.method.delivery_tag.return_value = 'create'
-
-        self.test_datetime = datetime.datetime(2013, 8, 7, 20, 25, 41, 596627)
 
     def _validate_mocks(self, _id, article):
         '''Validate mock calls.
@@ -191,3 +192,25 @@ class SpreadArticleCreate(BaseSpreadArticleTest):
         '''
 
         pass # TODO Add more functionality.
+
+class SpreadArticleReferencesTest(BaseSpreadArticleTest):
+    def setUp(self):
+        super(SpreadArticleReferencesTest, self).setUp()
+
+        self.method.delivery_tag.return_value = 'references'
+
+    def test_article_references(self):
+        '''Spread::Article References'''
+
+        pass
+    
+class SpreadArticleSanitizationTest(BaseSpreadArticleTest):
+    def setUp(self):
+        super(SpreadArticleSanitizationTest, self).setUp()
+
+        self.method.delivery_tag.return_value = 'sanitize'
+
+    def test_article_sanitize(self):
+        '''Spread::Article Sanitize'''
+
+        pass # TODO Refactor sanitization into a proper module.
