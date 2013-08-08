@@ -114,3 +114,85 @@ class SpreadArticleCreate(BaseSpreadArticleTest):
             _id = article.pop('_id')
 
             self._validate_mocks(_id, article)
+
+    def test_article_create_submitted_incomplete_references(self):
+        '''Spread::Article Create—Submitted,Incomplete - References
+
+        .. note::
+            The article has been submitted but only a portion of the bottom
+            half (consumer) has been run.
+
+        Complete Actions
+        ----------------
+
+        * create_article_consumer
+        * update_references_consumer
+
+        Incomplete Actions
+        ------------------
+
+        * sanitize_html_consumer
+
+        '''
+
+        pass # TODO Implement this stub.
+
+    def test_article_create_submitted_incomplete_sanitization(self):
+        '''Spread::Article Create—Submitted,Incomplete - Sanitization
+
+        .. note::
+            The article has been submitted but only a portion of the bottom
+            half (consumer) has been run.
+
+        Complete Actions
+        ----------------
+
+        * create_article_consumer
+        * sanitize_html_consumer
+
+        Incomplete Actions
+        ------------------
+
+        * update_references_consumer
+
+        '''
+
+        for article in self.articles:
+            self.mock_collection.find_one.return_value = article
+
+            self.mock_collection.find_one.return_value.update({
+                'created_at': self.test_datetime,
+                'etag': 'bf6285d832a356e1bf509a63edc8870f',
+                'parsed_at': self.test_datetime,
+                'size': 31052,
+
+                # TODO Move this to a better datastore?
+                'text_container_name': '44d85795',
+                'text_object_name': '248d-5899-b8ca-ac2bd8233755',
+                })
+
+            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article))
+
+            _id = article.pop('_id')
+
+            self._validate_mocks(_id, article)
+
+    def test_article_create_submitted_complete(self):
+        '''Spread::Article Create—Submitted,Complete
+
+        .. note::
+            The article is being resubmitted after all components have run.
+
+        .. note::
+            Until there are more functions implemented, this test is equivalent
+            to test_article_create_submitted_incomplete_sanitization and is
+            only a stub.
+
+        '''
+
+        pass # TODO Add more functionality.
+
+
+        '''
+
+        for artic
