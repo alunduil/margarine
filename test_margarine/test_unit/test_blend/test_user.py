@@ -166,6 +166,7 @@ class BlendUserUpdateTest(BaseBlendUserTest):
             self.mock_collection.find_one.assert_called_once_with({ 'username': account })
             self.mock_collection.reset_mock()
 
+            # TODO Only pass modifications and merge on back-end.
             properties.update({ 'username': account })
             properties['requested_username'] = modifications[account].pop('username', account)
             message = json.dumps(properties)
