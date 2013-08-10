@@ -5,15 +5,14 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import unittest
 import logging
-
-from test_margarine.test_unit import BaseMargarineTest
 
 from margarine.helpers import URI # TODO A better location for this URI parser?
 
 logger = logging.getLogger(__name__)
 
-class URITest(BaseMargarineTest):
+class URITest(unittest.TestCase):
     def _verify_uri(self, uri, components = ()):
         '''Helper for verifying the given uri has the given components.
 
@@ -47,13 +46,13 @@ class URITest(BaseMargarineTest):
         if len(components) != len(properties):
             self.fail('{} URI components given; expected {}'.format(len(components), len(properties)))
 
-        for _property, component in zip(properties, components).iteritems():
+        for _property, component in zip(properties, components):
             value = getattr(_, _property)
 
             if component is None:
                 self.assertIsNone(value)
             else:
-                self.assertEqual(value)
+                self.assertEqual(component, value)
 
     def test_uri_components_0(self):
         '''URI—0 Components
@@ -66,7 +65,7 @@ class URITest(BaseMargarineTest):
                 '': (None, None, None, None, None, None),
                 }
 
-        for uri, properties in uris.iteritems():
+        for uri, components in uris.iteritems():
             self._verify_uri(uri, components)
 
     def test_uri_components_1(self):
