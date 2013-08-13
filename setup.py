@@ -91,7 +91,7 @@ PARAMS["data_files"] = [
             "conf/margarine.ini",
             "conf/pyrax.ini",
             ]),
-        ("share/doc/{P[name]}-{P[version]}/wsgi".format(P = PARAMS), [
+        ("libexec/{P[name]}".format(P = PARAMS), [
             "conf/blend.wsgi",
             "conf/tinge.wsgi",
             ])
