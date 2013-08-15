@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class BaseBlendTagTest(BaseBlendTest):
     def setUp(self):
-        super(BaseBlendArticleTest, self).setUp()
+        super(BaseBlendTagTest, self).setUp()
 
         self.tags = []
 
