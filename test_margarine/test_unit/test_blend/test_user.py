@@ -47,10 +47,10 @@ class BlendUserCreateTest(BaseBlendUserTest):
 
     def test_user_create_unsubmitted(self):
         '''Blend::User Create—Unsubmitted
-        
+
         .. note::
             This is also User Update—Unsubmitted
-        
+
         '''
 
         self.mock_collection.find_one.return_value = None
@@ -77,7 +77,7 @@ class BlendUserCreateTest(BaseBlendUserTest):
 
         .. note::
             This is also User Update—Submitted,Complete,Unauthorized
-        
+
         '''
 
         for account, properties in self.accounts.iteritems():
@@ -122,7 +122,7 @@ class BlendUserReadTest(BaseBlendUserTest):
             self.mock_collection.reset_mock()
 
             self.assertIn('200', response.status)
-            
+
             self.assertEqual('application/json', response.headers.get('Content-Type'))
             # TODO Verify configured domain.
             self.assertEqual('http://margarine.raxsavvy.com', response.headers.get('Access-Control-Allow-Origin'))
