@@ -109,7 +109,7 @@ class SpreadUserUpdateTest(BaseSpreadUserTest):
     '''
 
     def setUp(self):
-        super(SpreadUserUpdate, self).setUp()
+        super(SpreadUserUpdateTest, self).setUp()
 
         self.method.delivery_tag.return_value = 'update'
 
