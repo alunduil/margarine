@@ -96,7 +96,7 @@ class URITest(unittest.TestCase):
         * port
         * path
 
-        All of these components with the required single component, hostname, 
+        All of these components with the required single component, hostname,
         will get us two components.
 
         '''
@@ -151,7 +151,7 @@ class URITest(unittest.TestCase):
         * username, password, port
         * username, password, path
         * username, port, path
-        
+
         '''
 
         uris = {
