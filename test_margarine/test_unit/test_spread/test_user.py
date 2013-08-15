@@ -6,13 +6,15 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import mock
-
 import logging
+import json
 
 from test_margarine.test_unit.test_spread import BaseSpreadTest
 
 # TODO Remove pluralization of users
 from margarine.spread.users import create_user_consumer
+from margarine.spread.users import password_email_consumer
+from margarine.spread.users import update_user_consumer
 
 logger = logging.getLogger(__name__)
 
