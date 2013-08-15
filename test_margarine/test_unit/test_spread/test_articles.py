@@ -203,7 +203,7 @@ class SpreadArticleReferencesTest(BaseSpreadArticleTest):
         '''Spread::Article References'''
 
         self.fail('Implement this stub!')
-    
+
 class SpreadArticleSanitizationTest(BaseSpreadArticleTest):
     def setUp(self):
         super(SpreadArticleSanitizationTest, self).setUp()
