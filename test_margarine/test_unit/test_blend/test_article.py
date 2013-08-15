@@ -59,7 +59,7 @@ class BlendArticleReadTest(BaseBlendArticleTest):
         self.add_mock_to_mask('channel')
 
         super(BlendArticleReadTest, self).setUp()
-        
+
     def test_article_read_unsubmitted(self):
         '''Blend::Article Read—Unsubmitted
 
