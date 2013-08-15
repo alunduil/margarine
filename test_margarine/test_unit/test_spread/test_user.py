@@ -34,7 +34,7 @@ class BaseSpreadUserTest(BaseSpreadTest):
 
 class SpreadUserCreateTest(BaseSpreadUserTest):
     def setUp(self):
-        super(SpreadUserCreate, self).setUp()
+        super(SpreadUserCreateTest, self).setUp()
 
         self.method.delivery_tag.return_value = 'create'
 
