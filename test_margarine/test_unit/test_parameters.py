@@ -48,7 +48,7 @@ TEST_PARAMETERS = [
             "only": "argument",
             },
         ]
-            
+
 class ParametersConstructionTest(unittest.TestCase):
     def setUp(self):
         Parameters._Parameters__shared_state = {}
@@ -133,4 +133,3 @@ class ParametersResolutionTest(unittest.TestCase):
 
     def test_argument(self):
         self.assertEqual(self.parameters["{0}.argument".format(self.name)], "argument")
-
