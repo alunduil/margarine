@@ -8,6 +8,7 @@
 import mock
 import logging
 import json
+import pymongo
 
 from test_margarine.test_unit.test_spread import BaseSpreadTest
 
@@ -64,7 +65,7 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
 
                 mock_password_email_consumer.assert_called_once_with(*args)
 
-            self.mock_collection.insert.assert_called_once_with(json.dumps(account))
+            self.mock_collection.insert.assert_called_once_with(json.dumps(properties))
             self.mock_collection.reset_mock()
 
     def test_user_create_submitted_complete(self):
@@ -87,12 +88,12 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
                     mock.MagicMock(),
                     self.method,
                     None,
-                    json.dumps(account),
+                    json.dumps(properties),
                     ]
 
             create_user_consumer(*args)
 
-            self.mock_collection.insert.assert_called_once_with(json.dumps(account))
+            self.mock_collection.insert.assert_called_once_with(json.dumps(properties))
             self.mock_collection.reset_mock()
 
             # TODO Handle duplicate requests differently?
