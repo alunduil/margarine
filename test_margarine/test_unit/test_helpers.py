@@ -12,6 +12,9 @@ from margarine.helpers import URI # TODO A better location for this URI parser?
 
 logger = logging.getLogger(__name__)
 
+# TODO powersets!  Using powersets we can reduce the number of cases created.
+# TODO are powerserts desireable
+
 class URITest(unittest.TestCase):
     def _verify_uri(self, uri, components = ()):
         '''Helper for verifying the given uri has the given components.
