@@ -18,29 +18,13 @@ MARGARINE_MOCKS = set([
     ])
 
 class BaseMargarineTest(unittest.TestCase):
-    def __init__(self, *args, **kwargs):
-        self.mocks = MARGARINE_MOCKS
-
-        super(BaseMargarineTest, self).__init__(*args, **kwargs)
+    mocks = MARGARINE_MOCKS
+    mock_mask = set()
 
     def setUp(self):
         super(BaseMargarineTest, self).setUp()
 
-        self._set_up_mocks(getattr(self, 'mock_mask', ()))
-
-    def add_mock_to_mask(self, mock_name):
-        '''Add the specified mock name to the mock mask list.
-
-        Parameters
-        ----------
-
-        :``mock_name``: The mock name to skip during mock setup
-
-        '''
-
-        self.mock_mask = getattr(self, 'mock_mask', [])
-
-        self.mock_mask.append(mock_name)
+        self._set_up_mocks(self.mock_mask)
 
     def _get_patch_mock(self, mock_function):
         '''Patch and return a mock for the specified function.
@@ -56,6 +40,7 @@ class BaseMargarineTest(unittest.TestCase):
         '''
 
         patcher = mock.patch('.'.join([
+            # TODO Also handle integration and functional suites.
             self.__module__.replace('test_', '').replace('unit.', ''),
             mock_function,
             ]))
@@ -100,18 +85,22 @@ class BaseMargarineTest(unittest.TestCase):
 
         '''
 
-        if 'channel' not in mock_mask:
+        # TODO Reduce cyclomatic complexity here.
+
+        to_mock = self.mocks - self.mock_mask
+
+        if 'channel' in to_mock:
             self.mock_channel = self._get_attached_mock(self._get_patch_mock('get_channel'))
 
         # TODO Update to datastores
-        if 'collection' not in mock_mask:
+        if 'collection' in to_mock:
             self.mock_collection = self._get_attached_mock(self._get_patch_mock('get_collection'))
 
         # TODO Update to datastores
-        if 'keyspace' not in mock_mask:
+        if 'keyspace' in to_mock:
             self.mock_keyspace = self._get_attached_mock(self._get_patch_mock('get_keyspace'))
 
         # TODO Update to datastores
-        if 'container' not in mock_mask:
+        if 'container' in to_mock:
             self.mock_container = self._get_attached_mock(self._get_patch_mock('get_container'))
 
