@@ -18,9 +18,9 @@ from margarine.blend import information
 logger = logging.getLogger(__name__)
 
 class BaseBlendUserTest(BaseBlendTest):
-    def setUp(self):
-        self.add_mock_to_mask('container')
+    mock_mask.add('container')
 
+    def setUp(self):
         super(BaseBlendUserTest, self).setUp()
 
         self.accounts = {
