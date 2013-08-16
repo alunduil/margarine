@@ -10,7 +10,19 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+MARGARINE_MOCKS = set([
+    'channel',
+    'collection',
+    'keyspace',
+    'container',
+    ])
+
 class BaseMargarineTest(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        self.mocks = MARGARINE_MOCKS
+
+        super(BaseMargarineTest, self).__init__(*args, **kwargs)
+
     def setUp(self):
         super(BaseMargarineTest, self).setUp()
 
