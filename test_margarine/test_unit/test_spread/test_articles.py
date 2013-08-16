@@ -20,9 +20,9 @@ from margarine.spread.articles import create_article_consumer
 logger = logging.getLogger(__name__)
 
 class BaseSpreadArticleTest(BaseSpreadTest):
-    def setUp(self):
-        self.add_mock_to_mask('keyspace')
+    mock_mask.add('keyspace')
 
+    def setUp(self):
         super(BaseSpreadArticleTest, self).setUp()
 
         # TODO Merge with articles from test_blend.test_article?
