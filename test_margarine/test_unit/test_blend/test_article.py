@@ -18,9 +18,9 @@ from margarine.blend import information
 logger = logging.getLogger(__name__)
 
 class BaseBlendArticleTest(BaseBlendTest):
-    def setUp(self):
-        self.add_mock_to_mask('keyspace')
+    mock_mask.add('keyspace')
 
+    def setUp(self):
         super(BaseBlendArticleTest, self).setUp()
 
         self.articles = [
@@ -55,10 +55,7 @@ class BlendArticleCreateTest(BaseBlendArticleTest):
             self.assertIn(self.base_url + str(uuid), response.headers.get('Location'))
 
 class BlendArticleReadTest(BaseBlendArticleTest):
-    def setUp(self):
-        self.add_mock_to_mask('channel')
-
-        super(BlendArticleReadTest, self).setUp()
+    mock_mask.add('channel')
 
     def test_article_read_unsubmitted(self):
         '''Blend::Article Read—Unsubmitted
@@ -142,11 +139,8 @@ class BlendArticleReadTest(BaseBlendArticleTest):
             self.assertEqual('http://margarine.raxsavvy.com', response.headers.get('Access-Control-Allow-Origin'))
 
 class BlendArticleUpdateTest(BaseBlendArticleTest):
-    def setUp(self):
-        self.add_mock_to_mask('collection')
-        self.add_mock_to_mask('channel')
-
-        super(BlendArticleUpdateTest, self).setUp()
+    mock_mask.add('collection')
+    mock_mask.add('channel')
 
     def test_article_update(self):
         '''Blend::Article Update'''
@@ -157,11 +151,8 @@ class BlendArticleUpdateTest(BaseBlendArticleTest):
             self.assertIn('405', response.status)
 
 class BlendArticleDeleteTest(BaseBlendArticleTest):
-    def setUp(self):
-        self.add_mock_to_mask('collection')
-        self.add_mock_to_mask('channel')
-
-        super(BlendArticleDeleteTest, self).setUp()
+    mock_mask.add('collection')
+    mock_mask.add('channel')
 
     def test_article_delete(self):
         '''Blend::Article Delete'''
