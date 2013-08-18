@@ -113,7 +113,7 @@ def integrated_units(units = ()):
                     'setUp': new_setUp,
                     })
 
-def find_units(unit_paths = ( os.path.join('..', 'test_unit'), )):
+def find_units(unit_paths = ( os.path.join(__file__, '..', 'test_unit'), )):
     '''Find all units in the specified directories.
 
     Find all of the unit tests defined in the passed list of directories.  The
@@ -173,4 +173,10 @@ def find_units(unit_paths = ( os.path.join('..', 'test_unit'), )):
                     logger.info('Recording unit, %s', class_.__name__)
                     units.append(class_)
 
+    for path in temporary_paths:
+        sys.path.remove(path)
+
     return units
+
+for test in integrate_units(find_units):
+    logger.debug('test: %s', test)
