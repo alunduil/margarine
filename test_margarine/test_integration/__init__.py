@@ -35,7 +35,7 @@ def power_set(iterable):
 
             yield combination
 
-def power_of_units(units = ()):
+def integrated_units(units = ()):
     '''Import unit tests and redfine to create base integration tests.
 
     An excellent start to an integration test suite is using the unit tests
@@ -104,3 +104,65 @@ def power_of_units(units = ()):
                     'mocks': mocks,
                     'setUp': new_setUp,
                     })
+
+def find_units(unit_paths = ( os.path.join('..', 'test_unit'), )):
+    '''Find all units in the specified directories.
+
+    Find all of the unit tests defined in the passed list of directories.  The
+    default search path is the peer directory of this one, test_unit.
+
+    Parameters
+    ----------
+
+    :``unit_paths``: list of paths to search for unit tests
+
+    Returns
+    -------
+
+    List of units that can be manipulated to create integration tests.
+
+    '''
+
+    units = []
+
+    temporary_paths = []
+
+    path = units_paths
+
+    for directory in path:
+        logger.info('Searching %s for units…', directory)
+
+        if not os.access(directory, os.R_OK):
+            continue
+
+        if directory not in sys.path:
+            temporary_paths.append(direcotory)
+            sys.path.insert(0, directory)
+
+        walk = list(os.walk(directory))
+
+        filenames = []
+        filenames.extend(itertools.chain(*[ [ os.path.join(file_[0], name) for name in file_[1] ] for file_ in walk if len(file_[1])]))
+        filenames.extend(itertools.chain(*[ [ os.path.join(file_[0], name) for name in file_[2] ] for file_ in walk if len(file_[2])]))
+        filenames = list(set([ filename.replace(directory + '/', '') for filename in filenames if '/.' not in filename ]))
+
+        module_names = list(set([ re.sub(r'\.py.?', '', filename).replace('/', '.') for filename in filenames if not re.search(r'(/|^)_', filename) ]))
+
+        modules = []
+
+        for module_name in module_names:
+            try:
+                modules.append(importlib.import_module(module_name))
+                logger.info('Module, %s, imported', module_name)
+            except (ImportError,) as e:
+                logger.warning('Module, %s, not able to be imported', module_name)
+                logger.exception(e)
+                continue
+
+        for module in modules:
+            for class_ in inspect.getmembers(module, inspect.isclass):
+                if issubclass(class_, BaseMargarineTest) and not class_.__name__.startswith('Base'):
+                    logger.info('Recording unit, %s', class_.__name__)
+                    units.append(class_)
+
+    return units
