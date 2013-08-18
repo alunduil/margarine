@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+#
 # Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
 #
 # margarine is freely distributable under the terms of an MIT-style license.
@@ -180,3 +182,5 @@ def find_units(unit_paths = ( os.path.join(__file__, '..', 'test_unit'), )):
 
 for test in integrate_units(find_units):
     logger.debug('test: %s', test)
+
+    setattr(__module__, test[0], test[1])
