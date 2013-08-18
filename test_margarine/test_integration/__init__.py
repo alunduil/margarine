@@ -5,8 +5,16 @@
 
 import logging
 import itertools
+import subprocess
+import new
+import os
+import sys
+import re
+import importlib
+import inspect
 
 from test_margarine.test_unit import MARGARINE_MOCKS
+from test_margarine.test_unit import BaseMargarineTest
 
 logger = logging.getLogger(__name__)
 
@@ -127,7 +135,7 @@ def find_units(unit_paths = ( os.path.join('..', 'test_unit'), )):
 
     temporary_paths = []
 
-    path = units_paths
+    path = unit_paths
 
     for directory in path:
         logger.info('Searching %s for units…', directory)
@@ -136,7 +144,7 @@ def find_units(unit_paths = ( os.path.join('..', 'test_unit'), )):
             continue
 
         if directory not in sys.path:
-            temporary_paths.append(direcotory)
+            temporary_paths.append(directory)
             sys.path.insert(0, directory)
 
         walk = list(os.walk(directory))
