@@ -45,7 +45,7 @@ def power_set(iterable):
 
             yield combination
 
-def integrated_units(units = ()):
+def integrate_units(units = ()):
     '''Import unit tests and redfine to create base integration tests.
 
     An excellent start to an integration test suite is using the unit tests
@@ -180,7 +180,7 @@ def find_units(unit_paths = ( os.path.join(__file__, '..', 'test_unit'), )):
 
     return units
 
-for test in integrate_units(find_units):
+for test in integrate_units(find_units()):
     logger.debug('test: %s', test)
 
     setattr(__module__, test[0], test[1])
