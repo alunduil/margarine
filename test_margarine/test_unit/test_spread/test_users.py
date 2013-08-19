@@ -130,7 +130,7 @@ class SpreadUserUpdateTest(BaseSpreadUserTest):
                 'alunduil': { 'name': 'Alex Brandt', },
                 }
 
-        for username, properties in self.accounts:
+        for username, properties in self.accounts.iteritems():
             update_user_consumer(mock.MagicMock(), self.method, None, json.dumps(modifications[username]))
 
             self.mock_collection.update.assert_called_once_with({ 'username': username }, { '$set': modifications[username] }, upsert = True)
