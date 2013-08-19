@@ -115,7 +115,7 @@ def integrate_units(units = ()):
                     'setUp': new_setUp,
                     })
 
-def find_units(unit_paths = ( os.path.join(__file__, '..', 'test_unit'), )):
+def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'test_unit')), )):
     '''Find all units in the specified directories.
 
     Find all of the unit tests defined in the passed list of directories.  The
@@ -182,5 +182,6 @@ def find_units(unit_paths = ( os.path.join(__file__, '..', 'test_unit'), )):
 
 for test in integrate_units(find_units()):
     logger.debug('test: %s', test)
+    logger.debug('__module__: %s', __module__)
 
     setattr(__module__, test[0], test[1])
