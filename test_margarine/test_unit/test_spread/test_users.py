@@ -21,6 +21,12 @@ from margarine.spread.users import update_user_consumer
 logger = logging.getLogger(__name__)
 
 class BaseSpreadUserTest(BaseSpreadTest):
+    # TODO A better way to write this?
+    mock_mask = BaseSpreadTest.mock_mask | set([
+        'channel',
+        'container',
+        ])
+
     def setUp(self):
         super(BaseSpreadUserTest, self).setUp()
 
@@ -117,6 +123,8 @@ class SpreadUserUpdateTest(BaseSpreadUserTest):
 
     def test_user_update(self):
         '''Spread::User Update'''
+
+        logger.debug('mock_mask: %s', self.mock_mask)
 
         modifications = {
                 'alunduil': { 'name': 'Alex Brandt', },
