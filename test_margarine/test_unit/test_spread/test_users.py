@@ -72,7 +72,7 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
 
                 mock_password_email_consumer.assert_called_once_with(*args)
 
-            self.mock_collection.insert.assert_called_once_with(json.dumps(properties))
+            self.mock_collection.insert.assert_called_once_with(properties)
             self.mock_collection.reset_mock()
 
     def test_user_create_submitted_complete(self):
