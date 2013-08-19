@@ -54,7 +54,7 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
         '''
 
         for username, properties in self.accounts.iteritems():
-            with mock.path('.'.join([
+            with mock.patch('.'.join([
                 self.__module__.replace('test_', '').replace('unit.', ''),
                 'password_email_consumer',
                 ])) as mock_password_email_consumer:
@@ -123,8 +123,6 @@ class SpreadUserUpdateTest(BaseSpreadUserTest):
 
     def test_user_update(self):
         '''Spread::User Update'''
-
-        logger.debug('mock_mask: %s', self.mock_mask)
 
         modifications = {
                 'alunduil': { 'name': 'Alex Brandt', },

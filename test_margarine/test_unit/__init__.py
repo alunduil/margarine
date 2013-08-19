@@ -87,11 +87,11 @@ class BaseMargarineTest(unittest.TestCase):
 
         # TODO Reduce cyclomatic complexity here.
 
+        to_mock = self.mocks - self.mock_mask
+
         logger.debug('mocks: %s', self.mocks)
         logger.debug('mock_mask: %s', self.mock_mask)
-        logger.debug('to_mock: %s', self.mocks - self.mock_mask)
-
-        to_mock = self.mocks - self.mock_mask
+        logger.debug('to_mock: %s', to_mock)
 
         if 'channel' in to_mock:
             self.mock_channel = self._get_attached_mock(self._get_patch_mock('get_channel'))
