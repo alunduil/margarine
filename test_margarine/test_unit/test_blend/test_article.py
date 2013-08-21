@@ -18,7 +18,8 @@ from margarine.blend import information
 logger = logging.getLogger(__name__)
 
 class BaseBlendArticleTest(BaseBlendTest):
-    mock_mask.add('keyspace')
+    # TODO Make this simpler.
+    mock_mask = BaseBlendTest.mock_mask | set(['keyspace'])
 
     def setUp(self):
         super(BaseBlendArticleTest, self).setUp()
@@ -55,7 +56,8 @@ class BlendArticleCreateTest(BaseBlendArticleTest):
             self.assertIn(self.base_url + str(uuid), response.headers.get('Location'))
 
 class BlendArticleReadTest(BaseBlendArticleTest):
-    mock_mask.add('channel')
+    # TODO Make this simpler.
+    mock_mask = BaseBlendArticleTest.mock_mask | set(['channel'])
 
     def test_article_read_unsubmitted(self):
         '''Blend::Article Read—Unsubmitted
@@ -139,8 +141,11 @@ class BlendArticleReadTest(BaseBlendArticleTest):
             self.assertEqual('http://margarine.raxsavvy.com', response.headers.get('Access-Control-Allow-Origin'))
 
 class BlendArticleUpdateTest(BaseBlendArticleTest):
-    mock_mask.add('collection')
-    mock_mask.add('channel')
+    # TODO Make this simpler.
+    mock_mask = BaseBlendArticleTest.mock_mask | set([
+        'collection',
+        'channel',
+        ])
 
     def test_article_update(self):
         '''Blend::Article Update'''
@@ -151,8 +156,11 @@ class BlendArticleUpdateTest(BaseBlendArticleTest):
             self.assertIn('405', response.status)
 
 class BlendArticleDeleteTest(BaseBlendArticleTest):
-    mock_mask.add('collection')
-    mock_mask.add('channel')
+    # TODO Make this simpler.
+    mock_mask = BaseBlendArticleTest.mock_mask | set([
+        'collection',
+        'channel',
+        ])
 
     def test_article_delete(self):
         '''Blend::Article Delete'''

@@ -20,7 +20,8 @@ from margarine.spread.articles import create_article_consumer
 logger = logging.getLogger(__name__)
 
 class BaseSpreadArticleTest(BaseSpreadTest):
-    mock_mask.add('keyspace')
+    # TODO Make this simpler.
+    mock_mask = BaseSpreadTest.mock_mask | set(['keyspace'])
 
     def setUp(self):
         super(BaseSpreadArticleTest, self).setUp()
