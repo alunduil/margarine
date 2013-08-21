@@ -171,6 +171,9 @@ def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__fil
 
         for module in modules:
             for class_ in inspect.getmembers(module, inspect.isclass):
+                logger.debug('class: %s', class_)
+                logger.debug('type(class): %s', type(class_))
+
                 if issubclass(class_, BaseMargarineTest) and not class_.__name__.startswith('Base'):
                     logger.info('Recording unit, %s', class_.__name__)
                     units.append(class_)
@@ -182,6 +185,6 @@ def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__fil
 
 for test in integrate_units(find_units()):
     logger.debug('test: %s', test)
-    logger.debug('__module__: %s', __module__)
+    logger.debug('module: %s', sys.modules[__name__])
 
-    setattr(__module__, test[0], test[1])
+    setattr(sys.modules[__name__], test[0], test[1])
