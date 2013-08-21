@@ -43,7 +43,7 @@ def power_set(iterable):
         for combination in itertools.combinations(iterable, _):
             logger.debug('combination: %s', combination)
 
-            yield combination
+            yield set(combination)
 
 def integrate_units(units = ()):
     '''Import unit tests and redfine to create base integration tests.
@@ -171,12 +171,9 @@ def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__fil
 
         for module in modules:
             for class_ in inspect.getmembers(module, inspect.isclass):
-                logger.debug('class: %s', class_)
-                logger.debug('type(class): %s', type(class_))
-
-                if issubclass(class_, BaseMargarineTest) and not class_.__name__.startswith('Base'):
-                    logger.info('Recording unit, %s', class_.__name__)
-                    units.append(class_)
+                if issubclass(class_[1], BaseMargarineTest) and not class_[0].startswith('Base'):
+                    logger.info('Recording unit, %s', class_[0])
+                    units.append(class_[1])
 
     for path in temporary_paths:
         sys.path.remove(path)
