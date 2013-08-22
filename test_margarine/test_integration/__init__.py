@@ -80,7 +80,7 @@ def integrate_units(units = ()):
             logger.debug('unit.__name__: %s', unit.__name__)
 
             if len(unit.mock_mask & mocks):
-                name = unit.__name__.replace('Test', ''.join([ _.capitalize() for _ in mocks]) + 'Test')
+                name = unit.__name__.replace('Test', 'Mock' + ''.join([ _.capitalize() for _ in mocks]) + 'Test')
 
                 logger.debug('name: %s', name)
 
@@ -177,7 +177,6 @@ def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__fil
 logger.debug('module: %s', sys.modules[__name__])
 for test in integrate_units(find_units()):
     logger.debug('test: %s', test)
-    logger.debug('dir(test): %s', dir(test))
 
     setattr(sys.modules[__name__], test.__class__.__name__, test)
 
