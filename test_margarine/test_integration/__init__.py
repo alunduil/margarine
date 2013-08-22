@@ -172,10 +172,11 @@ def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__fil
 
     return units
 
-logger.debug('module: %s', sys.modules[__name__])
 for test in integrate_units(find_units()):
-    logger.debug('test: %s', test)
+    logger.info('Registering test: %s', test)
+    logger.debug('test name: %s', test.__name__)
 
-    setattr(sys.modules[__name__], test.__class__.__name__, test)
+    setattr(sys.modules[__name__], test.__name__, test)
 
+logger.debug('module: %s', sys.modules[__name__])
 logger.info('Tests Registered!')
