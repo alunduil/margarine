@@ -72,17 +72,15 @@ def integrate_units(units = ()):
     '''
 
     for unit in units:
-        logger.debug('unit: %s', unit)
-
         for mocks in power_set(MARGARINE_MOCKS):
+            logger.debug('unit.__name__: %s', unit.__name__)
             logger.debug('mocks: %s', mocks)
             logger.debug('unit.mock_mask: %s', unit.mock_mask)
-            logger.debug('unit.__name__: %s', unit.__name__)
 
-            if len(unit.mock_mask & mocks):
+            if len(mocks - unit.mock_mask):
                 name = unit.__name__.replace('Test', 'Mock' + ''.join([ _.capitalize() for _ in mocks]) + 'Test')
 
-                logger.debug('name: %s', name)
+                logger.debug('new name: %s', name)
 
                 def new_setUp(self):
                     '''Override setUp with skip dependant on running vagrant.
