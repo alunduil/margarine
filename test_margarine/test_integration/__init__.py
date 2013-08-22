@@ -36,13 +36,8 @@ def power_set(iterable):
 
     '''
 
-    logger.info('Generating Powerset')
-    logger.debug('iterable: %s', iterable)
-
     for _ in xrange(len(iterable)):
         for combination in itertools.combinations(iterable, _):
-            logger.debug('combination: %s', combination)
-
             yield set(combination)
 
 def integrate_units(units = ()):
@@ -110,7 +105,7 @@ def integrate_units(units = ()):
 
                     self.skipTest('Implement vagrant check')
 
-                yield name, lambda: new.classobj(name, (unit,), {
+                yield new.classobj(name, (unit,), {
                     'mocks': mocks,
                     'setUp': new_setUp,
                     })
@@ -170,18 +165,20 @@ def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__fil
                 continue
 
         for module in modules:
-            for class_ in inspect.getmembers(module, inspect.isclass):
-                if issubclass(class_[1], BaseMargarineTest) and not class_[0].startswith('Base'):
-                    logger.info('Recording unit, %s', class_[0])
-                    units.append(class_[1])
+            for class_ in [ class_ for _, class_ in inspect.getmembers(module, inspect.isclass) if issubclass(class_, BaseMargarineTest) and not _.startswith('Base') ]:
+                logger.info('Recording unit, %s', class_)
+                units.append(class_)
 
     for path in temporary_paths:
         sys.path.remove(path)
 
     return units
 
+logger.debug('module: %s', sys.modules[__name__])
 for test in integrate_units(find_units()):
     logger.debug('test: %s', test)
-    logger.debug('module: %s', sys.modules[__name__])
+    logger.debug('dir(test): %s', dir(test))
 
-    setattr(sys.modules[__name__], test[0], test[1])
+    setattr(sys.modules[__name__], test.__class__.__name__, test)
+
+logger.info('Tests Registered!')
