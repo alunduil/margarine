@@ -38,7 +38,7 @@ class BaseSpreadArticleTest(BaseSpreadTest):
 
         self.test_datetime = datetime.datetime(2013, 8, 7, 20, 25, 41, 596627)
 
-class SpreadArticleCreate(BaseSpreadArticleTest):
+class SpreadArticleCreateTest(BaseSpreadArticleTest):
     def setUp(self):
         super(SpreadArticleCreate, self).setUp()
 
