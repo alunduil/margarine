@@ -72,41 +72,46 @@ def integrate_units(units = ()):
     '''
 
     for unit in units:
-        for mocks in power_set(MARGARINE_MOCKS):
+
+        if not len(unit.mock_mask):
+            continue
+
+        logger.debug('unit.__dict__.keys: %s', unit.__dict__.keys())
+
+        for mocks in power_set(unit.mock_mask):
             logger.debug('unit.__name__: %s', unit.__name__)
             logger.debug('mocks: %s', mocks)
             logger.debug('unit.mock_mask: %s', unit.mock_mask)
 
-            if len(mocks - unit.mock_mask):
-                name = unit.__name__.replace('Test', 'Mock' + ''.join([ _.capitalize() for _ in mocks]) + 'Test')
+            name = unit.__name__.replace('Test', 'Mock' + ''.join([ _.capitalize() for _ in mocks]) + 'Test')
 
-                logger.debug('new name: %s', name)
+            logger.debug('new name: %s', name)
 
-                def new_setUp(self):
-                    '''Override setUp with skip dependant on running vagrant.
+            def new_setUp(self):
+                '''Override setUp with skip dependant on running vagrant.
 
-                    If a vagrant environment is not running or available.  We
-                    should not run integration tests as dropping mocks will
-                    only cause errors.
+                If a vagrant environment is not running or available.  We
+                should not run integration tests as dropping mocks will
+                only cause errors.
 
-                    '''
+                '''
 
-                    super(self.__class__.__name__, self).setUp()
+                super(self.__class__.__name__, self).setUp()
 
-                    try:
-                        output = subprocess.check_output([ 'vagrant', 'status' ])
-                    except (subprocess.CalledProcessError,) as e:
-                        logger.error('command failed: vagrant status')
-                        logger.exception(e)
+                try:
+                    output = subprocess.check_output([ 'vagrant', 'status' ])
+                except (subprocess.CalledProcessError,) as e:
+                    logger.error('command failed: vagrant status')
+                    logger.exception(e)
 
-                    logger.debug('vagrant status: %s', output)
+                logger.debug('vagrant status: %s', output)
 
-                    self.skipTest('Implement vagrant check')
+                self.skipTest('Implement vagrant check')
 
-                yield new.classobj(name, (unit,), {
-                    'mocks': mocks,
-                    'setUp': new_setUp,
-                    })
+            yield new.classobj(name, (unit,), {
+                'mock_mask': mocks,
+                'setUp': new_setUp,
+                })
 
 def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'test_unit')), )):
     '''Find all units in the specified directories.
