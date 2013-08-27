@@ -54,6 +54,9 @@ def update_user_consumer(channel, method, header, body):
 
     user = dict([ (k,v) for k,v in json.loads(body).iteritems() if v is not None ])
 
+    # TODO Stop the silent dropping of username changes:
+    user.pop("username")
+
     get_collection("users").update({ "username": user.pop("original_username") }, { "$set": user }, upsert = True)
 
     channel.basic_ack(delivery_tag = method.delivery_tag)

@@ -12,8 +12,8 @@ from margarine.parameters import configure_logging
 configure_logging()
 
 from margarine.communication import get_channel
-from margarine.consumers import users
-from margarine.consumers import articles
+from margarine.spread import users
+from margarine.spread import articles
 
 logger = logging.getLogger(__name__)
 
