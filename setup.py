@@ -60,6 +60,12 @@ PARAMS["requires"] = [
         "pyrax",
         ]
 
+PARAMS['tests_require'] = [
+        'nose',
+        ]
+
+PARAMS['test_suite'] = 'nose.collector'
+
 PARAMS["scripts"] = [
         "bin/blend",
         "bin/spread",
