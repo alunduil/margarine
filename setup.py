@@ -3,6 +3,9 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+from ez_setup import use_setuptools
+use_setuptools()
+
 from setuptools import setup
 
 from margarine import information
