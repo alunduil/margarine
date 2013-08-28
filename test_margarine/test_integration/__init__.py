@@ -15,7 +15,6 @@ import re
 import importlib
 import inspect
 
-from test_margarine.test_unit import MARGARINE_MOCKS
 from test_margarine.test_unit import BaseMargarineTest
 
 logger = logging.getLogger(__name__)
