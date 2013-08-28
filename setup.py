@@ -57,13 +57,6 @@ PARAMS["requires"] = [
         "pyrax",
         ]
 
-PARAMS['extras_require'] = {
-        'test': [
-            'mock',
-            'nose',
-            ],
-        }
-
 PARAMS["scripts"] = [
         "bin/blend",
         "bin/spread",
