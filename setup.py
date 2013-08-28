@@ -66,6 +66,7 @@ PARAMS['tests_require'] = [
 
 PARAMS['test_suite'] = 'nose.collector'
 
+# TODO Change to entry_points?
 PARAMS["scripts"] = [
         "bin/blend",
         "bin/spread",
@@ -80,14 +81,11 @@ PARAMS["packages"] = [
         ]
 
 PARAMS["package_data"] = {
-        "margarine.blend": [
-            "templates/*.html",
-            ],
-        "margarine.tinge": [
-            "static/js/*.js",
-            "static/img/*.png",
-            "static/css/*.css",
-            "templates/*.html",
+        '': [
+            'templates/*.html',
+            'static/js/*.js',
+            'static/img/*.png',
+            'static/css/*.css',
             ],
         }
 
