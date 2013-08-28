@@ -40,7 +40,7 @@ class BaseSpreadArticleTest(BaseSpreadTest):
 
 class SpreadArticleCreateTest(BaseSpreadArticleTest):
     def setUp(self):
-        super(SpreadArticleCreate, self).setUp()
+        super(SpreadArticleCreateTest, self).setUp()
 
         self.method.delivery_tag.return_value = 'create'
 
