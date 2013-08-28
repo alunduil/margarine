@@ -1,6 +1,6 @@
-Flask==0.10.1
-beautifulsoup4==4.2.1
+Flask
 pika==0.9.12
-pyrax==1.4.9
-pymongo==2.5.2
-redis==2.7.6
+pymongo
+redis>=2.7.6
+pyrax
+beautifulsoup4

@@ -51,18 +51,11 @@ PARAMS["provides"] = [
         "margarine",
         ]
 
-PARAMS["requires"] = [
-        "redis (>=2.7.6)",
-        "pymongo",
-        "pika (==0.9.12)",
-        "flask",
-        "bs4",
-        "pyrax",
-        ]
+with open('requirements.txt', 'r') as req_fh:
+    PARAMS['install_requires'] = req_fh.readlines()
 
-PARAMS['tests_require'] = [
-        'nose',
-        ]
+with open('test_margarine/requirements.txt', 'r') as req_fh:
+    PARAMS['tests_require'] = req_fh.readlines()
 
 PARAMS['test_suite'] = 'nose.collector'
 
@@ -105,4 +98,3 @@ PARAMS["data_files"] = [
         ]
 
 setup(**PARAMS)
-
