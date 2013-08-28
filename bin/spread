@@ -5,8 +5,16 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import logging
+
+if __name__ == '__main__':
+    logging.basicConfig(level = logging.DEBUG)
+
 import margarine.spread
 
 if __name__ == "__main__":
-    margarine.spread.main()
-
+    try:
+        margarine.spread.main()
+    except (Exception) as e:
+        logger.error('Unexpected exception occurred')
+        logger.exception(e)
