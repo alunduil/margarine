@@ -110,6 +110,15 @@ def integrate_units(units = ()):
             yield new.classobj(name, (unit,), {
                 'mock_mask': mocks,
                 'setUp': new_setUp,
+                '__doc__': '''{0}
+                           
+                           Auto-generated test for integration purposes.
+
+                           The following mocks are masked for this test:
+
+                           * {1}
+
+                           '''.format(name, '\n* '.join(mocks)),
                 })
 
 def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'test_unit')), )):
