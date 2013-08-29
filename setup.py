@@ -59,12 +59,20 @@ with open('test_margarine/requirements.txt', 'r') as req_fh:
 
 PARAMS['test_suite'] = 'nose.collector'
 
-# TODO Change to entry_points?
 PARAMS["scripts"] = [
         "bin/blend",
         "bin/spread",
         "bin/tinge",
         ]
+
+# TODO Change to entry_points?
+#PARAMS['entry_points'] = {
+#        'console_scripts': [
+#            'tinge = margarine.tinge:main',
+#            'blend = margarine.blend:main',
+#            'spread = margarine.spread:main',
+#            ],
+#        }
 
 PARAMS["packages"] = [
         "margarine",
