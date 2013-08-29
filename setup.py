@@ -49,11 +49,11 @@ PARAMS["provides"] = [
         ]
 
 PARAMS["requires"] = [
-        "redis-py",
+        "redis (>=2.7.6)",
         "pymongo",
-        "pika (>=0.9.12)",
+        "pika (==0.9.12)",
         "flask",
-        "beautifulsoup (>=4)",
+        "bs4",
         "pyrax",
         ]
 
@@ -66,7 +66,7 @@ PARAMS["scripts"] = [
 PARAMS["packages"] = [
         "margarine",
         "margarine.blend",
-        "margarine.consumers",
+        "margarine.spread",
         "margarine.tinge",
         ]
 
@@ -91,7 +91,7 @@ PARAMS["data_files"] = [
             "conf/margarine.ini",
             "conf/pyrax.ini",
             ]),
-        ("share/doc/{P[name]}-{P[version]}/wsgi".format(P = PARAMS), [
+        ("libexec/{P[name]}".format(P = PARAMS), [
             "conf/blend.wsgi",
             "conf/tinge.wsgi",
             ])

@@ -144,6 +144,7 @@ def send_user_email(user, verification):
             "Margarine\n"
 
     from margarine.blend import BLEND # TODO Figure out looping import.
+    BLEND.config["SERVER_NAME"] = Parameters()["server.name"] # TODO Consolidate configuration parameters? api.endpoint
     with BLEND.app_context():
         message = email.mime.text.MIMEText(message_text.format(verification_url = url_for("user.users_password_api", username = user["username"], verification = verification)))
 
@@ -152,6 +153,8 @@ def send_user_email(user, verification):
     message["To"] = "{user[name]} <{user[email]}>".format(user = user)
 
     uri = URI(Parameters()["email.url"])
+
+    logger.info("Connecting to SMTP Server.")
     
     _ = smtplib.SMTP(uri.host, uri.port)
 
@@ -160,4 +163,6 @@ def send_user_email(user, verification):
 
     _.sendmail(Parameters()["email.from"], [ user["email"] ], message.as_string())
     _.quit()
+
+    logger.info("Successfully sent email!")
     
