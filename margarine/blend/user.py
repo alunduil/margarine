@@ -287,6 +287,8 @@ class UserInterface(MethodView):
         response = make_response(json.dumps(unicode(user)))
 
         response.headers['Content-Type'] = 'application/json'
+        # TODO Change Paramter from server.domain to tinge.domain
+        response.headers['Access-Control-Allow-Origin'] = Parameters()['server.domain']
 
         return response
 
