@@ -26,7 +26,7 @@ class URI(object):
                 r'((?P<username>[^:]+)(:(?P<password>[^@]+))?@)?' \
                 r'(?P<host>[^:/]+)?' \
                 r'(:(?P<port>[^/]+))?' \
-                r'(?P<path>/\w+)?' \
+                r'(?P<path>/[^\?]+)?' \
                 , self.uri)
 
         self.scheme = match.group("scheme")
