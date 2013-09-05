@@ -27,6 +27,16 @@ The following features are the large scale goals of margarine:
 Not all of these scope goals will be available in what will be marked a first
 release.
 
+Installation
+============
+
+The installer simply installs all the pieces with the current build system but
+future work shall include splitting these up into separate bundles.  Due to the
+single installer, installation is very easy:
+
+:source: ``python setup.py install``
+:pip:    ``pip install margarine``
+
 Deployment
 ==========
 
@@ -48,13 +58,14 @@ the background on a server.  The ``spread`` daemon listens to a configurable
 message queue but can be configured to talk directly with the ``blend`` 
 process.
 
-Installation
-============
+Development
+===========
 
-The installer simply installs all the pieces with the current build system but
-future work shall include splitting these up into separate bundles.  Due to the
-single installer, installation is very easy:
+Development follows a standard branching and forking model that most github
+projects utilize.  Various components (tools) of the development process are
+listed below.
 
-:source: ``python setup.py install``
-:pip:    ``pip install margarine``
+:issues: Utilize github's issue system
+:wiki:   Utilize github's wiki system
+:features: Utilize `Margarine's Trello Board <https://trello.com/b/kYylJGe9/margarine>`_
 

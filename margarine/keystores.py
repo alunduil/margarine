@@ -58,8 +58,15 @@ def get_keyspace(keyspace):
                 "tokens": 0,
                 "verifications": 1,
                 }
+
+        logger.debug("port: %s", uri.port)
+        logger.debug("type(port): %s", type(uri.port))
+
+        port = 6379
+        if uri.port is not None:
+            port = int(uri.port)
             
-        KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(host = uri.host, port = uri.port or 6379, db = databases[keyspace])
+        KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(host = uri.host, port = port, db = databases[keyspace])
 
     return KEYSTORE_CONNECTIONS[keyspace]
     
