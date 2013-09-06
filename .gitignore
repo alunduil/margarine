@@ -1,2 +1,3 @@
 *.py[co]
 .vagrant/
+.rvmrc
