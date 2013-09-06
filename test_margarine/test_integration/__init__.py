@@ -35,7 +35,7 @@ def power_set(iterable):
 
     '''
 
-    for _ in xrange(len(iterable)):
+    for _ in xrange(1, len(iterable) + 1):
         for combination in itertools.combinations(iterable, _):
             yield set(combination)
 
@@ -72,17 +72,17 @@ def integrate_units(units = ()):
 
     for unit in units:
 
-        if not len(unit.mock_mask):
-            continue
-
         logger.debug('unit.__dict__.keys: %s', unit.__dict__.keys())
 
-        for mocks in power_set(unit.mock_mask):
+        # The mask for the new unit is the following:
+        # mock_mask = { m ∪ mock_mask | m ∈ P( mocks\mask }
+
+        for mock_mask in [ _ | unit.mock_mask for _ in power_set(unit.mocks - unit.mock_mask) ]:
             logger.debug('unit.__name__: %s', unit.__name__)
-            logger.debug('mocks: %s', mocks)
+            logger.debug('mocks: %s', mock_mask)
             logger.debug('unit.mock_mask: %s', unit.mock_mask)
 
-            name = unit.__name__.replace('Test', 'Mock' + ''.join([ _.capitalize() for _ in mocks]) + 'Test')
+            name = unit.__name__.replace('Test', 'Mock' + ''.join([ _.capitalize() for _ in mock_mask]) + 'Test')
 
             logger.debug('new name: %s', name)
 
@@ -108,17 +108,17 @@ def integrate_units(units = ()):
                 self.skipTest('Implement vagrant check')
 
             yield new.classobj(name, (unit,), {
-                'mock_mask': mocks,
+                'mock_mask': mock_mask,
                 'setUp': new_setUp,
                 '__doc__': '''{0}
-                           
+
                            Auto-generated test for integration purposes.
 
                            The following mocks are masked for this test:
 
                            * {1}
 
-                           '''.format(name, '\n* '.join(mocks)),
+                           '''.format(name, '\n* '.join(mock_mask)),
                 })
 
 def find_units(unit_paths = ( os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'test_unit')), )):
