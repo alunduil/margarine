@@ -6,5 +6,4 @@ install:
   - "pip install -q -r test_margarine/requirements.txt --use-mirrors"
 script: python -m test_margarine
 notifications:
-  irc: 
-    - 'chat.freenode.net#margarine'
+  irc: 'chat.freenode.net#margarine'
