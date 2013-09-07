@@ -22,16 +22,16 @@ The properties we're starting with are the following:
     * created_at—index
     * original_etag
     * parsed_at—index
-    
+
     * subscribers—Psuedo parameter, maps to join collection.
 
-      * uuid4—user 
+      * uuid4—user
       * uuid5—bookmark
       * subscribed_at
 
 .. note::
 
-    This blueprint has all methods documented with an assumed prefix.  Thus, 
+    This blueprint has all methods documented with an assumed prefix.  Thus,
     the path '/' is in fact something like (defined elsewhere) '/v1/articles/'.
 
 """
@@ -49,6 +49,8 @@ from flask import abort
 from flask import make_response
 from flask import url_for
 from bson import json_util
+
+import margarine.parameters.tinge
 
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
@@ -117,16 +119,6 @@ def submit_article():
 
     return response
 
-Parameters("server", parameters = [
-    { # --server-domain=FQDN; FQDN ← HOSTNAME (TLD)
-        "options": [ "--domain" ],
-        "default": ".".join(socket.gethostname().rsplit('.', 2)[1:]),
-        "help": \
-                "The base name used in URL generation.  This defaults to the" \
-                "host's FQDN.",
-        }, # TODO Fix this help message.
-    ])
-
 @ARTICLE.route('/<article_id>')
 def article(article_id):
     """Retrieve a sanitized article.
@@ -137,12 +129,12 @@ def article(article_id):
     ::
 
         GET /44d85795-248d-5899-b8ca-ac2bd8233755
-        
+
     Response
     --------
 
     .. note::
-        The following is formatted for readability and does not match the 
+        The following is formatted for readability and does not match the
         actual response from the API.  Also, the body parameter has been
         shortened to fit this example more concisely.
 
@@ -188,7 +180,6 @@ def article(article_id):
 
     response.mimetype = "application/json"
 
-    response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
+    response.headers["Access-Control-Allow-Origin"] = Parameters()['tinge.url']
 
     return response
-
