@@ -21,9 +21,6 @@ from margarine import information
 
 logger = logging.getLogger(__name__)
 
-CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, 'etc', 'margarine')
-CONFIGURATION_FILE = os.path.join(CONFIGURATION_DIRECTORY, 'margarine.ini')
-
 def extract_defaults(parameters, prefix = '', keep = lambda _: _):
     '''Extract the default values for the passed parameters.
 
@@ -443,20 +440,6 @@ class Parameters(object):
 
     def values(self):
         return list(self.itervalues())
-
-# General Parameters for all applications:
-
-Parameters(parameters = [
-    { # --configuration=FILE, -f=FILE; FILE ← CONFIGURATION_FILE
-        'options': [ '--configuration', '-f' ],
-        'default': CONFIGURATION_FILE,
-        'help': \
-                'Configuration file to use to configure %(prog)s as a whole.',
-        },
-    ])
-
-# Add our configuration file to the parameters.
-Parameters(file_path = Parameters().parse(only_known = True)['configuration'])
 
 Parameters('logging', parameters = [
     { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.ini
