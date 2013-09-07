@@ -5,13 +5,13 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import pymongo
 import logging
-import os
+import pymongo
 import pyrax
 
-import margarine.paramters.datastores
+import margarine.parameters.datastores
 
+from margarine.parameters import Parameters
 from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
@@ -113,4 +113,3 @@ def get_container(container):
     pyrax.set_credential_file(Parameters()["pyrax.configuration"])
 
     return pyrax.cloudfiles.create_container(container)
-
