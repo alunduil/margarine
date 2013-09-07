@@ -10,22 +10,11 @@ import logging
 import os
 import pyrax
 
-from margarine.parameters import Parameters
-from margarine.parameters import CONFIGURATION_DIRECTORY
+import margarine.paramters.datastores
+
 from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
-
-Parameters("datastore", parameters = [
-    { # --datastore-url=URL; URL ← mongodb://localhost/test
-        "options": [ "--url" ],
-        "default": "mongodb://localhost/test",
-        "help": \
-                "The URL endpoint of the data store mechanism.  This can be " \
-                "a local sqlite database but typically will be set to a " \
-                "MongoDB instance.",
-        }
-    ])
 
 DATASTORE_CONNECTION = None
 
@@ -77,7 +66,7 @@ def get_collection(collection):
             "users": [
                 [
                     [ ( "username", pymongo.ASCENDING ), ],
-                    { 
+                    {
                         "unique": True,
                         "drop_dups": True,
                         "background": True,
@@ -97,29 +86,10 @@ def get_collection(collection):
 
     return database[collection]
 
-Parameters("pyrax", parameters = [
-    { # --pyrax-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/pyrax.ini
-        "options": [ "--configuration" ],
-        "default": os.path.join(CONFIGURATION_DIRECTORY, "pyrax.ini"),
-        "help": \
-                "The configuration file containing the pyrax credentials " \
-                "used by %(prog)s.  Default: %(default)s.",
-        },
-    { # --pyrax-type=TYPE; TYPE ← rackspace
-        "options": [ "--type" ],
-        "default": "rackspace",
-        "help": \
-                "The identity type for pyrax.  This needs to be set outside " \
-                "of the pyrax configuration due to the pyrax " \
-                "implementation.  This defaults to %(default)s but can be " \
-                "over-ridden if required.",
-        },
-    ])
-
 def get_container(container):
     """Using the pyrax interface retrieve a container object for storing data.
 
-    Reconnects for every container provided.  
+    Reconnects for every container provided.
 
     .. note::
         This needs to be checked for correctness.  This needs to be checked
