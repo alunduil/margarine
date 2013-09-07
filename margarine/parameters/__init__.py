@@ -440,26 +440,3 @@ class Parameters(object):
 
     def values(self):
         return list(self.itervalues())
-
-Parameters('logging', parameters = [
-    { # --logging-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/logging.ini
-        'options': [ '--configuration' ],
-        'default': os.path.join(CONFIGURATION_DIRECTORY, 'logging.ini'),
-        'help': \
-                'The configuration file containing the logging ' \
-                'mechanism used by %(prog)s.  Default: %(default)s.',
-        },
-    ])
-
-def configure_logging():
-    '''Configure the system loggers using the Parameters' file provided.
-
-    Uses Parameters[logging.configuration] to setup all logging mechanisms.
-
-    '''
-
-    logging_configuration_path = Parameters().parse(only_known = True)['logging.configuration']
-
-    if os.access(logging_configuration_path, os.R_OK):
-        logging.config.fileConfig(Parameters()['logging.configuration'])
-
