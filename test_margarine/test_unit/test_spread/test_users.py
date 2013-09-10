@@ -143,7 +143,7 @@ class SpreadPasswordEmailTest(BaseSpreadUserTest):
     def test_user_password_email(self):
         '''Spread::User Password Email'''
 
-        for username, properties in self.accounts:
+        for username, properties in self.accounts.iteritems():
             password_email_consumer(mock.MagicMock(), self.method, None, json.dumps(properties))
 
             self.fail('Complete Stub!')
