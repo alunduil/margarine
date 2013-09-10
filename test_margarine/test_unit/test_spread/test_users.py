@@ -88,7 +88,7 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
 
         '''
 
-        for username, properties in self.account.iteritems():
+        for username, properties in self.accounts.iteritems():
             self.mock_collection.insert.side_effect = pymongo.errors.DuplicateKeyError
 
             args = [
