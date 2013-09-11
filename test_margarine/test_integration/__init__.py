@@ -95,7 +95,7 @@ def integrate_units(units = ()):
 
                 '''
 
-                super(self.__class__.__name__, self).setUp()
+                super(self.__class__, self).setUp()
 
                 try:
                     output = subprocess.check_output([ 'vagrant', 'status' ])
