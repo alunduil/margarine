@@ -12,6 +12,8 @@ import uuid
 import json
 import datetime
 
+from bson import json_util # TODO Switch to a better handler for JSON, see #41
+
 from test_margarine.test_unit.test_spread import BaseSpreadTest
 
 # TODO Remove pluralization of articles
@@ -173,7 +175,7 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
                 'text_object_name': '248d-5899-b8ca-ac2bd8233755',
                 })
 
-            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article))
+            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article, default = json_util.default))
 
             _id = article.pop('_id')
 
