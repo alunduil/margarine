@@ -62,18 +62,6 @@ from margarine.keystores import get_keyspace
 
 logger = logging.getLogger(__name__)
 
-Parameters("api", parameters = [
-    { # --api-uuid=UUID; UUID ← uuid.uuid4()
-        "options": [ "--uuid" ],
-        "default": uuid.uuid4().hex,
-        "help": \
-                "The UUID used for the HTTP Digest Authentication " \
-                "Mechanism.  This should be set to a static string that is " \
-                "the same on every deployment but will default to a " \
-                "randomly generated UUID4.",
-        },
-    ])
-
 class UnauthorizedError(werkzeug.exceptions.Unauthorized):
     """Custom unauthorized exception.
 
@@ -94,7 +82,7 @@ class UnauthorizedError(werkzeug.exceptions.Unauthorized):
 
 def http_401_handler(error):
     """Sends an appropriate 401 Unauthorized page for HTTP Digest.
-    
+
     Working handler for the user login method defined below.  This handler
     does not need to be used but some assumptions about what the handler does
     are made and this handler fits those assumptions.
@@ -102,7 +90,7 @@ def http_401_handler(error):
     """
 
     logger.debug("type(error): %s", type(error))
-    
+
     logger.debug("error.username: %s", error.username)
 
     response = make_response("", 401)
@@ -117,7 +105,7 @@ def http_401_handler(error):
     authentication_string = authentication_string.format(
             realm = information.AUTHENTICATION_REALM,
             nonce = uuid.uuid4().hex,
-            opaque = Parameters()["api.uuid"],
+            opaque = Parameters()['security.opaque'],
             )
 
     logger.debug("authentication_string: %s", authentication_string)
@@ -152,7 +140,7 @@ class UserInterface(MethodView):
         -------
 
         ::
-        
+
             PUT /alunduil
             Content-Type: application/x-www-form-urlencoded
 
@@ -204,7 +192,7 @@ class UserInterface(MethodView):
         """
 
         user = get_collection("users").find_one({ "username": username })
-        
+
         logger.debug("user: %s", user)
 
         message_properties = pika.BasicProperties()
@@ -241,7 +229,7 @@ class UserInterface(MethodView):
         channel.close()
 
         return "", 202
-    
+
     def get(self, username):
         """Retrieve an User's information.
 
@@ -366,7 +354,7 @@ class UserPasswordInterface(MethodView):
             X-Validation-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
 
         ::
-            
+
             GET /alunduil/password?verification=6e585a2d-438d-4a33-856a-8a7c086421ee
 
         Authenticated Response
@@ -486,8 +474,8 @@ class UserPasswordInterface(MethodView):
         message_properties.content_type = "application/json"
         message_properties.durable = False
 
-        message = { 
-                "username": username, 
+        message = {
+                "username": username,
                 "password": password,
                 }
 
@@ -505,7 +493,7 @@ class UserPasswordInterface(MethodView):
         return "", 202
 
 USER.add_url_rule('/<username>/password', view_func = UserPasswordInterface.as_view("users_password_api"))
-        
+
 @USER.route('/<username>/token')
 def login(username):
     """Get an authorized token for subsequent API calls.
@@ -543,7 +531,7 @@ def login(username):
     ''''''''''''''''''''''''''''''''''''''''
 
     ::
-      
+
         GET /alunduil/token HTTP/1.1
         Host: www.example.com
         Authorization: Digest username="alunduil",
@@ -566,10 +554,10 @@ def login(username):
         0b4fb639-edd1-44fe-b757-589a099097a5
 
     """
-    
+
     logger.info("Checking authentication!")
 
-    if request.authorization is None or request.authorization.opaque != Parameters()["api.uuid"]:
+    if request.authorization is None or request.authorization.opaque != Parameters()['security.opaque']:
         raise UnauthorizedError(username = username)
 
     user = get_collection("users").find_one({ "username": username })
