@@ -8,6 +8,8 @@
 import redis
 import logging
 
+import margarine.parameters.keystore
+
 from margarine.parameters import Parameters
 from margarine.helpers import URI
 
