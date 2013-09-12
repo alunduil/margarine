@@ -393,7 +393,7 @@ class Parameters(object):
 
     def copy(self):
         # TODO Think of a way to remove the re-read of files …
-        return Paramaters(self.name, self.file_path, self.parameters)
+        return Parameters(self.name, self.file_path, self.parameters)
 
     def get(self, key, default = None):
         if key in self:
