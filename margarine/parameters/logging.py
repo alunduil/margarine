@@ -5,6 +5,9 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import os
+import logging as original_logging
+
 from margarine.parameters import Parameters
 from margarine.parameters.configuration import DIRECTORY as CONFIGURATION_DIRECTORY
 
@@ -28,4 +31,4 @@ def configure_logging():
     logging_configuration_path = Parameters().parse(only_known = True)['logging.configuration']
 
     if os.access(logging_configuration_path, os.R_OK):
-        logging.config.fileConfig(Parameters()['logging.configuration'])
+        original_logging.config.fileConfig(Parameters()['logging.configuration'])
