@@ -54,6 +54,8 @@ from flask import url_for
 from flask.views import MethodView
 from flask import render_template
 
+import margarine.parameters.security
+
 from margarine.blend import information
 from margarine.parameters import Parameters
 from margarine.communication import get_channel
