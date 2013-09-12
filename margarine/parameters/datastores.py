@@ -23,15 +23,15 @@ Parameters('datastore', parameters = [
 
 # TODO Make this more consistent with the rest of the parameters.
 Parameters('pyrax', parameters = [
-    { # --pyrax-configuration=FILE; FILE ← CONFIGURATION_DIRECTORY/pyrax.ini
-        'options': [ '--configuration' ],
+    { # --pyrax-credentials-file=FILE; FILE ← CONFIGURATION_DIRECTORY/pyrax.ini
+        'options': [ '--credentials-file' ],
         'default': os.path.join(CONFIGURATION_DIRECTORY, 'pyrax.ini'),
         'help': \
                 'The configuration file containing the pyrax credentials ' \
                 'used by %(prog)s.  Default: %(default)s.',
         },
-    { # --pyrax-type=TYPE; TYPE ← rackspace
-        'options': [ '--type' ],
+    { # --pyrax-identity-type=TYPE; TYPE ← rackspace
+        'options': [ '--identity-type' ],
         'default': 'rackspace',
         'help': \
                 'The identity type for pyrax.  This needs to be set outside ' \
