@@ -25,27 +25,6 @@ from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
 
-Parameters("queue", parameters = [
-    { # --queue-url=URL; URL ← amqp://guest:guest@localhost
-        "options": [ "--url" ],
-        "default": "amqp://guest:guest@localhost",
-        "help": \
-                "The URL endpoint of the intra-service communication " \
-                "mechanism.  This can be a socket (the default) or an AMQP " \
-                "endpoint or anything between that's supported.",
-        },
-    { # --queue-wait=T; T ← 5
-        "options": [ "--wait" ],
-        "default": 5,
-        "type": int,
-        "help": \
-                "The number of seconds to wait until attempting another " \
-                "connection to the queue server.  This application " \
-                "continually retries its connection every %(metavar)s " \
-                "seconds.",
-        },
-    ])
-
 CONNECTION_BROKER = None
 
 def get_channel():
@@ -95,23 +74,6 @@ def get_channel():
 
     return CONNECTION_BROKER.channel()
 
-Parameters("email", parameters = [
-    { # --email-url=URL; URL ← smtp://localhost
-        "options": [ "--url" ],
-        "default": "smtp://localhost",
-        "help": \
-                "The URL endpoint of the email relay server used by the " \
-                "node.",
-        },
-    { # --email-from=EMAIL; EMAIL ← noreply@HOSTNAME
-        "options": [ "--from" ],
-        "default": "noreply@" + socket.gethostname(), # TODO Parameters()["server.name"],
-        "help": \
-                "The email address used as the FROM address on all " \
-                "generated emails.",
-        },
-    ])
-
 def send_user_email(user, verification):
     """Send an email for user sign up or another action.
 
@@ -155,7 +117,7 @@ def send_user_email(user, verification):
     uri = URI(Parameters()["email.url"])
 
     logger.info("Connecting to SMTP Server.")
-    
+
     _ = smtplib.SMTP(uri.host, uri.port)
 
     if uri.username is not None:
@@ -165,4 +127,4 @@ def send_user_email(user, verification):
     _.quit()
 
     logger.info("Successfully sent email!")
-    
+
