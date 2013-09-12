@@ -108,8 +108,8 @@ def get_container(container):
 
     """
 
-    pyrax.settings.set('identity_type', Parameters()["pyrax.type"])
+    pyrax.settings.set('identity_type', Parameters()["pyrax.identity_type"])
 
-    pyrax.set_credential_file(Parameters()["pyrax.configuration"])
+    pyrax.set_credential_file(Parameters()["pyrax.credentials_file"])
 
     return pyrax.cloudfiles.create_container(container)
