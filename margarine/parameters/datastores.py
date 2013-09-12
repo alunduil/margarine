@@ -5,6 +5,8 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import os
+
 from margarine.parameters import Parameters
 from margarine.paraemters.configuration import DIRECTORY as CONFIGURATION_DIRECTORY
 
@@ -13,7 +15,7 @@ Parameters('datastore', parameters = [
         'options': [ '--url' ],
         'default': 'mongodb://localhost/test',
         'help': \
-                'The URL endpoint of the data store mechanism.  This ' \ 
+                'The URL endpoint of the data store mechanism.  This ' \
                 'defaults to a mongo instance running on the localhost but ' \
                 'can also be another datastore such as: couchdb, neo4j, &c. ',
         }
