@@ -5,6 +5,10 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import uuid
+
+from margarine.parameters import Parameters
+
 Parameters('security', parameters = [
     { # --api-uuid=UUID; UUID ← uuid.uuid4()
         'options': [ '--opaque' ],
