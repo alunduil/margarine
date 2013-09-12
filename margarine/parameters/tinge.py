@@ -5,6 +5,8 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import socket
+
 from margarine.parameters import Parameters
 
 Parameters('tinge', parameters = [
@@ -15,6 +17,6 @@ Parameters('tinge', parameters = [
                 'The URL that tinge will be configured to run behind.  This ' \
                 'is used to set the Access-Control-Allow-Origin header that ' \
                 'lets browsers know that tinge on a different domain can ' \
-                'use the data provided by blend.,
+                'use the data provided by blend.',
         },
     ])
