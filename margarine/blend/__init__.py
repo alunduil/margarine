@@ -130,36 +130,6 @@ from margarine.blend.tag import TAG
 
 logger = logging.getLogger(__name__)
 
-Parameters("flask", parameters = [
-    { # --flask-host=HOST; HOST ← "127.0.0.1"
-        "options": [ "--host" ],
-        "default": "127.0.0.1",
-        "help": "The IP to bind the API daemon; default: %(default)s.",
-        },
-    { # --flask-port=PORT; PORT ← "5050"
-        "options": [ "--port" ],
-        "type": int,
-        "default": 5050,
-        "help": "The port to bind the API daemon; default: %(default)s.",
-        },
-    { # --flask-debug
-        "options": [ "--debug" ],
-        "action": "store_true",
-        "default": False,
-        "help": "Enable debugging of the flask application.",
-        },
-    ])
-
-Parameters("server", parameters = [
-    { # --server-name=NAME; NAME ← HOSTNAME
-        "options": [ "--name" ],
-        "default": socket.gethostname(),
-        "help": \
-                "The base name used in URL generation.  This defaults to the" \
-                "host's FQDN.",
-        },
-    ])
-
 BLEND = Flask(__name__)
 
 def _prefix(name):
@@ -191,9 +161,6 @@ BLEND.error_handler_spec[None][401] = http_401_handler
 
 logger.debug("error_handlers: %s", BLEND.error_handler_spec)
 
-# TODO Find out why this might be necessary.
-#BLEND.config["SERVER_NAME"] = Parameters()["server.name"]
-
 logger.debug("url map: %s", BLEND.url_map)
 
 def _extract_flask_parameters(parameters):
@@ -218,7 +185,7 @@ def _extract_flask_parameters(parameters):
 
     if "flask.port" in parameters:
         flask_parameters["port"] = parameters["flask.port"]
-    
+
     if "flask.debug" in parameters:
         flask_parameters["debug"] = parameters["flask.debug"]
 
@@ -226,4 +193,3 @@ def _extract_flask_parameters(parameters):
 
 def main():
     BLEND.run(**_extract_flask_parameters(Parameters().parse()))
-
