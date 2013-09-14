@@ -1,5 +1,0 @@
-Margarine Modules
-=================
-
-.. automodule:: margarine
-
