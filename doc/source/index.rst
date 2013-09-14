@@ -12,6 +12,7 @@ Contents:
     :maxdepth: 2
 
     software_testing
+    margarine_modules
 
 Indices and tables
 ==================

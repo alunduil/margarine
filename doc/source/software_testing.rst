@@ -1,5 +1,5 @@
 Software Testing
-----------------
+================
 
 Contents:
 
@@ -10,11 +10,4 @@ Contents:
     software_testing/testing_methodologies
     software_testing/python_testing_frameworks
     software_testing/testing_margarine
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
