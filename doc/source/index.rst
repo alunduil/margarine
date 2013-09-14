@@ -9,9 +9,9 @@ Welcome to Margarine's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-
+    software_testing
 
 Indices and tables
 ==================
