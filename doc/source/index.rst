@@ -11,7 +11,7 @@ Contents
     :hidden:
     :glob:
 
-    margarine_modules/*
+    modules/*
 
 #######
 Indexes
