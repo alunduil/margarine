@@ -10,7 +10,6 @@ Contents
 .. Automatic inclusion of margarine components into the documentation structure
 
 .. automodule:: margarine
-.. automodule:: margarine.*
 
 #######
 Indexes
