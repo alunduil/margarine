@@ -1,8 +1,8 @@
 Software Testing Methodologies
 ==============================
 
-..toctree::
-    :maxdepth:
+.. toctree::
+    :maxdepth: 2
 
     testing_methodologies/unit_testing
     testing_methodologies/integration_testing
