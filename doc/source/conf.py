@@ -14,6 +14,31 @@
 
 import sys, os
 
+def find_margarine_directory():
+    '''Search the current directory and it's parents for the margarine module.
+
+    If we are running the documentation build from a child directory of the
+    margarine directory, we should use the margarine module from the top level
+    margarine directory.  Thus, this function returns that path or None if it's
+    not found.
+
+    '''
+
+    margarine_directory = os.getcwd()
+
+    while not os.isdir(os.path.join(margarine_directory), 'margarine'):
+        margarine_directory, previous_directory = os.path.split(margarine_directory)
+
+        if not len(previous_directory):
+            return None
+
+    return margarine_directory
+
+margarine_directory = find_margarine_directory()
+
+if margarine_directory is not None:
+    sys.path.append(margarine_directory)
+
 from margarine import information
 
 # If extensions (or modules to document with autodoc) are in another directory,
