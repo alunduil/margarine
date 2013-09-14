@@ -7,9 +7,11 @@ Contents
 
     testing_software
 
-.. Automatic inclusion of margarine components into the documentation structure
+.. toctree::
+    :hidden:
+    :glob:
 
-.. automodule:: margarine
+    margarine_modules/*
 
 #######
 Indexes
