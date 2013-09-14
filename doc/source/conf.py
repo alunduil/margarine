@@ -26,7 +26,7 @@ def find_margarine_directory():
 
     margarine_directory = os.getcwd()
 
-    while not os.isdir(os.path.join(margarine_directory), 'margarine'):
+    while not os.path.isdir(os.path.join(margarine_directory, 'margarine')):
         margarine_directory, previous_directory = os.path.split(margarine_directory)
 
         if not len(previous_directory):
