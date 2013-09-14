@@ -1,18 +1,18 @@
 Software Testing Strategies
-'''''''''''''''''''''''''''
+---------------------------
 
 Contents:
 
 .. toctree::
     :maxdepth: 2
 
-    software_testing/testing_strategies/white_box
-    software_testing/testing_strategies/black_box
-    software_testing/testing_strategies/automated
-    software_testing/testing_strategies/manual
+    testing_strategies/white_box
+    testing_strategies/black_box
+    testing_strategies/automated
+    testing_strategies/manual
 
 Breakdown
-~~~~~~~~~
+'''''''''
 
 There are two orthogonal strategies for testing:
 
@@ -26,11 +26,4 @@ There are two orthogonal strategies for testing:
 +-----------+-----------+--------+
 | Black Box |           |        |
 +-----------+-----------+--------+
-
-Indices and tables
-''''''''''''''''''
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
