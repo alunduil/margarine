@@ -1,3 +1,3 @@
-.. automodule:: margarine.tinge
+.. automodule:: test_margarine
     :members:
     :undoc-members:
