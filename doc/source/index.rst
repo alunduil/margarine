@@ -1,11 +1,26 @@
-########
 Contents
-########
+========
 
 .. toctree::
     :maxdepth: 2
 
-    testing_software
+    introduction
+
+    epigraph
+
+    prologue
+
+    part_1_developing_cloud_applications
+    part_2_operating_cloud_applications
+    part_3_everything_else_cloud_applications
+
+    afterword
+
+    appendix
+
+    glossary
+
+    bibliography
 
 .. toctree::
     :hidden:
@@ -13,9 +28,8 @@ Contents
 
     modules/*
 
-#######
-Indexes
-#######
+Index
+=====
 
 * :ref:`modindex`
 * :ref:`genindex`
