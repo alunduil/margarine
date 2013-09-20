@@ -18,3 +18,4 @@ Part 1—Developing Cloud Applications
     part_1_developing_cloud_applications/continuous_integration
 
 .. TODO Datastores references Fowler's book.
+.. TODO Draw architecture components.  http://sphinx-doc.org/ext/graphviz.html
