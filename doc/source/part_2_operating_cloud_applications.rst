@@ -13,4 +13,6 @@ Part 2—Operating Cloud Applications
     part_2_operating_cloud_applications/saltstack
     part_2_operating_cloud_applications/ansible
     part_2_operating_cloud_applications/how_to_maintain_a_cloud_application
+    part_2_operating_cloud_applications/continuous_delivery
+    part_2_operating_cloud_applications/continuous_deployment
 
