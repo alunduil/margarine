@@ -23,9 +23,6 @@ Contents
 
     bibliography
 
-.. TODO Datastores references Fowler's book.
-.. TODO Big Data?  Why not Big Data for Margarine?
-
 .. toctree::
     :hidden:
     :glob:
