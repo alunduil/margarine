@@ -5,12 +5,13 @@ Prologue
    story that ties into the story we're telling and other miscellaneous but
    relevant information.
 
-   I see this as the place for cloud history and what is cloud discussions to
-   occur.t
+Margarine is a demonstration application designed to teach cloud application
+design, development, and operation.  To this end, margarine is a fully
+functional distributed application.
 
-.. toctree::
-    :maxdepth: 2
+The feature set of margarine is documented in a few locations and the most
+important links for margarine are the following:
 
-    the_history_of_cloud_computing
-    how_cloud_computing_changes_infrastructure
+* https://github.com/raxsavvy/margarine
+* https://trello.com/b/kYylJGe9/margarine
 
