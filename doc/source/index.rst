@@ -10,9 +10,12 @@ Contents
 
     prologue
 
+    part_0_cloud_fundamentals
     part_1_developing_cloud_applications
     part_2_operating_cloud_applications
     part_3_everything_else_cloud_applications
+
+    datastores
 
     afterword
 
@@ -21,6 +24,9 @@ Contents
     glossary
 
     bibliography
+
+.. TODO Datastores references Fowler's book.
+.. TODO Big Data?  Why not Big Data for Margarine?
 
 .. toctree::
     :hidden:
