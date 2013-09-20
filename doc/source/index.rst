@@ -15,8 +15,6 @@ Contents
     part_2_operating_cloud_applications
     part_3_everything_else_cloud_applications
 
-    datastores
-
     afterword
 
     appendix
