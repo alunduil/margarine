@@ -17,6 +17,7 @@ Margarine URLs
 
 * https://github.com/raxsavvy/margarine
 * https://trello.com/b/kYylJGe9/margarine
+* irc://irc.freenode.net#margarine
 
 Margarine Components
 --------------------
