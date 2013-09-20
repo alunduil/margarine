@@ -130,7 +130,7 @@ html_theme = 'agogo'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = 'Cloud Application Architect\'s Handbook'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -272,7 +272,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = 'Margarine'
+epub_title = 'Cloud Applications Architect\'s Handbook'
 epub_author = 'Alex Brandt'
 epub_publisher = 'Alex Brandt'
 epub_copyright = '2013, Alex Brandt'
