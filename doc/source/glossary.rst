@@ -9,7 +9,7 @@ Glossary
                  rates.
     :api:        application programming interface—specifies how some software
                  components should interact with each other. In practice, an
-                 API is often a library that includes specifications for 
+                 API is often a library that includes specifications for
                  routines, data structures, object classes, and variables.
 
                  An API specification can take many forms, including an
@@ -25,3 +25,71 @@ Glossary
                  application programming interface. API keys are used to track
                  how the API is being used in order to prevent malicious use or
                  abuse of the terms of service.
+
+.. Other potential words for the glossary:
+
+    atom feed
+    authentication
+    authorization
+    bastion
+    binding
+    brewer's theorem
+    openstack cell
+    chef
+    cinder
+    devops
+    dom0
+    domu
+    don't repeat yourself
+    endpoint
+    fisma compliance—federal information security management act
+    openstack flavor
+    openstack glance
+    git
+    gerrit
+    hippa compliance—health insurance portability and accountability
+    hypervisor
+    iaas
+    instance
+    image
+    jenkins
+    keystone
+    libcloud
+    libvirt
+    lunr
+    message queue
+    openstack nova
+    novaclient
+    open flow
+    open vswitch
+    orchestration layer
+    paravirtualization
+    paas
+    pci compliant
+    puppet
+    pv-ops
+    pubsub
+    openstack neutron
+    qemu
+    rabbitmq
+    recovery oriented computing
+    restful api
+    role
+    saas
+    sdk
+    server
+    slice
+    swift
+    service
+    service catalog
+    service registry
+    soap api
+    tenant
+    token
+    trunk
+    trunk gating
+    technical debt
+    unit
+    xapi
+    xen
+    

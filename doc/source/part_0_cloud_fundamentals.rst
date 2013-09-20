@@ -15,4 +15,7 @@ Part 0—Cloud Fundamentals
     part_0_cloud_fundamentals/what_is_cloud
     part_0_cloud_fundamentals/a_new_infrastructure
     part_0_cloud_fundamentals/high_availability_in_the_cloud
+    part_0_cloud_fundamentals/iaas
+    part_0_cloud_fundamentals/paas
+    part_0_cloud_fundamentals/saas
 
