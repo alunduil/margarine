@@ -2,6 +2,9 @@ Cloud Application Architect's Handbook
 	Introduction
 		: The purpose and goal of this documentation
 	Epigraph
+		: A phrase, quotation, or poem at the beginning of a document or
+		: component.  Typically, a preface, summary, counter-example, or link to a
+		: larger work or literary canon.
 	Prologue
 		: Opening story that sets the stage and gives background.  Often an
 		: earlier story that ties into the story we're telling and other
@@ -183,6 +186,9 @@ Cloud Application Architect's Handbook
 		: History of Savvy and the birth of Margarine?  Also, thanks those most
 		: influential in margarine's and this document's development?
 	Appendix
+		Margarine Overview
+			Margarine Development
+			Margarine Releases
 		Modules
 			margarine
 			test_margarine
