@@ -55,7 +55,9 @@
 			[_] Cycle Timing
 			[_] Adapt Saltstack Release Process
 		[_] Margarine URLs
-		[_] Margarine Components
+		[_] % Margarine Components
+			[_] Walkthrough of each?
+			[_] Major Stories?
 		[_] Margarine Coding Style
 	[_] 0% Part 0—Cloud Fundamentals
 		[_] 0% What is Cloud?
@@ -206,8 +208,14 @@
 			[_] Cloud is Agile
 		[_] 0% Use Cases or Stories
 			[_] Feature
-			[_] Story
+			[_] % Stories
+				[_] Sign Up (Create New User)
+				[_] Submit New Article
+				[_] Subscribe to Article
+				[_] View an Article
 			[_] Test Case(s)
+			[_] Demos
+			[_] Walkthroughs
 		[_] 0% Using Pre-built Services and Libraries
 			[_] APIs
 			[_] Libraries
@@ -244,9 +252,14 @@
 					[_] pyrax
 			[_] 0% Listing Items
 				[_] atom feed
-			[_] RESTful API
-			[_] SOAP API
-			[_] Margarine's API
+			[_] % RESTful API
+				[_] Four Verbs
+				[_] RESTful Web Services from O'Reilly
+				[_] Dissertation on HTTP
+			[_] % SOAP API
+				[_] WSDL
+			[_] % Margarine's API
+				[_] cURL examples
 		[_] 0% Big Data
 			[_] 0% Software
 				[_] Hadoop
