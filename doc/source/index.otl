@@ -1,39 +1,63 @@
-[_] 2% Cloud Application Architect's Handbook
+[_] 0% Cloud Application Architect's Handbook
+	: Checkboxes being checked indicates that the content has been developed and
+	: inserted into margarine's documentation.
 	[_] 0% Introduction
 		: The purpose and goal of this documentation
+		[_] Cloud Application Architect's Handbook
+		[_] Definitive guide to margarine
 	[_] Epigraph
 		: A phrase, quotation, or poem at the beginning of a document or
 		: component.  Typically, a preface, summary, counter-example, or link to a
 		: larger work or literary canon.
-	[_] 10% Prologue
+	[_] 0% Prologue
 		: Opening story that sets the stage and gives background.  Often an
 		: earlier story that ties into the story we're telling and other
 		: miscellaneous but relevant information.
-		[_] Margarine Overview
-		[_] 40% How to Contribute to Margarine
-			[_] % Communication
-				[_] % Mailing list: margarine-dev@googlegroups.com
+		[_] 0% Margarine Overview
+			[_] Margarine is open to everyone's contributions.
+			[_] 0% Margarine is derived from the following:
+				[_] Readability
+				[_] Delicious
+		[_] 0% How to Contribute to Margarine
+			[_] 0% Communication
+				[_] 0% Mailing list: margarine-dev@googlegroups.com
 					[_] Subscribe via margarine-dev+subscribe@googlegroups.com
-				[_] IRC: irc://irc.freenode.net#margarine
-			[_] 40% Basics
-				[X] Create a Github Account
-				[X] Fork margarine (https://github.com/raxsavvy/margarine)
+				[_] 0% IRC: irc://irc.freenode.net#margarine
+					[_] Something like http://wiki.openstack.org/UsingIRC
+					[_] Sign up for freenode at http://webchat.freenode.net
+			[_] 0% Basics
+				[_] Create a Github Account
+				[_] Fork margarine (https://github.com/raxsavvy/margarine)
 				[_] Clone margarine `git clone ${URI}`
 				[_] Add 'upstream' remote to your repository: `git remote add upstream https://github.com/raxsavvy/margarine.git`
-			[_] % Work Process
-				[_] % Branching Strategy
-					[_] % Issues
+			[_] 0% Work Process
+				[_] 0% Branching Strategy
+					[_] 0% Issues
 						: When working an issue the following process should be followed:
 						[_] Pick an issue from https://github.com/raxsavvy/margarine/issues
 						[_] Create a branch named issues/N, where N is the number for the issue chosen
-						[_] % Make appropriate code changes including the following concerns:
+						[_] 0% Make appropriate code changes including the following concerns:
 							[_] Coding Style (see margarine coding style)
 							[_] Implement any appropriate tests (TDD-ISH)
 						[_] Submit pull request for merge into master
 						[_] If changes to pull request are required, make them in the created branch
+					[_] 0% Features
+						: Features that are in trello follow the following process during
+						: development:
+						[_] Pick a card from https://trello.com/b/kYylJGe9/margarine
+						[_] Create a branch named features/category/name where category is a descriptive group of features (i.e. frontend) and name is a descriptive name for the feature (i.e. signin)
+						[_] 0% Make appropriate code changes including the following concerns:
+							[_] Coding Style (see margarine coding style)
+							[_] Implement any appropriate tests (TDD-ISH)
+						[_] Submit pull request for merge into master
+						[_] If changes to pull request are required, make them in the created branch
+		[_] 0% Margarine Release Process
+			[_] Cycle Timing
+			[_] Adapt Saltstack Release Process
 		[_] Margarine URLs
 		[_] Margarine Components
-	[_] 2% Part 0—Cloud Fundamentals
+		[_] Margarine Coding Style
+	[_] 0% Part 0—Cloud Fundamentals
 		[_] 0% What is Cloud?
 			[_] 0% A New Infrastructure
 				[_] High Availability Changes
@@ -82,7 +106,7 @@
 					[_] Community Cloud
 					[_] Public Cloud
 					[_] Hybrid Cloud
-		[_] 7% Virtualization
+		[_] 0% Virtualization
 			[_] What is Virtualization?
 				: Virtualization is the process by which computational resources are
 				: allocated to tenants such that they can be reassigned as necessary.
@@ -91,27 +115,29 @@
 			[_] 0% Virtual Machine
 				[_] Instance
 				[_] Guest Image
-			[_] 21% Hypervisor
+				[_] Paravirtualization
+				[_] Hardware Virtualization
+			[_] 0% Hypervisor
 				[_] 0% Management Interfaces
 					[_] libvirt
 					[_] xapi
-				[_] 38% Xen
-					[X] 100% Commercial Backing
-						[X] Citrix
+				[_] 0% Xen
+					[_] 0% Commercial Backing
+						[_] Citrix
 					[_] 0% Architecture
 						[_] Dom0
 						[_] DomU
 						[_] Hypercalls
-					[_] 16% Networking
+					[_] 0% Networking
 						[_] Management: xen-vnif
-						[_] 33% Networking Stack
+						[_] 0% Networking Stack
 							[_] What is this networking stack?
-							[X] DVSC (Distributed Virtual Switch Controller)
+							[_] DVSC (Distributed Virtual Switch Controller)
 							[_] Open vSwitch
 				[_] KVM (Mention QEMU?)
 					[_] History including QEMU roots
-					[X] 100% Commercial Backing
-						[X] Red Hat
+					[_] 0% Commercial Backing
+						[_] Red Hat
 					[_] 0% Architecture
 						[_] virtio
 					[_] 0% Networking
@@ -136,11 +162,13 @@
 					[_] Lunr
 					[_] Nova
 					[_] Neutron
+					[_] Swift
 				[_] 0% Command Line Tools
 					[_] novaclient
 	[_] 0% Part 1—Developing Cloud Applications
 		[_] 0% How to Design a Cloud Application
 		[_] 0% How to Implement a Cloud Application
+		[_] Goal: Available Application
 		[_] 0% How to Test a Cloud Application
 			[_] 0% Software Testing
 				[_] 0% Strategies
@@ -158,15 +186,37 @@
 			[_] 0% Continuous Integration
 				[_] 0% Software
 					[_] Jenkins
-		[_] Handling Failure
-		[_] Modularize
+		[_] 0% Handling Failure
+			[_] Fallback Handling
+			[_] Fail Silently
+			[_] Fail Fast
+		[_] 0% Modularize
+			[_] Dependency Complexity
+			[_] Service Oriented Architecture
+			[_] Service Registry and Directory
+			[_] 0% Decoupling
+				[_] Caches to Decouple
+				[_] Asynchronous Programming
+				[_] Message Queues
+				[_] 0% Factories to Decouple
+					[_] Testable Javascript
 		[_] Distribute and Parallelize
-		[_] Agile Methodologies
+		[_] % Agile Methodologies
+			[_] Quick to React
+			[_] Cloud is Agile
+		[_] 0% Use Cases or Stories
+			[_] Feature
+			[_] Story
+			[_] Test Case(s)
 		[_] 0% Using Pre-built Services and Libraries
 			[_] APIs
 			[_] Libraries
+			[_] % Provider Partners
+				[_] Rackspace Cloud Tools Marketplace
 		[_] 0% Storing Code
 			[_] git
+			[_] github
+			[_] subversion
 		[_] 0% Best Practices
 			[_] DRY—don't repeat yourself
 		[_] 0% Design Patterns
@@ -182,11 +232,21 @@
 				[_] REST
 		[_] 0% Datastores
 			[_] How to Pick a Datastore
-			[_] brewer's theorem
+			[_] 0% brewer's theorem
+				: Two of Three of the following properties simultaneously for a
+				: distributed data driven application.
+				[_] Consistency
+				[_] Availability
+				[_] Partition Tolerance
 		[_] 0% API
-			[_] Bindings
+			[_] 0% Bindings
+				[_] 0% SDKs
+					[_] pyrax
 			[_] 0% Listing Items
 				[_] atom feed
+			[_] RESTful API
+			[_] SOAP API
+			[_] Margarine's API
 		[_] 0% Big Data
 			[_] 0% Software
 				[_] Hadoop
@@ -198,7 +258,10 @@
 				[_] 0% authentication
 					[_] API Key
 				[_] authorization
+			[_] Accessibility
 		[_] 0% Quality
+			[_] 0% Metrics—Measure Everything
+				[_] Monitoring is QA
 			[_] Gerrit
 			[_] Jenkins
 	[_] 0% Part 2—Operating Cloud Applications
@@ -208,18 +271,42 @@
 		[_] Continuous Delivery
 		[_] Continuous Deployment
 		[_] AB Testing
+		[_] Data Driven Decision Making
+		[_] 0% How Cloud Changes Infrastructure
+			[_] Include Diagrams of Architectures
+			[_] Pets vs Cattle
+			[_] 0% Hardware Fails
+				[_] Mean Time Between Failure
 		[_] 0% Security
 			[_] bastion
+			[_] Roles
+			[_] Every Layer
+			[_] % Responsibilities
+				[_] % Consumer of Cloud
+					[_] Flavor
+					[_] OS Security
+					[_] Application Security
+					[_] Account Management
+				[_] % Provider of Cloud
+					[_] Physical Security
+					[_] Network Infrastructure
+					[_] Virtualization Infrastructure
 		[_] 0% Infrastructure to be Controlled
+			[_] 0% Programming the Infrastructure
+				[_] Version Controlling Infrastructure
 			[_] Data Plane
 			[_] Control Plane
-			[_] Software Defined Networks
+			[_] 0% Software Defined Networks
+				[_] Open Flow
+				[_] Open vSwitch
 		[_] 0% Configuration Management
 			[_] chef
 			[_] puppet
 			[_] saltstack
 			[_] ansible
 		[_] 0% Quality
+			[_] 0% Testing Infrastructure
+				[_] Similar to Software Testing
 			[_] Jenkins
 		[_] 0% Cloud Interaction
 			[_] 0% Bindings
@@ -227,6 +314,7 @@
 		[_] 0% Scaling in the Cloud
 			[_] Vertical Scaling
 			[_] Horizontal Scaling
+			[_] Cost Analysis of Vertical vs Horizontal Scaling
 	[_] 0% Part 3—Everything Else Cloud Applications
 		[_] DevOps
 	[_] Afterword
@@ -246,30 +334,21 @@
 	[_] 0% Glossary
 		[_] fisma compliance—federal information security management act
 		[_] hippa compliance—health insurance portability and accountability
-		[_] open flow
-		[_] open vswitch
-		[_] paravirtualization
 		[_] pci compliant
 		[_] pv-ops
 		[_] recovery oriented computing
-		[_] restful api
-		[_] role
-		[_] saas
-		[_] sdk
 		[_] server
-		[_] slice
-		[_] swift
 		[_] service
 		[_] service catalog
 		[_] service registry
-		[_] soap api
+		[_] slice
+		[_] technical debt
 		[_] tenant
 		[_] token
 		[_] trunk
 		[_] trunk gating
-		[_] technical debt
 		[_] unit
-	[_] 12% Bibliography
+	[_] 0% Bibliography
 		[_] http://devops.rackspace.com/
 		[_] http://www.rackspace.com/knowledge_center/article/rackspace-open-cloud-reference-architecture
 		[_] http://www.rackspace.com/knowledge_center/
@@ -277,4 +356,5 @@
 		[_] https://github.com/rackspace
 		[_] http://www.slideshare.net/Rackspace
 		[_] http://wiki.openstack.org/IRC
-		[X] NoSQL Distilled by Martin Fowler
+		[_] NoSQL Distilled by Martin Fowler
+		[_] Continuous Delivery from Addison Wesley
