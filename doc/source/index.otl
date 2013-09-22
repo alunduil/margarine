@@ -157,11 +157,12 @@
 			[_] 0% Openstack
 				[_] 0% Projects
 					[_] Cells
-					[_] Cinder
+					[_] % Cinder
+						[_] % Plugins
+							[_] Lunr
 					[_] Flavor
 					[_] Glance
 					[_] Keystone
-					[_] Lunr
 					[_] Nova
 					[_] Neutron
 					[_] Swift
@@ -249,13 +250,22 @@
 		[_] 0% API
 			[_] 0% Bindings
 				[_] 0% SDKs
-					[_] pyrax
+					[_] % Rackspace Cloud
+						[_] pyrax
+						[_] fog.io
+						[_] jclouds
+						[_] Supported
+				[_] Margarine's Bindiings
 			[_] 0% Listing Items
 				[_] atom feed
 			[_] % RESTful API
 				[_] Four Verbs
 				[_] RESTful Web Services from O'Reilly
 				[_] Dissertation on HTTP
+				[_] Scalable
+				[_] Stateless
+				[_] Independence of Components
+				[_] Cacheable
 			[_] % SOAP API
 				[_] WSDL
 			[_] % Margarine's API
