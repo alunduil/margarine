@@ -171,7 +171,15 @@
 	[_] 0% Part 1—Developing Cloud Applications
 		[_] 0% How to Design a Cloud Application
 		[_] 0% How to Implement a Cloud Application
+			[_] Margarine Architecture
 		[_] Goal: Available Application
+		[_] % Discovering Requirements
+			: I'm inclined to remove this exact section but keep in the idea of
+			: requirements gathering.
+			[_] What need does the software fill?
+			[_] What business gaps are solved by the software?
+			[_] What data can be shared with whom?
+			[_] Proof of Concept
 		[_] 0% How to Test a Cloud Application
 			[_] 0% Software Testing
 				[_] 0% Strategies
@@ -205,8 +213,11 @@
 					[_] Testable Javascript
 		[_] Distribute and Parallelize
 		[_] % Agile Methodologies
+			[_] Measure Velocity
 			[_] Quick to React
 			[_] Cloud is Agile
+			[_] Quick Change
+			[_] Innovation
 		[_] 0% Use Cases or Stories
 			[_] Feature
 			[_] % Stories
@@ -223,22 +234,39 @@
 			[_] % Provider Partners
 				[_] Rackspace Cloud Tools Marketplace
 		[_] 0% Storing Code
-			[_] git
-			[_] github
+			[_] % git
+				[_] % Background
+					[_] Written by Linux
+					[_] % Written to be
+						[_] Fast
+						[_] Simple
+						[_] Distributed
+						[_] Assist Non-Linear Development
+						[_] Large Projects
+					[_] Born From Falling Out With Bitkeeper
+					[_] try.github.io
+			[_] % github
+				[_] Found in 2008
+				[_] Social Coding
+				[_] Web Based Service for git Repositories
 			[_] subversion
 		[_] 0% Best Practices
-			[_] DRY—don't repeat yourself
+			[_] % DRY—don't repeat yourself
+				[_] Consistency of URLs (tie to REST)
+				[_] Store Single Copies of Static Content
 		[_] 0% Design Patterns
 			[_] 0% Publisher Subscriber or Consumer Producer
 				[_] Gang of Four
 		[_] 0% Message Queues
 			[_] 0% Software
 				[_] RabbitMQ
-				[_] Iron.io
+				[_] IronMQ
+				[_] ActiveMQ
+				[_] ZeroMQ
 			[_] 0% Protocols
 				[_] Stomp
 				[_] AMQP
-				[_] REST
+				[_] Beanstalkd
 		[_] 0% Datastores
 			[_] How to Pick a Datastore
 			[_] 0% brewer's theorem
@@ -246,22 +274,53 @@
 				: distributed data driven application.
 				[_] Consistency
 				[_] Availability
-				[_] Partition Tolerance
+				[_] % Partition Tolerance
+					[_] Partitions
+						: Divided into parts.  In the abstract, this requires a bit more
+						: precision.  A partition of a collection of items requires that
+						: all of the parts have no elements in common.
+			[_] % Eventual Consistency
+				[_] N,W,R Relationships
 		[_] 0% API
+			: API, applicaiton programming interface, is a protocol intended to be
+			: used as an interface by software components to communicate with one
+			: another.
 			[_] 0% Bindings
+				: Wrapper libraries for remote invocations on other systems.  In
+				: classic use bidnings are the things that hold something together.
+				: In computing this has been adapted to mean holding one set of code
+				: or application together with another.  The other being a service or
+				: library that provides functionality desirable for the application in
+				: development.
 				[_] 0% SDKs
 					[_] % Rackspace Cloud
-						[_] pyrax
-						[_] fog.io
-						[_] jclouds
-						[_] Supported
+						[_] % Official
+							[_] pyrax
+							[_] fog.io
+							[_] jclouds
+							[_] % Supported
+								[_] sdk-support@rackspace.com
+								[_] http://developer.rackspace.com
+						[_] % Unofficial
+							[_] libcloud
+							[_] http://github.com/rackerlabs
 				[_] Margarine's Bindiings
 			[_] 0% Listing Items
 				[_] atom feed
 			[_] % RESTful API
-				[_] Four Verbs
+				[_] % Components
+					[_] Base URI
+					[_] Media Type (MIME Type)
+					[_] % Set of Operations (Four Verbs)
+						[_] GET
+						[_] PUT
+						[_] POST
+						[_] DELETE
+						[_] TRACE
+						[_] HEAD
 				[_] RESTful Web Services from O'Reilly
-				[_] Dissertation on HTTP
+				[_] % Dissertation on HTTP
+					[_] http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
 				[_] Scalable
 				[_] Stateless
 				[_] Independence of Components
@@ -277,14 +336,19 @@
 				[_] CouchDB
 		[_] endpoint
 		[_] 0% Security
+			[_] Check Every Interface
 			[_] 0% AAA
 				[_] 0% authentication
 					[_] API Key
 				[_] authorization
 			[_] Accessibility
+			[_] User Trust
 		[_] 0% Quality
 			[_] 0% Metrics—Measure Everything
 				[_] Monitoring is QA
+				[_] % Measure Important things
+					[_] Dollars per Request
+					[_] Maximize Important Aspects
 			[_] Gerrit
 			[_] Jenkins
 	[_] 0% Part 2—Operating Cloud Applications
@@ -295,9 +359,17 @@
 		[_] Continuous Deployment
 		[_] AB Testing
 		[_] Data Driven Decision Making
+		[_] % Infrastructure decisions
+			[_] % Workloads
+				[_] Characterization
+				[_] On and Off or Stepped Up and Down
+				[_] Fast Growth
+				[_] Variable or Continuous Up and Down
+				[_] Consistent
 		[_] 0% How Cloud Changes Infrastructure
 			[_] Include Diagrams of Architectures
 			[_] Pets vs Cattle
+			[_] Continuous Growth vs Stepwise Growth
 			[_] 0% Hardware Fails
 				[_] Mean Time Between Failure
 		[_] 0% Security
@@ -317,12 +389,16 @@
 		[_] 0% Infrastructure to be Controlled
 			[_] 0% Programming the Infrastructure
 				[_] Version Controlling Infrastructure
+			[_] % Software Development Practices
+				[_] Agile Methodologies
+				[_] Storing Infrastructure Code
 			[_] Data Plane
 			[_] Control Plane
 			[_] 0% Software Defined Networks
 				[_] Open Flow
 				[_] Open vSwitch
 		[_] 0% Configuration Management
+			[_] Margarine Code for Configuration Management
 			[_] chef
 			[_] puppet
 			[_] saltstack
@@ -331,6 +407,7 @@
 			[_] 0% Testing Infrastructure
 				[_] Similar to Software Testing
 			[_] Jenkins
+			[_] Profiling
 		[_] 0% Cloud Interaction
 			[_] 0% Bindings
 				[_] libcloud
@@ -339,7 +416,8 @@
 			[_] Horizontal Scaling
 			[_] Cost Analysis of Vertical vs Horizontal Scaling
 	[_] 0% Part 3—Everything Else Cloud Applications
-		[_] DevOps
+		[_] % DevOps
+			[_] Align Development and Operations
 	[_] Afterword
 		: How this document came to be.  How the idea for this document was
 		: developed.  Thanks and acknowledgments to those who were helpful during
@@ -355,6 +433,9 @@
 			[_] margarine
 			[_] test_margarine
 	[_] 0% Glossary
+		[_] Command Line Interface
+			: A means of interaction with a computer program where the user issues
+			: commands to the program in the form of successive lines of text.
 		[_] fisma compliance—federal information security management act
 		[_] hippa compliance—health insurance portability and accountability
 		[_] pci compliant
