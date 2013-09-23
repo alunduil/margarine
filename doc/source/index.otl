@@ -56,6 +56,7 @@
 			[_] Adapt Saltstack Release Process
 		[_] Margarine URLs
 		[_] % Margarine Components
+			[_] Margarine Architecture
 			[_] Walkthrough of each?
 			[_] Major Stories?
 		[_] Margarine Coding Style
@@ -205,12 +206,32 @@
 			[_] Dependency Complexity
 			[_] Service Oriented Architecture
 			[_] Service Registry and Directory
+			[_] % Pipeline
+				[_] Automobile Example
+			[_] Critical Path
 			[_] 0% Decoupling
 				[_] Caches to Decouple
 				[_] Asynchronous Programming
-				[_] Message Queues
+				[_] % Message Queues
+					[_] % Communication Patterns
+						[_] 1:1
+						[_] 1:N
+						[_] 1:ALL
 				[_] 0% Factories to Decouple
 					[_] Testable Javascript
+		[_] % Parallelism
+			: invloving the simultaneous performance of operations
+			[_] MapReduce
+			[_] Deadlocks
+			[_] Resource Contention
+			[_] Speed Increases
+			[_] % Cloud infrastructure designed for parallelism
+				[_] Snowflock
+				[_] Moore's Law
+		[_] Modular plus Parallel leads to lots of small workign units—Ants
+		[_] % Frameworks
+			[_] Flask
+			[_] Django
 		[_] Distribute and Parallelize
 		[_] % Agile Methodologies
 			[_] Measure Velocity
@@ -218,6 +239,8 @@
 			[_] Cloud is Agile
 			[_] Quick Change
 			[_] Innovation
+			[_] Scrum
+			[_] Kanban
 		[_] 0% Use Cases or Stories
 			[_] Feature
 			[_] % Stories
@@ -254,9 +277,13 @@
 			[_] % DRY—don't repeat yourself
 				[_] Consistency of URLs (tie to REST)
 				[_] Store Single Copies of Static Content
+			[_] TDD—Test Driven Development
+			[_] Behaviour Driven Development
+			[_] KISS—Keep It Simple, Stupid
 		[_] 0% Design Patterns
 			[_] 0% Publisher Subscriber or Consumer Producer
 				[_] Gang of Four
+			[_] MVC—Model, View, Controller
 		[_] 0% Message Queues
 			[_] 0% Software
 				[_] RabbitMQ
@@ -269,6 +296,40 @@
 				[_] Beanstalkd
 		[_] 0% Datastores
 			[_] How to Pick a Datastore
+			[_] % Distributing Data
+				[_] Sharding
+				[_] Replication
+			[_] % Data Density
+				[_] Sparse
+				[_] Tightly Packed
+			[_] % Types of Datastores
+				[_] % NoSQL
+					[_] Fowler's Background Story
+					[_] % Common Characteristics
+						[_] Non-relational
+						[_] Distributed
+						[_] Open-Source
+						[_] Horizontally Scalable
+						[_] Schema-less
+				[_] % Relational
+					[_] MySQL
+					[_] Postgresql
+					[_] Oracle
+					[_] MSSQL
+				[_] % Key-Value
+					[_] Redis
+					[_] Riak
+					[_] Swift
+				[_] % Document
+					[_] MongoDB
+					[_] CouchDB
+				[_] % Column-Family
+					[_] Cassandra
+					[_] HBase
+				[_] % Graph Databases
+					[_] What are Graphs?
+					[_] Neo4J
+			[_] Mix and Match Types
 			[_] 0% brewer's theorem
 				: Two of Three of the following properties simultaneously for a
 				: distributed data driven application.
@@ -281,6 +342,18 @@
 						: all of the parts have no elements in common.
 			[_] % Eventual Consistency
 				[_] N,W,R Relationships
+			[_] Data Structure or Schema
+				[_] Aggregates
+				[_] Normalization
+			[_] % Philosophies
+				[_] ACID
+				[_] BASE
+			[_] Margarine's Data
+				[_] Content of Articles
+				[_] User Information or Profiles
+				[_] Subscriptions by Users
+				[_] Tags by Users
+				[_] Notations for Margin Notes
 		[_] 0% API
 			: API, applicaiton programming interface, is a protocol intended to be
 			: used as an interface by software components to communicate with one
@@ -328,6 +401,8 @@
 			[_] % SOAP API
 				[_] WSDL
 			[_] % Margarine's API
+				[_] % Operations
+					[_] CRUD for Users and Articles
 				[_] cURL examples
 		[_] 0% Big Data
 			[_] 0% Software
@@ -351,10 +426,32 @@
 					[_] Maximize Important Aspects
 			[_] Gerrit
 			[_] Jenkins
+			[_] % The New Bugs
+				[_] Heisenbug
+				[_] Mandelbug
+				[_] Schrödenbug
+		[_] % Frontend
+			[_] Functionality
+			[_] Hosting Method
+			[_] % Margarine (Tinge)
+				[_] SEO with Cloud Files
+				[_] Cache Breaking with Cloud Files
 	[_] 0% Part 2—Operating Cloud Applications
 		[_] How to Build a Cloud Application
-		[_] How to Deploy a Cloud Application
-		[_] How to Maintain a Cloud Application
+		[_] % How to Deploy a Cloud Application
+			[_] A Large Group of Small Things Working in Tandem
+			[_] Larger Target with Verticals
+			[_] Horizontal is More Leeway against Risk
+			[_] Responsive Architecture
+			[_] % Where does it live?
+				[_] What Cloud if Cloud?
+		[_] % How to Maintain a Cloud Application
+			[_] % When to Add More
+				[_] % Metrics
+					[_] CPU
+					[_] Memory
+					[_] Disk
+					[_] Something Else?
 		[_] Continuous Delivery
 		[_] Continuous Deployment
 		[_] AB Testing
@@ -372,6 +469,9 @@
 			[_] Continuous Growth vs Stepwise Growth
 			[_] 0% Hardware Fails
 				[_] Mean Time Between Failure
+			[_] % Shadow IT
+				[_] Faster Access
+				[_] Bypass IT Controls and Policies
 		[_] 0% Security
 			[_] bastion
 			[_] Roles
@@ -415,6 +515,11 @@
 			[_] Vertical Scaling
 			[_] Horizontal Scaling
 			[_] Cost Analysis of Vertical vs Horizontal Scaling
+		[_] % Security
+			[_] % Regulations
+				[_] fisma compliance—federal information security management act
+				[_] hippa compliance—health insurance portability and accountability
+				[_] pci compliant
 	[_] 0% Part 3—Everything Else Cloud Applications
 		[_] % DevOps
 			[_] Align Development and Operations
@@ -436,9 +541,6 @@
 		[_] Command Line Interface
 			: A means of interaction with a computer program where the user issues
 			: commands to the program in the form of successive lines of text.
-		[_] fisma compliance—federal information security management act
-		[_] hippa compliance—health insurance portability and accountability
-		[_] pci compliant
 		[_] pv-ops
 		[_] recovery oriented computing
 		[_] server
