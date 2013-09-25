@@ -4,6 +4,6 @@ python:
 install:
   - "pip install -q -r requirements.txt --use-mirrors"
   - "pip install -q -r test_margarine/requirements.txt --use-mirrors"
-script: python -m test_margarine
+script: python setup.py nosetests
 notifications:
   irc: 'chat.freenode.net#margarine'
