@@ -89,7 +89,7 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
         '''
 
         for username, properties in self.accounts.iteritems():
-            self.mock_collection.insert.side_effect = pymongo.errors.DuplicateKeyError
+            self.mock_collection.insert.side_effect = pymongo.errors.DuplicateKeyError('E11000 duplicate key error index: production.users.$username_1  dup key: {{ : "{0}" }}'.format(username))
 
             args = [
                     mock.MagicMock(),
@@ -100,10 +100,11 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
 
             create_user_consumer(*args)
 
-            self.mock_collection.insert.assert_called_once_with(json.dumps(properties))
+            self.mock_collection.insert.assert_called_once_with(properties)
             self.mock_collection.reset_mock()
 
             # TODO Handle duplicate requests differently?
+            # TODO Add check that email consumer is not called.
 
 class SpreadUserUpdateTest(BaseSpreadUserTest):
     '''Spread::User Update
