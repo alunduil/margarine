@@ -9,16 +9,26 @@ import re
 logger = logging.getLogger(__name__)
 
 class URI(object):
+    '''A URI with accessible components.
+
+    Breaks a URI string (passed into the constructor) into it's components and
+    makes those components available as settable properties.
+
+    This URI also has a proper string representation that rebuilds the original
+    URI or modified URI.
+
+    Examples
+    --------
+
+    >>> URI('scheme://username:password@hostname:port/path')
+    'scheme://username:password@hostname:port/path'
+
+    >>> URI('scheme://username:password@hostname:port/path').host
+    'hostname'
+
+    '''
+
     def __init__(self, uri):
-        """Initialize a self-parsing URI object.
-
-        The object will decompose a URI like the following into its standard
-        components:
-
-          scheme://username:password@hostname:port/path
-
-        """
-
         self.uri = uri
 
         match = re.match( \
@@ -26,7 +36,7 @@ class URI(object):
                 r'((?P<username>[^:]+)(:(?P<password>[^@]+))?@)?' \
                 r'(?P<host>[^:/]+)?' \
                 r'(:(?P<port>[^/]+))?' \
-                r'(?P<path>/\w+)?' \
+                r'(?P<path>/[^\?]+)?' \
                 , self.uri)
 
         self.scheme = match.group("scheme")
@@ -36,3 +46,4 @@ class URI(object):
         self.port = match.group("port")
         self.path = match.group("path")
 
+    # TODO Add __str__ method for constructing str().
