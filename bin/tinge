@@ -13,5 +13,8 @@ if __name__ == "__main__":
 import margarine.tinge
 
 if __name__ == "__main__":
-    margarine.tinge.main()
-
+    try:
+        margarine.tinge.main()
+    except (Exception) as e:
+        logger.error('Unexpected exception occurred')
+        logger.exception(e)

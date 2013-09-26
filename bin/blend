@@ -13,5 +13,8 @@ if __name__ == "__main__":
 import margarine.blend
 
 if __name__ == "__main__":
-    margarine.blend.main()
-
+    try:
+        margarine.blend.main()
+    except (Exception) as e:
+        logger.error('Unexpected exception occurred')
+        logger.exception(e)
