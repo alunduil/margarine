@@ -29,7 +29,7 @@ def create_user_consumer(channel, method, header, body):
     * Reset the user's password
 
     """
-    
+
     user = json.loads(body)
 
     try:
@@ -93,7 +93,7 @@ def password_change_consumer(channel, method, header, body):
     * create password hash
     * store password hash
     * remove verification token
-   
+
     """
 
     user = json.loads(body)
@@ -115,7 +115,7 @@ def register(channel):
     ----------
 
     :channel: The channel to setup the queue over.
-    
+
     """
 
     channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
