@@ -150,12 +150,12 @@ def send_user_email(user, verification):
 
     message["Subject"] = "Margarine Verification"
     message["From"] = "Margarine Verifications <" + Parameters()["email.from"] + ">"
-    message["To"] = "{user[name]} <{user[email]}>".format(user = user)
+    message["To"] = "{0} <{1}>".format(user.get('name'), user['email'])
 
     uri = URI(Parameters()["email.url"])
 
     logger.info("Connecting to SMTP Server.")
-    
+
     _ = smtplib.SMTP(uri.host, uri.port)
 
     if uri.username is not None:
@@ -165,4 +165,4 @@ def send_user_email(user, verification):
     _.quit()
 
     logger.info("Successfully sent email!")
-    
+

@@ -156,8 +156,6 @@ class SpreadPasswordEmailTest(BaseSpreadUserTest):
 
             password_email_consumer(mock.MagicMock(), self.method, None, json.dumps(_))
 
-            self.fail('Complete Stub!')
-
 class SpreadPasswordChangeTest(BaseSpreadUserTest):
     def setUp(self):
         super(SpreadPasswordChangeTest, self).setUp()
