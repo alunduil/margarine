@@ -11,15 +11,15 @@ Vagrant.configure("2") do |config|
   config.vm.define "rabbitmq" do |rabbitmq|
     rabbitmq.vm.network :private_network, ip: "192.168.57.13"
     
-    config.vm.provision "shell", inline: "apt-get -q update"
-    config.vm.provision "shell", inline: "apt-get -q -y install rabbitmq-server"
+    config.vm.provision "shell", inline: "apt-get -q=2 update"
+    config.vm.provision "shell", inline: "apt-get -q=2 -y install rabbitmq-server"
   end
 
   config.vm.define "redis" do |redis|
       redis.vm.network :private_network, ip: "192.168.57.14"
         
-      config.vm.provision "shell", inline: "apt-get -q update"
-      config.vm.provision "shell", inline: "apt-get -q -y install redis-server"
+      config.vm.provision "shell", inline: "apt-get -q=2 update"
+      config.vm.provision "shell", inline: "apt-get -q=2 -y install redis-server"
   end
 
   config.vm.define "mongodb" do |mongodb|
