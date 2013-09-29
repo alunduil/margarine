@@ -8,33 +8,26 @@ Vagrant.configure("2") do |config|
   config.vm.box = "precise64"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
-  config.vm.define "rabbitmq" do |rabbitmq|
-    rabbitmq.vm.network :private_network, ip: "192.168.57.13"
+  config.vm.define "queue" do |queue|
+    queue.vm.network :private_network, ip: "192.168.57.13"
     
-    config.vm.provision "shell", inline: "apt-get -q=2 update"
-    config.vm.provision "shell", inline: "apt-get -q=2 -y install rabbitmq-server"
+    queue.vm.provision "shell", inline: "apt-get -q=2 update"
+    queue.vm.provision "shell", inline: "apt-get -q=2 -y install rabbitmq-server"
   end
 
-  config.vm.define "redis" do |redis|
-      redis.vm.network :private_network, ip: "192.168.57.14"
+  config.vm.define "token" do |token|
+    token.vm.network :private_network, ip: "192.168.57.14"
         
-      config.vm.provision "shell", inline: "apt-get -q=2 update"
-      config.vm.provision "shell", inline: "apt-get -q=2 -y install redis-server"
+    token.vm.provision "shell", inline: "apt-get -q=2 update"
+    token.vm.provision "shell", inline: "apt-get -q=2 -y install redis-server"
   end
 
-  config.vm.define "mongodb" do |mongodb|
-      mongodb.vm.network :private_network, ip: "192.168.57.15"
+  config.vm.define "datastore_mongo" do |datastore_mongo|
+    datastore_mongo.vm.network :private_network, ip: "192.168.57.15"
       
-      config.vm.provision :chef_solo do |chef|
-      config.omnibus.chef_version = :latest
-
-      chef.node_name = "mongodb"
-
-      chef.add_recipe "apt"
-      chef.add_recipe "build-essential"
-      chef.add_recipe "mongodb::10gen_repo"
-      chef.add_recipe "mongodb"
-      chef.add_recipe "mongodb::mongo_user"
+    datastore_mongo.omnibus.chef_version = :latest
+    datastore_mongo.vm.provision :chef_solo do |chef|
+      chef.node_name = "datastore.mongo"
 
       chef.json = {
         :build_essential => {
@@ -42,111 +35,124 @@ Vagrant.configure("2") do |config|
         },
         :mongodb => {
           :auth => true
-          },
+        },
       }
+
+      chef.add_recipe "apt"
+      chef.add_recipe "build-essential"
+      chef.add_recipe "mongodb::10gen_repo"
+      chef.add_recipe "mongodb"
+      chef.add_recipe "mongodb::mongo_user"
     end
   end
 
   config.vm.define "tinge" do |tinge|
     tinge.vm.network :private_network, ip: "192.168.57.10"
 
-    config.vm.provision :chef_solo do |chef|
-      config.omnibus.chef_version = :latest
-
+    tinge.omnibus.chef_version = :latest
+    tinge.vm.provision :chef_solo do |chef|
       chef.node_name = "tinge"
 
-      chef.add_recipe "margarine"
-      chef.add_recipe "margarine::tinge"
-
+      # TODO Change parameters to use internal services
+      # TODO Change path to be /vagrant
+      # TODO Common items should be in global Hash
       chef.json = {
         :margarine => {
-          :path => "/srv/www",
+          :path => "/srv/www", # TODO Probably should be default attribute
           :pyrax_user => "RAX_USERNAME",
           :pyrax_apikey => "RAX_APIKEY",
           :pyrax_region => "RAX_REGION",
-          :queue_user => "guest",
-          :queue_password => "guest",
+          :queue_user => "guest", # TODO Should be default attribute
+          :queue_password => "guest", # TODO Should be default attribute
           :queue_hostname => "192.168.57.13",
-          :mongodb_user => "margarine",
-          :mongodb_password => "margarineisawesome!",
-          :mongodb_connection_string => "192.168.57.15:27017",
+          :mongodb_user => "margarine", # TODO Should use default?
+          :mongodb_password => "margarineisawesome!", # TODO Should use default?
+          :mongodb_connection_string => "192.168.57.15:27017", # TODO Match this with queue → datastore_uri or datastore_hostname?
           :mongodb_database => "production",
-          :redis_url => "redis://192.168.57.14",
+          :redis_url => "redis://192.168.57.14", # TODO Why URL here but not others?
           :tinge => {
             :endpoint => "http://192.168.57.11/v1"
           }
         },
       }
+
+      chef.add_recipe "margarine"
+      chef.add_recipe "margarine::tinge" # TODO This recipe should call the installation, &c
     end
   end
 
   config.vm.define "blend" do |blend|
     blend.vm.network :private_network, ip: "192.168.57.11"
     
-    config.vm.provision :chef_solo do |chef|
-      config.omnibus.chef_version = :latest
-
+    blend.omnibus.chef_version = :latest
+    blend.vm.provision :chef_solo do |chef|
       chef.node_name = "blend"
 
-      chef.add_recipe "margarine"
-      chef.add_recipe "margarine::blend"
-
+      # TODO Change parameters to use internal services
+      # TODO Change path to be /vagrant
+      # TODO Common items should be in global Hash
       chef.json = {
         :margarine => {
-          :path => "/srv/www",
+          :path => "/srv/www", # TODO Probably should be default attribute
           :pyrax_user => "RAX_USERNAME",
           :pyrax_apikey => "RAX_APIKEY",
           :pyrax_region => "RAX_REGION",
-          :queue_user => "guest",
-          :queue_password => "guest",
+          :queue_user => "guest", # TODO Should be default attribute
+          :queue_password => "guest", # TODO Should be default attribute
           :queue_hostname => "192.168.57.13",
-          :mongodb_user => "margarine",
-          :mongodb_password => "margarineisawesome!",
-          :mongodb_connection_string => "192.168.57.15:27017",
+          :mongodb_user => "margarine", # TODO Should use default?
+          :mongodb_password => "margarineisawesome!", # TODO Should use default?
+          :mongodb_connection_string => "192.168.57.15:27017", # TODO Match this with queue → datastore_uri or datastore_hostname?
           :mongodb_database => "production",
-          :redis_url => "redis://192.168.57.14",
+          :redis_url => "redis://192.168.57.14", # TODO Why URL here but not others?
           :blend => {
-            :flask_debug => "true",
-            :server_hostname => "http://192.168.57.10"
+            :flask_debug => "true", 
+            :server_hostname => "http://192.168.57.10" 
           }
         },
       }
+
+      chef.add_recipe "margarine"
+      chef.add_recipe "margarine::blend" # TODO This recipe should call the installation, &c
     end
   end
 
   config.vm.define "spread" do |spread|
     spread.vm.network :private_network, ip: "192.168.57.12"
     
-    config.vm.provision :chef_solo do |chef|
-      config.omnibus.chef_version = :latest
-
+    spread.omnibus.chef_version = :latest
+    spread.vm.provision :chef_solo do |chef|
       chef.node_name = "spread"
 
-      chef.add_recipe "margarine"
-      chef.add_recipe "margarine::spread"
-      
+      # TODO Change parameters to use internal services
+      # TODO Change path to be /vagrant
+      # TODO Common items should be in global Hash
       chef.json = {
         :margarine => {
-          :path => "/srv/www",
+          :path => "/srv/www", # TODO Probably should be default attribute
           :pyrax_user => "RAX_USERNAME",
           :pyrax_apikey => "RAX_APIKEY",
           :pyrax_region => "RAX_REGION",
-          :queue_user => "guest",
-          :queue_password => "guest",
+          :queue_user => "guest", # TODO Should be default attribute
+          :queue_password => "guest", # TODO Should be default attribute
           :queue_hostname => "192.168.57.13",
-          :mongodb_user => "margarine",
-          :mongodb_password => "margarineisawesome!",
-          :mongodb_connection_string => "192.168.57.15:27017",
+          :mongodb_user => "margarine", # TODO Should use default?
+          :mongodb_password => "margarineisawesome!", # TODO Should use default?
+          :mongodb_connection_string => "192.168.57.15:27017", # TODO Match this with queue → datastore_uri or datastore_hostname?
           :mongodb_database => "production",
-          :redis_url => "redis://192.168.57.14",
+          :redis_url => "redis://192.168.57.14", # TODO Why URL here but not others?
           :spread => {
-            :mailgun_email => "MAILGUN_EMAIL",
+            # TODO We should set up a relay mailer for test emails
+            :mailgun_email => "MAILGUN_EMAIL", 
             :mailgun_password => "MAILGUN_PASSWORD",
             :from_email => "FROM_EMAIL@DOMAIN.COM",
             :api_server_hostname => "192.168.57.11"
           }
         },
       }
+
+      chef.add_recipe "margarine"
+      chef.add_recipe "margarine::spread" # TODO This recipe shoudl call the installation, &c
     end
   end
 end
