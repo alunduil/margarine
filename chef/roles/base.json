@@ -8,5 +8,8 @@
   "default_attributes": {},
   "override_attributes": {},
 
-  "run_list": [ "recipe[apt]" ]
+  "run_list": [
+    "recipe[chef-solo-search]",
+    "recipe[apt]"
+  ]
 }
