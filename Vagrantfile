@@ -4,155 +4,90 @@
 Vagrant.require_plugin "vagrant-omnibus"
 Vagrant.require_plugin "vagrant-berkshelf"
 
+ip_addresses = {
+  :queue       => '192.0.2.2',
+  :token_store => '192.0.2.3',
+  :datastore   => '192.0.2.4',
+  :tinge       => '192.0.2.5',
+  :blend       => '192.0.2.6',
+  :spread      => '192.0.2.7',
+}
+
+margarine_attributes = {
+  :margarine => {
+    :queue => { :hostname => ip_addresses[:queue] },
+    :datastore => { :hostname => ip_addresses[:datastore] },
+    :token_store => { :hostname => ip_addresses[:token_store] },
+    :urls => { 
+      :tinge => "http://#{ip_addresses[:tinge]}",
+      :blend => "http://api.#{ip_addresses[:blend]}/v1/",
+    },
+  },
+}
+
 Vagrant.configure("2") do |config|
   config.vm.box = "precise64"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
   config.vm.define "queue" do |queue|
-    queue.vm.network :private_network, ip: "192.168.57.13"
-    
-    queue.vm.provision "shell", inline: "apt-get -q=2 update"
-    queue.vm.provision "shell", inline: "apt-get -q=2 -y install rabbitmq-server"
+    queue.vm.network :private_network, ip: ip_addresses[:queue]
+
+    queue.omnibus.chef_version = :latest
+    queue.vm.provision :chef_solo do |chef|
+      chef.node_name = 'queue'
+
+      chef.log_level = :info
+
+      chef.roles_path = 'chef/roles'
+      chef.environments_path = 'chef/environments'
+
+      chef.environment = 'vagrant'
+      chef.add_role 'queue'
+    end
   end
 
-  config.vm.define "token" do |token|
-    token.vm.network :private_network, ip: "192.168.57.14"
+  config.vm.define "token_store" do |token_store|
+    token_store.vm.network :private_network, ip: ip_addresses[:token_store]
         
-    token.vm.provision "shell", inline: "apt-get -q=2 update"
-    token.vm.provision "shell", inline: "apt-get -q=2 -y install redis-server"
+    token_store.vm.provision "shell", inline: "apt-get -q=2 update"
+    token_store.vm.provision "shell", inline: "apt-get -q=2 -y install redis-server"
   end
 
-  config.vm.define "datastore_mongo" do |datastore_mongo|
-    datastore_mongo.vm.network :private_network, ip: "192.168.57.15"
+  config.vm.define "datastore" do |datastore|
+    datastore.vm.network :private_network, ip: ip_addresses[:datastore]
       
-    datastore_mongo.omnibus.chef_version = :latest
-    datastore_mongo.vm.provision :chef_solo do |chef|
-      chef.node_name = "datastore.mongo"
+    datastore.omnibus.chef_version = :latest
+    datastore.vm.provision :chef_solo do |chef|
+      chef.node_name = "datastore"
 
-      chef.json = {
-        :build_essential => {
-          :compiletime => true
-        },
-        :mongodb => {
-          :auth => true
-        },
-      }
+      chef.log_level = :info
 
-      chef.add_recipe "apt"
-      chef.add_recipe "build-essential"
-      chef.add_recipe "mongodb::10gen_repo"
-      chef.add_recipe "mongodb"
-      chef.add_recipe "mongodb::mongo_user"
+      chef.roles_path = 'chef/roles'
+      chef.environments_path = 'chef/environments'
+
+      chef.environment = 'vagrant'
+      chef.add_role 'datastore'
     end
   end
 
-  config.vm.define "tinge" do |tinge|
-    tinge.vm.network :private_network, ip: "192.168.57.10"
+  %w{ tinge blend spread }.each do |component|
+    config.vm.define component do |box|
+      box.vm.network :private_network, ip: ip_addresses[component]
 
-    tinge.omnibus.chef_version = :latest
-    tinge.vm.provision :chef_solo do |chef|
-      chef.node_name = "tinge"
+      box.omnibus.chef_version = :latest
+      box.vm.provision :chef_solo do |chef|
+        chef.node_name = component
 
-      # TODO Change parameters to use internal services
-      # TODO Change path to be /vagrant
-      # TODO Common items should be in global Hash
-      chef.json = {
-        :margarine => {
-          :path => "/srv/www", # TODO Probably should be default attribute
-          :pyrax_user => "RAX_USERNAME",
-          :pyrax_apikey => "RAX_APIKEY",
-          :pyrax_region => "RAX_REGION",
-          :queue_user => "guest", # TODO Should be default attribute
-          :queue_password => "guest", # TODO Should be default attribute
-          :queue_hostname => "192.168.57.13",
-          :mongodb_user => "margarine", # TODO Should use default?
-          :mongodb_password => "margarineisawesome!", # TODO Should use default?
-          :mongodb_connection_string => "192.168.57.15:27017", # TODO Match this with queue → datastore_uri or datastore_hostname?
-          :mongodb_database => "production",
-          :redis_url => "redis://192.168.57.14", # TODO Why URL here but not others?
-          :tinge => {
-            :endpoint => "http://192.168.57.11/v1"
-          }
-        },
-      }
+        chef.log_level = :info
 
-      chef.add_recipe "margarine"
-      chef.add_recipe "margarine::tinge" # TODO This recipe should call the installation, &c
-    end
-  end
+        chef.roles_path = 'chef/roles'
+        chef.environments_path = 'chef/environments'
 
-  config.vm.define "blend" do |blend|
-    blend.vm.network :private_network, ip: "192.168.57.11"
-    
-    blend.omnibus.chef_version = :latest
-    blend.vm.provision :chef_solo do |chef|
-      chef.node_name = "blend"
+        chef.json = margarine_attributes
 
-      # TODO Change parameters to use internal services
-      # TODO Change path to be /vagrant
-      # TODO Common items should be in global Hash
-      chef.json = {
-        :margarine => {
-          :path => "/srv/www", # TODO Probably should be default attribute
-          :pyrax_user => "RAX_USERNAME",
-          :pyrax_apikey => "RAX_APIKEY",
-          :pyrax_region => "RAX_REGION",
-          :queue_user => "guest", # TODO Should be default attribute
-          :queue_password => "guest", # TODO Should be default attribute
-          :queue_hostname => "192.168.57.13",
-          :mongodb_user => "margarine", # TODO Should use default?
-          :mongodb_password => "margarineisawesome!", # TODO Should use default?
-          :mongodb_connection_string => "192.168.57.15:27017", # TODO Match this with queue → datastore_uri or datastore_hostname?
-          :mongodb_database => "production",
-          :redis_url => "redis://192.168.57.14", # TODO Why URL here but not others?
-          :blend => {
-            :flask_debug => "true", 
-            :server_hostname => "http://192.168.57.10" 
-          }
-        },
-      }
-
-      chef.add_recipe "margarine"
-      chef.add_recipe "margarine::blend" # TODO This recipe should call the installation, &c
-    end
-  end
-
-  config.vm.define "spread" do |spread|
-    spread.vm.network :private_network, ip: "192.168.57.12"
-    
-    spread.omnibus.chef_version = :latest
-    spread.vm.provision :chef_solo do |chef|
-      chef.node_name = "spread"
-
-      # TODO Change parameters to use internal services
-      # TODO Change path to be /vagrant
-      # TODO Common items should be in global Hash
-      chef.json = {
-        :margarine => {
-          :path => "/srv/www", # TODO Probably should be default attribute
-          :pyrax_user => "RAX_USERNAME",
-          :pyrax_apikey => "RAX_APIKEY",
-          :pyrax_region => "RAX_REGION",
-          :queue_user => "guest", # TODO Should be default attribute
-          :queue_password => "guest", # TODO Should be default attribute
-          :queue_hostname => "192.168.57.13",
-          :mongodb_user => "margarine", # TODO Should use default?
-          :mongodb_password => "margarineisawesome!", # TODO Should use default?
-          :mongodb_connection_string => "192.168.57.15:27017", # TODO Match this with queue → datastore_uri or datastore_hostname?
-          :mongodb_database => "production",
-          :redis_url => "redis://192.168.57.14", # TODO Why URL here but not others?
-          :spread => {
-            # TODO We should set up a relay mailer for test emails
-            :mailgun_email => "MAILGUN_EMAIL", 
-            :mailgun_password => "MAILGUN_PASSWORD",
-            :from_email => "FROM_EMAIL@DOMAIN.COM",
-            :api_server_hostname => "192.168.57.11"
-          }
-        },
-      }
-
-      chef.add_recipe "margarine"
-      chef.add_recipe "margarine::spread" # TODO This recipe shoudl call the installation, &c
+        chef.environment = 'vagrant'
+        chef.add_role component
+      end
     end
   end
 end

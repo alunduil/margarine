@@ -1,0 +1,12 @@
+{
+  'name': 'spread',
+  'description': 'Implements the required items to deploy spread on a server.',
+
+  'json_class': 'Chef::Role',
+  'chef_type': 'role',
+
+  'default_attributes': {},
+  'override_attributes': {},
+
+  'run_list': [ 'role[base]', 'role[margarine]', 'recipe[margarine::spread]' ]
+}

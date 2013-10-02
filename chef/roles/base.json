@@ -1,0 +1,12 @@
+{
+  "name": "base",
+  "description": "Implements the base items required for Margarine servers.",
+
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+  
+  "default_attributes": {},
+  "override_attributes": {},
+
+  "run_list": [ "recipe[apt]" ]
+}
