@@ -5,8 +5,13 @@
   'json_class': 'Chef::Role',
   'chef_type': 'role',
 
-  'default_attributes': {},
+  'default_attributes': {
+    'margarine': { 'spread': true }
+  },
   'override_attributes': {},
 
-  'run_list': [ 'role[base]', 'role[margarine]', 'recipe[margarine::spread]' ]
+  'run_list': [
+    'role[base]',
+    'role[margarine]',
+  ]
 }
