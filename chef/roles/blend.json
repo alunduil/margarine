@@ -1,15 +1,15 @@
 {
-  'name': 'blend',
-  'description': 'Implements the required items to deploy blend on a server.',
+  "name": "blend",
+  "description": "Implements the required items to deploy blend on a server.",
 
-  'json_class': 'Chef::Role',
-  'chef_type': 'role',
+  "json_class": "Chef::Role",
+  "chef_type": "role",
 
-  'default_attributes': {},
-  'override_attributes': {},
+  "default_attributes": {},
+  "override_attributes": {},
 
-  'run_list': [
-    'role[base]',
-    'role[margarine::blend]',
+  "run_list": [
+    "role[base]",
+    "recipe[margarine::blend]",
   ]
 }
