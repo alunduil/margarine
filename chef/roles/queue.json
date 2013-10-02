@@ -8,5 +8,8 @@
   "default_attributes": {},
   "override_attributes": {},
 
-  "run_list": [ "role[base]", "role[queue_rabbitmq]" ]
+  "run_list": [
+    "role[base]",
+    "role[queue_rabbitmq]"
+  ]
 }

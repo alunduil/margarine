@@ -1,28 +1,29 @@
 {
-  'name': 'datastore_mongodb',
-  'description': 'Implements a MongoDB datastore for margarine.',
+  "name": "datastore_mongodb",
+  "description": "Implements a MongoDB datastore for margarine.",
 
-  'json_class': 'Chef::Role',
-  'chef_type': 'role',
+  "json_class": "Chef::Role",
+  "chef_type": "role",
   
-  'default_attributes': {
-    'margarine': {
-      'datastore': { 'type': 'mongodb' }
+  "default_attributes": {
+    "margarine": {
+      "datastore": { "type": "mongodb" }
     },
-    'build_essential': {
-      'compiletime': true
+    "build_essential": {
+      "compiletime": true
     },
-    'mongodb': {
-      'auth': true
+    "mongodb": {
+      "auth": true
     }
   },
 
-  'override_attributes': {},
+  "override_attributes": {},
 
-  'run_list': [
-    'role[base]',
-    'recipe[mongodb::10gen_repo]',
-    'recipe[mongodb]',
-    'recipe[mongodb::mongo_user]'
+  "run_list": [
+    "role[base]",
+    "recipe[build-essential]",
+    "recipe[mongodb::10gen_repo]",
+    "recipe[mongodb]",
+    "recipe[mongodb::mongo_user]"
   ]
 }

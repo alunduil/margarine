@@ -72,7 +72,7 @@ Vagrant.configure('2') do |config|
     end
   end
 
-  %w{ tinge blend spread }.each do |component|
+  [ :tinge, :blend, :spread ].each do |component|
     config.vm.define component do |box|
       box.vm.network :private_network, ip: ip_addresses[component]
 

@@ -15,8 +15,5 @@
 
   'run_list': [
     'role[base]',
-    'recipe[margarine::install_source_dependencies]',
-    'recipe[margarine::configure]',
-    'recipe[margarine::service]'
   ]
 }

@@ -1,17 +1,15 @@
 {
-  'name': 'tinge',
-  'description': 'Implements the required items to deploy tinge on a server.',
+  "name": "tinge",
+  "description": "Implements the required items to deploy tinge on a server.",
 
-  'json_class': 'Chef::Role',
-  'chef_type': 'role',
+  "json_class": "Chef::Role",
+  "chef_type": "role",
 
-  'default_attributes': {
-    'margarine': { 'tinge': true }
-  },
-  'override_attributes': {},
+  "default_attributes": {},
+  "override_attributes": {},
 
-  'run_list': [
-    'role[base]',
-    'role[margarine]',
+  "run_list": [
+    "role[base]",
+    "role[margarine::tinge]",
   ]
 }
