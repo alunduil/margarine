@@ -1,19 +1,19 @@
 {
-  'name': 'margarine',
-  'description': 'Implments the base role for margarine\'s compoonents.',
+  "name": "margarine",
+  "description": "Implments the base role for margarine\'s compoonents.",
 
-  'json_class': 'Chef::Role',
-  'chef_type': 'role',
+  "json_class": "Chef::Role",
+  "chef_type": "role",
 
-  'default_attributes': {
-    'margarine': {
-      'service': { 'proxy': 'nginx' }
+  "default_attributes": {
+    "margarine": {
+      "service": { "proxy": "nginx" }
     }
   }
 
-  'override_attributes': {},
+  "override_attributes": {},
 
-  'run_list': [
-    'role[base]',
+  "run_list": [
+    "role[base]",
   ]
 }
