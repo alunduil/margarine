@@ -40,6 +40,7 @@ Vagrant.configure('2') do |config|
 
       chef.roles_path = 'chef/roles'
       chef.environments_path = 'chef/environments'
+      chef.data_bags_path = 'chef/data_bags'
 
       chef.environment = 'vagrant'
       chef.add_role 'queue'
@@ -66,6 +67,7 @@ Vagrant.configure('2') do |config|
 
       chef.roles_path = 'chef/roles'
       chef.environments_path = 'chef/environments'
+      chef.data_bags_path = 'chef/data_bags'
 
       chef.environment = 'vagrant'
       chef.add_role 'datastore'
@@ -84,6 +86,7 @@ Vagrant.configure('2') do |config|
 
         chef.roles_path = 'chef/roles'
         chef.environments_path = 'chef/environments'
+        chef.data_bags_path = 'chef/data_bags'
 
         chef.json = margarine_attributes
 
