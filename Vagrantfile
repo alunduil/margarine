@@ -5,12 +5,13 @@ Vagrant.require_plugin 'vagrant-omnibus'
 Vagrant.require_plugin 'vagrant-berkshelf'
 
 ip_addresses = {
-  :queue       => '192.0.2.2',
-  :token_store => '192.0.2.3',
-  :datastore   => '192.0.2.4',
-  :tinge       => '192.0.2.5',
-  :blend       => '192.0.2.6',
-  :spread      => '192.0.2.7',
+  :tinge       => '192.0.2.2',
+  :blend       => '192.0.2.3',
+  :spread      => '192.0.2.4',
+
+  :queue       => '192.0.2.5',
+  :token_store => '192.0.2.6',
+  :datastore   => '192.0.2.7',
 }
 
 margarine_attributes = {
