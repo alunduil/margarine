@@ -33,10 +33,12 @@ Vagrant.configure('2') do |config|
   config.vm.define 'token_store' do |token_store|
     token_store.vm.network :private_network, ip: ip_addresses[:token_store]
         
-    token_store.vm.provision 'shell', inline: 'apt-get -q=2 update'
-    token_store.vm.provision 'shell', inline: 'apt-get -q=2 -y install redis-server'
-    token_store.vm.provision 'shell', inline: 'sed -i -e \'s/bind 127.0.0.1/#\0/\' /etc/redis/redis.conf'
-    token_store.vm.provision 'shell', inline: 'service redis-server restart'
+    token_store.vm.provision 'shell', inline: <<-EOF
+      apt-get -q=2 update
+      apt-get -q=2 -y install redis-server
+      sed -i -e \'s/bind 127.0.0.1/#\0/\' /etc/redis/redis.conf
+      service redis-server restart
+    EOF
   end
 
   config.vm.define 'queue' do |queue|
