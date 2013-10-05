@@ -257,6 +257,8 @@ class UserInterface(MethodView):
 
             HTTP/1.0 200 OK
 
+            Content-Type: application/json
+
             {
               "username": "alunduil",
               "name": "Alex Brandt",
@@ -280,9 +282,13 @@ class UserInterface(MethodView):
         if user is None:
             abort(404)
 
-        # TODO Set JSON mimetype?
+        response = make_response(json.dumps(unicode(user)))
 
-        return json.dumps(unicode(user))
+        response.headers['Content-Type'] = 'application/json'
+        # TODO Change Paramter from server.domain to tinge.domain
+        response.headers['Access-Control-Allow-Origin'] = Parameters()['server.domain']
+
+        return response
 
     def delete(self, username):
         """Delete an User.
