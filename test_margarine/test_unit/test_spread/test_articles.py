@@ -6,11 +6,11 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import mock
-
 import logging
 import uuid
 import json
 import datetime
+import bson
 
 from test_margarine.test_unit.test_spread import BaseSpreadTest
 
@@ -111,7 +111,7 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
             self.mock_collection.find_one.return_value = article
             self.mock_collection.find_one.return_value['created_at'] = self.test_datetime
 
-            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article))
+            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article, default = bson.json_util.default))
 
             _id = article.pop('_id')
 
