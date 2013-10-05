@@ -33,6 +33,8 @@ Vagrant.configure('2') do |config|
   config.vm.define 'token_store' do |token_store|
     token_store.vm.network :private_network, ip: ip_addresses[:token_store]
         
+    token_store.vm.synced_folder '.', '/vagrant', :disabled => true
+
     token_store.vm.provision 'shell', inline: <<-EOF
       apt-get -q=2 update
       apt-get -q=2 -y install redis-server
@@ -43,6 +45,8 @@ Vagrant.configure('2') do |config|
 
   config.vm.define 'queue' do |queue|
     queue.vm.network :private_network, ip: ip_addresses[:queue]
+
+    queue.vm.synced_folder '.', '/vagrant', :disabled => true
 
     queue.omnibus.chef_version = :latest
     queue.vm.provision :chef_solo do |chef|
@@ -62,6 +66,8 @@ Vagrant.configure('2') do |config|
   config.vm.define 'datastore' do |datastore|
     datastore.vm.network :private_network, ip: ip_addresses[:datastore]
       
+    datastore.vm.synced_folder '.', '/vagrant', :disabled => true
+
     datastore.omnibus.chef_version = :latest
     datastore.vm.provision :chef_solo do |chef|
       chef.node_name = 'datastore'
