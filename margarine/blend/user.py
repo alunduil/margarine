@@ -94,7 +94,7 @@ class UnauthorizedError(werkzeug.exceptions.Unauthorized):
 
 def http_401_handler(error):
     """Sends an appropriate 401 Unauthorized page for HTTP Digest.
-    
+
     Working handler for the user login method defined below.  This handler
     does not need to be used but some assumptions about what the handler does
     are made and this handler fits those assumptions.
@@ -102,7 +102,7 @@ def http_401_handler(error):
     """
 
     logger.debug("type(error): %s", type(error))
-    
+
     logger.debug("error.username: %s", error.username)
 
     response = make_response("", 401)
@@ -152,7 +152,7 @@ class UserInterface(MethodView):
         -------
 
         ::
-        
+
             PUT /alunduil
             Content-Type: application/x-www-form-urlencoded
 
@@ -204,7 +204,7 @@ class UserInterface(MethodView):
         '''
 
         user = get_collection('users').find_one({ 'username': username })
-        
+
         routing_key = 'users.create'
 
         if user is not None:
@@ -217,8 +217,8 @@ class UserInterface(MethodView):
         message = {
                 'username': username,
                 'requested_username': request.form.get('username', username),
-                'email': request.form.get('email'),
-                'name': request.form.get('name'),
+                'email': request.form.get('email', user.get('email')),
+                'name': request.form.get('name', user.get('name')),
                 }
 
         if message['email'] is None and routing_key == 'users.create':
@@ -231,13 +231,15 @@ class UserInterface(MethodView):
         message_properties.content_type = 'application/json' # TODO Switch to binary format?
         message_properties.durable = False
 
+        logger.info('blend.user.PUT—Sending Message (Type: %s)', routing_key)
+
         channel = get_channel()
         channel.exchange_declare(exchange = 'margarine.users.topic', type = 'topic', auto_delete = False)
         channel.basic_publish(body = message, exchange = 'margarine.users.topic', properties = message_properties, routing_key = routing_key)
         channel.close()
 
         return '', 202
-    
+
     def get(self, username):
         """Retrieve an User's information.
 
@@ -362,7 +364,7 @@ class UserPasswordInterface(MethodView):
             X-Validation-Token: 6e585a2d-438d-4a33-856a-8a7c086421ee
 
         ::
-            
+
             GET /alunduil/password?verification=6e585a2d-438d-4a33-856a-8a7c086421ee
 
         Authenticated Response
@@ -482,8 +484,8 @@ class UserPasswordInterface(MethodView):
         message_properties.content_type = "application/json"
         message_properties.durable = False
 
-        message = { 
-                "username": username, 
+        message = {
+                "username": username,
                 "password": password,
                 }
 
@@ -501,7 +503,7 @@ class UserPasswordInterface(MethodView):
         return "", 202
 
 USER.add_url_rule('/<username>/password', view_func = UserPasswordInterface.as_view("users_password_api"))
-        
+
 @USER.route('/<username>/token')
 def login(username):
     """Get an authorized token for subsequent API calls.
@@ -539,7 +541,7 @@ def login(username):
     ''''''''''''''''''''''''''''''''''''''''
 
     ::
-      
+
         GET /alunduil/token HTTP/1.1
         Host: www.example.com
         Authorization: Digest username="alunduil",
@@ -562,7 +564,7 @@ def login(username):
         0b4fb639-edd1-44fe-b757-589a099097a5
 
     """
-    
+
     logger.info("Checking authentication!")
 
     if request.authorization is None or request.authorization.opaque != Parameters()["api.uuid"]:
