@@ -10,6 +10,8 @@ import logging
 if __name__ == "__main__":
     logging.basicConfig(level = logging.DEBUG)
 
+logger = logging.getLogger("margarine.tinge")
+
 import margarine.tinge
 
 if __name__ == "__main__":
