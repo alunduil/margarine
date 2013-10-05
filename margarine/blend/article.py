@@ -22,16 +22,16 @@ The properties we're starting with are the following:
     * created_at—index
     * original_etag
     * parsed_at—index
-    
+
     * subscribers—Psuedo parameter, maps to join collection.
 
-      * uuid4—user 
+      * uuid4—user
       * uuid5—bookmark
       * subscribed_at
 
 .. note::
 
-    This blueprint has all methods documented with an assumed prefix.  Thus, 
+    This blueprint has all methods documented with an assumed prefix.  Thus,
     the path '/' is in fact something like (defined elsewhere) '/v1/articles/'.
 
 """
@@ -137,12 +137,12 @@ def article(article_id):
     ::
 
         GET /44d85795-248d-5899-b8ca-ac2bd8233755
-        
+
     Response
     --------
 
     .. note::
-        The following is formatted for readability and does not match the 
+        The following is formatted for readability and does not match the
         actual response from the API.  Also, the body parameter has been
         shortened to fit this example more concisely.
 

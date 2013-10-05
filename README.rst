@@ -1,5 +1,6 @@
-.. image:: https://secure.travis-ci.org/raxsavvy/margarine.png
-
+.. image:: https://secure.travis-ci.org/raxsavvy/margarine.png?branch=master
+   :target: http://travis-ci.org/raxsavvy/margarine
+   
 Introduction
 ============
 
