@@ -6,9 +6,6 @@
   "chef_type": "role",
   
   "default_attributes": {
-    "margarine": {
-      "datastore": { "type": "mongodb" }
-    },
     "build_essential": {
       "compiletime": true
     },
