@@ -20,8 +20,8 @@ margarine_attributes = {
     :datastore => { :hostname => ip_addresses[:datastore] },
     :token_store => { :hostname => ip_addresses[:token_store] },
     :urls => { 
-      :tinge => "http://#{ip_addresses[:tinge]}",
-      :blend => "http://api.#{ip_addresses[:blend]}/v1/",
+      :tinge => "http://#{ip_addresses[:tinge]}:5000",
+      :blend => "http://api.#{ip_addresses[:blend]}:5000/v1/",
     },
   },
 }
