@@ -10,11 +10,14 @@
   "override_attributes": {
     "margarine": {
       "install": {
-        "method": null,
+        "method": "vagrant",
         "path": "/vagrant"
       },
       "logging": { "default": true },
-      "service": { "provider": "flask" },
+      "service": {
+        "hostname": "0.0.0.0",
+        "provider": "flask"
+      },
       "flask": { "debug": true }
     },
     "rabbitmq": {
