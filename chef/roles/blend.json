@@ -8,7 +8,6 @@
   "default_attributes": {
     "margarine": {
       "datastore": {
-        "type": "mongodb",
         "username": "margarine",
         "password": "margarineisawesome!"
       }
