@@ -80,7 +80,7 @@ def get_channel():
         # TODO Add SSL support?
         connection_parameters = pika.ConnectionParameters(
                 host = uri.host,
-                port = uri.port,
+                port = int(uri.port),
                 virtual_host = uri.path,
                 credentials = credentials
                 )
@@ -155,7 +155,7 @@ def send_user_email(user, verification):
     uri = URI(Parameters()["email.url"])
 
     logger.info("Connecting to SMTP Server.")
-    
+
     _ = smtplib.SMTP(uri.host, uri.port)
 
     if uri.username is not None:
@@ -165,4 +165,4 @@ def send_user_email(user, verification):
     _.quit()
 
     logger.info("Successfully sent email!")
-    
+
