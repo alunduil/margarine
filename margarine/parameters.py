@@ -56,9 +56,9 @@ class Parameters(object):
     parsed options are shown:
 
     :``parameters``:
-    
+
       ::
-      
+
         [
           {
             "group":   "default",
@@ -84,7 +84,7 @@ class Parameters(object):
     """
 
     __shared_state = {}
-                     
+
     def __init__(self, name = "default", file_path = None, parameters = ()):
         """Add the given section (name) to any existing parameters.
 
@@ -133,7 +133,7 @@ class Parameters(object):
         """
 
         self.__dict__ = self.__shared_state
-        
+
         logger.debug("len(parameters): %s", len(parameters))
         logger.debug("parsed? %s", getattr(self, "parsed", False))
 
@@ -156,7 +156,7 @@ class Parameters(object):
             parameter.setdefault("group", name)
 
         if hasattr(self, "parameters"):
-            self.parameters += parameters 
+            self.parameters += parameters
         else:
             self.parameters = []
 
@@ -199,9 +199,9 @@ class Parameters(object):
 
         :``components``: The components to include in this parse of the
                          parameters.
-        :``only_known``: Specifies that the command line parser should only 
-                         parse the currenly known arguments and not all of the 
-                         possible arguments (stalling errors due to improper 
+        :``only_known``: Specifies that the command line parser should only
+                         parse the currenly known arguments and not all of the
+                         possible arguments (stalling errors due to improper
                          usage until later).
         :``file_path``:  The specific configuration file to re-read in this
                          parse action.
@@ -254,7 +254,7 @@ class Parameters(object):
             ConfigParser.SafeConfigParser.
 
         """
-        
+
         self._configuration_files[file_path] = configparser.SafeConfigParser()
 
         logger.debug("file_path: %s", file_path)
@@ -269,7 +269,7 @@ class Parameters(object):
         .. note::
             If the parser hasn't been created, the first call to this method
             will create it.
-        
+
         All of the function parameters besides ``parameters`` will be directly
         passed to argparse.ArgumentParser.  The returned value from this function
         is the properly prepared ArgumentParser but the parser has not been run.
@@ -340,7 +340,7 @@ class Parameters(object):
 
         value = None
 
-        default = None 
+        default = None
         if key in self.defaults:
             default = self.defaults[key][0] # TODO Consider only?
 
@@ -397,7 +397,17 @@ class Parameters(object):
 
         logger.debug("value: %s", value)
 
-        return value 
+        logger.debug('self.parameters: %s', self.parameters)
+
+        types = dict([ (_['options'][0][2:], _.get('type', str)) for _ in self.parameters ])
+
+        if not len(types):
+            types = { key: str }
+
+        logger.debug('types: %s', types)
+        logger.debug('types[key]: %s', types[key])
+
+        return types[key](value)
 
     def __contains__(self, key):
         return key in self.iterkeys()
