@@ -5,11 +5,19 @@
   "json_class": "Chef::Role",
   "chef_type": "role",
 
-  "default_attributes": {},
+  "default_attributes": {
+    "margarine": {
+      "datastore": {
+        "type": "mongodb",
+        "username": "margarine",
+        "password": "margarineisawesome!"
+      }
+    }
+  },
   "override_attributes": {},
 
   "run_list": [
     "role[base]",
-    "recipe[margarine::blend]",
+    "recipe[margarine::blend]"
   ]
 }
