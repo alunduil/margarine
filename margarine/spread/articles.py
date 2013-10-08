@@ -21,7 +21,7 @@ from margarine.communication import get_channel
 logger = logging.getLogger(__name__)
 
 def create_article_consumer(channel, method, header, body):
-    """Create an article—completing the bottom half of article creation.
+    '''Create an article—completing the bottom half of article creation.
 
     This takes the UUID of the article to create and the URL passed through the
     message queue and fills out the rest of the meta-information as well as
@@ -38,7 +38,7 @@ def create_article_consumer(channel, method, header, body):
     The following actions should be performed in parallel by a fanout:
 
     * Submits a reference job to update automatic notations in this and others.
-    * Submits the sanitization request for the HTML body. 
+    * Submits the sanitization request for the HTML body.
 
     .. note::
         The article will need a pre-allocated space in MongoDB for performance
@@ -46,42 +46,54 @@ def create_article_consumer(channel, method, header, body):
         information at a later time means we may get fragmentation in the data
         stored if we don't pre-allocate enough space.
 
-    """
+    '''
 
-    article = json.loads(body)
+    logger.info('Consuming Article Submission')
 
-    logger.debug("article: %s", article)
+    _ = json.loads(body)
 
-    _id = article.pop("_id")
+    logger.debug('message: %s', _)
 
-    articles = get_collection("articles")
+    article = get_collection('articles').find_one({ '_id': _['_id'] })
+    if article is None:
+        logger.info('New Article')
 
-    _ = articles.find_one({ "_id": _id })
+        article = {}
 
-    logger.debug("Found: %s", _)
+    logger.debug('stored article: %s', article)
 
-    if _ is None or "created_at" not in _:
-        article["created_at"] = datetime.datetime.now()
+    article.update(_)
 
-    article = dict([ (k, v) for k, v in article.iteritems() if _ is None or k not in _ or v != _[k] ])
+    logger.debug('merged article: %s', article)
 
-    logger.debug("article: %s", article)
-    logger.debug("_id: %s", _id)
+    _id = article.pop('_id')
 
-    get_collection("articles").update({ "_id": _id }, { "$set": article }, upsert = True)
+    if 'created_at' not in article:
+        article['created_at'] = datetime.datetime.now()
+
+    logger.debug('submitted article: %s', article)
+
+    get_collection("articles").update({ '_id': _id }, { "$set": article }, upsert = True)
+
+    logger.info('Inserted Article Stub')
 
     message_properties = pika.BasicProperties()
-    message_properties.content_type = "application/json"
+    message_properties.content_type = 'application/json'
     message_properties.durable = False
 
-    message = json.dumps({ "_id": _id })
+    message = json.dumps({ '_id': _id })
+
+    logger.debug('message: %s', message)
+    logger.info('Passing Article Creation to Bottom Half')
 
     _ = get_channel()
-    _.exchange_declare(exchange = "margarine.articles.create", type = "fanout", auto_delete = False)
-    _.basic_publish(body = message, exchange = "margarine.articles.create", properties = message_properties, routing_key = "articles.create")
+    _.exchange_declare(exchange = 'margarine.articles.create', type = 'fanout', auto_delete = False)
+    _.basic_publish(body = message, exchange = 'margarine.articles.create', properties = message_properties, routing_key = 'articles.create')
     _.close()
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
+
+    logger.info('Confirming Article Stubbed')
 
 def update_references_consumer(channel, method, header, body):
     """Update the references to and from the article specified.
@@ -139,7 +151,7 @@ def sanitize_html_consumer(channel, method, header, body):
 
     The decisions and algorithms used for streamlining the HTML are not
     proprietary in any way and can be used and modified under the terms of this
-    file's licensing but more importantly can be improved or modified if 
+    file's licensing but more importantly can be improved or modified if
     imperfections are found.
 
     """
@@ -213,7 +225,7 @@ def register(channel):
     ----------
 
     :channel: The channel to setup the queue over.
-    
+
     """
 
     channel.exchange_declare(exchange = "margarine.articles.topic", type = "topic", auto_delete = False)
