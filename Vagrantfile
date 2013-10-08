@@ -87,8 +87,6 @@ Vagrant.configure('2') do |config|
       box.vm.provision :chef_solo do |chef|
         chef.node_name = component
 
-        chef.log_level = :info
-
         chef.roles_path = 'chef/roles'
         chef.environments_path = 'chef/environments'
         chef.data_bags_path = 'chef/data_bags'
