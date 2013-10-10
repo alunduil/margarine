@@ -1,7 +1,35 @@
+# -*- coding: UTF-8 -*-
+#
 # Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
 #
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+# =============================================================================
+# Monkey Patch as outlined in #23.  TODO Remove this someday…
+# -----------------------------------------------------------------------------
+import sys
+import ConfigParser
+import traceback
+
+original_sections = sys.modules['ConfigParser'].ConfigParser.sections
+
+def monkey_sections(self):
+    '''Return a list of sections available; DEFAULT is not included in the list.
+
+    Monkey patched to exclude the nosetests section as well.
+
+    '''
+
+    _ = original_sections(self)
+
+    if any([ 'distutils/dist.py' in frame[0] for frame in traceback.extract_stack() ]) and _.count('nosetests'):
+        _.remove('nosetests')
+
+    return _
+
+sys.modules['ConfigParser'].ConfigParser.sections = monkey_sections
+# -----------------------------------------------------------------------------
 
 from ez_setup import use_setuptools
 use_setuptools()
