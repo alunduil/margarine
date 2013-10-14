@@ -1,0 +1,26 @@
+{
+  "name": "datastore_mongodb",
+  "description": "Implements a MongoDB datastore for margarine.",
+
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+  
+  "default_attributes": {
+    "build_essential": {
+      "compiletime": true
+    },
+    "mongodb": {
+      "auth": true
+    }
+  },
+
+  "override_attributes": {},
+
+  "run_list": [
+    "role[base]",
+    "recipe[build-essential]",
+    "recipe[mongodb::10gen_repo]",
+    "recipe[mongodb]",
+    "recipe[mongodb::mongo_user]"
+  ]
+}
