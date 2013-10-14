@@ -1,0 +1,29 @@
+{
+  "name": "vagrant",
+  "description": "The environment for margarine under vagrant.",
+
+  "json_class": "Chef::Environment",
+  "chef_type": "environment",
+
+  "default_attributes": {},
+
+  "override_attributes": {
+    "margarine": {
+      "install": {
+        "method": "vagrant",
+        "path": "/vagrant"
+      },
+      "logging": { "default": true },
+      "service": {
+        "hostname": "0.0.0.0",
+        "provider": "flask"
+      },
+      "flask": { "debug": true }
+    },
+    "rabbitmq": {
+      "enabled_plugins": [ "rabbitmq_management" ]
+    }
+  },
+
+  "cookbook_versions": {}
+}
