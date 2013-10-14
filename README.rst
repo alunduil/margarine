@@ -64,7 +64,7 @@ process.
 Development
 ===========
 
-You can use Vagrant to create a development environment locally with Chef & VirtualBox.
+You can use Vagrant (version 1.3.4+) to create a development environment locally with Chef & VirtualBox.
 Be sure to set the proper attributes for your development environment in the chef.json 
 sections in the Vagrantfile. More information is available `here <https://github.com/raxsavvy/margarine-chef>`.
 
