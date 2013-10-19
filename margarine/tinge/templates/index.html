@@ -4,37 +4,15 @@
 {% block description %}{% endblock description %}
 
 {% block body %}
-<div class="row-fluid">
+<div class="page-header">
   {% include "about.html" %}
 </div>
-<div class="row-fluid acc-wizard">
-  <div class="span10 offset1">
-    <div id="margarine-interaction" class="accordian">
-      <div class="accordian-group">
-        <div class="accordian-heading">
-          <a class="accordian-toggle" data-toggle="collapse" data-parent="#margarine-interaction" href="#margarine-submit">
-            Submit Article
-          </a>
-        </div>
-        <div id="margarine-submit" class="accordian-body collapse in">
-          <div class="accordian-inner">
-            {% include "form.submit.html" ignore missing %}
-          </div>
-        </div>
-      </div>
-      <div class="accordian-group">
-        <div class="accordian-heading">
-          <a class="accordian-toggle" data-toggle="collapse" data-parent="#margarine-interaction" href="#margarine-signin">
-            Sign In
-          </a>
-        </div>
-        <div id="margarine-signin" class="accordian-body collapse">
-          <div class="accordian-inner">
-            {% include "form.signin.html" ignore missing %}
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="row-fluid">
+  <div class="span4 offset1">
+    {% include "form.submit.html" ignore missing %}
+  </div>
+  <div class="span4 offset2">
+    {% include "form.signin.html" ignore missing %}
   </div>
 </div>
 {% endblock body %}

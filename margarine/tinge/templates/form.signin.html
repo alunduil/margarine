@@ -1,16 +1,21 @@
-<form class="form-signin">
-  <h2 class="form-signin-heading">Please Sign In</h2>
-  <input type="text" class="input-block-level" placeholder="Username">
-  <input type="password" class="input-block-level" placeholer="Password">
-  <div class="row-fluid">
-    <div class="span4">
-      <label class="checkbox">
-        <input type="checkbox" value="remember-me"> Remember Me
-      </label>
-      <a href="">Forgot Password</a><!-- TODO Display Shadow Box for Username -->
+<form id="form-signin">
+  <fieldset>
+    <legend>
+      Sign In <small class="muted">or <a href="">Sign Up</a></small>
+    </legend>
+
+    <input id="username" type="text" placeholder="Username"><br />
+
+    <div class="input-append">
+      <input id="password" type="password" placeholder="Password">
+      <button type="submit" class="btn">Forgot</button>
     </div>
-    <div class="span4 offset4 text-right">
-      <button class="btn btn-large btn-primary" type="submit">Sign In</button>
-    </div>
-  </div>
+
+    <label class="checkbox" for="remember-me">
+      <input id="remember-me" type="checkbox">
+      Remember Me
+    </label>
+
+    <button type="submit" class="btn btn-primary btn-small">Sign In</button>
+  </fieldset>
 </form>
