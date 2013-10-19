@@ -8,7 +8,7 @@
     </title>
 
     <meta name="description" content="{% block description %}{% endblock description%}">
-    <meta name="author" content="Alex Brandt <alunduil@alunduil.com>">
+    <meta name="author" content="Alex Brandt &gt;alunduil@alunduil.com&lt;">
 
     {% endblock head %}
 
@@ -23,7 +23,17 @@
   </head>
 
   <body>
-    {% block body %}{% endblock body %}
+    <div id="flash-alert" class="modal hide fade">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+      </div>
+    </div>
+
+    <div class="container">
+      {% block body %}{% endblock body %}
+    </div>
 
     <!-- Twitter Bootstrap -->
     <script src="{{ url_for('static', filename = 'js/jquery.min.js') }}"></script>
