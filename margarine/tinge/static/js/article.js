@@ -9,17 +9,12 @@
  * :``.article-date``:   The publication date of the article.
  * :``.article-text``:   The text contents of the article.
  *
- * Arguments
- * ---------
- *
- * :``apiEndpoint``: The endpoint that we can retrive article information from.
- *
  * .. note::
  *   The article information is expected to be JSON and have keys corresponding
  *   to the above information fields.
  */
-function populateArticle(apiEndpoint) {
-  $.get(apiEndpoint + "articles/" + getUrlVars()["id"],
+function populateArticle() {
+  $.get(window.margarine_blend_url + "articles/" + getUrlVars()["id"],
       function(data) {
         document.title = "Margarine—" + data.title; 
         $('.article-title').append(data.title);

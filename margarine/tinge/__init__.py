@@ -91,7 +91,7 @@ def home_page():
 
     """
 
-    return render_template('index.html')
+    return render_template('index.html', blend_url = Parameters()['api.endpoint'])
 
 Parameters("api", parameters = [
     { # --api-endpoint=URL; URL ← http://HOSTNAME:5050

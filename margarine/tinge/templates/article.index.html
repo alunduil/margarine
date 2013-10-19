@@ -21,11 +21,14 @@
 {% endblock body %}
 
 {% block js %}
+<script src="{{ url_for('static', filename = 'js/margarine.js') }}"></script>
 <script src="{{ url_for('static', filename = 'js/article.js') }}"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
-    populateArticle("{{ blend_url }}");
+    setBlendUrl("{{ blend_url }}");
+    populateArticle();
     });
 </script>
+
 {% endblock js %}
