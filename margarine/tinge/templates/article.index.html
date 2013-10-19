@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Margarine—Article{% endblock title %}
+{% block description %}{% endblock description %}
+
+{% block body %}
+<div class="row-fluid">
+  <div class="span3">
+    {% include "article.sidebar.html" %}
+  </div>
+  <div class="span9">
+    <div style="padding-bottom: 2em">
+      <h2 class="article-title"></h2>
+      <!-- TODO Horizontal line -->
+      <h3 class="article-author"></h3>
+      <h3 class="muted article-date"></h4>
+    </div>
+    <p class="article-text"></p>
+  </div>
+</div>
+{% endblock body %}
+
+{% block js %}
+<script src="{{ url_for('static', filename = 'js/article.js') }}"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    updateArticle("{{ blend_url }}");
+    });
+</script>
+{% endblock js %}

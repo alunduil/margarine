@@ -143,7 +143,7 @@ def view_article():
 
     """
 
-    return render_template('article.html', api_endpoint = Parameters()["api.endpoint"])
+    return render_template('article.index.html', blend_url = Parameters()["api.endpoint"])
 
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
 
