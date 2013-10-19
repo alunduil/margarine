@@ -18,7 +18,7 @@
  *   The article information is expected to be JSON and have keys corresponding
  *   to the above information fields.
  */
-function updateArticle(apiEndpoint) {
+function populateArticle(apiEndpoint) {
   $.get(apiEndpoint + "articles/" + getUrlVars()["id"],
       function(data) {
         document.title = "Margarine—" + data.title; 
