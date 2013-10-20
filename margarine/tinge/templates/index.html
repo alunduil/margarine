@@ -19,10 +19,14 @@
 
 {% block js %}
 <script src="{{ url_for('static', filename = 'js/margarine.js') }}"></script>
+<script src="{{ url_for('static', filename = 'js/margarine-article.js') }}"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
     setBlendUrl("{{ blend_url }}");
+    $('#article-submit').click(function() {
+      submitArticle($('#article-url').val());
+      });
     });
 </script>
 {% endblock js %}

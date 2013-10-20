@@ -114,6 +114,7 @@ def submit_article():
 
     response = make_response("", 202)
     response.headers["Location"] = url_for(".article", article_id = _id)
+    response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
 
     return response
 

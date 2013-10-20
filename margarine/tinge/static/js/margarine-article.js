@@ -29,6 +29,38 @@ function populateArticle() {
 }
 
 /**
+ * Submit an Article to the API.
+ *
+ * This function takes the passed URL (checks for a leading protocol) and then
+ * sends the proper URL using a POST to the server as a submission.
+ *
+ * Arguments
+ * ---------
+ *
+ * :``articleUrl``: The URL of the article to store in margarine.
+ *
+ * Returns
+ * -------
+ *
+ * The status code from the request.
+ */
+function submitArticle(articleUrl) {
+  ret = null;
+
+  if (articleUrl.slice(0, 6) != "http://") {
+    articleUrl = "http://" + articleUrl;
+  }
+
+  $.post(window.margarine_blend_url + "articles/",
+      { url: articleUrl },
+      function (data, textStatus, jqXHR) {
+        ret = textStatus;
+      });
+
+  return ret;
+}
+
+/**
  * Convert current page's URL query parameters to an associative array.
  *
  * Returns
