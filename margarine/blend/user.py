@@ -139,7 +139,7 @@ class UserInterface(MethodView):
     """
 
     def put(self, username):
-        """Create an User or modify an existing User.
+        '''Create an User or modify an existing User.
 
         Create an User
         =============
@@ -201,46 +201,44 @@ class UserInterface(MethodView):
 
         :409: Conflict—The new username requested is already in use.
 
-        """
+        '''
 
-        user = get_collection("users").find_one({ "username": username })
+        user = get_collection('users').find_one({ 'username': username })
 
-        logger.debug("user: %s", user)
-
-        message_properties = pika.BasicProperties()
-        message_properties.content_type = "application/json"
-        message_properties.durable = False
-
-        message = {
-                "username": request.form.get("username", username),
-                "email": request.form.get("email"),
-                "name": request.form.get("name"),
-                }
-
-        routing_key = "users.create"
+        routing_key = 'users.create'
 
         if user is not None:
-            routing_key = "users.update"
+            routing_key = 'users.update'
 
-            message["original_username"] = username
-
-            logger.debug("X-Auth-Token: %s", request.headers.get("X-Auth-Token"))
-
-            if get_keyspace("tokens").get(request.headers.get("X-Auth-Token")) != username:
+            if get_keyspace('tokens').get(request.headers.get('X-Auth-Token')) != username:
                 # TODO Redirect to token URL?
                 raise UnauthorizedError(username = username)
 
-        if message["email"] is None and routing_key == "users.create":
+        message = {
+                'username': username,
+                'requested_username': request.form.get('username', username),
+                'email': request.form.get('email', user.get('email')),
+                'name': request.form.get('name', user.get('name')),
+                }
+
+        if message['email'] is None and routing_key == 'users.create':
+            logger.error('400—Creation of a new user, %s, without an email', username)
             abort(400)
 
         message = json.dumps(message)
 
+        message_properties = pika.BasicProperties()
+        message_properties.content_type = 'application/json' # TODO Switch to binary format?
+        message_properties.durable = False
+
+        logger.info('blend.user.PUT—Sending Message (Type: %s)', routing_key)
+
         channel = get_channel()
-        channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
-        channel.basic_publish(body = message, exchange = "margarine.users.topic", properties = message_properties, routing_key = routing_key)
+        channel.exchange_declare(exchange = 'margarine.users.topic', type = 'topic', auto_delete = False)
+        channel.basic_publish(body = message, exchange = 'margarine.users.topic', properties = message_properties, routing_key = routing_key)
         channel.close()
 
-        return "", 202
+        return '', 202
 
     def get(self, username):
         """Retrieve an User's information.
