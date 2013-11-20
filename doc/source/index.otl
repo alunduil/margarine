@@ -1078,13 +1078,25 @@
 				[_] 0% Methodologies
 					[_] Unit Tests
 					[_] Integration Tests
-					[_] Functional Tests
-					[_] User Acceptance Tests
-			[_] Python Software Testing
-			[_] Margarine Software Testing
-			[_] 0% Continuous Integration
-				[_] 0% Software
-					[_] Jenkins
+					[_] System Tests
+					[_] Customer Tests
+				[_] % Python Frameworks
+					[_] unittest
+					[_] lettuce
+				[_] % Running Margarine Tests
+					[_] nosetests—nose
+			[_] % Services
+				[_] Jenkins
+				[_] Travis-CI
+	[_] % Part 4—Miscellaneous
+		[_] Goal: Available Application
+		[_] % Discovering Requirements
+			: I'm inclined to remove this exact section but keep in the idea of
+			: requirements gathering.
+			[_] What need does the software fill?
+			[_] What business gaps are solved by the software?
+			[_] What data can be shared with whom?
+			[_] Proof of Concept
 		[_] 0% Handling Failure
 			[_] Fallback Handling
 			[_] Fail Silently
@@ -1096,6 +1108,7 @@
 			[_] % Pipeline
 				[_] Automobile Example
 			[_] Critical Path
+			[_] Theory of Constraints
 			[_] 0% Decoupling
 				[_] Caches to Decouple
 				[_] Asynchronous Programming
@@ -1120,14 +1133,6 @@
 			[_] Flask
 			[_] Django
 		[_] Distribute and Parallelize
-		[_] % Agile Methodologies
-			[_] Measure Velocity
-			[_] Quick to React
-			[_] Cloud is Agile
-			[_] Quick Change
-			[_] Innovation
-			[_] Scrum
-			[_] Kanban
 		[_] 0% Use Cases or Stories
 			[_] Feature
 			[_] % Stories
