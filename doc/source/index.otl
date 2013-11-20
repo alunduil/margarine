@@ -13,53 +13,13 @@
 		: Opening story that sets the stage and gives background.  Often an
 		: earlier story that ties into the story we're telling and other
 		: miscellaneous but relevant information.
-		[_] 0% Margarine Overview
+		[_] 0% Margarine Backstory
 			[_] Margarine is open to everyone's contributions.
+			[_] Butter Cloudiness by Example
 			[_] 0% Margarine is derived from the following:
 				[_] Readability
 				[_] Delicious
-		[_] 0% How to Contribute to Margarine
-			[_] 0% Communication
-				[_] 0% Mailing list: margarine-dev@googlegroups.com
-					[_] Subscribe via margarine-dev+subscribe@googlegroups.com
-				[_] 0% IRC: irc://irc.freenode.net#margarine
-					[_] Something like http://wiki.openstack.org/UsingIRC
-					[_] Sign up for freenode at http://webchat.freenode.net
-			[_] 0% Basics
-				[_] Create a Github Account
-				[_] Fork margarine (https://github.com/raxsavvy/margarine)
-				[_] Clone margarine `git clone ${URI}`
-				[_] Add 'upstream' remote to your repository: `git remote add upstream https://github.com/raxsavvy/margarine.git`
-			[_] 0% Work Process
-				[_] 0% Branching Strategy
-					[_] 0% Issues
-						: When working an issue the following process should be followed:
-						[_] Pick an issue from https://github.com/raxsavvy/margarine/issues
-						[_] Create a branch named issues/N, where N is the number for the issue chosen
-						[_] 0% Make appropriate code changes including the following concerns:
-							[_] Coding Style (see margarine coding style)
-							[_] Implement any appropriate tests (TDD-ISH)
-						[_] Submit pull request for merge into master
-						[_] If changes to pull request are required, make them in the created branch
-					[_] 0% Features
-						: Features that are in trello follow the following process during
-						: development:
-						[_] Pick a card from https://trello.com/b/kYylJGe9/margarine
-						[_] Create a branch named features/category/name where category is a descriptive group of features (i.e. frontend) and name is a descriptive name for the feature (i.e. signin)
-						[_] 0% Make appropriate code changes including the following concerns:
-							[_] Coding Style (see margarine coding style)
-							[_] Implement any appropriate tests (TDD-ISH)
-						[_] Submit pull request for merge into master
-						[_] If changes to pull request are required, make them in the created branch
-		[_] 0% Margarine Release Process
-			[_] Cycle Timing
-			[_] Adapt Saltstack Release Process
-		[_] Margarine URLs
-		[_] % Margarine Components
-			[_] Margarine Architecture
-			[_] Walkthrough of each?
-			[_] Major Stories?
-		[_] Margarine Coding Style
+		[_] See Part 3—Margarine Inspection for details
 	[_] 0% Part 0—Cloud Fundamentals
 		[_] 0% What is Cloud?
 			[_] 0% A New Infrastructure
