@@ -101,7 +101,7 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
 
         * create_article_consumer
 
-        Incopmlete Actions
+        Incomplete Actions
         ------------------
 
         * update_references_consumer
@@ -110,12 +110,15 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
         '''
 
         for article in self.articles:
-            self.mock_collection.find_one.return_value = article
+            logger.debug('test article: %s', article)
+
+            self.mock_collection.find_one.return_value = copy.copy(article)
             self.mock_collection.find_one.return_value['created_at'] = self.test_datetime
 
-            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article))
+            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article, default = bson.json_util.default))
 
             _id = article.pop('_id')
+            article['created_at'] = self.test_datetime
 
             self._validate_mocks(_id, article)
 
