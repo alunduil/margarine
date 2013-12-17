@@ -10,6 +10,7 @@ import logging
 import json
 import pymongo
 import datetime
+import bson
 
 from test_margarine.test_unit.test_spread import BaseSpreadTest
 
@@ -144,10 +145,17 @@ class SpreadPasswordEmailTest(BaseSpreadUserTest):
     def test_user_password_email(self):
         '''Spread::User Password Email'''
 
-        for username, properties in self.accounts:
-            password_email_consumer(mock.MagicMock(), self.method, None, json.dumps(properties))
+        for username, properties in self.accounts.iteritems():
+            self.mock_collection.find_one.return_value = {
+                    '_id': bson.ObjectId(),
+                    'username': username,
+                    }
+            self.mock_collection.find_one.return_value.update(properties)
 
-            self.fail('Complete Stub!')
+            _ = { 'username': username }
+            _.update(properties)
+
+            password_email_consumer(mock.MagicMock(), self.method, None, json.dumps(_))
 
 class SpreadPasswordChangeTest(BaseSpreadUserTest):
     def setUp(self):

@@ -116,7 +116,7 @@ def send_user_email(user, verification):
 
     message["Subject"] = "Margarine Verification"
     message["From"] = "Margarine Verifications <" + Parameters()["email.from"] + ">"
-    message["To"] = "{user[name]} <{user[email]}>".format(user = user)
+    message["To"] = "{0} <{1}>".format(user.get('name'), user['email'])
 
     uri = URI(Parameters()["email.url"])
 
