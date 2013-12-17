@@ -1,18 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Margarine—Zen Browsing and Indexing{% endblock title %}
+{% block title %}Margarine—Article{% endblock title %}
 {% block description %}{% endblock description %}
 
 {% block body %}
-<div class="page-header">
-  {% include "about.html" %}
-</div>
 <div class="row-fluid">
-  <div class="span4 offset1">
-    {% include "form.submit.html" ignore missing %}
+  <div class="span3">
+    {% include "article.sidebar.html" %}
   </div>
-  <div class="span4 offset2">
-    {% include "form.signin.html" ignore missing %}
+  <div class="span9">
+    <div style="padding-bottom: 2em">
+      <h2 class="article-title"></h2>
+      <!-- TODO Horizontal line -->
+      <h3 class="article-author"></h3>
+      <h3 class="muted article-date"></h4>
+    </div>
+    <p class="article-text"></p>
   </div>
 </div>
 {% endblock body %}
@@ -24,9 +27,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
     setBlendUrl("{{ blend_url }}");
-    $('#article-submit').click(function() {
-      submitArticle($('#article-url').val());
-      });
+    populateArticle();
     });
 </script>
+
 {% endblock js %}

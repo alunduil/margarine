@@ -21,7 +21,7 @@ margarine_attributes = {
     :token_store => { :hostname => ip_addresses[:token_store] },
     :urls => { 
       :tinge => "http://#{ip_addresses[:tinge]}:5000",
-      :blend => "http://api.#{ip_addresses[:blend]}:5000/v1/",
+      :blend => "http://#{ip_addresses[:blend]}:5000/v1/",
     },
   },
 }
