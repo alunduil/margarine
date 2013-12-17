@@ -131,6 +131,9 @@ class Parameters(object):
 
         self.__dict__ = self.__shared_state
 
+        logger.debug("len(parameters): %s", len(parameters))
+        logger.debug("parsed? %s", getattr(self, "parsed", False))
+
         if len(parameters):
             assert(not getattr(self, "parsed", False), 'Parameters added after parsing has occurred!')
 
@@ -383,7 +386,17 @@ class Parameters(object):
 
         logger.debug('value: %s', value)
 
-        return value
+        logger.debug('self.parameters: %s', self.parameters)
+
+        types = dict([ (_['options'][0][2:], _.get('type', str)) for _ in self.parameters ])
+
+        if not len(types):
+            types = { key: str }
+
+        logger.debug('types: %s', types)
+        logger.debug('types[key]: %s', types[key])
+
+        return types[key](value)
 
     def __contains__(self, key):
         return key in self.iterkeys()
