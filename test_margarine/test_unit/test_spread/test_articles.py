@@ -6,11 +6,13 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import mock
-
 import logging
 import uuid
 import json
 import datetime
+import copy
+
+from bson import json_util # TODO Switch to a better handler for JSON, see #41
 
 from test_margarine.test_unit.test_spread import BaseSpreadTest
 
@@ -159,23 +161,25 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
 
         '''
 
-        for article in self.articles:
-            self.mock_collection.find_one.return_value = article
-
-            self.mock_collection.find_one.return_value.update({
+        updates = {
                 'created_at': self.test_datetime,
                 'etag': 'bf6285d832a356e1bf509a63edc8870f',
                 'parsed_at': self.test_datetime,
                 'size': 31052,
 
-                # TODO Move this to a better datastore?
                 'text_container_name': '44d85795',
                 'text_object_name': '248d-5899-b8ca-ac2bd8233755',
-                })
+                }
 
-            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article))
+        for article in self.articles:
+            self.mock_collection.find_one.return_value = copy.copy(article)
+
+            self.mock_collection.find_one.return_value.update(updates)
+
+            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article, default = json_util.default))
 
             _id = article.pop('_id')
+            article.update(updates)
 
             self._validate_mocks(_id, article)
 
