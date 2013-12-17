@@ -1,13 +1,13 @@
 {
   "name": "margarine",
-  "description": "Implments the base role for margarine\'s components.",
+  "description": "Implments the base role for margarine's components.",
 
   "json_class": "Chef::Role",
   "chef_type": "role",
 
   "default_attributes": {
     "margarine": {
-      "service": { "proxy": "nginx" }
+      "service": { "proxy": "nginx" },
       "queue": {
         "username": "margarine"
       },
@@ -15,11 +15,11 @@
         "username": "margarine"
       }
     }
-  }
+  },
 
   "override_attributes": {},
 
   "run_list": [
-    "role[base]",
+    "role[base]"
   ]
 }

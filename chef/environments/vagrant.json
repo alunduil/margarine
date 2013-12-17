@@ -27,7 +27,7 @@
       "password": "c9a4272f-e4b2-4a25-98bc-0c6b44ce34d8"
     },
     "rabbitmq": {
-      "enabled_plugins": [ "rabbitmq_management" ]
+      "enabled_plugins": [ "rabbitmq_management" ],
       "enabled_users": [
         {
           "name": "margarine",
