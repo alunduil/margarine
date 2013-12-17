@@ -166,5 +166,5 @@ class SpreadPasswordChangeTest(BaseSpreadUserTest):
     def test_user_password_change(self):
         '''Spread::User Password Change'''
 
-        for username, properties in self.accounts:
+        for username, properties in self.accounts.iteritems():
             self.fail('Complete Stub!')
