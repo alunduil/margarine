@@ -1,7 +1,0 @@
-{
-  "id": "file_debug_h",
-  "class": "FileHandler",
-  "level": "DEBUG",
-  "formatter": "default_debug_f",
-  "args": "(\"/var/log/margarine/margarine.log\",)"
-}

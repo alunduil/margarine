@@ -19,6 +19,7 @@
   "run_list": [
     "role[base]",
     "recipe[rabbitmq]",
+    "recipe[rabbitmq::user_management]",
     "recipe[rabbitmq::plugin_management]"
   ]
 }

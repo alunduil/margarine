@@ -8,6 +8,12 @@
   "default_attributes": {
     "margarine": {
       "service": { "proxy": "nginx" }
+      "queue": {
+        "username": "margarine"
+      },
+      "datastore": {
+        "username": "margarine"
+      }
     }
   }
 

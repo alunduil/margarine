@@ -9,7 +9,7 @@
   "override_attributes": {},
 
   "run_list": [
-    "role[base]",
+    "role[margarine]",
     "recipe[margarine::tinge]"
   ]
 }

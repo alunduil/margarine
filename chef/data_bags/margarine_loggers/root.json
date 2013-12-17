@@ -1,5 +1,0 @@
-{
-  "id": "root",
-  "level": "DEBUG",
-  "handlers": "file_debug_h"
-}   
