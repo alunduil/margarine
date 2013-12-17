@@ -1,0 +1,1458 @@
+[_] 0% Cloud Application Architect's Handbook
+	: Checkboxes being checked indicates that the content has been developed and
+	: inserted into margarine's documentation.
+	[_] 0% Introduction
+		: The purpose and goal of this documentation
+		[_] Cloud Application Architect's Handbook
+		[_] Definitive guide to margarine
+	[_] Epigraph
+		: A phrase, quotation, or poem at the beginning of a document or
+		: component.  Typically, a preface, summary, counter-example, or link to a
+		: larger work or literary canon.
+	[_] 0% Prologue
+		: Opening story that sets the stage and gives background.  Often an
+		: earlier story that ties into the story we're telling and other
+		: miscellaneous but relevant information.
+		[_] 0% Margarine Backstory
+			[_] Margarine is open to everyone's contributions.
+			[_] Butter Cloudiness by Example
+			[_] 0% Margarine is derived from the following:
+				[_] Readability
+				[_] Delicious
+		[_] See Part 3—Margarine Inspection for details
+	[_] 0% Part 0—Cloud Fundamentals
+		[_] 0% What is Cloud?
+			[_] 0% A New Infrastructure
+				[_] High Availability Changes
+			[_] 0% NIST
+				[_] 0% Essential Characteristics
+					[_] 0% On-demand Self-Service
+						: A consumer can unilaterally provision computing capabilities,
+						: such as server time and network storage, as needed automatically
+						: without requiring human interaction with each service provider.
+						[_] API
+						[_] Control Panel
+					[_] Broad Network Access
+						: Capabilities are available over the network and accessed through
+						: standard mechanisms that promote use by heterogeneous thin or
+						: thick client platforms (e.g., mobile phones, tablets, laptops,
+						: and workstations).
+					[_] Resource Pooling
+						: The provider's computing resources are pooled to serve multiple
+						: consumers using a multi-tenant model, with different physical
+						: and virtual resources dynamically assigned and reassigned
+						: according to consumer demand.  There is a sense of location
+						: independence in that the customer generally has no control or
+						: knowledge over the exact location of the provided resources but
+						: may be able to specify location at a higher level of abstraction
+						: (e.g., country, state, or datacenter).  Examples of resources
+						: include storage, processing, memory, and network bandwidth.
+					[_] Rapid Elasticity
+						: Capabilities can be elastically provisioned and released, in
+						: some cases automatically, to scale rapidly outward and inward
+						: commensurate with demand.  To the consumer, the capabilities
+						: available for provisioning often appear to be unlimited and can
+						: be appropriated in any quantity at any time.
+					[_] Measured Service
+						: Cloud systems automatically control and optimize resource use by
+						: leveraging a metering capability at some level of abstraction
+						: appropriate to the type of service (e.g., storage, processing,
+						: bandwidth, and active user accounts).  Resource usage can be
+						: monitored, controlled, and reported, providing transparency for
+						: both the provider and consumer of the utilized service.
+				[_] 0% Service Models
+					[_] Software as a Service
+					[_] Platform as a Service
+					[_] Infrastructure as a Service
+				[_] 0% Deployment Models
+					[_] Private Cloud
+					[_] Community Cloud
+					[_] Public Cloud
+					[_] Hybrid Cloud
+		[_] 0% Virtualization
+			[_] What is Virtualization?
+				: Virtualization is the process by which computational resources are
+				: allocated to tenants such that they can be reassigned as necessary.
+				: This is the current and simplest technology for meeting the resource
+				: pooling requirement of cloud computing put forth by NIST.
+			[_] 0% Virtual Machine
+				[_] Instance
+				[_] Guest Image
+				[_] Paravirtualization
+				[_] Hardware Virtualization
+			[_] 0% Hypervisor
+				[_] 0% Management Interfaces
+					[_] libvirt
+					[_] xapi
+				[_] 0% Xen
+					[_] 0% Commercial Backing
+						[_] Citrix
+					[_] 0% Architecture
+						[_] Dom0
+						[_] DomU
+						[_] Hypercalls
+					[_] 0% Networking
+						[_] Management: xen-vnif
+						[_] 0% Networking Stack
+							[_] What is this networking stack?
+							[_] DVSC (Distributed Virtual Switch Controller)
+							[_] Open vSwitch
+				[_] KVM (Mention QEMU?)
+					[_] History including QEMU roots
+					[_] 0% Commercial Backing
+						[_] Red Hat
+					[_] 0% Architecture
+						[_] virtio
+					[_] 0% Networking
+						[_] Management: virtio
+						[_] 0% Networking Stack
+							[_] What is this networking stack?
+							[_] Bridged Interfaces
+		[_] 0% Orchestration
+			[_] What is Orchestration?
+				: Orchestration is the act of managing or controlling multiple
+				: hypervisors to create a dynamic infrastructure built on top of
+				: classic server hardware.  Orchestration enables two other components
+				: of the NIST cloud definition: rapid elasticity and possibly measured
+				: service.
+			[_] 0% Openstack
+				[_] 0% Projects
+					[_] Cells
+					[_] % Cinder
+						[_] % Plugins
+							[_] Lunr
+					[_] Flavor
+					[_] Glance
+					[_] Keystone
+					[_] Nova
+					[_] Neutron
+					[_] Swift
+				[_] 0% Command Line Tools
+					[_] novaclient
+	[_] 0% Part 1—Application Development—Agile
+		[_] % Agile Methodologies
+			[_] Agile Assessment
+			[_] 0% Three Types of Success
+				[_] Organizational
+				[_] Technical
+				[_] Personal
+			[_] 0% Vocabulary
+				[_] Refactoring
+				[_] Technical Debt
+				[_] Timeboxing
+				[_] Last Responsible Moment
+				[_] Stories
+				[_] Iterations
+				[_] Velocity
+				[_] Theory of Constraints
+				[_] Mindfulness
+			[_] 0% Classical Phases of Development
+				[_] Planning
+				[_] Analysis
+				[_] Design & Coding
+				[_] Testing
+				[_] Deployment
+			[_] 0% Team Member Roles
+				[_] 0% On-Site Customers
+					[_] 0% Responsibilities
+						[_] Defining Software
+						[_] Planning Releases
+						[_] Evangelize Project's Vision
+						[_] Identify Features
+						[_] Identify Stories
+						[_] Group Features into Small, Frequent Releases
+						[_] Provide Requirement Details to Programmers Upon Request
+						[_] Create Mock-Ups
+						[_] Review Work in Progress
+						[_] Create Customer Tests
+					[_] Two Customers for Three Programmers
+				[_] 0% Product Manager (Product Owner)
+					[_] 0% Responsibilities
+						[_] Maintain Product Vision
+						[_] Promote Product Vision
+						[_] Generating Features
+						[_] Generating Stories
+						[_] Prioritize for Release Planning
+						[_] Provide Direction to On-Site Customers
+						[_] Review Work in Progress
+						[_] Lead Iteration Demos
+						[_] Deal with Politics
+						[_] Successful Deployment to Market
+					[_] Participate in Every Iteration
+				[_] 0% Domain Experts (Subject Matter Experts)
+					[_] 0% Responsibilities
+						[_] Provide Domain Details Upon Request
+						[_] Create Customer Tests
+					[_] Small Teams Double this Role with Product Manager
+				[_] 0% Interaction Designers
+					[_] 0% Responsibilities
+						[_] Define the Product's UI
+				[_] 0% Business Analysts
+					[_] 0% Responsibilities
+						[_] Help Customers Think of Forgotten Details
+				[_] 0% Programmers
+					[_] 0% Responsibilities
+						[_] Create Working Code
+						[_] Provide Estimates
+						[_] Suggest Alternatives
+						[_] Ensure Software Releasable at Iteration End
+					[_] 0% Sub-Roles
+						[_] Designers
+						[_] Architects
+						[_] Technical Specialists
+				[_] 0% Testers
+					[_] 0% Responsibilities
+						[_] Produce Quality Results
+						[_] Analyze Root Cause
+					[_] One Tester for Four Programmers
+				[_] 0% Coaches
+					[_] 0% Responsibilites
+						[_] Enable the Team to Succeed
+						[_] Arrange for Shared Workspace
+						[_] Ensure Team includes the Right People
+						[_] Help Team Interact with Rest of Organization
+						[_] Required Reporting
+					[_] Dynamic Role
+					[_] Non-Explicit Leadership
+					[_] 0% Sub-Roles
+						[_] Programmer-Coach
+						[_] Project Manager
+				[_] 0% Other Roles
+					[_] Project Community
+					[_] Stakeholders
+					[_] Executive Sponsor
+			[_] 0% Values
+				[_] Courage
+					: To make the right decisions, even when they're difficult, and to tell
+					: the stakeholders the truth when they need to hear it
+				[_] Communication
+					: To give the right people the right information when they can use it to
+					: its maximum advantage
+				[_] Simplicity
+					: To discard the things we want but don't actually need
+				[_] Feedback
+					: To learn the appropriate lessons at every possible opportunity
+				[_] Respect
+					: To treat ourselves and others with dignity, and to acknowledge
+					: expertise and our mutual desire for success
+			[_] 0% Thinking
+				[_] Étude
+				[_] 0% Pair Programming
+					[_] 0% Phases
+						[_] Design & Coding
+						[_] Testing
+					[_] 0% Roles
+						[_] Programmers
+					[_] Why?
+					[_] 0% How?
+						[_] Driving and Navigating
+						[_] Pairing Stations
+						[_] 0% Challenges
+							[_] Comfort
+							[_] Mismatched Skills
+							[_] Communication Style
+							[_] Tools and Keybindings
+				[_] 0% Energized Work
+					[_] 0% Phases
+						[_] Planning
+						[_] Analysis
+						[_] Design & Coding
+						[_] Testing
+						[_] Deployment
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Take Breaks
+						[_] Go Home
+				[_] 0% Informative Workspace
+					[_] 0% Phases
+						[_] Planning
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Subtle Cues
+						[_] Big Visible Charts
+						[_] Hand Drawn Charts
+						[_] Process Improvement Charts
+						[_] 0% Challenges
+							[_] Gaming
+					[_] 0% Chart Types
+						[_] Pair Combinations
+						[_] Tests per Second
+				[_] 0% Root-Cause Analysis
+					[_] 0% Phases
+						[_] Planning
+						[_] Testing
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Five Whys
+						[_] Which to Fix?
+						[_] 0% Challenges
+							[_] Requires Outside Help
+				[_] 0% Retrospectives
+					[_] 0% Phases
+						[_] Planning
+						[_] Testing
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How? (Iteration Retrospective)
+						[_] Step 1: The Prime Directive
+						[_] Step 2: Brainstorming (~30 Minutes)
+						[_] Step 3: Mute Mapping (~10 Minutes)
+						[_] Step 4: Retrospective Objective (~20 Minutes)
+					[_] 0% Types
+						[_] Iteration Retrospective
+						[_] Release Retrospective
+						[_] Project Retrospective
+						[_] Surprise Retrospective
+			[_] 0% Collaborating
+				[_] Étude
+				[_] 0% Trust
+					[_] 0% Phases
+						[_] Planning
+						[_] Analysis
+						[_] Design & Coding
+						[_] Testing
+						[_] Deployment
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] 0% Team Strategies
+							[_] 0% Coming Together
+								[_] Forming
+								[_] Storming
+								[_] Norming
+								[_] Performing
+							[_] Customer-Programmer Empathy
+							[_] Programmer-Tester Empathy
+							[_] Eat Together
+							[_] Team Continuity
+						[_] 0% Organizational Strategies
+							[_] Impressions
+							[_] Show Some Hustle
+							[_] Deliver on Commitments
+							[_] Manage Problems
+							[_] Respect Customer Goals
+							[_] Promote the Team
+							[_] Be Honest
+				[_] 0% Sit Together
+					[_] 0% Phases
+						[_] Planning
+						[_] Analysis
+						[_] Design & Coding
+						[_] Testing
+						[_] Deployment
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Not Accomodating Poor Communication
+						[_] Complete Team Sitting Together
+						[_] Making Room
+						[_] Designing Your Workspace
+						[_] Sample Workspaces
+						[_] Adopting an Open Workspace
+				[_] 0% Real Customer Involvement
+					[_] 0% Phases
+						[_] Analysis
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Coaches
+					[_] 0% How?
+						[_] Personal Development—Programmers are Customer
+						[_] In-House Custom Development
+						[_] Outsourced Custom Development
+						[_] Vertical-Market Software
+						[_] Horizontal-Market Software
+				[_] 0% Ubiquitous Language
+					[_] 0% Phases
+						[_] Analysis
+					[_] 0% Roles
+						[_] Programmers
+					[_] 0% How?
+						[_] Speak the Same Language
+						[_] Not Two Languages
+						[_] Ubiquitous Language in Code
+						[_] Refine Ubiquitous Language
+				[_] 0% Stand-Up Meetings
+					[_] 0% Phases
+						[_] Planning
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] How?
+						[_] Pre-Set Time
+						[_] 0% Three Answers
+							[_] What did I do yesterday?
+							[_] What will I do today?
+							[_] What problems are preventing me from making progress?
+						[_] Be Brief
+				[_] 0% Coding Standards
+					[_] 0% Phases
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] Programmers
+						[_] Coaches
+					[_] 0% How?
+						[_] Create minimal set of standards you can live with
+						[_] Focus on Consistency and Consensus over Perfection
+						[_] Disagreement—Omit Contested Items
+						[_] Follow the Standard
+				[_] 0% Iteration Demo
+					[_] 0% Phases
+						[_] Deployment
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Lead by Product Manager (Best Practice)
+						[_] Approximately Ten Minutes
+						[_] Full Disclosure
+						[_] 0% Two Key Questions
+							[_] Is our work to date satisfactory?
+							[_] May we continue?
+						[_] Provide a Release
+				[_] 0% Reporting
+					[_] 0% Phases
+						[_] Planning
+						[_] Analysis
+						[_] Design & Coding
+						[_] Testing
+						[_] Deployment
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% Types of Progress Reports
+						[_] Vision Statement
+						[_] Weekly Demo
+						[_] Release and Iteration Plans
+						[_] Burn-up Chart
+						[_] 0% Optional
+							[_] Roadmap
+							[_] Status Email
+						[_] 0% Optional Management Reports
+							[_] Productivity Reports
+							[_] Throughput
+							[_] Defects
+							[_] Time Usage
+							[_] Source Lines of Code and Function Points
+						[_] 0% Not Progress Reports
+							[_] Number of Stories
+							[_] Velocity
+							[_] Code Quality
+			[_] 0% Releasing
+				[_] Étude
+				[_] 0% "Done Done"
+					[_] 0% Phases
+						[_] Design & Coding
+						[_] Deployment
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Finish All The Things
+						[_] Production-Ready Software
+						[_] Work Stories to Completion Before Starting New Ones
+						[_] Making Time (Small Stories)
+					[_] 0% Check List
+						[_] Tested (all unit, integration, and customer tests finished)
+						[_] Coded (all code written)
+						[_] Designed (code refactored to the team's satisfaction)
+						[_] Integrated (the story works from end to end and fits in with the rest of the software)
+						[_] Builds (the build script includes any new modules)
+						[_] Installs (the build script includes the story in the automated installer)
+						[_] Migrates (the build script updates database schema if necessary)
+						[_] Reviewed (customers have reviewed the story and confirmed that it meets their expectations)
+						[_] Fixed (all known bugs have been fixed or scheduled as their own stories)
+						[_] Accepted (customers agree that the story is finished)
+						[_] Others
+				[_] 0% No Bugs
+					[_] 0% Phases
+						[_] Design & Coding
+						[_] Testing
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Write Fewer Bugs—technical and organizational practices
+						[_] Eliminate Bug Breeding Grounds—refactor poorly designed code
+						[_] Fix Bugs Quickly—test for recurrence and fix design flaws
+						[_] Test Your Process—exploratory testing reveals systemic problems and hidden assumptions
+						[_] Fix Your Process—make mistaked impossible
+						[_] Invert Expectations
+				[_] 0% Version Control
+					[_] 0% Phases
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+					[_] 0% Vocabulary
+						[_] Repository
+						[_] Sandbox
+						[_] Check Out
+						[_] Update
+						[_] Lock
+						[_] Check in or Commit
+						[_] Revert
+						[_] Tip or Head
+						[_] Tag or Label
+						[_] Roll Back
+						[_] Branch
+						[_] Merge
+						[_] Master or Trunk
+					[_] 0% Why?
+						[_] Concurrent Editing
+						[_] Time Travel
+					[_] 0% How?
+						[_] Whole Project
+						[_] Not Artifacts
+						[_] Customer Documents
+						[_] Keep it Clean
+						[_] Single Codebase
+						[_] Appropriate Branching
+				[_] 0% Ten-Minute Build
+					[_] 0% Phases
+						[_] Design & Coding
+						[_] Deployment
+					[_] 0% Roles
+						[_] Programmers
+					[_] 0% How?
+						[_] Automate Your Build
+						[_] Comprehensive not Complex (vagrant up)
+						[_] Automate in First Iteration
+						[_] Ten Minutes or Less
+				[_] 0% Continuous Integration
+					[_] 0% Phases
+						[_] Design & Coding
+						[_] Deployment
+					[_] 0% Roles
+						[_] Programmers
+					[_] What is Integrating?
+					[_] Integrating with DVCS
+					[_] 0% How?
+						[_] Integrate Continuously
+						[_] Never Break the Build
+						[_] Tools (Jenkins, Travis, &c)
+						[_] Slow Builds
+						[_] 0% Multistage Integration Builds
+							[_] Commit Build (Ten Minute Build)
+							[_] Slower Secondary Build
+							[_] Prefer Improving Tests to Multistage Integration
+				[_] 0% Collective Code Ownership
+					[_] 0% Phases
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] Programmers
+					[_] 0% How?
+						[_] Always Leave the Code Better than it Was
+						[_] Team Code not My Code
+						[_] Pair Programming
+						[_] Code Reviews (alternative to pairing)
+				[_] 0% Documentation
+					[_] 0% Phases
+						[_] Deployment
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Coaches
+					[_] 0% How?
+						[_] Oral Tradition
+					[_] 0% Possible Physical Documents
+						[_] Product Documentation
+						[_] Handoff Documentation
+			[_] 0% Planning
+				[_] Étude
+				[_] 0% Vision
+					[_] 0% Phases
+						[_] Planning
+						[_] Analysis
+					[_] 0% Benefits
+						[_] Focus Project
+						[_] Reduce Thrashing
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Coaches
+					[_] 0% How?
+						[_] Visionary as Product Manager		
+						[_] 0% Document Vision in Vision Statement
+							[_] What the project accomplishes
+							[_] Why the project is valuable
+							[_] Criteria for Success
+						[_] Promote the Vision
+				[_] 0% Release Planning
+					[_] 0% Phases
+						[_] Planning
+						[_] Analysis
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Coaches
+					[_] 0% How?
+						[_] One Project at a Time
+						[_] Release Early, Release Often
+						[_] Adapt Plans to Increase Value
+						[_] Ready to Release Anytime
+						[_] Atomic Stories
+						[_] 0% Creating a Release Plan
+							[_] 0% Types
+								[_] Scopeboxed
+								[_] Timeboxed
+							[_] Timeboxed Releases are Better
+							[_] Use Vision to find Minimum Marketable Features
+							[_] Turn Features into Stories
+							[_] Estimate Stories (see Planning Game)
+							[_] Use velocity to predict the number of stories per release
+							[_] Final list of stories is the release plan
+						[_] Last Responsible Moment Planning
+				[_] 0% The Planning Game
+					[_] 0% Phases
+						[_] Planning
+						[_] Analysis
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Coaches
+					[_] 0% How?
+						[_] Anyone creates a story or selects an unplanned story
+						[_] Programmers estimate the story
+						[_] Customers place the story into the plan in order of its relative priority
+						[_] Repeat until all stories have been estimated and placed in the plan
+						[_] Use Index Cards to focus on the big picture
+						[_] Winning Requires Open Communication
+				[_] 0% Risk Management
+					[_] 0% Phases
+						[_] Planning
+					[_] 0% Benefits
+						[_] Make and Meet Commitments
+						[_] Reduce Costs
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Risk Happens
+						[_] 0% Risk is Varied
+							[_] Vacations or Sick Time
+							[_] Unexpected Road Bumps
+						[_] 0% Project Specific Risk
+							[_] 0% Collect Risks
+								[_] What about the project keeps you up at night?
+								[_] A year later, you're interviewed about failure, what happened?
+								[_] Opposite of the best dreams for the project
+								[_] Failures without fault
+								[_] 0% Failures with fault
+									[_] Customers
+									[_] Stakeholders
+									[_] Testers
+									[_] Programmers
+									[_] Managements
+									[_] Yours
+								[_] Success with *one* unsatisfied or angry stakeholder
+							[_] 0% Estimate Probability
+								[_] High
+								[_] Medium
+								[_] Low
+							[_] 0% Impact
+								[_] Dollars lost
+								[_] Days delayed
+								[_] Cancellation
+							[_] 0% Decide How to Handle Filtered Risks 
+								[_] Transition Indicators (when)
+								[_] Mitigation
+								[_] Contingency
+								[_] Risk Exposure (containment)
+							[_] 0% Risk Calculation
+								risk_adjusted_points_remaining = (iterations_remaining - risk_exposure) * velocity / risk_multiplier
+						[_] Burn-Up Chart
+				[_] 0% Iteration Planning
+					[_] 0% Phases
+						[_] Planning
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Coaches
+					[_] 0% How?
+						[_] Timebox Iterations (One to Three Weeks)
+						[_] 0% Iteration Schedule
+							[_] Demonstrate previous iteration (up to half hour)
+							[_] Hold retrospective on previous iteration (one hour)
+							[_] Plan iteration (half hour to four hours)
+							[_] Commit to delivering stories (five minutes)
+							[_] Develop stories (all remaining time)
+							[_] Prepare release (less than ten minutes)
+						[_] 0% Planning Iteration
+							[_] Estimate previous iterations velocity
+							[_] Select new stories using calculated velocity (4 to 10 stories)
+							[_] Break stories into engineering tasks
+							[_] Estimate tasks in person-hours
+							[_] Compare total task estimate to previous iteration
+						[_] 0% Committing to the Plan
+							[_] Ask each person in turn if she is comfortable delivering the stories in this iteration
+						[_] 0% Work!
+							[_] Programmers deliver stories
+							[_] Customers work on release plan
+						[_] Iteration Planning Board (tracking)
+						[_] 0% Things Go Wrong
+							[_] Change the plan to meet commitments
+							[_] Use slack to compensate?
+							[_] Simplify or postpone an engineering task
+							[_] Notify the Customers!
+						[_] 0% Partially Complete Work
+							[_] Only deliver what is complete
+							[_] Velocity will stabilize
+						[_] 0% Emergency Requests
+							[_] Add only what is also removed	
+							[_] Simply add the story to the plan
+							[_] Get a Batman
+							[_] Consider Daily Iterations
+					[_] Iterations are points to check progress
+				[_] 0% Slack
+					[_] 0% Phases
+						[_] Planning
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] Programmers
+						[_] Coaches
+					[_] 0% How?
+						[_] Compensates for random variation in velocity
+						[_] Schedule points to non-essential work to fill randomly available time
+						[_] Technical Debt Pay Down
+						[_] Research Time
+						[_] 0% What at Risk
+							[_] Refactor only if iteration schedule allows
+							[_] Rarely utilize voluntary overtime (see energized work)
+							[_] Cancel Research time
+						[_] Add Slack if there isn't enough time for these activities
+						[_] 0% Sources of Randomness
+							[_] Customer Availability
+							[_] Technical Debt
+				[_] 0% Stories
+					[_] 0% Phases
+						[_] Planning
+						[_] Analysis
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] One or Two line description of work
+						[_] Small
+						[_] Customer Centered
+						[_] 0% Examples
+							[_] Warehouse inventory report
+							[_] Full-screen demo option for job fair
+						[_] 0% Characteristics
+							[_] Represent *customer* value and written in customer terminology
+							[_] Describe an end result the *customer* values not implementation
+							[_] Clear completion criteria
+							[_] Include an objective test (possibly spoken) that programmers can use to determine completion
+						[_] Write on Index Cards
+						[_] Splitting and Combining Stories (4 to 10 per iteration)
+						[_] 0% Special Stories
+							[_] Documentation Stories
+							[_] 0% Nonfunctional Stories
+								[_] Performance
+								[_] Scalability
+								[_] Stability
+							[_] Bug Stories
+							[_] Spike Stories
+						[_] 0% Non-Story Activities
+							[_] Estimating Stories
+							[_] Support Requests
+							[_] Other Unscheduled Interruptions
+							[_] Meetings
+							[_] Technical Details
+				[_] 0% Estimating
+					[_] 0% Phases
+						[_] Planning
+					[_] 0% Roles
+						[_] Programmers
+					[_] 0% How?
+						[_] Predict Effort not Calendar Time
+						[_] Story Points (Ideal Engineering Days)
+						[_] Estimates are Consistent
+						[_] Estimates are Almost Never Accurate
+						[_] Velocity (done done estimates from last iteration)
+						[_] Velocity only works with the Iteration Timebox
+						[_] Use Slack to Smooth the Ripples in Velocity
+						[_] Estimate with your gut
+						[_] Half points but no Quarter points
+						[_] Estimate engineering tasks in ideal hours (not days)
+						[_] 0% Dealing with Difficult Estimates
+							[_] Use Customer Huddles
+							[_] Mark the issues '??' and come back later
+							[_] Make a spike
+							[_] Enough information?  If not will it change the estimate?
+							[_] Timebox to five minutes per story
+						[_] Politely and firmly refuse to change estimates when pressured
+						[_] 0% Improving Velocity
+							[_] Pay down tehcnical debt
+							[_] Improve Customer Involvement
+							[_] Support Energized Work
+							[_] Offload Programmer Duties
+							[_] Provide Needed Resources
+							[_] Add Programmers (CAREFULLY)
+			[_] 0% Developing
+				[_] Étude
+				[_] 0% Incremental Requirements
+					[_] 0% Phases
+						[_] Analysis
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Testers
+						[_] Coaches
+					[_] 0% How?
+						[_] Living Requirements—Customers
+						[_] Vision, features, and stories
+						[_] Rough Expectations
+						[_] Mock-ups, customer tests, and completion criteria
+						[_] Customer Review
+				[_] 0% Customer Tests
+					[_] 0% Phases
+						[_] Analysis
+						[_] Testing
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+						[_] Testers
+					[_] 0% How?
+						[_] Ensuring communication not working software
+						[_] Cover Potential Misunderstandings
+						[_] Describe
+						[_] Demonstrate (specific examples)
+						[_] Develop
+						[_] Focus on Business Rules not Interface
+						[_] Lead by Customers
+						[_] Programmers turn Customer Tests into Automated Tests
+				[_] 0% Test-Driven Development
+					[_] 0% Phases
+						[_] Design & Coding
+						[_] Testing
+					[_] 0% Roles
+						[_] Programmers
+						[_] Testers
+					[_] 0% How?
+						[_] Will feel slow and awkward
+						[_] Think (small increment with no production code)
+						[_] Red (write the test to the interface not internals)
+						[_] Green (just enough production code to go green)
+						[_] Refactor (improve the code with confidence)
+						[_] Repeat
+						[_] Tests run quickly (less than ten seconds)
+					[_] 0% Types of Tests
+						[_] Unit Tests (100 per second) fast, in memory
+						[_] Mocks point to areas of coupling
+						[_] Focused Integration Tests (one interaction with a system)
+						[_] End-to-End Tests (a whole operation on all systems)
+						[_] Legacy Code (code without tests :p)
+					[_] TDD is double-entry bookkeeping for programmer intent
+				[_] 0% Refactoring
+					[_] 0% Phases
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] Programmers
+					[_] 0% How?
+						[_] Always make code a little better
+						[_] 0% Reflective Design
+							[_] Improve as seen fit
+							[_] 0% Check for smells
+								[_] Divergent Change (unrelated changes affect the same class)
+								[_] Shotgun Surgery (multiple classes modified for one change)
+								[_] Primitive Obsession and Data Clumps
+								[_] Data Class and Wannabee Static Class (separated state and methods)
+								[_] Coddling Nulls (fail fast)
+								[_] Time Dependencies and Half-Baked Objects (order dependent calls and lost state)
+							[_] Analyze Existing Code
+						[_] Sequence of small transformations
+				[_] 0% Simple Design
+					[_] 0% Phases
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] Programmers
+					[_] 0% How?
+						[_] Avoid Speculative Coding
+						[_] Once and Only Once (DRY)
+						[_] Self-Documenting Code
+						[_] Isolate Third-Party Components (Adapter GoF)
+						[_] Limit Published Interfaces
+						[_] Fail Fast
+				[_] 0% Incremental Design and Architecture
+					[_] 0% Phases
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] Programmers
+					[_] 0% How?
+						[_] Be specific
+						[_] Implement no more than necessary
+						[_] Solve One Problem at a Time
+						[_] Incrementally Designing Methods (TDD)
+						[_] Incrementally Designing Classes
+						[_] Avoid TODOs and create card for postponed refactorings
+						[_] Incrementally Designing Architecture
+						[_] Risk-Driven Architecture
+						[_] Embrace Simplicity
+						[_] Only implement scheduled stories
+						[_] Designing and Coding and Recoding (predictive and reflective refactoring)
+				[_] 0% Spike Solutions
+					[_] 0% Phases
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] Programmers
+					[_] 0% How?
+						[_] Throw it away or quick and dirty
+						[_] Perform an Experiment (code or interpreter)
+						[_] Schedule (story) only when necessary for another story
+						[_] Slack absorbs larger spikes
+				[_] 0% Performance Optimization
+					[_] 0% Phases
+						[_] Design & Coding
+					[_] 0% Roles
+						[_] On-Site Customers
+						[_] Programmers
+					[_] 0% How?
+						[_] Measure (profile)
+						[_] Modify (refactor)
+						[_] Repeat
+					[_] 0% When?
+						[_] Customer's perception of performane impacted
+						[_] Customer controls when
+					[_] 0% Stories
+						[_] Specific
+						[_] Throughput
+						[_] Latency
+						[_] Responsiveness,
+				[_] 0% Exploratory Testing
+					[_] 0% Phases
+						[_] Testing
+					[_] 0% Benefits
+						[_] Improve Quality
+						[_] Integrate Testers
+					[_] 0% Roles
+						[_] Testers
+					[_] 0% How?
+						[_] Think of test
+						[_] Run software (poke)
+						[_] Find problem or non-issue
+						[_] Technical Investagtion not defect finding
+						[_] 0% Tools
+							[_] Charters
+							[_] Observation
+							[_] Notetaking
+							[_] 0% Heuristics
+								[_] None, Some, All
+								[_] Goldilocks: too big, too small, just right
+								[_] Position: beginning, middle, end
+								[_] Count: zero, one, many
+								[_] CRUD: create, read, update, delete
+								[_] Command Injections
+								[_] Data Type Attacks
+						[_] Found Bugs → Fix Cause
+						[_] Not a QA trigger, substitute, &c
+	[_] % Part 2—Application Deployment—DevOps
+		[_] % Classical Phases of Deployment
+			[_] Prepare Environment
+			[_] Configure Software
+			[_] % Keep it Running
+				[_] Maintain Environment
+				[_] Maintain Software
+		[_] % Additional Team Member Roles
+			[_] % IT Operators	
+				[_] % Responsibilities
+					[_] Deploy Code to Production
+					[_] Develop Infrastructure (keyword: develop)
+					[_] Provide Estimates
+					[_] Suggest Alternatives
+					[_] Ensure Infrastructure is Resilient
+				[_] % Sub-Roles
+					[_] Availability Managers
+					[_] Capacity Managers
+					[_] Compliance Manager
+					[_] Enterprise Architect
+					[_] Information Security Manager
+		[_] % Thinking
+		[_] % Collaborating
+		[_] % Deploying
+		[_] % Planning
+		[_] % Developing
+	[_] % Part 3—Margarine Inspection
+		[_] Documentation
+		[_] Vision
+		[_] % Contributing to Margarine
+			[_] Open Source—MIT License
+			[_] Margarine Coding Standards
+			[_] % Communication
+				[_] % Mailing list
+					[_] margarine-dev@googlegroups.com
+					[_] % subscribe
+						[_] mail margarine-dev+subscribe@googlegroups.com
+				[_] % IRC
+					[_] irc://irc.freenode.net#margarine
+					[_] adapt: http://wiki.openstack.org/UsingIRC
+					[_] sign up for freenode at http://webchat.freenode.net
+			[_] Version Control
+				[_] % Getting the Code
+					: Code stored on github, &c
+					[_] % Github
+						[_] Create a Github Account
+						[_] Fork Margarine from https://github.com/raxsavvy/margarine
+						[_] Clone margarine `git clone ${URI}`
+						[_] Add 'upstream' remote to your repository `git remote add upstream https://github.com/raxsavvy/margarine.git`
+			[_] % Working on the Code
+				[_] Release Planning—Roadmap
+				[_] Iterations
+				[_] Bugs
+				[_] 0% Branching Strategies
+					[_] 0% Bugs
+						: When working an issue the following process should be followed:
+						[_] Pick an issue from https://github.com/raxsavvy/margarine/issues
+						[_] Create a branch named issues/N, where N is the number for the issue chosen
+						[_] 0% Make appropriate code changes including the following concerns:
+							[_] Coding Style (see margarine coding style)
+							[_] Implement any appropriate tests (TDD-ISH)
+						[_] Submit pull request for merge into master
+						[_] If changes to pull request are required, make them in the created branch
+					[_] 0% Stories
+						: Features that are in trello follow the following process during
+						: development:
+						[_] Pick a card from https://trello.com/b/kYylJGe9/margarine
+						[_] Create a branch named features/category/name where category is a descriptive group of features (i.e. frontend) and name is a descriptive name for the feature (i.e. signin)
+						[_] 0% Make appropriate code changes including the following concerns:
+							[_] Coding Style (see margarine coding style)
+							[_] Implement any appropriate tests (TDD-ISH)
+						[_] Submit pull request for merge into master
+						[_] If changes to pull request are required, make them in the created branch
+		[_] Build
+			[_] % How to Build Margarine
+				[_] Install from Package Manager
+				[_] Install from pip `pip install margarine`
+				[_] % Install from source
+					: Source install steps go here
+				[_] Using margarine-chef
+			[_] % Release Process
+				[_] Adapt Saltstack Release Process
+		[_] Margarine Demo
+		[_] Deploying Margarine
+		[_] % Margarine Architecture
+			[_] Tinge
+			[_] Blend
+			[_] Spread
+		[_] % Continuous Integration
+			[_] % Test Suite
+				[_] 0% Strategies
+					[_] Black Box
+					[_] White Box
+					[_] Automated
+					[_] Manual
+				[_] 0% Methodologies
+					[_] Unit Tests
+					[_] Integration Tests
+					[_] System Tests
+					[_] Customer Tests
+				[_] % Python Frameworks
+					[_] unittest
+					[_] lettuce
+				[_] % Running Margarine Tests
+					[_] nosetests—nose
+			[_] % Services
+				[_] Jenkins
+				[_] Travis-CI
+	[_] % Part 4—Miscellaneous
+		[_] Goal: Available Application
+		[_] % Discovering Requirements
+			: I'm inclined to remove this exact section but keep in the idea of
+			: requirements gathering.
+			[_] What need does the software fill?
+			[_] What business gaps are solved by the software?
+			[_] What data can be shared with whom?
+			[_] Proof of Concept
+		[_] 0% Handling Failure
+			[_] Fallback Handling
+			[_] Fail Silently
+			[_] Fail Fast
+		[_] 0% Modularize
+			[_] Dependency Complexity
+			[_] Service Oriented Architecture
+			[_] Service Registry and Directory
+			[_] % Pipeline
+				[_] Automobile Example
+			[_] Critical Path
+			[_] Theory of Constraints
+			[_] 0% Decoupling
+				[_] Caches to Decouple
+				[_] Asynchronous Programming
+				[_] % Message Queues
+					[_] % Communication Patterns
+						[_] 1:1
+						[_] 1:N
+						[_] 1:ALL
+				[_] 0% Factories to Decouple
+					[_] Testable Javascript
+		[_] % Parallelism
+			: invloving the simultaneous performance of operations
+			[_] MapReduce
+			[_] Deadlocks
+			[_] Resource Contention
+			[_] Speed Increases
+			[_] % Cloud infrastructure designed for parallelism
+				[_] Snowflock
+				[_] Moore's Law
+		[_] Modular plus Parallel leads to lots of small workign units—Ants
+		[_] % Frameworks
+			[_] Flask
+			[_] Django
+		[_] Distribute and Parallelize
+		[_] 0% Use Cases or Stories
+			[_] Feature
+			[_] % Stories
+				[_] Sign Up (Create New User)
+				[_] Submit New Article
+				[_] Subscribe to Article
+				[_] View an Article
+			[_] Test Case(s)
+			[_] Demos
+			[_] Walkthroughs
+		[_] 0% Using Pre-built Services and Libraries
+			[_] APIs
+			[_] Libraries
+			[_] % Provider Partners
+				[_] Rackspace Cloud Tools Marketplace
+		[_] 0% Storing Code
+			[_] % git
+				[_] % Background
+					[_] Written by Linux
+					[_] % Written to be
+						[_] Fast
+						[_] Simple
+						[_] Distributed
+						[_] Assist Non-Linear Development
+						[_] Large Projects
+					[_] Born From Falling Out With Bitkeeper
+					[_] try.github.io
+			[_] % github
+				[_] Found in 2008
+				[_] Social Coding
+				[_] Web Based Service for git Repositories
+			[_] subversion
+		[_] 0% Best Practices
+			[_] % DRY—don't repeat yourself
+				[_] Consistency of URLs (tie to REST)
+				[_] Store Single Copies of Static Content
+			[_] TDD—Test Driven Development
+			[_] Behaviour Driven Development
+			[_] KISS—Keep It Simple, Stupid
+		[_] 0% Design Patterns
+			[_] 0% Publisher Subscriber or Consumer Producer
+				[_] Gang of Four
+			[_] MVC—Model, View, Controller
+		[_] 0% Message Queues
+			[_] 0% Software
+				[_] RabbitMQ
+				[_] IronMQ
+				[_] ActiveMQ
+				[_] ZeroMQ
+			[_] 0% Protocols
+				[_] Stomp
+				[_] AMQP
+				[_] Beanstalkd
+		[_] 0% Datastores
+			[_] How to Pick a Datastore
+			[_] % Distributing Data
+				[_] Sharding
+				[_] Replication
+			[_] % Data Density
+				[_] Sparse
+				[_] Tightly Packed
+			[_] % Types of Datastores
+				[_] % NoSQL
+					[_] Fowler's Background Story
+					[_] % Common Characteristics
+						[_] Non-relational
+						[_] Distributed
+						[_] Open-Source
+						[_] Horizontally Scalable
+						[_] Schema-less
+				[_] % Relational
+					[_] MySQL
+					[_] Postgresql
+					[_] Oracle
+					[_] MSSQL
+				[_] % Key-Value
+					[_] Redis
+					[_] Riak
+					[_] Swift
+				[_] % Document
+					[_] MongoDB
+					[_] CouchDB
+				[_] % Column-Family
+					[_] Cassandra
+					[_] HBase
+				[_] % Graph Databases
+					[_] What are Graphs?
+					[_] Neo4J
+			[_] Mix and Match Types
+			[_] 0% brewer's theorem
+				: Two of Three of the following properties simultaneously for a
+				: distributed data driven application.
+				[_] Consistency
+				[_] Availability
+				[_] % Partition Tolerance
+					[_] Partitions
+						: Divided into parts.  In the abstract, this requires a bit more
+						: precision.  A partition of a collection of items requires that
+						: all of the parts have no elements in common.
+			[_] % Eventual Consistency
+				[_] N,W,R Relationships
+			[_] Data Structure or Schema
+				[_] Aggregates
+				[_] Normalization
+			[_] % Philosophies
+				[_] ACID
+				[_] BASE
+			[_] Margarine's Data
+				[_] Content of Articles
+				[_] User Information or Profiles
+				[_] Subscriptions by Users
+				[_] Tags by Users
+				[_] Notations for Margin Notes
+		[_] 0% API
+			: API, applicaiton programming interface, is a protocol intended to be
+			: used as an interface by software components to communicate with one
+			: another.
+			[_] 0% Bindings
+				: Wrapper libraries for remote invocations on other systems.  In
+				: classic use bidnings are the things that hold something together.
+				: In computing this has been adapted to mean holding one set of code
+				: or application together with another.  The other being a service or
+				: library that provides functionality desirable for the application in
+				: development.
+				[_] 0% SDKs
+					[_] % Rackspace Cloud
+						[_] % Official
+							[_] pyrax
+							[_] fog.io
+							[_] jclouds
+							[_] % Supported
+								[_] sdk-support@rackspace.com
+								[_] http://developer.rackspace.com
+						[_] % Unofficial
+							[_] libcloud
+							[_] http://github.com/rackerlabs
+				[_] Margarine's Bindiings
+			[_] 0% Listing Items
+				[_] atom feed
+			[_] % RESTful API
+				[_] % Components
+					[_] Base URI
+					[_] Media Type (MIME Type)
+					[_] % Set of Operations (Four Verbs)
+						[_] GET
+						[_] PUT
+						[_] POST
+						[_] DELETE
+						[_] TRACE
+						[_] HEAD
+				[_] RESTful Web Services from O'Reilly
+				[_] % Dissertation on HTTP
+					[_] http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
+				[_] Scalable
+				[_] Stateless
+				[_] Independence of Components
+				[_] Cacheable
+			[_] % SOAP API
+				[_] WSDL
+			[_] % Margarine's API
+				[_] % Operations
+					[_] CRUD for Users and Articles
+				[_] cURL examples
+		[_] 0% Big Data
+			[_] 0% Software
+				[_] Hadoop
+				[_] MongoDB
+				[_] CouchDB
+		[_] endpoint
+		[_] 0% Security
+			[_] Check Every Interface
+			[_] 0% AAA
+				[_] 0% authentication
+					[_] API Key
+				[_] authorization
+			[_] Accessibility
+			[_] User Trust
+		[_] 0% Quality
+			[_] 0% Metrics—Measure Everything
+				[_] Monitoring is QA
+				[_] % Measure Important things
+					[_] Dollars per Request
+					[_] Maximize Important Aspects
+			[_] Gerrit
+			[_] Jenkins
+			[_] % The New Bugs
+				[_] Heisenbug
+				[_] Mandelbug
+				[_] Schrödenbug
+		[_] % Frontend
+			[_] Functionality
+			[_] Hosting Method
+			[_] % Margarine (Tinge)
+				[_] SEO with Cloud Files
+				[_] Cache Breaking with Cloud Files
+	[_] 0% Part 2—Operating Cloud Applications
+		[_] How to Build a Cloud Application
+		[_] % How to Deploy a Cloud Application
+			[_] A Large Group of Small Things Working in Tandem
+			[_] Larger Target with Verticals
+			[_] Horizontal is More Leeway against Risk
+			[_] Responsive Architecture
+			[_] % Where does it live?
+				[_] What Cloud if Cloud?
+		[_] % How to Maintain a Cloud Application
+			[_] % When to Add More
+				[_] % Metrics
+					[_] CPU
+					[_] Memory
+					[_] Disk
+					[_] Something Else?
+		[_] Continuous Delivery
+		[_] Continuous Deployment
+		[_] AB Testing
+		[_] Data Driven Decision Making
+		[_] % Infrastructure decisions
+			[_] % Workloads
+				[_] Characterization
+				[_] On and Off or Stepped Up and Down
+				[_] Fast Growth
+				[_] Variable or Continuous Up and Down
+				[_] Consistent
+		[_] 0% How Cloud Changes Infrastructure
+			[_] Include Diagrams of Architectures
+			[_] Pets vs Cattle
+			[_] Continuous Growth vs Stepwise Growth
+			[_] 0% Hardware Fails
+				[_] Mean Time Between Failure
+			[_] % Shadow IT
+				[_] Faster Access
+				[_] Bypass IT Controls and Policies
+		[_] 0% Security
+			[_] bastion
+			[_] Roles
+			[_] Every Layer
+			[_] % Responsibilities
+				[_] % Consumer of Cloud
+					[_] Flavor
+					[_] OS Security
+					[_] Application Security
+					[_] Account Management
+				[_] % Provider of Cloud
+					[_] Physical Security
+					[_] Network Infrastructure
+					[_] Virtualization Infrastructure
+		[_] 0% Infrastructure to be Controlled
+			[_] 0% Programming the Infrastructure
+				[_] Version Controlling Infrastructure
+			[_] % Software Development Practices
+				[_] Agile Methodologies
+				[_] Storing Infrastructure Code
+			[_] Data Plane
+			[_] Control Plane
+			[_] 0% Software Defined Networks
+				[_] Open Flow
+				[_] Open vSwitch
+		[_] 0% Configuration Management
+			[_] Margarine Code for Configuration Management
+			[_] chef
+			[_] puppet
+			[_] saltstack
+			[_] ansible
+		[_] 0% Quality
+			[_] 0% Testing Infrastructure
+				[_] Similar to Software Testing
+			[_] Jenkins
+			[_] Profiling
+		[_] 0% Cloud Interaction
+			[_] 0% Bindings
+				[_] libcloud
+		[_] 0% Scaling in the Cloud
+			[_] Vertical Scaling
+			[_] Horizontal Scaling
+			[_] Cost Analysis of Vertical vs Horizontal Scaling
+		[_] % Security
+			[_] % Regulations
+				[_] fisma compliance—federal information security management act
+				[_] hippa compliance—health insurance portability and accountability
+				[_] pci compliant
+	[_] 0% Part 3—Everything Else Cloud Applications
+		[_] % DevOps
+			[_] Align Development and Operations
+	[_] Afterword
+		: How this document came to be.  How the idea for this document was
+		: developed.  Thanks and acknowledgments to those who were helpful during
+		: the writing period.
+		:
+		: History of Savvy and the birth of Margarine?  Also, thanks those most
+		: influential in margarine's and this document's development?
+	[_] 0% Appendix
+		[_] 0% Margarine Overview
+			[_] Margarine Development
+			[_] Margarine Releases
+		[_] 0% Modules
+			[_] margarine
+			[_] test_margarine
+	[_] 0% Glossary
+		[_] Command Line Interface
+			: A means of interaction with a computer program where the user issues
+			: commands to the program in the form of successive lines of text.
+		[_] pv-ops
+		[_] recovery oriented computing
+		[_] server
+		[_] service
+		[_] service catalog
+		[_] service registry
+		[_] slice
+		[_] technical debt
+		[_] tenant
+		[_] token
+		[_] trunk
+		[_] trunk gating
+		[_] unit
+	[_] 0% Bibliography
+		[_] http://devops.rackspace.com/
+		[_] http://www.rackspace.com/knowledge_center/article/rackspace-open-cloud-reference-architecture
+		[_] http://www.rackspace.com/knowledge_center/
+		[_] http://www.forrester.com/home
+		[_] https://github.com/rackspace
+		[_] http://www.slideshare.net/Rackspace
+		[_] http://wiki.openstack.org/IRC
+		[_] NoSQL Distilled by Martin Fowler
+		[_] Continuous Delivery from Addison Wesley

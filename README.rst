@@ -46,19 +46,19 @@ Deployment
 Margarine has several coordinating applications that get installed and need to
 be running in order to provide all of the intended functionality:
 
-:blend:  The API daemon that provides the web service with the application 
+:blend:  The API daemon that provides the web service with the application
          logic and connects the frontend to the backend processors.
-:tinge:  The frontend for margarine that provides the web browseable interface 
+:tinge:  The frontend for margarine that provides the web browseable interface
          to the application.
 :spread: The backend daemon process that does non-interactive processing.
 
-The ``tinge`` and ``blend`` processes can be deployed as a WSGI service if 
-desired (it is written with flask) but also has a built in web service that 
+The ``tinge`` and ``blend`` processes can be deployed as a WSGI service if
+desired (it is written with flask) but also has a built in web service that
 can be used for small or development deployments.
 
 The ``spread`` daemon is designed to work with ``start-stop-daemon`` to run in
-the background on a server.  The ``spread`` daemon listens to a configurable 
-message queue but can be configured to talk directly with the ``blend`` 
+the background on a server.  The ``spread`` daemon listens to a configurable
+message queue but can be configured to talk directly with the ``blend``
 process.
 
 Development
