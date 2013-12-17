@@ -29,7 +29,7 @@ def create_user_consumer(channel, method, header, body):
     * Reset the user's password
 
     """
-    
+
     user = json.loads(body)
 
     try:
@@ -37,6 +37,10 @@ def create_user_consumer(channel, method, header, body):
     except (pymongo.errors.DuplicateKeyError) as e:
         logger.exception(e)
         logger.error("Duplicate user request ignored!")
+
+        channel.basic_ack(delivery_tag = method.delivery_tag)
+
+        return # TODO Make this logic more readable.
 
     try:
         password_email_consumer(channel, method, header, body)
@@ -93,7 +97,7 @@ def password_change_consumer(channel, method, header, body):
     * create password hash
     * store password hash
     * remove verification token
-   
+
     """
 
     user = json.loads(body)
@@ -115,7 +119,7 @@ def register(channel):
     ----------
 
     :channel: The channel to setup the queue over.
-    
+
     """
 
     channel.exchange_declare(exchange = "margarine.users.topic", type = "topic", auto_delete = False)
