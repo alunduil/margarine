@@ -50,6 +50,8 @@ from flask import make_response
 from flask import url_for
 from bson import json_util
 
+import margarine.parameters.tinge
+
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
 from margarine.communication import get_channel
@@ -118,16 +120,6 @@ def submit_article():
 
     return response
 
-Parameters("server", parameters = [
-    { # --server-domain=FQDN; FQDN ← HOSTNAME (TLD)
-        "options": [ "--domain" ],
-        "default": ".".join(socket.gethostname().rsplit('.', 2)[1:]),
-        "help": \
-                "The base name used in URL generation.  This defaults to the" \
-                "host's FQDN.",
-        }, # TODO Fix this help message.
-    ])
-
 @ARTICLE.route('/<article_id>')
 def article(article_id):
     """Retrieve a sanitized article.
@@ -189,7 +181,6 @@ def article(article_id):
 
     response.mimetype = "application/json"
 
-    response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
+    response.headers["Access-Control-Allow-Origin"] = Parameters()['tinge.url']
 
     return response
-

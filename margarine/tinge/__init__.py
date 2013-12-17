@@ -37,44 +37,14 @@ import socket
 from flask import Flask
 from flask import render_template
 
+import margarine.parameters.blend
+
 from margarine.parameters import Parameters
 from margarine.parameters import configure_logging
 
 configure_logging()
 
 logger = logging.getLogger(__name__)
-
-# Duplicate definition of flask parameters
-
-Parameters("flask", parameters = [
-    { # --flask-host=HOST; HOST ← "127.0.0.1"
-        "options": [ "--host" ],
-        "default": "127.0.0.1",
-        "help": "The IP to bind the API daemon; default: %(default)s.",
-        },
-    { # --flask-port=PORT; PORT ← "5000"
-        "options": [ "--port" ],
-        "type": int,
-        "default": 5000,
-        "help": "The port to bind the API daemon; default: %(default)s.",
-        },
-    { # --flask-debug
-        "options": [ "--debug" ],
-        "action": "store_true",
-        "default": False,
-        "help": "Enable debugging of the flask application.",
-        },
-    ])
-
-Parameters("server", parameters = [
-    { # --server-name=NAME; NAME ← HOSTNAME
-        "options": [ "--name" ],
-        "default": socket.gethostname(),
-        "help": \
-                "The base name used in URL generation.  This defaults to the" \
-                "host's FQDN.",
-        },
-    ])
 
 TINGE = Flask(__name__)
 
@@ -92,16 +62,6 @@ def home_page():
     """
 
     return render_template('index.html', blend_url = Parameters()['api.endpoint'])
-
-Parameters("api", parameters = [
-    { # --api-endpoint=URL; URL ← http://HOSTNAME:5050
-        "options": [ "--endpoint" ],
-        "default": "http://" + socket.gethostname() + ":5050",
-        "help": \
-                "The API endpoint or rather the URL endpoint for the blend " \
-                "processes.  Defaults to %(default)s",
-        },
-    ])
 
 @TINGE.route('/article')
 def view_article():
@@ -146,10 +106,6 @@ def view_article():
     return render_template('article.index.html', blend_url = Parameters()["api.endpoint"])
 
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
-
-# TODO Find out why this might be necessary.
-#TINGE.config["SERVER_NAME"] = Parameters()["server.name"]
-
 logger.debug("url map: %s", TINGE.url_map)
 
 def _extract_flask_parameters(parameters):
@@ -173,7 +129,7 @@ def _extract_flask_parameters(parameters):
         flask_parameters["host"] = parameters["flask.host"]
 
     if "flask.port" in parameters:
-        flask_parameters["port"] = int(parameters["flask.port"])
+        flask_parameters["port"] = parameters["flask.port"]
 
     if "flask.debug" in parameters:
         flask_parameters["debug"] = parameters["flask.debug"]
@@ -182,4 +138,3 @@ def _extract_flask_parameters(parameters):
 
 def main():
     TINGE.run(**_extract_flask_parameters(Parameters().parse()))
-

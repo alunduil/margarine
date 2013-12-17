@@ -8,19 +8,12 @@
 import redis
 import logging
 
+import margarine.parameters.keystore
+
 from margarine.parameters import Parameters
 from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
-
-Parameters("keystore", parameters = [
-    { # --tokens-url=TOKENS_URL; TOKENS_URL ← "redis://localhost"
-        "options": [ "--url" ],
-        "metavar": "TOKENS_URL",
-        "default": "redis://localhost",
-        "help": "The token storage system to use; defaults: %(default)s.",
-        },
-    ])
 
 KEYSTORE_CONNECTIONS = {}
 
@@ -69,4 +62,3 @@ def get_keyspace(keyspace):
         KEYSTORE_CONNECTIONS[keyspace] = redis.Redis(host = uri.host, port = port, password = uri.password, db = databases[keyspace])
 
     return KEYSTORE_CONNECTIONS[keyspace]
-

@@ -107,6 +107,7 @@ PARAMS['packages'] = [
         'margarine.blend',
         'margarine.spread',
         'margarine.tinge',
+        'margarine.parameters',
         ]
 
 PARAMS['package_data'] = {

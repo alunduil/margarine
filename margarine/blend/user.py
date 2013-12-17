@@ -54,6 +54,8 @@ from flask import url_for
 from flask.views import MethodView
 from flask import render_template
 
+import margarine.parameters.security
+
 from margarine.blend import information
 from margarine.parameters import Parameters
 from margarine.communication import get_channel
@@ -61,18 +63,6 @@ from margarine.aggregates import get_collection
 from margarine.keystores import get_keyspace
 
 logger = logging.getLogger(__name__)
-
-Parameters("api", parameters = [
-    { # --api-uuid=UUID; UUID ← uuid.uuid4()
-        "options": [ "--uuid" ],
-        "default": uuid.uuid4().hex,
-        "help": \
-                "The UUID used for the HTTP Digest Authentication " \
-                "Mechanism.  This should be set to a static string that is " \
-                "the same on every deployment but will default to a " \
-                "randomly generated UUID4.",
-        },
-    ])
 
 class UnauthorizedError(werkzeug.exceptions.Unauthorized):
     """Custom unauthorized exception.
@@ -117,7 +107,7 @@ def http_401_handler(error):
     authentication_string = authentication_string.format(
             realm = information.AUTHENTICATION_REALM,
             nonce = uuid.uuid4().hex,
-            opaque = Parameters()["api.uuid"],
+            opaque = Parameters()['security.opaque'],
             )
 
     logger.debug("authentication_string: %s", authentication_string)
@@ -573,7 +563,7 @@ def login(username):
 
     logger.info("Checking authentication!")
 
-    if request.authorization is None or request.authorization.opaque != Parameters()["api.uuid"]:
+    if request.authorization is None or request.authorization.opaque != Parameters()['security.opaque']:
         raise UnauthorizedError(username = username)
 
     user = get_collection("users").find_one({ "username": username })
