@@ -19,6 +19,24 @@ from test_margarine.test_unit import BaseMargarineTest
 
 logger = logging.getLogger(__name__)
 
+def find_vagrant_file():
+    '''Search in the current directory and above for a Vagrantfile.
+
+    If a vagrant file is found in any parent directory, the path is returned.
+    Otherwise, None is returned indicating a Vagrantfile was not found.
+
+    '''
+
+    vagrant_file_path = os.getcwd()
+
+    while not os.access(os.path.join(vagrant_file_path, 'Vagrantfile'), os.R_OK):
+        vagrant_file_path, previous_directory = os.path.split(vagrant_file_path)
+
+        if not len(previous_directory):
+            return None
+
+    return os.path.join(vagrant_file_path, 'Vagrantfile')
+
 def power_set(iterable):
     '''Generate the power set of the items contained in the iterable.
 
@@ -95,17 +113,21 @@ def integrate_units(units = ()):
 
                 '''
 
-                super(self.__class__.__name__, self).setUp()
+                super(self.__class__, self).setUp()
+
+                if find_vagrant_file() is None:
+                    self.skipTest('Vagrantfile not found, skipping test.')
 
                 try:
                     output = subprocess.check_output([ 'vagrant', 'status' ])
                 except (subprocess.CalledProcessError,) as e:
                     logger.error('command failed: vagrant status')
                     logger.exception(e)
+                    raise e
 
                 logger.debug('vagrant status: %s', output)
 
-                self.skipTest('Implement vagrant check')
+                self.assertFail('Implement vagrant check')
 
             yield new.classobj(name, (unit,), {
                 'mock_mask': mock_mask,
