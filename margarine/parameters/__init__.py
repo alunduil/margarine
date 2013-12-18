@@ -142,7 +142,7 @@ class Parameters(object):
         logger.debug("parsed? %s", getattr(self, "parsed", False))
 
         if len(parameters):
-            assert(not getattr(self, "parsed", False), 'Parameters added after parsing has occurred!')
+            assert not getattr(self, "parsed", False), 'Parameters added after parsing has occurred!'
 
         if not hasattr(self, 'defaults'):
             self.defaults = {}
