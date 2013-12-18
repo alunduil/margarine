@@ -1,5 +1,5 @@
-*.py[co]
+Berksfile.lock
 .vagrant/
-.rvmrc
-*.lock
 .coverage
+*.py[co]
+margarine.egg-info/
