@@ -8,7 +8,7 @@
 import os
 
 from margarine.parameters import Parameters
-from margarine.paraemters.configuration import DIRECTORY as CONFIGURATION_DIRECTORY
+from margarine.parameters.configuration import DIRECTORY as CONFIGURATION_DIRECTORY
 
 Parameters('datastore', parameters = [
     { # --datastore-url=URL; URL ← mongodb://localhost/test
