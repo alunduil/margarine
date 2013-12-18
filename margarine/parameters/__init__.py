@@ -9,8 +9,15 @@ import os
 import sys
 import argparse
 import copy
-import logging
-import logging.config
+
+# TODO Switch to crumbs ASAP
+
+import imp
+file_, path, description = imp.find_module('logging', sys.path[1:])
+logging = imp.load_module('logging', file_, path, description)
+
+file_, path, description = imp.find_module('config', [path])
+logging.config = imp.load_module('logging.config', file_, path, description)
 
 try:
     import ConfigParser as configparser
