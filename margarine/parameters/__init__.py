@@ -396,9 +396,9 @@ class Parameters(object):
             types = { key: str }
 
         logger.debug('types: %s', types)
-        logger.debug('types[key]: %s', types[key])
+        logger.debug('types[key]: %s', types.get(key, str))
 
-        return types[key](value)
+        return types.get(key, str)(value)
 
     def __contains__(self, key):
         return key in self.iterkeys()

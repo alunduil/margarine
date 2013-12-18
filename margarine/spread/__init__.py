@@ -7,7 +7,7 @@ import pika
 import logging
 
 from margarine.parameters import Parameters
-from margarine.parameters import configure_logging
+from margarine.parameters.logging import configure_logging
 
 configure_logging()
 
