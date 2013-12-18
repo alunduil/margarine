@@ -129,11 +129,6 @@ class Parameters(object):
                     }
                 ]
 
-        >>> import tempfile
-        >>> temp = tempfile.NamedTemporaryFile()
-        >>> Parameters("example", temp.name, [{"options": [ "--example", "-e" ], "default": "foo"}])
-        <Parameters[example]: '/tmp/name'>
-
         '''
 
         self.__dict__ = self.__shared_state
