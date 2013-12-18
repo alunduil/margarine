@@ -20,7 +20,7 @@ class URI(object):
     Examples
     --------
 
-    >>> URI('scheme://username:password@hostname:port/path')
+    >>> str(URI('scheme://username:password@hostname:port/path'))
     'scheme://username:password@hostname:port/path'
 
     >>> URI('scheme://username:password@hostname:port/path').host
@@ -46,4 +46,27 @@ class URI(object):
         self.port = match.group("port")
         self.path = match.group("path")
 
-    # TODO Add __str__ method for constructing str().
+    def __str__(self):
+        _ = ''
+
+        if self.scheme is not None:
+            _ += self.scheme + '://'
+
+        if self.username is not None:
+            _ += self.username
+
+            if self.password is not None:
+                _ += ':' + self.password
+
+            _ += '@'
+
+        if self.host is not None:
+            _ += self.host
+
+        if self.port is not None:
+            _ += ':' + self.port
+
+        if self.path is not None:
+            _ += self.path
+
+        return _
