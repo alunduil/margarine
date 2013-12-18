@@ -52,6 +52,8 @@ Vagrant.configure('2') do |config|
     queue.vm.provision :chef_solo do |chef|
       chef.node_name = 'queue'
 
+      chef.log_level = :warn
+
       chef.roles_path = 'chef/roles'
       chef.environments_path = 'chef/environments'
       chef.data_bags_path = 'chef/data_bags'
@@ -70,6 +72,8 @@ Vagrant.configure('2') do |config|
     datastore.vm.provision :chef_solo do |chef|
       chef.node_name = 'datastore'
 
+      chef.log_level = :warn
+
       chef.roles_path = 'chef/roles'
       chef.environments_path = 'chef/environments'
       chef.data_bags_path = 'chef/data_bags'
@@ -86,6 +90,8 @@ Vagrant.configure('2') do |config|
       box.omnibus.chef_version = :latest
       box.vm.provision :chef_solo do |chef|
         chef.node_name = component
+
+        chef.log_level = :warn
 
         chef.roles_path = 'chef/roles'
         chef.environments_path = 'chef/environments'

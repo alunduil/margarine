@@ -6,7 +6,16 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import os
-import logging as original_logging
+import sys
+
+# TODO Switch this module's name
+
+import imp
+file_, path, description = imp.find_module('logging', sys.path[1:])
+original_logging = imp.load_module('logging', file_, path, description)
+
+file_, path, description = imp.find_module('config', [path])
+original_logging.config = imp.load_module('logging.config', file_, path, description)
 
 from margarine.parameters import Parameters
 from margarine.parameters.configuration import DIRECTORY as CONFIGURATION_DIRECTORY
