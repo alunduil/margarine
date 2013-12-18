@@ -38,6 +38,7 @@ from flask import Flask
 from flask import render_template
 
 import margarine.parameters.blend
+import margarine.parameters.flask
 
 from margarine.parameters import Parameters
 from margarine.parameters.logging import configure_logging

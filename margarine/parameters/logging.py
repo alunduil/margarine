@@ -39,5 +39,7 @@ def configure_logging():
 
     logging_configuration_path = Parameters().parse(only_known = True)['logging.configuration']
 
+    print 'logging configuration:', Parameters()['logging.configuration']
+
     if os.access(logging_configuration_path, os.R_OK):
         original_logging.config.fileConfig(Parameters()['logging.configuration'])
