@@ -1,5 +1,8 @@
 Berksfile.lock
+
 .vagrant/
+
 .coverage
+
 *.py[co]
 margarine.egg-info/
