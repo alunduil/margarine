@@ -1,6 +1,6 @@
+beautifulsoup4
 Flask
 pika==0.9.12
 pymongo
-redis>=2.7.6
 pyrax
-beautifulsoup4
+redis>=2.7.6
