@@ -30,6 +30,8 @@ Vagrant.configure('2') do |config|
   config.vm.box = 'precise64'
   config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
 
+  config.vm.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
   config.vm.define 'token_store' do |token_store|
     token_store.vm.network :private_network, ip: ip_addresses[:token_store]
         
@@ -56,7 +58,6 @@ Vagrant.configure('2') do |config|
 
       chef.roles_path = 'chef/roles'
       chef.environments_path = 'chef/environments'
-      chef.data_bags_path = 'chef/data_bags'
 
       chef.environment = 'vagrant'
       chef.add_role 'queue'
@@ -76,7 +77,6 @@ Vagrant.configure('2') do |config|
 
       chef.roles_path = 'chef/roles'
       chef.environments_path = 'chef/environments'
-      chef.data_bags_path = 'chef/data_bags'
 
       chef.environment = 'vagrant'
       chef.add_role 'datastore'
@@ -95,7 +95,6 @@ Vagrant.configure('2') do |config|
 
         chef.roles_path = 'chef/roles'
         chef.environments_path = 'chef/environments'
-        chef.data_bags_path = 'chef/data_bags'
 
         chef.json = margarine_attributes
 
