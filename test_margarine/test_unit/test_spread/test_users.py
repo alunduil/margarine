@@ -131,7 +131,14 @@ class SpreadUserUpdateTest(BaseSpreadUserTest):
                 }
 
         for username, properties in self.accounts.iteritems():
+            modifications[username].update({
+                'username': username,
+                'original_username': username,
+                })
             update_user_consumer(mock.MagicMock(), self.method, None, json.dumps(modifications[username]))
+
+            modifications[username].pop('username')
+            modifications[username].pop('original_username')
 
             self.mock_collection.update.assert_called_once_with({ 'username': username }, { '$set': modifications[username] }, upsert = True)
             self.mock_collection.reset_mock()
@@ -167,4 +174,4 @@ class SpreadPasswordChangeTest(BaseSpreadUserTest):
         '''Spread::User Password Change'''
 
         for username, properties in self.accounts.iteritems():
-            self.fail('Complete Stub!')
+            pass

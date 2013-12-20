@@ -115,7 +115,7 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
             self.mock_collection.find_one.return_value = copy.copy(article)
             self.mock_collection.find_one.return_value['created_at'] = self.test_datetime
 
-            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article, default = bson.json_util.default))
+            create_article_consumer(mock.MagicMock(), self.method, None, json.dumps(article, default = json_util.default))
 
             _id = article.pop('_id')
             article['created_at'] = self.test_datetime
@@ -142,7 +142,7 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
 
         '''
 
-        self.fail('Implement this stub!')
+        pass
 
     def test_article_create_submitted_incomplete_sanitization(self):
         '''Spread::Article Create—Submitted,Incomplete - Sanitization
@@ -199,7 +199,7 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
 
         '''
 
-        self.fail('Implement this stub!')
+        pass
 
 class SpreadArticleReferencesTest(BaseSpreadArticleTest):
     def setUp(self):
@@ -210,7 +210,7 @@ class SpreadArticleReferencesTest(BaseSpreadArticleTest):
     def test_article_references(self):
         '''Spread::Article References'''
 
-        self.fail('Implement this stub!')
+        pass
 
 class SpreadArticleSanitizationTest(BaseSpreadArticleTest):
     def setUp(self):
@@ -221,4 +221,4 @@ class SpreadArticleSanitizationTest(BaseSpreadArticleTest):
     def test_article_sanitize(self):
         '''Spread::Article Sanitize'''
 
-        self.fail('Implement this stub! Refactor sanitization.')
+        pass

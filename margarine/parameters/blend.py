@@ -18,3 +18,13 @@ Parameters('blend', parameters = [
                 'is used to set up tinge\'s links to blend.',
         },
     ])
+
+Parameters('api', parameters = [
+    { # --api-endpoint=FQDN; FQDN ← HOSTNAME (TLD)
+        'options': [ '--endpoint' ],
+        'default': 'http://api.' + '.'.join(socket.gethostname().split('.', 2)[1:]),
+        'help': \
+                'The URL that blend will be configured to run behind.  This ' \
+                'is used to set up tinge\'s links to blend.',
+        },
+    ])

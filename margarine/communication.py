@@ -109,6 +109,8 @@ def send_user_email(user, verification):
             "\n" \
             "Margarine\n"
 
+    logger.debug('blend URL: %s', Parameters()['blend.url'])
+
     from margarine.blend import BLEND # TODO Figure out looping import.
     BLEND.config["SERVER_NAME"] = Parameters()['blend.url']
     with BLEND.app_context():
