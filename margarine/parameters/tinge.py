@@ -20,3 +20,16 @@ Parameters('tinge', parameters = [
                 'use the data provided by blend.',
         },
     ])
+
+# TODO Remove this alias with 2.x
+Parameters('server', parameters = [
+    { # --server-domain=FQDN; FQDN ← HOSTNAME (TLD)
+        'options': [ '--domain' ],
+        'default': 'http://' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),
+        'help': \
+                'The URL that tinge will be configured to run behind.  This ' \
+                'is used to set the Access-Control-Allow-Origin header that ' \
+                'lets browsers know that tinge, on a different domain, can ' \
+                'use the data provided by blend.',
+        },
+    ])
