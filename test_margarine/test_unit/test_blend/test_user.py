@@ -6,7 +6,7 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import mock
-
+import unittest
 import logging
 import bson
 import json
@@ -46,6 +46,7 @@ class BlendUserCreateTest(BaseBlendUserTest):
 
     '''
 
+    @unittest.skip
     def test_user_create_unsubmitted(self):
         '''Blend::User Create—Unsubmitted
 
