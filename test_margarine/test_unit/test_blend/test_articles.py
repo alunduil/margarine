@@ -1,21 +1,56 @@
 # -*- coding: UTF-8 -*-
 #
-# Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
+# Copyright (C) 2014 by Alex Brandt <alex.brandt@rackspace.com>
 #
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import mock
-
-import logging
-import uuid
 import datetime
+import logging
+import mock
+import uuid
+import unittest
 
+from test_margarine.test_fixtures.test_urls import URLS
 from test_margarine.test_unit.test_blend import BaseBlendTest
 
+from margarine.blend import BLEND
 from margarine.blend import information
 
 logger = logging.getLogger(__name__)
+
+
+class BlendArticleReadTest(unittest.TestCase):
+    mocks_mask = set()
+    mocks = set()
+
+    mocks.add('datastores.get_collection')
+    def mock_datastore(self):
+        if 'datastores.get_collection' in self.mocks_mask:
+            return
+
+        _ = mock.patch('margarine.blend.articles.get_collection')
+
+        self.addCleanup(_.stop)
+
+        self.mocked_datastore = _.start()
+
+        self.mocked_collection = mock.MagicMock()
+        self.mocked_datastore.return_value = self.mocked_collection
+
+    def test_article_read_unsubmitted(self):
+        '''blend.articles—GET /articles/? → 404—unsubmitted'''
+
+        BLEND.config['TESTING'] = True
+        application = BLEND.test_client()
+
+        self.mock_datastore()
+
+        base_url = '/{i.API_VERSION}/articles/'.format(i = information)
+
+        for url in URLS['all']:
+            response = application.get(base_url + url['uuid'])
+            self.assertIn('404', response.status)
 
 class BaseBlendArticleTest(BaseBlendTest):
     # TODO Make this simpler.
@@ -55,25 +90,9 @@ class BlendArticleCreateTest(BaseBlendArticleTest):
 
             self.assertIn(self.base_url + str(uuid), response.headers.get('Location'))
 
-class BlendArticleReadTest(BaseBlendArticleTest):
+class BlendArticleLegacyReadTest(BaseBlendArticleTest):
     # TODO Make this simpler.
     mock_mask = BaseBlendArticleTest.mock_mask | set(['channel'])
-
-    def test_article_read_unsubmitted(self):
-        '''Blend::Article Read—Unsubmitted
-
-        .. note::
-            The article in question has not been submitted and thus nothing
-            exists in the system for the requested article.
-
-        '''
-
-        self.mock_collection.find_one.return_value = None
-
-        for uuid, url in self.articles.iteritems():
-            response = self.application.get(self.base_url + str(uuid))
-
-            self.assertIn('404', response.status)
 
     def test_article_read_submitted_incomplete(self):
         '''Blend::Article Read—Submitted,Incomplete

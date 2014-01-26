@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 #
-# Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
+# Copyright (C) 2014 by Alex Brandt <alex.brandt@rackspace.com>
 #
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -125,7 +125,7 @@ from margarine.blend.user import USER
 from margarine.blend.user import UnauthorizedError
 from margarine.blend.user import http_401_handler
 
-from margarine.blend.article import ARTICLE
+from margarine.blend.articles import ARTICLE
 from margarine.blend.tag import TAG
 
 logger = logging.getLogger(__name__)

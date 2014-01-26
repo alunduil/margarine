@@ -1,3 +1,8 @@
+# Copyright (C) 2014 by Alex Brandt <alex.brandt@rackspace.com>
+#
+# margarine is freely distributable under the terms of an MIT-style license.
+# See COPYING or http://www.opensource.org/licenses/mit-license.php.
+#
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -29,8 +34,6 @@ margarine_attributes = {
 Vagrant.configure('2') do |config|
   config.vm.box = 'precise64'
   config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
-
-  config.vm.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
   config.vm.define 'token_store' do |token_store|
     token_store.vm.network :private_network, ip: ip_addresses[:token_store]
