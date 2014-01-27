@@ -36,12 +36,14 @@ The properties we're starting with are the following:
 
 """
 
-import uuid
+import datetime
 import json
 import logging
 import pika
+import pytz
 import re
 import socket
+import uuid
 
 from flask import request
 from flask import Blueprint
@@ -115,72 +117,93 @@ def submit_article():
     channel.close()
 
     response = make_response("", 202)
-    response.headers["Location"] = url_for(".article", article_id = _id)
+    response.headers["Location"] = url_for(".article", article_uuid = _id)
     response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
 
     return response
 
-@ARTICLE.route('/<article_id>')
-def article(article_id):
-    """Retrieve a sanitized article.
+@ARTICLE.route('/<article_uuid>', methods = [ 'GET', 'HEAD' ])
+def article(article_uuid):
+    '''Retrieve article data and metadata.
 
-    Request
-    -------
+    :URL: ``/{ARTICLE_UUID}``
 
-    ::
+    Parameters
+    ----------
 
-        GET /44d85795-248d-5899-b8ca-ac2bd8233755
+    :``ARTICLE_UUID``: The UUID of the article being requested (i.e.
+                       44d85795-248d-5899-b8ca-ac2bd8233755).
 
-    Response
+    Possible HTTP Methods
+    ---------------------
+
+    :GET: Retrieve the article in its entirety
+    :HEAD: Retrieve only the headers for caching or finding the original article
+
+    Possible Status Codes
+    ---------------------
+
+    :200: Successful retrieval of article
+    :404: Article could not be retrieved or did not exist
+
+    Examples
     --------
 
-    .. note::
-        The following is formatted for readability and does not match the
-        actual response from the API.  Also, the body parameter has been
-        shortened to fit this example more concisely.
+    1. :request:::
+           GET /{ARTICLE_UUID} HTTP/1.0
+           [Accept: application/json]
 
-    ::
+       :response:::
+           HTTP/1.0 200 Ok
+           Access-Control-Allow-Origin: http://margarine.io
+           Content-Type: application/json
+           ETag: 21696f99425b45b28ee9d2c308266beb
+           Last-Modified: Tue, 15 Nov 1994 12:45:26 GMT
+           Link: <http://blog.alunduil.com/posts/singularity-an-alternative-openstack-guest-agent.html>; ref="original"
 
-        HTTP/1.0 200 Ok
+           {
+               "body": "…Singularity, an Alternative Openstack Guest Agent | Hackery &c…
+               "url": "http://blog.alunduil.com/posts/singularity-an-alternative-openstack-guest-agent.html",
+               "created_at": {"$date": 1374007667571},
+               "etag": "6e2f69536ca15cc18260bffe7583b849",
+               "_id": "03db19bb92205b4fb5fc3c4c0e4b1279",
+               "parsed_at": {"$date": 1374008521414},
+               "size": 9964
+           }
 
-        {
-          "body": "…Singularity, an Alternative Openstack Guest Agent | Hackery &c…
-          "url": "http://blog.alunduil.com/posts/singularity-an-alternative-openstack-guest-agent.html",
-          "created_at": {"$date": 1374007667571},
-          "etag": "6e2f69536ca15cc18260bffe7583b849",
-          "_id": "03db19bb92205b4fb5fc3c4c0e4b1279",
-          "parsed_at": {"$date": 1374008521414},
-          "size": 9964
-        }
 
-    """
 
-    article = get_collection("articles").find_one({ "_id": uuid.UUID(article_id).hex })
+    '''
 
-    logger.debug("article: %s", article)
+    logger.info('retrieving article %s', article_uuid)
 
-    if article is None or "etag" not in article:
-        # 404 not only if the object doesn't exist but also if we haven't
-        # sanitized the body yet.
+    article = get_collection('articles').find_one({ '_id': article_uuid.replace('-', '') })
+
+    logger.debug('article: %s', article)
+
+    if article is None or 'parsed_at' not in article:
         abort(404)
 
-    container_name, object_name = article.pop("text_container_name"), article.pop("text_object_name")
-
-    logger.debug("article: %s", article)
+    container_name, object_name = article.pop('cf_container_name'), article.pop('cf_object_name')
 
     # TODO Catch connection issues and return Temporarily Unavailable.
-    if request.method != "HEAD":
-        data = get_container(container_name).get_object(object_name).fetch()
+    if request.method != 'HEAD':
+        article['body'] = get_container(container_name).get_object(object_name).fetch()
 
-        logger.debug("type(data): %s", type(data))
-        logger.debug("len(data): %s", len(data))
+    def _(obj):
+        if isinstance(obj, datetime.datetime):
+            return pytz.utc.localize(obj).strftime('%a, %d %b %Y %H:%M:%S.%f%z')
+        raise TypeError
 
-        article["body"] = data
+    response = make_response(json.dumps(article, default = _), 200)
 
-    response = make_response(json.dumps(article, default = json_util.default), 200)
+    response.mimetype = 'application/json'
 
-    response.mimetype = "application/json"
+    response.headers['Access-Control-Allow-Origin'] = Parameters()['tinge.url']
+    response.headers['ETag'] = article['etag']
+    response.headers['Last-Modified'] = pytz.utc.localize(article['updated_at']).strftime('%a, %d %b %Y %H:%M:%S %Z')
+    response.headers['Link'] = '<{0}>; rel="original"'.format(article['original_url'])
 
-    response.headers["Access-Control-Allow-Origin"] = Parameters()['tinge.url']
+    logger.info('finished retrieving article %s', article_uuid)
 
     return response

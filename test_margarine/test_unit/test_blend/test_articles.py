@@ -6,12 +6,13 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import datetime
+import json
 import logging
 import mock
 import uuid
 import unittest
 
-from test_margarine.test_fixtures.test_urls import URLS
+from test_margarine.test_fixtures.test_articles import ARTICLES
 from test_margarine.test_unit.test_blend import BaseBlendTest
 
 from margarine.blend import BLEND
@@ -24,8 +25,16 @@ class BlendArticleReadTest(unittest.TestCase):
     mocks_mask = set()
     mocks = set()
 
+    def setUp(self):
+        super(BlendArticleReadTest, self).setUp()
+
+        BLEND.config['TESTING'] = True
+        self.application = BLEND.test_client()
+
+        self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
+
     mocks.add('datastores.get_collection')
-    def mock_datastore(self):
+    def mock_datastore(self, **kwargs):
         if 'datastores.get_collection' in self.mocks_mask:
             return
 
@@ -38,19 +47,66 @@ class BlendArticleReadTest(unittest.TestCase):
         self.mocked_collection = mock.MagicMock()
         self.mocked_datastore.return_value = self.mocked_collection
 
+        for function, value in kwargs.iteritems():
+            logger.debug('function: %s', function)
+            logger.debug('value: %s', value)
+
+            getattr(self.mocked_collection, function).return_value = value
+
+    mocks.add('datastores.get_container')
+    def mock_pyrax(self, contents):
+        if 'datastores.get_container' in self.mocks_mask:
+            return
+
+        _ = mock.patch('margarine.blend.articles.get_container')
+
+        self.addCleanup(_.stop)
+
+        self.mocked_pyrax = _.start()
+
+        self.mocked_container = mock.MagicMock()
+        self.mocked_pyrax.return_value = self.mocked_container
+
+        self.mocked_object = mock.MagicMock()
+        self.mocked_container.get_object.return_value = self.mocked_object
+
+        self.mocked_object.fetch.return_value = contents
+
     def test_article_read_unsubmitted(self):
         '''blend.articles—GET /articles/? → 404—unsubmitted'''
 
-        BLEND.config['TESTING'] = True
-        application = BLEND.test_client()
-
         self.mock_datastore()
 
-        base_url = '/{i.API_VERSION}/articles/'.format(i = information)
+        for article in ARTICLES['all']:
+            response = self.application.get(self.base_url + article['uuid'])
+            self.assertEqual(404, response.status_code)
 
-        for url in URLS['all']:
-            response = application.get(base_url + url['uuid'])
-            self.assertIn('404', response.status)
+    def test_article_read_submitted(self):
+        '''blend.articles—GET /articles/? → 200—submitted
+
+        submitted means that all background processes have finished and all data
+        is available in the datastore query result.
+
+        '''
+
+        for article in ARTICLES['all']:
+            self.mock_datastore(find_one = article['bson'])
+            self.mock_pyrax(article['json']['body'])
+
+            response = self.application.get(self.base_url + article['uuid'])
+            self.assertEqual(200, response.status_code)
+
+            self.assertIsNotNone(response.headers.get('Access-Control-Allow-Origin'))
+
+            self.assertEqual('application/json', response.headers.get('Content-Type'))
+
+            self.assertEqual(article['etag'], response.headers.get('ETag'))
+            self.assertEqual(article['updated_at'], response.headers.get('Last-Modified'))
+            self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
+
+            _, self.maxDiff = self.maxDiff, None
+            self.assertEqual(article['json'], json.loads(response.get_data()))
+            self.maxDiff = _
 
 class BaseBlendArticleTest(BaseBlendTest):
     # TODO Make this simpler.
@@ -119,45 +175,6 @@ class BlendArticleLegacyReadTest(BaseBlendArticleTest):
             self.mock_collection.reset_mock()
 
             self.assertIn('404', response.status)
-
-    def test_article_read_submitted_complete(self):
-        '''Blend::Article Read—Submitted,Complete
-
-        .. note::
-            The article in question has been submitted and the spread process
-            has finished processing the following items:
-
-            * HTML Sanitization
-
-        '''
-
-        for uuid, url in self.articles.iteritems():
-            self.mock_collection.find_one.return_value = {
-                    '_id': uuid.hex,
-                    'url': url,
-                    'created_at': datetime.datetime(2013, 8, 4, 14, 16, 20, 77773),
-                    'etag': 'bf6285d832a356e1bf509a63edc8870f',
-                    'parsed_at': datetime.datetime(2013, 8, 4, 14, 16, 21, 77773),
-                    'size': 31052,
-                    'text_container_name': '44d85795',
-                    'text_object_name': '248d-5899-b8ca-ac2bd8233755',
-                    }
-
-            mock_object = self._get_attached_mock(self.mock_container.get_object)
-            mock_object.fetch.return_value = 'Redacted for testing purposes'
-
-            response = self.application.get(self.base_url + str(uuid))
-
-            self.mock_collection.find_one.assert_called_once_with({ '_id': uuid.hex })
-            self.mock_collection.reset_mock()
-
-            mock_object.fetch.assert_called_once_with()
-
-            self.assertIn('200', response.status)
-
-            self.assertEqual('application/json', response.headers.get('Content-Type'))
-            # TODO Verify configured domain.
-            #self.assertEqual('http://margarine.raxsavvy.com', response.headers.get('Access-Control-Allow-Origin'))
 
 class BlendArticleUpdateTest(BaseBlendArticleTest):
     # TODO Make this simpler.
