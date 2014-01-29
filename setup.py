@@ -129,8 +129,8 @@ PARAMS['data_files'] = [
             'config/pyrax.ini',
             ]),
         ('libexec/{P[name]}'.format(P = PARAMS), [
-            'config/blend.wsgi',
-            'config/tinge.wsgi',
+            'scripts/blend.wsgi',
+            'scripts/tinge.wsgi',
             ])
         ]
 
