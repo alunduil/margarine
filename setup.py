@@ -124,13 +124,13 @@ PARAMS['data_files'] = [
             'README.rst',
             ]),
         ('share/doc/{P[name]}-{P[version]}/config'.format(P = PARAMS), [
-            'conf/logging.ini',
-            'conf/margarine.ini',
-            'conf/pyrax.ini',
+            'config/logging.ini',
+            'config/margarine.ini',
+            'config/pyrax.ini',
             ]),
         ('libexec/{P[name]}'.format(P = PARAMS), [
-            'conf/blend.wsgi',
-            'conf/tinge.wsgi',
+            'config/blend.wsgi',
+            'config/tinge.wsgi',
             ])
         ]
 
