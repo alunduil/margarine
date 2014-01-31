@@ -5,6 +5,7 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import copy
 import datetime
 import json
 import logging
@@ -27,6 +28,11 @@ class BlendArticleReadTest(unittest.TestCase):
 
     def setUp(self):
         super(BlendArticleReadTest, self).setUp()
+
+        articles_copy = copy.copy(ARTICLES)
+        def _():
+            ARTICLES = articles_copy
+        self.addCleanup(_)
 
         BLEND.config['TESTING'] = True
         self.application = BLEND.test_client()
@@ -79,6 +85,17 @@ class BlendArticleReadTest(unittest.TestCase):
 
         for article in ARTICLES['all']:
             response = self.application.get(self.base_url + article['uuid'])
+            self.assertEqual(404, response.status_code)
+
+    def test_article_read_submitted_incomplete(self):
+        '''blend.articles-GET /articles/? → 404-submitted,incomplete'''
+    
+        for article in ARTICLES['all']:
+            del article['bson']['parsed_at']
+            self.mock_datastore(find_one = article['bson'])
+
+            response = self.application.get(self.base_url + article['uuid'])
+
             self.assertEqual(404, response.status_code)
 
     def test_article_read_submitted(self):
