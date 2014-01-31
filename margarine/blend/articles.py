@@ -117,13 +117,13 @@ def submit_article():
     channel.close()
 
     response = make_response("", 202)
-    response.headers["Location"] = url_for(".article", article_uuid = _id)
+    response.headers["Location"] = url_for(".read_article", article_uuid = _id)
     response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
 
     return response
 
 @ARTICLE.route('/<article_uuid>', methods = [ 'GET', 'HEAD' ])
-def article(article_uuid):
+def read_article(article_uuid):
     '''Retrieve article data and metadata.
 
     :URL: ``/{ARTICLE_UUID}``
@@ -186,7 +186,6 @@ def article(article_uuid):
 
     container_name, object_name = article.pop('cf_container_name'), article.pop('cf_object_name')
 
-    # TODO Catch connection issues and return Temporarily Unavailable.
     if request.method != 'HEAD':
         article['body'] = get_container(container_name).get_object(object_name).fetch()
 
