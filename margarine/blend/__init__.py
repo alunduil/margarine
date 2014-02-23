@@ -180,6 +180,8 @@ def _extract_flask_parameters(parameters):
 
     flask_parameters = {}
 
+    logger.debug('parameters: %s', parameters)
+
     if "flask.host" in parameters:
         flask_parameters["host"] = parameters["flask.host"]
 
