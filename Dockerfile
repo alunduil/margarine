@@ -11,3 +11,4 @@ env PYTHONPATH /website
 expose 5000
 expose 5050
 
+entrypoint /website/bin/tinge
