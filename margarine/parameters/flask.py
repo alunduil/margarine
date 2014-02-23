@@ -10,7 +10,7 @@ from margarine.parameters import Parameters
 Parameters('flask', parameters = [
     { # --flask-host=HOST; HOST ← 127.0.0.1
         'options': [ '--host' ],
-        'default': '127.0.0.1',
+        'default': '0.0.0.0',
         'help': \
                 'The IP to bind the flask application.  This affects both ' \
                 'tinge and blend and defaults to %(default)s.',
