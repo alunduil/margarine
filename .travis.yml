@@ -2,8 +2,10 @@ language: python
 python:
   - "2.7"
 install:
+  - "mv setup.cfg{,.bak}"
   - "pip install -r requirements.txt"
   - "pip install -r test_margarine/requirements.txt"
+  - "mv setup.cfg{.bak,}"
 script:
   - python setup.py install
   - nosetests
