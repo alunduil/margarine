@@ -44,7 +44,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
     mocks.add('datastores.get_container')
     def mock_pyrax(self):
         if 'datastores.get_container' in self.mocks_mask:
-            return
+            return False
 
         _ = mock.patch('margarine.blend.articles.get_container')
 
@@ -58,6 +58,8 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         self.mocked_object = mock.MagicMock()
         self.mocked_container.get_object.return_value = self.mocked_object
 
+        return True
+
     def test_article_read_delete(self):
         '''blend.articles—DELETE /articles/? → 405'''
 
@@ -70,14 +72,11 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         '''blend.articles—GET /articles/? → 301'''
 
         for article in ARTICLES['all']:
-            self.mock_pyrax()
-
-            mocked_cdn_uri = mock.PropertyMock(return_value = article['cdn_uri'])
-            type(self.mocked_container).cdn_uri = mocked_cdn_uri
+            if self.mock_pyrax():
+                mocked_cdn_uri = mock.PropertyMock(return_value = article['cdn_uri'])
+                type(self.mocked_container).cdn_uri = mocked_cdn_uri
 
             response = self.fetch(self.base_url + article['uuid'], follow_redirects = False)
-
-            logger.debug('error: %s', response.error)
 
             self.assertEqual(301, response.code)
             self.assertEqual('/'.join([ article['cdn_uri'], 'articles', article['uuid'] ]), response.headers.get('Location', ''))
@@ -86,14 +85,11 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         '''blend.articles—HEAD /articles/? → 301'''
 
         for article in ARTICLES['all']:
-            self.mock_pyrax()
-
-            mocked_cdn_uri = mock.PropertyMock(return_value = article['cdn_uri'])
-            type(self.mocked_container).cdn_uri = mocked_cdn_uri
+            if self.mock_pyrax():
+                mocked_cdn_uri = mock.PropertyMock(return_value = article['cdn_uri'])
+                type(self.mocked_container).cdn_uri = mocked_cdn_uri
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD', follow_redirects = False)
-
-            logger.debug('error: %s', response.error)
 
             self.assertEqual(301, response.code)
             self.assertEqual('/'.join([ article['cdn_uri'], 'articles', article['uuid'] ]), response.headers.get('Location', ''))
@@ -104,8 +100,6 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         for article in ARTICLES['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'PATCH', body = '')
 
-            logger.debug('error: %s', response.error)
-
             self.assertEqual(405, response.code)
 
     def test_article_read_put(self):
@@ -114,8 +108,6 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         for article in ARTICLES['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'PUT', body = '')
 
-            logger.debug('error: %s', response.error)
-
             self.assertEqual(405, response.code)
 
     def test_article_read_post(self):
@@ -123,8 +115,6 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
 
         for article in ARTICLES['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'POST', body = '')
-
-            logger.debug('error: %s', response.error)
 
             self.assertEqual(405, response.code)
 
