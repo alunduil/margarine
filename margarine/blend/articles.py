@@ -5,37 +5,6 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-"""Provide the blueprint for an articles API for flask.
-
-The properties we're starting with are the following:
-
-    * uuid5 (url)
-    * url—unique index
-    * text → sent to object store upon save (MQ)
-    * tags—index
-    * notations
-
-      * location
-      * note
-
-    * votes—index
-    * created_at—index
-    * original_etag
-    * parsed_at—index
-
-    * subscribers—Psuedo parameter, maps to join collection.
-
-      * uuid4—user
-      * uuid5—bookmark
-      * subscribed_at
-
-.. note::
-
-    This blueprint has all methods documented with an assumed prefix.  Thus,
-    the path '/' is in fact something like (defined elsewhere) '/v1/articles/'.
-
-"""
-
 import datetime
 import json
 import logging
@@ -43,6 +12,7 @@ import pika
 import pytz
 import re
 import socket
+import tornado.web
 import uuid
 
 from flask import request
@@ -56,6 +26,7 @@ import margarine.parameters.tinge
 
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
+from margarine.blend import information
 from margarine.communication import get_channel
 from margarine.parameters import Parameters
 
@@ -117,92 +88,70 @@ def submit_article():
     channel.close()
 
     response = make_response("", 202)
-    response.headers["Location"] = url_for(".read_article", article_uuid = _id)
+    #response.headers["Location"] = url_for(".read_article", article_uuid = _id)
     response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
 
     return response
 
-@ARTICLE.route('/<article_uuid>', methods = [ 'GET', 'HEAD' ])
-def read_article(article_uuid):
-    '''Retrieve article data and metadata.
 
-    :URL: ``/{ARTICLE_UUID}``
+class ArticleReadHandler(tornado.web.RequestHandler):
+    SUPPORTED_METHODS = ( 'GET', 'HEAD', 'OPTIONS' )
 
-    Parameters
-    ----------
+    def get(self, article_uuid):
+        '''Redirect to the requested article data.
 
-    :``ARTICLE_UUID``: The UUID of the article being requested (i.e.
-                       44d85795-248d-5899-b8ca-ac2bd8233755).
+        :URL: ``/articles/{ARTICLE_UUID}``
 
-    Possible HTTP Methods
-    ---------------------
+        Parameters
+        ----------
 
-    :GET: Retrieve the article in its entirety
-    :HEAD: Retrieve only the headers for caching or finding the original article
+        :``ARTICLE_UUID``: UUID of the article being requested.
 
-    Possible Status Codes
-    ---------------------
+        Possible Status Codes
+        ---------------------
 
-    :200: Successful retrieval of article
-    :404: Article could not be retrieved or did not exist
+        :301: Permanent redirect to the article's location in an object store.
 
-    Examples
-    --------
+        Examples
+        --------
 
-    1. :request:::
-           GET /{ARTICLE_UUID} HTTP/1.0
-           [Accept: application/json]
+        1. :request:::
+               GET /articles/{ARTICLE_UUID} HTTP/1.0
+               [Accept: application/json]
 
-       :response:::
-           HTTP/1.0 200 Ok
-           Access-Control-Allow-Origin: http://margarine.io
-           Content-Type: application/json
-           ETag: 21696f99425b45b28ee9d2c308266beb
-           Last-Modified: Tue, 15 Nov 1994 12:45:26 GMT
-           Link: <http://blog.alunduil.com/posts/singularity-an-alternative-openstack-guest-agent.html>; ref="original"
+           :response:::
+               HTTP/1.0 301 Moved Permanently
+               Content-Type: text/html
+               Location: {OBJECT_STORE_URL}
 
-           {
-               "body": "…Singularity, an Alternative Openstack Guest Agent | Hackery &c…
-               "url": "http://blog.alunduil.com/posts/singularity-an-alternative-openstack-guest-agent.html",
-               "created_at": {"$date": 1374007667571},
-               "etag": "6e2f69536ca15cc18260bffe7583b849",
-               "_id": "03db19bb92205b4fb5fc3c4c0e4b1279",
-               "parsed_at": {"$date": 1374008521414},
-               "size": 9964
-           }
+               <!DOCTYPE html>
+               <html lang="en">
+                 <head>
+                   <meta charset="utf-8">
+                   <title>{UUID}</title>
 
+                   <meta name="author" content="Alex Brandt &gt;alunduil@alunduil.com&lt;">
 
+                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    '''
+                   <link href="{OBJECT_STORE_URL}/css/bootstrap.min.css" rel="stylesheet">
+                   <link href="{OBJECT_STORE_URL}/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+                 </head>
+                 <body>
+                   <a href="http://{OBJECT_STORE_URL}/articles/{UUID}">{UUID}</a>
+                 </body>
+               </html>
 
-    logger.info('retrieving article %s', article_uuid)
+        '''
 
-    article = get_collection('articles').find_one({ '_id': article_uuid.replace('-', '') })
+        logger.info('STARTING: read article %s', article_uuid)
 
-    logger.debug('article: %s', article)
+        cdn_uri = get_container('articles').cdn_uri
 
-    if article is None or 'parsed_at' not in article:
-        abort(404)
+        logger.debug('cdn_uri: %s', cdn_uri)
 
-    container_name, object_name = article.pop('cf_container_name'), article.pop('cf_object_name')
+        self.redirect('/'.join([ cdn_uri, 'articles', article_uuid ]), permanent = True)
 
-    if request.method != 'HEAD':
-        article['body'] = get_container(container_name).get_object(object_name).fetch()
+        logger.info('STOPPING: read article %s', article_uuid)
 
-    def _(obj):
-        if isinstance(obj, datetime.datetime):
-            return pytz.utc.localize(obj).strftime('%a, %d %b %Y %H:%M:%S.%f%z')
-        raise TypeError
-
-    response = make_response(json.dumps(article, default = _), 200)
-
-    response.mimetype = 'application/json'
-
-    response.headers['Access-Control-Allow-Origin'] = Parameters()['tinge.url']
-    response.headers['ETag'] = article['etag']
-    response.headers['Last-Modified'] = pytz.utc.localize(article['updated_at']).strftime('%a, %d %b %Y %H:%M:%S %Z')
-    response.headers['Link'] = '<{0}>; rel="original"'.format(article['original_url'])
-
-    logger.info('finished retrieving article %s', article_uuid)
-
-    return response
+    head = get

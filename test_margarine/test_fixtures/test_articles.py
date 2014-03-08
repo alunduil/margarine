@@ -12,6 +12,7 @@ ARTICLES = {}
 ARTICLES['correct'] = []
 
 ARTICLES['correct'].append({
+    'cdn_uri': 'http://030913169406e3324e8b-77d0bdd9ca8f86cd71f6c07a52ebe654.r56.cf1.rackcdn.com',
     'bson': {
         'cf_container_name': '0fb5c88e',
         'cf_object_name': '8753-5bc3-a251-4343b63682b0',
