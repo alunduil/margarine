@@ -19,5 +19,5 @@ USER margarine
 
 EXPOSE 5000
 
-ENTRYPOINT [ "/usr/bin/margarine" ]
+ENTRYPOINT [ "/usr/local/bin/margarine" ]
 CMD [ "tinge", "blend", "spread" ]
