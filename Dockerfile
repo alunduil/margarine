@@ -1,14 +1,19 @@
-from ubuntu:12.10
-maintainer Nick Stinemates
+FROM ubuntu:12.10
+MAINTAINER Alex Brandt <alunduil@alunduil.com>
 
-run apt-get update
-run apt-get install -y python-setuptools
-run easy_install pip
-add . /website
-run pip install -r /website/requirements.txt
-env PYTHONPATH /website
+RUN apt-get update
+RUN apt-get upgrade -y
 
-expose 5000
-expose 5050
+RUN apt-get install python-pip
 
-entrypoint /website/bin/tinge
+ADD . /usr/local/src/margarine
+
+RUN cd /usr/local/src/margarine
+RUN pip install -r requirements.txt
+RUN python setup.py install
+
+USER margarine
+EXPOSE 5000
+
+ENTRYPOINT [ "/usr/bin/margarine" ]
+CMD [ "tinge", "blend", "spread" ]
