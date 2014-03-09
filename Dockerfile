@@ -8,9 +8,11 @@ RUN apt-get install -y -qq python-pip
 
 ADD . /usr/local/src/margarine
 
-RUN cd /usr/local/src/margarine
-RUN pip install -q -r requirements.txt
-RUN python setup.py install
+RUN mv /usr/local/src/margarine/setup.cfg{,.bak}
+RUN cd /usr/local/src/margarine && pip install -q -r requirements.txt
+RUN mv /usr/local/src/margarine/setup.cfg{.bak,}
+
+RUN cd /usr/local/src/margarine && python setup.py install
 
 USER margarine
 EXPOSE 5000
