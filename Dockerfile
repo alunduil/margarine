@@ -14,9 +14,9 @@ RUN mv /usr/local/src/margarine/setup.cfg.bak /usr/local/src/margarine/setup.cfg
 
 RUN cd /usr/local/src/margarine && python setup.py install
 
-RUN useradd -c 'added by docker for margarine' -d /usr/local/src/margarine -r
-
+RUN useradd -c 'added by docker for margarine' -d /usr/local/src/margarine -r margarine
 USER margarine
+
 EXPOSE 5000
 
 ENTRYPOINT [ "/usr/bin/margarine" ]
