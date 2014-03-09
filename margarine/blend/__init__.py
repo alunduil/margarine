@@ -8,6 +8,7 @@
 import logging
 import socket
 
+import tornado.httpserver
 import tornado.web
 
 from flask import Flask

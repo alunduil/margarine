@@ -121,26 +121,7 @@ class ArticleReadHandler(tornado.web.RequestHandler):
 
            :response:::
                HTTP/1.0 301 Moved Permanently
-               Content-Type: text/html
                Location: {OBJECT_STORE_URL}
-
-               <!DOCTYPE html>
-               <html lang="en">
-                 <head>
-                   <meta charset="utf-8">
-                   <title>{UUID}</title>
-
-                   <meta name="author" content="Alex Brandt &gt;alunduil@alunduil.com&lt;">
-
-                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-                   <link href="{OBJECT_STORE_URL}/css/bootstrap.min.css" rel="stylesheet">
-                   <link href="{OBJECT_STORE_URL}/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-                 </head>
-                 <body>
-                   <a href="http://{OBJECT_STORE_URL}/articles/{UUID}">{UUID}</a>
-                 </body>
-               </html>
 
         '''
 
