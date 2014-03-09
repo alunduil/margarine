@@ -38,6 +38,16 @@ BLEND_APPLICATION = tornado.web.Application(
     ]
 )
 
+def run():
+    http_server = tornado.httpserver.HTTPServer(BLEND_APPLICATION)
+    http_server.bind(
+        port = PARAMETERS['tornado.port'],
+        address = PARAMETERS['tornado.address']
+    )
+    http_server.start(0)
+
+    tornado.ioloop.IOLoop.instance().start()
+
 BLEND = Flask(__name__)
 
 def _prefix(name):
