@@ -14,6 +14,8 @@ RUN mv /usr/local/src/margarine/setup.cfg.bak /usr/local/src/margarine/setup.cfg
 
 RUN cd /usr/local/src/margarine && python setup.py install
 
+RUN useradd -c 'added by docker for margarine' -d /usr/local/src/margarine -r
+
 USER margarine
 EXPOSE 5000
 
