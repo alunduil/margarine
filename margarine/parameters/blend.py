@@ -7,24 +7,12 @@
 
 import socket
 
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 
-Parameters('blend', parameters = [
-    { # --tinge-url=FQDN; FQDN ← HOSTNAME (TLD)
-        'options': [ '--url' ],
-        'default': 'http://api.' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),
-        'help': \
-                'The URL that blend will be configured to run behind.  This ' \
-                'is used to set up tinge\'s links to blend.',
-        },
-    ])
-
-Parameters('api', parameters = [
-    { # --api-endpoint=FQDN; FQDN ← HOSTNAME (TLD)
-        'options': [ '--endpoint' ],
-        'default': 'http://api.' + '.'.join(socket.gethostname().split('.', 2)[1:]),
-        'help': \
-                'The URL that blend will be configured to run behind.  This ' \
-                'is used to set up tinge\'s links to blend.',
-        },
-    ])
+PARAMETERS.add_parameter(
+    group = 'blend',
+    options = [ '--url' ],
+    default = 'http://api.' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),
+    help = \
+        'URL that is used as the endpoint for blend.  Default %(default)s.'
+)

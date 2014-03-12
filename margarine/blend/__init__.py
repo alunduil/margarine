@@ -114,10 +114,7 @@ import socket
 from flask import Flask
 from flask import url_for
 
-from margarine.parameters import Parameters
-from margarine.parameters.logging import configure_logging
-
-configure_logging()
+from margarine.parameters import PARAMETERS
 
 from margarine.blend import information
 

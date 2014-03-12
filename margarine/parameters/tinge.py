@@ -7,29 +7,13 @@
 
 import socket
 
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 
-Parameters('tinge', parameters = [
-    { # --tinge-url=FQDN; FQDN ← HOSTNAME (TLD)
-        'options': [ '--url' ],
-        'default': 'http://' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),
-        'help': \
-                'The URL that tinge will be configured to run behind.  This ' \
-                'is used to set the Access-Control-Allow-Origin header that ' \
-                'lets browsers know that tinge on a different domain can ' \
-                'use the data provided by blend.',
-        },
-    ])
-
-# TODO Remove this alias with 2.x
-Parameters('server', parameters = [
-    { # --server-domain=FQDN; FQDN ← HOSTNAME (TLD)
-        'options': [ '--domain' ],
-        'default': 'http://' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),
-        'help': \
-                'The URL that tinge will be configured to run behind.  This ' \
-                'is used to set the Access-Control-Allow-Origin header that ' \
-                'lets browsers know that tinge, on a different domain, can ' \
-                'use the data provided by blend.',
-        },
-    ])
+PARAMETERS.add_parameter(
+    group = 'tinge',
+    options = [ '--url' ],
+    default = 'http://' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),
+    help = \
+        'URL that is used as the endpoint for tinge.  Sets the ' \
+        'Access-Control-Allow-Origin header in blend.  Default %(default)s'
+)

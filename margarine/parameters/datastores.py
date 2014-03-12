@@ -7,36 +7,89 @@
 
 import os
 
-from margarine.parameters import Parameters
-from margarine.parameters.configuration import DIRECTORY as CONFIGURATION_DIRECTORY
+from margarine import information
+from margarine.parameters import PARAMETERS
 
-Parameters('datastore', parameters = [
-    { # --datastore-url=URL; URL ← mongodb://localhost/test
-        'options': [ '--url' ],
-        'default': 'mongodb://localhost/test',
-        'help': \
-                'The URL endpoint of the data store mechanism.  This ' \
-                'defaults to a mongo instance running on the localhost but ' \
-                'can also be another datastore such as: couchdb, neo4j, &c. ',
-        }
-    ])
+PARAMETERS.add_parameter(
+    group = 'datastore',
+    options = [ '--url' ],
+    default = 'mongodb://localhost/test',
+    help = \
+        'URL of the datastore.  Default %(default)s.'
+)
 
-# TODO Make this more consistent with the rest of the parameters.
-Parameters('pyrax', parameters = [
-    { # --pyrax-credentials-file=FILE; FILE ← CONFIGURATION_DIRECTORY/pyrax.ini
-        'options': [ '--credentials-file' ],
-        'default': os.path.join(CONFIGURATION_DIRECTORY, 'pyrax.ini'),
-        'help': \
-                'The configuration file containing the pyrax credentials ' \
-                'used by %(prog)s.  Default: %(default)s.',
-        },
-    { # --pyrax-identity-type=TYPE; TYPE ← rackspace
-        'options': [ '--identity-type' ],
-        'default': 'rackspace',
-        'help': \
-                'The identity type for pyrax.  This needs to be set outside ' \
-                'of the pyrax configuration due to the pyrax ' \
-                'implementation.  This defaults to %(default)s but can be ' \
-                'over-ridden if required.',
-        },
-    ])
+# =========================================================================== #
+# See Also:                                                                   #
+#   https://github.com/rackspace/pyrax/blob/master/docs/getting_started.md    #
+# =========================================================================== #
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--identity-type' ],
+    default = 'rackspace',
+    choices = [ 'rackspace', 'keystone' ],
+    help = \
+        'Identity type for pyrax.  Default %(default)s'
+)
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--auth-endpoint' ],
+    help = \
+        'Authentication endpoint for pyrax.  Default %(default)s'
+)
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--region' ],
+    default = 'ORD',
+    help = \
+        'Region for pyrax (i.e. `dfw`, `ord`, `lon`, &c).  Default %(default)s'
+)
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--tenant-id' ],
+    help = \
+        'Tenant ID for pyrax authentication.  Used for `keystone` ' \
+        'authentication.  Default %(default)s'
+)
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--tenant-name' ],
+    help = \
+        'Tenant name for pyrax authentication.  Used for `keystone` ' \
+        'authentication.  Default %(default)s'
+)
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--custom-user-agent' ],
+    default = 'Margarine-{i.VERSION}'.format(i = information),
+    help = \
+        'Custom User-Agent string for pyrax to use.  Default %(default)s'
+)
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--username' ],
+    help = \
+        'Username for pyrax authentication.'
+)
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--password' ],
+    help = \
+        'Password for pyrax authentication.  Used for `keystone` ' \
+        'authentication.  Default %(default)s'
+)
+
+PARAMETERS.add_parameter(
+    group = 'pyrax',
+    options = [ '--api-key' ],
+    help = \
+        'API key for pyrax authentication.  Used for `rackspace` ' \
+        'authentication.  Default %(default)s'
+)

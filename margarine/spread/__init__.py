@@ -6,10 +6,7 @@
 import pika
 import logging
 
-from margarine.parameters import Parameters
-from margarine.parameters.logging import configure_logging
-
-configure_logging()
+from margarine.parameters import PARAMETERS
 
 from margarine.communication import get_channel
 from margarine.spread import users

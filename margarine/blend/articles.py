@@ -57,7 +57,7 @@ import margarine.parameters.tinge
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
 from margarine.communication import get_channel
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 
@@ -118,7 +118,7 @@ def submit_article():
 
     response = make_response("", 202)
     response.headers["Location"] = url_for(".read_article", article_uuid = _id)
-    response.headers["Access-Control-Allow-Origin"] = Parameters()["server.domain"]
+    response.headers["Access-Control-Allow-Origin"] = PARAMETERS['tinge.url']
 
     return response
 
@@ -198,7 +198,7 @@ def read_article(article_uuid):
 
     response.mimetype = 'application/json'
 
-    response.headers['Access-Control-Allow-Origin'] = Parameters()['tinge.url']
+    response.headers['Access-Control-Allow-Origin'] = PARAMETERS['tinge.url']
     response.headers['ETag'] = article['etag']
     response.headers['Last-Modified'] = pytz.utc.localize(article['updated_at']).strftime('%a, %d %b %Y %H:%M:%S %Z')
     response.headers['Link'] = '<{0}>; rel="original"'.format(article['original_url'])

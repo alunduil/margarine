@@ -57,7 +57,7 @@ from flask import render_template
 import margarine.parameters.security
 
 from margarine.blend import information
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 from margarine.communication import get_channel
 from margarine.aggregates import get_collection
 from margarine.keystores import get_keyspace
@@ -107,7 +107,7 @@ def http_401_handler(error):
     authentication_string = authentication_string.format(
             realm = information.AUTHENTICATION_REALM,
             nonce = uuid.uuid4().hex,
-            opaque = Parameters()['security.opaque'],
+            opaque = PARAMETERS['security.opaque'],
             )
 
     logger.debug("authentication_string: %s", authentication_string)
@@ -276,7 +276,7 @@ class UserInterface(MethodView):
 
         response.headers['Content-Type'] = 'application/json'
         # TODO Change Paramter from server.domain to tinge.domain
-        response.headers['Access-Control-Allow-Origin'] = Parameters()['server.domain']
+        response.headers['Access-Control-Allow-Origin'] = PARAMETERS['tinge.url']
 
         return response
 

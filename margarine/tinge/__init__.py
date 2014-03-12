@@ -41,9 +41,6 @@ import margarine.parameters.blend
 import margarine.parameters.flask
 
 from margarine.parameters import Parameters
-from margarine.parameters.logging import configure_logging
-
-configure_logging()
 
 logger = logging.getLogger(__name__)
 

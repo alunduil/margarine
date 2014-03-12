@@ -1,4 +1,5 @@
 beautifulsoup4
+crumbs
 Flask
 pika==0.9.12
 pymongo
