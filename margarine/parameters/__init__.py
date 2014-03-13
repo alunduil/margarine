@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, 'etc', 'margarine')
 
-PARAMETERS = Parameters(conflict_handler = 'resolve') # TODO , inotify = True)
+PARAMETERS = Parameters(conflict_handler = 'resolve', inotify = True)
 
 PARAMETERS.add_parameter(
     group = 'margarine',
