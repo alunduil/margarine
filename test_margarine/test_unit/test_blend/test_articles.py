@@ -34,12 +34,25 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
     def setUp(self):
         super(BlendArticleReadTest, self).setUp()
 
-        articles_copy = copy.copy(ARTICLES)
-        def _():
-            ARTICLES = articles_copy
-        self.addCleanup(_)
+        self.articles = copy.deepcopy(ARTICLES)
 
         self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
+
+    mocks.add('datastores.get_collection')
+    def mock_datastore(self):
+        if 'datastores.get_collection' in self.mocks_mask:
+            return False
+
+        _ = mock.patch('margarine.blend.articles.get_collection')
+
+        self.addCleanup(_.stop)
+
+        self.mocked_datastore = _.start()
+
+        self.mocked_collection = mock.MagicMock()
+        self.mocked_datastore.return_value = self.mocked_collection
+
+        return True
 
     mocks.add('datastores.get_container')
     def mock_pyrax(self):
@@ -63,41 +76,15 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
     def test_article_read_delete(self):
         '''blend.articles—DELETE /articles/? → 405'''
 
-        for article in ARTICLES['all']:
+        for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'DELETE')
 
             self.assertEqual(405, response.code)
 
-    def test_article_read_get(self):
-        '''blend.articles—GET /articles/? → 301'''
-
-        for article in ARTICLES['all']:
-            if self.mock_pyrax():
-                mocked_cdn_uri = mock.PropertyMock(return_value = article['cdn_uri'])
-                type(self.mocked_container).cdn_uri = mocked_cdn_uri
-
-            response = self.fetch(self.base_url + article['uuid'], follow_redirects = False)
-
-            self.assertEqual(301, response.code)
-            self.assertEqual('/'.join([ article['cdn_uri'], 'articles', article['uuid'] ]), response.headers.get('Location', ''))
-
-    def test_article_read_head(self):
-        '''blend.articles—HEAD /articles/? → 301'''
-
-        for article in ARTICLES['all']:
-            if self.mock_pyrax():
-                mocked_cdn_uri = mock.PropertyMock(return_value = article['cdn_uri'])
-                type(self.mocked_container).cdn_uri = mocked_cdn_uri
-
-            response = self.fetch(self.base_url + article['uuid'], method = 'HEAD', follow_redirects = False)
-
-            self.assertEqual(301, response.code)
-            self.assertEqual('/'.join([ article['cdn_uri'], 'articles', article['uuid'] ]), response.headers.get('Location', ''))
-
     def test_article_read_patch(self):
         '''blend.articles—PATCH /articles/? → 405'''
 
-        for article in ARTICLES['all']:
+        for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'PATCH', body = '')
 
             self.assertEqual(405, response.code)
@@ -105,7 +92,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
     def test_article_read_put(self):
         '''blend.articles—PUT /articles/? → 405'''
 
-        for article in ARTICLES['all']:
+        for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'PUT', body = '')
 
             self.assertEqual(405, response.code)
@@ -113,10 +100,104 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
     def test_article_read_post(self):
         '''blend.articles—POST /articles/? → 405'''
 
-        for article in ARTICLES['all']:
+        for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'POST', body = '')
 
             self.assertEqual(405, response.code)
+
+    def test_article_read_get_unsubmitted(self):
+        '''blend.articles—GET /articles/? → 404—unsubmitted'''
+
+        self.mock_datastore()
+
+        for article in self.articles['all']:
+            response = self.fetch(self.base_url + article['uuid'])
+
+            self.assertEqual(404, response.code)
+
+    def test_article_read_head_unsubmitted(self):
+        '''blend.articles—HEAD /articles/? → 404—unsubmitted'''
+
+        self.mock_datastore()
+
+        for article in self.articles['all']:
+            response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
+
+            self.assertEqual(404, response.code)
+
+    def test_article_read_get_submitted_incomplete(self):
+        '''blend.articles—GET /articles/? → 404—submitted,incomplete'''
+
+        for article in self.articles['all']:
+            del article['bson']['parsed_at']
+
+            if self.mock_datastore():
+                self.mocked_collection.find_one.return_value = article['bson']
+
+            response = self.fetch(self.base_url + article['uuid'])
+
+            self.assertEqual(404, response.code)
+
+    def test_article_read_head_submitted_incomplete(self):
+        '''blend.articles—HEAD /articles/? → 404—submitted,incomplete'''
+
+        for article in self.articles['all']:
+            del article['bson']['parsed_at']
+
+            if self.mock_datastore():
+                self.mocked_collection.find_one.return_value = article['bson']
+
+            response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
+
+            self.assertEqual(404, response.code)
+
+    def test_article_read_get_submitted_complete(self):
+        '''blend.articles—GET /articles/? → 200—submitted,complete'''
+
+        for article in self.articles['all']:
+            if self.mock_datastore():
+                self.mocked_collection.find_one.return_value = article['bson']
+
+            if self.mock_pyrax():
+                self.mocked_object.fetch.return_value = article['json']['body']
+
+            response = self.fetch(self.base_url + article['uuid'])
+
+            self.assertEqual(200, response.code)
+
+            self.assertIsNotNone(response.headers.get('Access-Control-Allow-Origin'))
+
+            self.assertEqual('application/json', response.headers.get('Content-Type'))
+
+            self.assertEqual(article['etag'], response.headers.get('ETag'))
+            self.assertEqual(article['updated_at'], response.headers.get('Last-Modified'))
+            self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
+
+            _, self.maxDiff = self.maxDiff, None
+            self.assertEqual(article['json'], json.loads(response.body))
+            self.maxDiff = _
+
+    def test_article_read_head_submitted_complete(self):
+        '''blend.articles—HEAD /articles/? → 200—submitted,complete'''
+
+        for article in self.articles['all']:
+            if self.mock_datastore():
+                self.mocked_collection.find_one.return_value = article['bson']
+
+            if self.mock_pyrax():
+                self.mocked_object.fetch.return_value = article['json']['body']
+
+            response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
+
+            self.assertEqual(200, response.code)
+
+            self.assertIsNotNone(response.headers.get('Access-Control-Allow-Origin'))
+
+            self.assertEqual('application/json', response.headers.get('Content-Type'))
+
+            self.assertEqual(article['etag'], response.headers.get('ETag'))
+            self.assertEqual(article['updated_at'], response.headers.get('Last-Modified'))
+            self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
 
 
 class BaseBlendArticleTest(BaseBlendTest):
