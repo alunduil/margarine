@@ -563,7 +563,7 @@ def login(username):
 
     logger.info("Checking authentication!")
 
-    if request.authorization is None or request.authorization.opaque != Parameters()['security.opaque']:
+    if request.authorization is None or request.authorization.opaque != PARAMETERS['security.opaque']:
         raise UnauthorizedError(username = username)
 
     user = get_collection("users").find_one({ "username": username })

@@ -11,7 +11,7 @@ import pyrax
 
 import margarine.parameters.datastores
 
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
@@ -43,7 +43,7 @@ def get_collection(collection):
 
     global DATASTORE_CONNECTION
 
-    url = Parameters()["datastore.url"]
+    url = PARAMETERS['datastore.url']
 
     uri = URI(url)
 
@@ -108,8 +108,8 @@ def get_container(container):
 
     """
 
-    pyrax.settings.set('identity_type', Parameters()["pyrax.identity_type"])
+    pyrax.settings.set('identity_type', PARAMETERS['pyrax.identity_type'])
 
-    pyrax.set_credential_file(Parameters()["pyrax.credentials_file"])
+    pyrax.set_credential_file(PARAMETERS['pyrax.credentials_file'])
 
     return pyrax.cloudfiles.create_container(container)

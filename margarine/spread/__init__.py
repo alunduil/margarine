@@ -21,7 +21,7 @@ def main():
 
     """
 
-    Parameters().parse()
+    PARAMETERS.parse()
 
     # TODO Manage threads for load balancing.
 

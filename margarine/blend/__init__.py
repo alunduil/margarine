@@ -114,8 +114,9 @@ import socket
 from flask import Flask
 from flask import url_for
 
+import margarine.parameters.flask
+
 from margarine.parameters import PARAMETERS
-from margarine.parameters import flask
 
 from margarine.blend import information
 
