@@ -1,0 +1,14 @@
+# Configuration file for {{ information.NAME }}.
+#
+# All values are provided with their default setting.  To modify the behavior of
+# this application, simply uncomment the setting you would like to modify and
+# override the default value currently set.
+{% for group, parameters in PARAMETERS.grouped_parameters|dictsort|reverse %}
+[{{ group }}]
+{% for name, properties in parameters|dictsort -%}
+{% if 'default' in properties -%}
+# {{ properties['help']|format(prog = information.NAME, default = properties['default'])|wordwrap(78, wrapstring = '\n# ') }}
+#{{ name|replace(group + '.', '') }} = {{ properties['default'] }}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
