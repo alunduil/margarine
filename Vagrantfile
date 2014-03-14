@@ -41,8 +41,8 @@ Vagrant.configure('2') do |config|
     token_store.vm.synced_folder '.', '/vagrant', :disabled => true
 
     token_store.vm.provision 'shell', inline: <<-EOF
-      apt-get -q=2 update
-      apt-get -q=2 -y install redis-server
+      apt-get -qq update
+      apt-get -qq -y install redis-server
       sed -i -e \'s/bind 127.0.0.1/#\0/\' /etc/redis/redis.conf
       service redis-server restart
     EOF
@@ -90,20 +90,14 @@ Vagrant.configure('2') do |config|
     config.vm.define component do |box|
       box.vm.network :private_network, ip: ip_addresses[component]
 
-      box.omnibus.chef_version = :latest
-      box.vm.provision :chef_solo do |chef|
-        chef.node_name = component
-
-        chef.log_level = :warn
-
-        chef.roles_path = 'chef/roles'
-        chef.environments_path = 'chef/environments'
-
-        chef.json = margarine_attributes
-
-        chef.environment = 'vagrant'
-        chef.add_role component
-      end
+      box.vm.provision 'shell', inline: <<-EOF
+        apt-get -qq update
+        apt-get -qq -y install python-pip
+        ln -snf /vagrant/config /etc/margarine
+        pip install -q -r /vagrant/requirements.txt
+        cd /vagrant && python setup.py develop
+        /usr/local/bin/#{component}
+      EOF
     end
   end
 end
