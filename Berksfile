@@ -15,4 +15,4 @@ cookbook 'rabbitmq'
 cookbook 'build-essential'
 cookbook 'mongodb'
 
-cookbook 'margarine', git: 'https://github.com/raxsavvy/margarine-chef.git'
+cookbook 'margarine', git: 'https://github.com/raxsavvy/margarine-chef.git', tag: 3.0.1
