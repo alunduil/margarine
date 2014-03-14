@@ -115,6 +115,7 @@ from flask import Flask
 from flask import url_for
 
 from margarine.parameters import PARAMETERS
+from margarine.parameters import flask
 
 from margarine.blend import information
 
@@ -177,18 +178,12 @@ def _extract_flask_parameters(parameters):
 
     flask_parameters = {}
 
-    logger.debug('parameters: %s', parameters)
-
-    if "flask.host" in parameters:
-        flask_parameters["host"] = parameters["flask.host"]
-
-    if "flask.port" in parameters:
-        flask_parameters["port"] = int(parameters["flask.port"])
-
-    if "flask.debug" in parameters:
-        flask_parameters["debug"] = parameters["flask.debug"]
+    flask_parameters["host"] = parameters["flask.host"]
+    flask_parameters["port"] = parameters["flask.port"]
+    flask_parameters["debug"] = parameters["flask.debug"]
 
     return flask_parameters
 
 def main():
-    BLEND.run(**_extract_flask_parameters(Parameters().parse()))
+    PARAMETERS.parse()
+    BLEND.run(**_extract_flask_parameters(PARAMETERS))
