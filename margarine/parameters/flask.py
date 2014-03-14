@@ -19,6 +19,7 @@ PARAMETERS.add_parameter(
     group = 'flask',
     options = [ '--port' ],
     default = 5000,
+    type = int,
     help = \
         'Port to which flask should be bound.  Default $(default)s.'
 )

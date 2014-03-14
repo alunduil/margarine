@@ -6,6 +6,7 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import logging
+import logging.config
 import os
 import sys
 
