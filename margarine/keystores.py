@@ -10,7 +10,7 @@ import logging
 
 import margarine.parameters.keystore
 
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ def get_keyspace(keyspace):
 
     global KEYSTORE_CONNECTIONS
 
-    url = Parameters()["keystore.url"]
+    url = PARAMETERS['keystore.url']
 
     uri = URI(url)
 

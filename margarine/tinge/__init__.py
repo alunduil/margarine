@@ -5,32 +5,6 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-"""Frontend for Margarine.
-
-This frontend flask application handles gluing the HTML provided to a browser
-to the API (blend).  Ideally, this will be completely migrated to cloudfiles
-and completely served by CDN but the following challenges potentially damper
-that plan:
-
-* A URL in cloudfiles is a key to a particular resource.  If we want to have
-  a *dynamic* website that knows how to handle URLs that look like
-  /articles/<uuid> we need a mechanism to have a generic router (which won't
-  happen).  Potentially, this could be solved with query parameters in the URL
-  but it's not clear if cloudfiles appropriately ignores query parameters for
-  this solution to work.
-
-  Otherwise, if we can map non-unique keys to a single resources javascript
-  does contain functionality that allows us to interpret the URL and perform
-  the appropriate dynamic programming.
-
-.. note::
-    Simple testing with CloudFiles public URLs did show that retrieval of the
-    same resource happened if a query string was appended to the URL.  Once,
-    we have an acceptable interface we can decompose it to just the raw HTML
-    (with javascript being the binding) for a truly scalable SOA application.
-
-"""
-
 import logging
 import socket
 
@@ -40,16 +14,11 @@ from flask import render_template
 import margarine.parameters.blend
 import margarine.parameters.flask
 
-from margarine.parameters import Parameters
-from margarine.parameters.logging import configure_logging
-
-configure_logging()
+from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 
 TINGE = Flask(__name__)
-
-# TODO Anything else required for the frontend?
 
 @TINGE.route('/')
 def home_page():
@@ -62,7 +31,7 @@ def home_page():
 
     """
 
-    return render_template('index.html', blend_url = Parameters()['api.endpoint'])
+    return render_template('index.html', blend_url = PARAMETERS['blend.url'])
 
 @TINGE.route('/article')
 def view_article():
@@ -104,7 +73,7 @@ def view_article():
 
     """
 
-    return render_template('article.index.html', blend_url = Parameters()["api.endpoint"])
+    return render_template('article.index.html', blend_url = PARAMETERS['blend.url'])
 
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
 logger.debug("url map: %s", TINGE.url_map)
@@ -126,16 +95,12 @@ def _extract_flask_parameters(parameters):
 
     flask_parameters = {}
 
-    if "flask.host" in parameters:
-        flask_parameters["host"] = parameters["flask.host"]
-
-    if "flask.port" in parameters:
-        flask_parameters["port"] = int(parameters["flask.port"])
-
-    if "flask.debug" in parameters:
-        flask_parameters["debug"] = parameters["flask.debug"]
+    flask_parameters["host"] = parameters["flask.host"]
+    flask_parameters["port"] = parameters["flask.port"]
+    flask_parameters["debug"] = parameters["flask.debug"]
 
     return flask_parameters
 
 def main():
-    TINGE.run(**_extract_flask_parameters(Parameters().parse()))
+    PARAMETERS.parse()
+    TINGE.run(**_extract_flask_parameters(PARAMETERS))

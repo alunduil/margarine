@@ -113,9 +113,9 @@ PARAMS['data_files'] = [
         ('share/doc/{P[name]}-{P[version]}'.format(P = PARAMS), [
             'README.rst',
             ]),
-        ('share/doc/{P[name]}-{P[version]}/config'.format(P = PARAMS), [
-            'config/logging.ini',
-            'config/margarine.ini',
+        ('share/doc/{P[name]}-{P[version]}/conf'.format(P = PARAMS), [
+            'conf/logging.ini',
+            'conf/margarine.ini',
             ]),
         ]
 

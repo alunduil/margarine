@@ -1,0 +1,42 @@
+#!/usr/bin/env python2
+#
+# Copyright (C) 2013 by Alex Brandt <alex.brandt@rackspace.com>
+#
+# margarine is freely distributable under the terms of an MIT-style license.
+# See COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+import argparse
+import jinja2
+import os
+
+import margarine.parameters.blend
+import margarine.parameters.datastores
+import margarine.parameters.email
+import margarine.parameters.flask
+import margarine.parameters.keystore
+import margarine.parameters.queue
+import margarine.parameters.security
+import margarine.parameters.tinge
+
+from margarine import information
+from margarine.parameters import PARAMETERS
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'template',
+        metavar = 'T',
+        help = 'Template to render and print to stdout.'
+    )
+    arguments = parser.parse_args()
+
+    directory, template = os.path.split(arguments.template)
+
+    environment = jinja2.Environment(
+        loader = jinja2.FileSystemLoader(directory)
+    )
+
+    environment.globals['PARAMETERS'] = PARAMETERS
+    environment.globals['information'] = information
+
+    print(environment.get_template(template).render())

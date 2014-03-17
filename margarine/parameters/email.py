@@ -7,21 +7,21 @@
 
 import socket
 
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 
-Parameters('email', parameters = [
-    { # --email-url=URL; URL ← smtp://localhost
-        'options': [ '--url' ],
-        'default': 'smtp://localhost',
-        'help': \
-                'The URL endpoint of the email relay server used by ' \
-                'margarine ',
-        },
-    { # --email-from=EMAIL; EMAIL ← noreply@HOSTNAME
-        'options': [ '--from' ],
-        'default': 'noreply@' + socket.gethostname(), # TODO Parameters()["server.name"],
-        'help': \
-                'The email address used as the FROM address on all ' \
-                'generated emails.',
-        },
-    ])
+PARAMETERS.add_parameter(
+    group = 'email',
+    options = [ '--url' ],
+    default = 'smtp://localhost',
+    help = \
+        'URL of email relay server. Default %(default)s'
+)
+
+PARAMETERS.add_parameter(
+    group = 'email',
+    options = [ '--from' ],
+    default = 'noreply@' + socket.gethostname(),
+    help = \
+        'Email address used as the FROM address on sent emails.  Default ' \
+        '%(default)s'
+)

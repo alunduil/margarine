@@ -5,15 +5,14 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 
-Parameters('keystore', parameters = [
-    { # --tokens-url=TOKENS_URL; TOKENS_URL ← "redis://localhost"
-        'options': [ '--url' ],
-        'metavar': 'TOKENS_URL',
-        'default': 'redis://localhost',
-        'help': \
-                'The URL endpoint for the keystore in which to store ' \
-                'tokens.  The default is %(default)s.',
-        },
-    ])
+PARAMETERS.add_parameter(
+    group = 'keystore',
+    options = [ '--url' ],
+    metavar = 'URL',
+    default = 'redis://localhost',
+    help = \
+        'URL endpoint for the keystore where various tokens are kept.  ' \
+        'Default %(default)s.'
+)

@@ -24,7 +24,7 @@ import margarine.parameters.queue
 import margarine.parameters.blend
 import margarine.parameters.email
 
-from margarine.parameters import Parameters
+from margarine.parameters import PARAMETERS
 from margarine.helpers import URI
 
 logger = logging.getLogger(__name__)
@@ -52,7 +52,7 @@ def get_channel():
     global CONNECTION_BROKER
 
     if CONNECTION_BROKER is None or not CONNECTION_BROKER.is_open:
-        uri = URI(Parameters()["queue.url"])
+        uri = URI(PARAMETERS['queue.url'])
 
         credentials = None
         if None not in (uri.username, uri.password):
@@ -74,7 +74,7 @@ def get_channel():
                 break
             except (pika.exceptions.AMQPConnectionError) as e:
                 logger.exception(e)
-                time.sleep(Parameters()["queue.wait"])
+                time.sleep(PARAMETERS['queue.wait'])
 
     return CONNECTION_BROKER.channel()
 
@@ -109,18 +109,18 @@ def send_user_email(user, verification):
             "\n" \
             "Margarine\n"
 
-    logger.debug('blend URL: %s', Parameters()['blend.url'])
+    logger.debug('blend URL: %s', PARAMETERS['blend.url'])
 
     from margarine.blend import BLEND # TODO Figure out looping import.
-    BLEND.config["SERVER_NAME"] = Parameters()['blend.url']
+    BLEND.config["SERVER_NAME"] = PARAMETERS['blend.url']
     with BLEND.app_context():
         message = email.mime.text.MIMEText(message_text.format(verification_url = url_for("user.users_password_api", username = user["username"], verification = verification)))
 
     message["Subject"] = "Margarine Verification"
-    message["From"] = "Margarine Verifications <" + Parameters()["email.from"] + ">"
+    message["From"] = "Margarine Verifications <" + PARAMETERS["email.from"] + ">"
     message["To"] = "{0} <{1}>".format(user.get('name'), user['email'])
 
-    uri = URI(Parameters()["email.url"])
+    uri = URI(PARAMETERS["email.url"])
 
     logger.info("Connecting to SMTP Server.")
 
@@ -129,7 +129,7 @@ def send_user_email(user, verification):
     if uri.username is not None:
         _.login(uri.username, uri.password)
 
-    _.sendmail(Parameters()["email.from"], [ user["email"] ], message.as_string())
+    _.sendmail(PARAMETERS["email.from"], [ user["email"] ], message.as_string())
     _.quit()
 
     logger.info("Successfully sent email!")
