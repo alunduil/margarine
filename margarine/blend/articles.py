@@ -23,7 +23,6 @@ from flask import url_for
 from bson import json_util
 
 import margarine.parameters.tinge
-import margarine.parameters.tornado
 
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container

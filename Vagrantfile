@@ -93,10 +93,10 @@ Vagrant.configure('2') do |config|
       box.vm.provision 'shell', inline: <<-EOF
         apt-get -qq update
         apt-get -qq -y install python-pip
-        ln -snf /vagrant/config /etc/margarine
+        ln -snf /vagrant/conf /etc/margarine
         pip install -q -r /vagrant/requirements.txt
-        cd /vagrant && python setup.py develop
-        /usr/local/bin/#{component}
+        pushd /vagrant && python setup.py develop && popd
+        start-stop-daemon -Sbmp /run/#{component}.pid --exec /usr/local/bin/#{component}
       EOF
     end
   end

@@ -15,6 +15,7 @@ from flask import Flask
 from flask import url_for
 
 import margarine.parameters.flask
+import margarine.parameters.tornado
 
 from margarine.parameters import PARAMETERS
 

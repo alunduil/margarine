@@ -3,7 +3,7 @@
 # All values are provided with their default setting.  To modify the behavior of
 # this application, simply uncomment the setting you would like to modify and
 # override the default value currently set.
-{% for group, parameters in PARAMETERS.grouped_parameters|dictsort|reverse %}
+{% for group, parameters in PARAMETERS.grouped_parameters|dictsort %}
 [{{ group }}]
 {% for name, properties in parameters|dictsort -%}
 {% if 'default' in properties -%}

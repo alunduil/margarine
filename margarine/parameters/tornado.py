@@ -9,7 +9,7 @@ from margarine.parameters import PARAMETERS
 
 PARAMETERS.add_parameter(
     group = 'tornado',
-    options = [ '--host' ],
+    options = [ '--address' ],
     default = '127.0.0.1',
     help = \
         'IP to which tornado should be bound.  Default %(default)s.'
