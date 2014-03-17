@@ -6,14 +6,15 @@ RUN apt-get upgrade -y -qq
 
 RUN apt-get install -y -qq python-pip
 
+ADD conf /etc/margarine
+
 ADD . /usr/local/src/margarine
+
+RUN pip install -q -r /usr/local/src/margarine/requirements.txt
+
 WORKDIR /usr/local/src/margarine
 
-RUN mv setup.cfg setup.cfg.bak
-RUN pip install -q -r requirements.txt
-RUN mv setup.cfg.bak setup.cfg
-
-RUN python setup.py install
+RUN python setup.py -q install
 
 RUN useradd -c 'added by docker for margarine' -d /usr/local/src/margarine -r margarine
 USER margarine
