@@ -19,18 +19,6 @@ ip_addresses = {
   :datastore   => '192.0.2.7',
 }
 
-margarine_attributes = {
-  :margarine => {
-    :queue => { :hostname => ip_addresses[:queue] },
-    :datastore => { :hostname => ip_addresses[:datastore] },
-    :token_store => { :hostname => ip_addresses[:token_store] },
-    :urls => { 
-      :tinge => "http://#{ip_addresses[:tinge]}:5000",
-      :blend => "http://#{ip_addresses[:blend]}:5000/v1/",
-    },
-  },
-}
-
 Vagrant.configure('2') do |config|
   config.vm.box = 'precise64'
   config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
@@ -59,11 +47,18 @@ Vagrant.configure('2') do |config|
 
       chef.log_level = :warn
 
-      chef.roles_path = 'chef/roles'
-      chef.environments_path = 'chef/environments'
+      chef.json = {
+        'rabbitmq' => {
+          'enabled_plugins' => [
+            'rabbitmq_management',
+          ],
+          'use_distro_version' => true,
+        },
+      }
 
-      chef.environment = 'vagrant'
-      chef.add_role 'queue'
+      chef.add_recipe 'apt'
+      chef.add_recipe 'rabbitmq'
+      chef.add_recipe 'rabbitmq::plugin_management'
     end
   end
 
@@ -78,11 +73,16 @@ Vagrant.configure('2') do |config|
 
       chef.log_level = :warn
 
-      chef.roles_path = 'chef/roles'
-      chef.environments_path = 'chef/environments'
+      chef.json = {
+        'build_essentail' => {
+          'compiletime' => true,
+        },
+      }
 
-      chef.environment = 'vagrant'
-      chef.add_role 'datastore'
+      chef.add_recipe 'apt'
+      chef.add_recipe 'build-essential'
+      chef.add_recipe 'mongodb::10gen_repo'
+      chef.add_recipe 'mongodb'
     end
   end
 
@@ -95,7 +95,7 @@ Vagrant.configure('2') do |config|
         apt-get -qq -y install python-pip
         ln -snf /vagrant/conf /etc/margarine
         pip install -q -r /vagrant/requirements.txt
-        pushd /vagrant && python setup.py develop && popd
+        pushd /vagrant && python setup.py -q develop && popd
         start-stop-daemon -Sbmp /run/#{component}.pid --exec /usr/local/bin/#{component}
       EOF
     end
