@@ -20,6 +20,7 @@ from margarine.communication import get_channel
 
 logger = logging.getLogger(__name__)
 
+
 def create_article_consumer(channel, method, header, body):
     '''Create an article—completing the bottom half of article creation.
 
@@ -95,6 +96,7 @@ def create_article_consumer(channel, method, header, body):
 
     logger.info('Confirming Article Stubbed')
 
+
 def update_references_consumer(channel, method, header, body):
     """Update the references to and from the article specified.
 
@@ -136,6 +138,7 @@ def update_references_consumer(channel, method, header, body):
     #article["tags"] += extract_keywords(soup)
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
+
 
 def sanitize_html_consumer(channel, method, header, body):
     """Download and sanitize the HTML for the given article.
@@ -216,6 +219,7 @@ def sanitize_html_consumer(channel, method, header, body):
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
+
 def register(channel):
     """Register the article worker functions on the passed channel.
 
@@ -246,4 +250,3 @@ def register(channel):
     channel.queue_bind(queue = "margarine.articles.sanitization", exchange = "margarine.articles.create", routing_key = "articles.update")
 
     channel.basic_consume(sanitize_html_consumer, queue = "margarine.articles.sanitization", no_ack = False, consumer_tag = "article.sanitization")
-

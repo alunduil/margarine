@@ -9,11 +9,13 @@ import margarine.blend
 import margarine.tinge
 import margarine.spread
 
+
 def run():
     parser = argparse.ArgumentParser(description = 'Margarine Wrapper')
 
     choices = ( 'blend', 'tinge', 'spread' )
-    parser.add_argument('applications',
+    parser.add_argument(
+        'applications',
         nargs = '*',
         default = choices,
         choices = choices,

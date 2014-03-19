@@ -12,7 +12,6 @@ PARAMETERS.add_parameter(
     options = [ '--url' ],
     metavar = 'URL',
     default = 'redis://localhost',
-    help = \
-        'URL endpoint for the keystore where various tokens are kept.  ' \
-        'Default %(default)s.'
+    help = 'URL endpoint for the keystore where various tokens are kept.  '
+           'Default %(default)s.'
 )

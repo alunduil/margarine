@@ -14,8 +14,8 @@ import tornado.web
 from flask import Flask
 from flask import url_for
 
-import margarine.parameters.flask
-import margarine.parameters.tornado
+import margarine.parameters.flask  # flake8: noqa
+import margarine.parameters.tornado  # flake8: noqa
 
 from margarine.parameters import PARAMETERS
 
@@ -23,7 +23,6 @@ from margarine.blend import information
 from margarine.blend import articles
 
 from margarine.blend.user import USER
-from margarine.blend.user import UnauthorizedError
 from margarine.blend.user import http_401_handler
 
 from margarine.blend.articles import ARTICLE
@@ -38,6 +37,7 @@ BLEND_APPLICATION = tornado.web.Application(
         ('/'.join([ PREFIX, r'articles', r'([\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12})' ]), articles.ArticleReadHandler),
     ]
 )
+
 
 def run():
     http_server = tornado.httpserver.HTTPServer(BLEND_APPLICATION)
@@ -57,6 +57,7 @@ def run():
     tornado.ioloop.IOLoop.instance().start()
 
 BLEND = Flask(__name__)
+
 
 def _prefix(name):
     """Return the prefix for the API endpoint name given.
@@ -89,6 +90,7 @@ logger.debug("error_handlers: %s", BLEND.error_handler_spec)
 
 logger.debug("url map: %s", BLEND.url_map)
 
+
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
 
@@ -111,6 +113,7 @@ def _extract_flask_parameters(parameters):
     flask_parameters["debug"] = parameters["flask.debug"]
 
     return flask_parameters
+
 
 def main():
     PARAMETERS.parse()

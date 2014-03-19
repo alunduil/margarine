@@ -9,10 +9,11 @@
 # Monkey Patch as outlined in #23.  TODO Remove this someday…
 # -----------------------------------------------------------------------------
 import sys
-import ConfigParser
+import ConfigParser  # flake8: noqa
 import traceback
 
 original_sections = sys.modules['ConfigParser'].ConfigParser.sections
+
 
 def monkey_sections(self):
     '''Return a list of sections available; DEFAULT is not included in the list.
@@ -50,30 +51,30 @@ PARAMS['url'] = information.URL
 PARAMS['license'] = information.LICENSE
 
 PARAMS['classifiers'] = [
-        'Development Status :: 2 - Pre-Alpha',
-        'Environment :: No Input/Output (Daemon)',
-        'Environment :: Web Environment',
-        'Intended Audience :: End Users/Desktop',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7', # only tested on 2.7
-        'Programming Language :: Python :: 2 :: Only', # pika is not 3.* ready
-        'Topic :: Internet :: WWW/HTTP :: Site Management',
-        ]
+    'Development Status :: 2 - Pre-Alpha',
+    'Environment :: No Input/Output (Daemon)',
+    'Environment :: Web Environment',
+    'Intended Audience :: End Users/Desktop',
+    'License :: OSI Approved :: MIT License',
+    'Natural Language :: English',
+    'Operating System :: POSIX :: Linux',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 2.7',  # only tested on 2.7
+    'Programming Language :: Python :: 2 :: Only',  # pika is not 3.* ready
+    'Topic :: Internet :: WWW/HTTP :: Site Management',
+]
 
 PARAMS['keywords'] = [
-        'readability',
-        'delicious',
-        'bookmarks',
-        'margins',
-        'notes',
-        ]
+    'readability',
+    'delicious',
+    'bookmarks',
+    'margins',
+    'notes',
+]
 
 PARAMS['provides'] = [
-        'margarine',
-        ]
+    'margarine',
+]
 
 with open('requirements.txt', 'r') as req_fh:
     PARAMS['install_requires'] = req_fh.readlines()
@@ -84,39 +85,39 @@ with open('test_margarine/requirements.txt', 'r') as req_fh:
 PARAMS['test_suite'] = 'nose.collector'
 
 PARAMS['entry_points'] = {
-        'console_scripts': [
-            'blend = margarine.blend:run',
-            'margarine = margarine:run',
-            'spread = margarine.spread:run',
-            'tinge = margarine.tinge:run',
-            ],
-        }
+    'console_scripts': [
+        'blend = margarine.blend:run',
+        'margarine = margarine:run',
+        'spread = margarine.spread:run',
+        'tinge = margarine.tinge:run',
+    ],
+}
 
 PARAMS['packages'] = [
-        'margarine',
-        'margarine.blend',
-        'margarine.parameters',
-        'margarine.spread',
-        'margarine.tinge',
-        ]
+    'margarine',
+    'margarine.blend',
+    'margarine.parameters',
+    'margarine.spread',
+    'margarine.tinge',
+]
 
 PARAMS['package_data'] = {
-        '': [
-            'templates/*.html',
-            'static/js/*.js',
-            'static/img/*.png',
-            'static/css/*.css',
-            ],
-        }
+    '': [
+        'templates/*.html',
+        'static/js/*.js',
+        'static/img/*.png',
+        'static/css/*.css',
+    ],
+}
 
 PARAMS['data_files'] = [
-        ('share/doc/{P[name]}-{P[version]}'.format(P = PARAMS), [
-            'README.rst',
-            ]),
-        ('share/doc/{P[name]}-{P[version]}/conf'.format(P = PARAMS), [
-            'conf/logging.ini',
-            'conf/margarine.ini',
-            ]),
-        ]
+    ('share/doc/{P[name]}-{P[version]}'.format(P = PARAMS), [
+        'README.rst',
+    ]),
+    ('share/doc/{P[name]}-{P[version]}/conf'.format(P = PARAMS), [
+        'conf/logging.ini',
+        'conf/margarine.ini',
+    ]),
+]
 
 setup(**PARAMS)

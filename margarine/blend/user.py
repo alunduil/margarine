@@ -54,7 +54,7 @@ from flask import url_for
 from flask.views import MethodView
 from flask import render_template
 
-import margarine.parameters.security
+import margarine.parameters.security  # flake8: noqa
 
 from margarine.blend import information
 from margarine.parameters import PARAMETERS
@@ -63,6 +63,7 @@ from margarine.aggregates import get_collection
 from margarine.keystores import get_keyspace
 
 logger = logging.getLogger(__name__)
+
 
 class UnauthorizedError(werkzeug.exceptions.Unauthorized):
     """Custom unauthorized exception.
@@ -82,6 +83,7 @@ class UnauthorizedError(werkzeug.exceptions.Unauthorized):
     def username(self):
         return self._username
 
+
 def http_401_handler(error):
     """Sends an appropriate 401 Unauthorized page for HTTP Digest.
 
@@ -100,15 +102,15 @@ def http_401_handler(error):
     response.headers["Location"] = url_for('user.login', username = error.username)
 
     authentication_string = \
-            "Digest realm=\"{realm}\"," \
-            "qop=\"auth\"," \
-            "nonce=\"{nonce}\"," \
-            "opaque=\"{opaque}\""
+        "Digest realm=\"{realm}\"," \
+        "qop=\"auth\"," \
+        "nonce=\"{nonce}\"," \
+        "opaque=\"{opaque}\""
     authentication_string = authentication_string.format(
-            realm = information.AUTHENTICATION_REALM,
-            nonce = uuid.uuid4().hex,
-            opaque = PARAMETERS['security.opaque'],
-            )
+        realm = information.AUTHENTICATION_REALM,
+        nonce = uuid.uuid4().hex,
+        opaque = PARAMETERS['security.opaque'],
+    )
 
     logger.debug("authentication_string: %s", authentication_string)
 
@@ -117,6 +119,7 @@ def http_401_handler(error):
     return response
 
 USER = Blueprint("user", __name__)
+
 
 class UserInterface(MethodView):
     """User manipulation interface.
@@ -205,11 +208,11 @@ class UserInterface(MethodView):
                 raise UnauthorizedError(username = username)
 
         message = {
-                'username': username,
-                'requested_username': request.form.get('username', username),
-                'email': request.form.get('email', user.get('email')),
-                'name': request.form.get('name', user.get('name')),
-                }
+            'username': username,
+            'requested_username': request.form.get('username', username),
+            'email': request.form.get('email', user.get('email')),
+            'name': request.form.get('name', user.get('name')),
+        }
 
         if message['email'] is None and routing_key == 'users.create':
             logger.error('400—Creation of a new user, %s, without an email', username)
@@ -218,7 +221,7 @@ class UserInterface(MethodView):
         message = json.dumps(message)
 
         message_properties = pika.BasicProperties()
-        message_properties.content_type = 'application/json' # TODO Switch to binary format?
+        message_properties.content_type = 'application/json'  # TODO Switch to binary format?
         message_properties.durable = False
 
         logger.info('blend.user.PUT—Sending Message (Type: %s)', routing_key)
@@ -321,6 +324,7 @@ class UserInterface(MethodView):
 
 USER.add_url_rule('/<username>', view_func = UserInterface.as_view("users_api"))
 
+
 class UserPasswordInterface(MethodView):
     """User Password manipulation interface.
 
@@ -401,7 +405,7 @@ class UserPasswordInterface(MethodView):
             request.headers.get("X-Auth-Token"),
             request.headers.get("X-Verification-Token"),
             request.args.get("verification"),
-            ] if _ is not None ]
+        ] if _ is not None ]
 
         logger.debug("len(tokens): %s", len(tokens))
 
@@ -481,9 +485,9 @@ class UserPasswordInterface(MethodView):
         message_properties.durable = False
 
         message = {
-                "username": username,
-                "password": password,
-                }
+            "username": username,
+            "password": password,
+        }
 
         message = json.dumps(message)
 
@@ -499,6 +503,7 @@ class UserPasswordInterface(MethodView):
         return "", 202
 
 USER.add_url_rule('/<username>/password', view_func = UserPasswordInterface.as_view("users_password_api"))
+
 
 @USER.route('/<username>/token')
 def login(username):
@@ -592,4 +597,3 @@ def login(username):
     get_keyspace("tokens").setex(str(token), username, datetime.timedelta(hours = 6))
 
     return str(token)
-

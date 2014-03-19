@@ -11,8 +11,7 @@ PARAMETERS.add_parameter(
     group = 'tornado',
     options = [ '--address' ],
     default = '127.0.0.1',
-    help = \
-        'IP to which tornado should be bound.  Default %(default)s.'
+    help = 'IP to which tornado should be bound.  Default %(default)s.'
 )
 
 PARAMETERS.add_parameter(
@@ -20,8 +19,7 @@ PARAMETERS.add_parameter(
     options = [ '--port' ],
     default = 5000,
     type = int,
-    help = \
-        'Port to which tornado should be bound.  Default $(default)s.'
+    help = 'Port to which tornado should be bound.  Default $(default)s.'
 )
 
 PARAMETERS.add_parameter(
@@ -29,6 +27,5 @@ PARAMETERS.add_parameter(
     options = [ '--debug' ],
     action = 'store_true',
     default = False,
-    help = \
-        'Turn on tornado application debugging.'
+    help = 'Turn on tornado application debugging.'
 )

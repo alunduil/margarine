@@ -14,6 +14,7 @@ from margarine.spread import articles
 
 logger = logging.getLogger(__name__)
 
+
 def main():
     """Set us up the bomb.
 
@@ -37,4 +38,3 @@ def main():
             logger.exception(e)
         else:
             channel.close()
-

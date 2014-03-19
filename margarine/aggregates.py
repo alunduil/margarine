@@ -9,7 +9,7 @@ import logging
 import pymongo
 import pyrax
 
-import margarine.parameters.datastores
+import margarine.parameters.datastores  # flake8: noqa
 
 from margarine.parameters import PARAMETERS
 from margarine.helpers import URI
@@ -17,6 +17,7 @@ from margarine.helpers import URI
 logger = logging.getLogger(__name__)
 
 DATASTORE_CONNECTION = None
+
 
 def get_collection(collection):
     """Using the datastore.url parameter we get a collection for storing data.
@@ -63,17 +64,17 @@ def get_collection(collection):
     database = DATASTORE_CONNECTION[database_name]
 
     indexes = {
-            "users": [
-                [
-                    [ ( "username", pymongo.ASCENDING ), ],
-                    {
-                        "unique": True,
-                        "drop_dups": True,
-                        "background": True,
-                        },
-                    ],
-                ],
-            }
+        "users": [
+            [
+                [ ( "username", pymongo.ASCENDING ), ],
+                {
+                    "unique": True,
+                    "drop_dups": True,
+                    "background": True,
+                },
+            ],
+        ],
+    }
 
     logger.debug("collection: %s", collection)
 
@@ -85,6 +86,7 @@ def get_collection(collection):
         database[collection].ensure_index(index[0], **index[1])
 
     return database[collection]
+
 
 def get_container(container):
     """Using the pyrax interface retrieve a container object for storing data.

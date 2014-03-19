@@ -6,18 +6,15 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import copy
-import datetime
 import json
 import logging
 import mock
 import tornado.testing
 import uuid
-import unittest
 
 from test_margarine.test_fixtures.test_articles import ARTICLES
 from test_margarine.test_unit.test_blend import BaseBlendTest
 
-from margarine.blend import BLEND
 from margarine.blend import BLEND_APPLICATION
 from margarine.blend import information
 
@@ -39,6 +36,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
 
     mocks.add('datastores.get_collection')
+
     def mock_datastore(self):
         if 'datastores.get_collection' in self.mocks_mask:
             return False
@@ -55,6 +53,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         return True
 
     mocks.add('datastores.get_container')
+
     def mock_pyrax(self):
         if 'datastores.get_container' in self.mocks_mask:
             return False
@@ -208,13 +207,14 @@ class BaseBlendArticleTest(BaseBlendTest):
         super(BaseBlendArticleTest, self).setUp()
 
         self.articles = [
-                'http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html',
-                'http://developer.rackspace.com/blog/got-python-questions.html',
-                ]
+            'http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html',
+            'http://developer.rackspace.com/blog/got-python-questions.html',
+        ]
 
         self.articles = dict([ (uuid.uuid5(uuid.NAMESPACE_URL, _), _) for _ in self.articles ])
 
         self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
+
 
 class BlendArticleCreateTest(BaseBlendArticleTest):
     def test_article_create(self):
@@ -223,18 +223,17 @@ class BlendArticleCreateTest(BaseBlendArticleTest):
         for uuid, url in self.articles.iteritems():
             response = self.application.post(self.base_url, data = {
                 'url': url,
-                })
+            })
 
             self.mock_channel.basic_publish.assert_called_once_with(
-                    body = '{"url": "' + url + '", "_id": "' + uuid.hex + '"}',
-                    exchange = 'margarine.articles.topic',
-                    properties = mock.ANY,
-                    routing_key = 'articles.create'
-                    )
+                body = '{"url": "' + url + '", "_id": "' + uuid.hex + '"}',
+                exchange = 'margarine.articles.topic',
+                properties = mock.ANY,
+                routing_key = 'articles.create'
+            )
 
             self.mock_channel.reset_mock()
 
             self.assertIn('202', response.status)
 
             #self.assertIn(self.base_url + str(uuid), response.headers.get('Location'))
-

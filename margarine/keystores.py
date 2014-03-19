@@ -8,7 +8,7 @@
 import redis
 import logging
 
-import margarine.parameters.keystore
+import margarine.parameters.keystore  # flake8: noqa
 
 from margarine.parameters import PARAMETERS
 from margarine.helpers import URI
@@ -16,6 +16,7 @@ from margarine.helpers import URI
 logger = logging.getLogger(__name__)
 
 KEYSTORE_CONNECTIONS = {}
+
 
 def get_keyspace(keyspace):
     """Using the keystore.url parameter we get a hash for storing data.
@@ -48,9 +49,9 @@ def get_keyspace(keyspace):
         # Redis doesn't believe in named databases so we need to implement them:
 
         databases = {
-                "tokens": 0,
-                "verifications": 1,
-                }
+            "tokens": 0,
+            "verifications": 1,
+        }
 
         logger.debug("port: %s", uri.port)
         logger.debug("type(port): %s", type(uri.port))

@@ -8,6 +8,7 @@ import re
 
 logger = logging.getLogger(__name__)
 
+
 class URI(object):
     '''A URI with accessible components.
 
@@ -31,13 +32,14 @@ class URI(object):
     def __init__(self, uri):
         self.uri = uri
 
-        match = re.match( \
-                r'((?P<scheme>[^:]+)://)?' \
-                r'((?P<username>[^:]+)(:(?P<password>[^@]+))?@)?' \
-                r'(?P<host>[^:/]+)?' \
-                r'(:(?P<port>[^/]+))?' \
-                r'(?P<path>/[^\?]+)?' \
-                , self.uri)
+        match = re.match(
+            r'((?P<scheme>[^:]+)://)?'
+            r'((?P<username>[^:]+)(:(?P<password>[^@]+))?@)?'
+            r'(?P<host>[^:/]+)?'
+            r'(:(?P<port>[^/]+))?'
+            r'(?P<path>/[^\?]+)?',
+            self.uri
+        )
 
         self.scheme = match.group("scheme")
         self.username = match.group("username")

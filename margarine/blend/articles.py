@@ -22,17 +22,17 @@ from flask import make_response
 from flask import url_for
 from bson import json_util
 
-import margarine.parameters.tinge
+import margarine.parameters.tinge  # flake8: noqa
 
 from margarine.aggregates import get_collection
 from margarine.aggregates import get_container
-from margarine.blend import information
 from margarine.communication import get_channel
 from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 
 ARTICLE = Blueprint("article", __name__)
+
 
 @ARTICLE.route('/', methods = [ "POST" ])
 def submit_article():
@@ -76,9 +76,9 @@ def submit_article():
     message_properties.durable = False
 
     message = {
-            "_id": str(_id.hex),
-            "url": request.form["url"],
-            }
+        "_id": str(_id.hex),
+        "url": request.form["url"],
+    }
 
     message = json.dumps(message)
 

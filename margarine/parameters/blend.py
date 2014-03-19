@@ -13,6 +13,5 @@ PARAMETERS.add_parameter(
     group = 'blend',
     options = [ '--url' ],
     default = 'http://api.' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),
-    help = \
-        'URL that is used as the endpoint for blend.  Default %(default)s.'
+    help = 'URL that is used as the endpoint for blend.  Default %(default)s.'
 )

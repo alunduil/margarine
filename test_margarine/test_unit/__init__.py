@@ -15,7 +15,8 @@ MARGARINE_MOCKS = set([
     'collection',
     'keyspace',
     'container',
-    ])
+])
+
 
 class BaseMargarineTest(unittest.TestCase):
     mocks = MARGARINE_MOCKS
@@ -43,7 +44,7 @@ class BaseMargarineTest(unittest.TestCase):
             # TODO Also handle integration and functional suites.
             self.__module__.replace('test_', '').replace('unit.', ''),
             mock_function,
-            ]))
+        ]))
 
         self.addCleanup(patcher.stop)
 

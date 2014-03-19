@@ -22,8 +22,8 @@ from flask.views import MethodView
 
 TAG = Blueprint("tag", __name__)
 
+
 class TagInterface(MethodView):
     pass
 
 TAG.add_url_rule('/<tag>', view_func = TagInterface.as_view("tags_api"))
-

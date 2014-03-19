@@ -22,24 +22,26 @@ from margarine.spread.users import update_user_consumer
 
 logger = logging.getLogger(__name__)
 
+
 class BaseSpreadUserTest(BaseSpreadTest):
     # TODO A better way to write this?
     mock_mask = BaseSpreadTest.mock_mask | set([
         'channel',
         'container',
-        ])
+    ])
 
     def setUp(self):
         super(BaseSpreadUserTest, self).setUp()
 
         # TODO Merge with accounts from test_blend.test_user?
         self.accounts = {
-                'alunduil': { 'email': 'alunduil@alunduil.com', },
-                }
+            'alunduil': { 'email': 'alunduil@alunduil.com', },
+        }
 
         self.method = mock.MagicMock()
 
         self.test_datetime = datetime.datetime(2013, 8, 7, 20, 25, 41, 596627)
+
 
 class SpreadUserCreateTest(BaseSpreadUserTest):
     def setUp(self):
@@ -56,19 +58,16 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
         '''
 
         for username, properties in self.accounts.iteritems():
-            with mock.patch('.'.join([
-                self.__module__.replace('test_', '').replace('unit.', ''),
-                'password_email_consumer',
-                ])) as mock_password_email_consumer:
+            with mock.patch('.'.join([ self.__module__.replace('test_', '').replace('unit.', ''), 'password_email_consumer', ])) as mock_password_email_consumer:
 
                 # TODO Add more tests for exceptions from mock_password_email_consumer
                 # TODO Couple with upper layer by sharing message
                 args = [
-                        mock.MagicMock(),
-                        self.method,
-                        None,
-                        json.dumps(properties),
-                        ]
+                    mock.MagicMock(),
+                    self.method,
+                    None,
+                    json.dumps(properties),
+                ]
 
                 create_user_consumer(*args)
 
@@ -94,11 +93,11 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
             self.mock_collection.insert.side_effect = pymongo.errors.DuplicateKeyError('E11000 duplicate key error index: production.users.$username_1  dup key: {{ : "{0}" }}'.format(username))
 
             args = [
-                    mock.MagicMock(),
-                    self.method,
-                    None,
-                    json.dumps(properties),
-                    ]
+                mock.MagicMock(),
+                self.method,
+                None,
+                json.dumps(properties),
+            ]
 
             create_user_consumer(*args)
 
@@ -107,6 +106,7 @@ class SpreadUserCreateTest(BaseSpreadUserTest):
 
             # TODO Handle duplicate requests differently?
             # TODO Add check that email consumer is not called.
+
 
 class SpreadUserUpdateTest(BaseSpreadUserTest):
     '''Spread::User Update
@@ -128,14 +128,14 @@ class SpreadUserUpdateTest(BaseSpreadUserTest):
         '''Spread::User Update'''
 
         modifications = {
-                'alunduil': { 'name': 'Alex Brandt', },
-                }
+            'alunduil': { 'name': 'Alex Brandt', },
+        }
 
         for username, properties in self.accounts.iteritems():
             modifications[username].update({
                 'username': username,
                 'original_username': username,
-                })
+            })
             update_user_consumer(mock.MagicMock(), self.method, None, json.dumps(modifications[username]))
 
             modifications[username].pop('username')
@@ -143,6 +143,7 @@ class SpreadUserUpdateTest(BaseSpreadUserTest):
 
             self.mock_collection.update.assert_called_once_with({ 'username': username }, { '$set': modifications[username] }, upsert = True)
             self.mock_collection.reset_mock()
+
 
 class SpreadPasswordEmailTest(BaseSpreadUserTest):
     def setUp(self):
@@ -156,15 +157,16 @@ class SpreadPasswordEmailTest(BaseSpreadUserTest):
 
         for username, properties in self.accounts.iteritems():
             self.mock_collection.find_one.return_value = {
-                    '_id': bson.ObjectId(),
-                    'username': username,
-                    }
+                '_id': bson.ObjectId(),
+                'username': username,
+            }
             self.mock_collection.find_one.return_value.update(properties)
 
             _ = { 'username': username }
             _.update(properties)
 
             password_email_consumer(mock.MagicMock(), self.method, None, json.dumps(_))
+
 
 class SpreadPasswordChangeTest(BaseSpreadUserTest):
     def setUp(self):

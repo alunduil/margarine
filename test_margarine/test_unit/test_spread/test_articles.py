@@ -12,7 +12,7 @@ import json
 import datetime
 import copy
 
-from bson import json_util # TODO Switch to a better handler for JSON, see #41
+from bson import json_util  # TODO Switch to a better handler for JSON, see #41
 
 from test_margarine.test_unit.test_spread import BaseSpreadTest
 
@@ -20,6 +20,7 @@ from test_margarine.test_unit.test_spread import BaseSpreadTest
 from margarine.spread.articles import create_article_consumer
 
 logger = logging.getLogger(__name__)
+
 
 class BaseSpreadArticleTest(BaseSpreadTest):
     # TODO Make this simpler.
@@ -30,15 +31,16 @@ class BaseSpreadArticleTest(BaseSpreadTest):
 
         # TODO Merge with articles from test_blend.test_article?
         self.articles = [
-                'http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html',
-                'http://developer.rackspace.com/blog/got-python-questions.html',
-                ]
+            'http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html',
+            'http://developer.rackspace.com/blog/got-python-questions.html',
+        ]
 
         self.articles = [ { '_id': uuid.uuid5(uuid.NAMESPACE_URL, _).hex, 'url': _ } for _ in self.articles ]
 
         self.method = mock.MagicMock()
 
         self.test_datetime = datetime.datetime(2013, 8, 7, 20, 25, 41, 596627)
+
 
 class SpreadArticleCreateTest(BaseSpreadArticleTest):
     def setUp(self):
@@ -58,10 +60,11 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
         self.mock_collection.reset_mock()
 
         self.mock_channel.basic_publish.assert_called_once_with(
-                body = json.dumps({ '_id': _id }),
-                exchange = 'margarine.articles.create',
-                properties = mock.ANY,
-                routing_key = 'articles.create')
+            body = json.dumps({ '_id': _id }),
+            exchange = 'margarine.articles.create',
+            properties = mock.ANY,
+            routing_key = 'articles.create'
+        )
         self.mock_channel.reset_mock()
 
     def test_article_create_unsubmitted(self):
@@ -75,10 +78,7 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
         for article in self.articles:
             self.mock_collection.find_one.return_value = None
 
-            with mock.patch('.'.join([
-                self.__module__.replace('test_', '').replace('unit.', ''),
-                'datetime',
-                ])) as mock_datetime:
+            with mock.patch('.'.join([ self.__module__.replace('test_', '').replace('unit.', ''), 'datetime', ])) as mock_datetime:
 
                 mock_datetime.datetime.now.return_value = self.test_datetime
 
@@ -165,14 +165,14 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
         '''
 
         updates = {
-                'created_at': self.test_datetime,
-                'etag': 'bf6285d832a356e1bf509a63edc8870f',
-                'parsed_at': self.test_datetime,
-                'size': 31052,
+            'created_at': self.test_datetime,
+            'etag': 'bf6285d832a356e1bf509a63edc8870f',
+            'parsed_at': self.test_datetime,
+            'size': 31052,
 
-                'text_container_name': '44d85795',
-                'text_object_name': '248d-5899-b8ca-ac2bd8233755',
-                }
+            'text_container_name': '44d85795',
+            'text_object_name': '248d-5899-b8ca-ac2bd8233755',
+        }
 
         for article in self.articles:
             self.mock_collection.find_one.return_value = copy.copy(article)
@@ -201,6 +201,7 @@ class SpreadArticleCreateTest(BaseSpreadArticleTest):
 
         pass
 
+
 class SpreadArticleReferencesTest(BaseSpreadArticleTest):
     def setUp(self):
         super(SpreadArticleReferencesTest, self).setUp()
@@ -211,6 +212,7 @@ class SpreadArticleReferencesTest(BaseSpreadArticleTest):
         '''Spread::Article References'''
 
         pass
+
 
 class SpreadArticleSanitizationTest(BaseSpreadArticleTest):
     def setUp(self):

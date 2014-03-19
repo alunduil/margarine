@@ -8,7 +8,6 @@
 import logging
 import logging.config
 import os
-import sys
 
 from crumbs import Parameters
 
@@ -23,9 +22,8 @@ PARAMETERS.add_parameter(
     options = [ '--configuration-file-path', '-c' ],
     metavar = 'FILE',
     default = os.path.join(CONFIGURATION_DIRECTORY, 'margarine.ini'),
-    help = \
-        'Location of the configuration file containing margarine parameters.' \
-        '  Default %(default)s'
+    help = 'Location of the configuration file containing margarine '
+           'parameters.  Default %(default)s'
 )
 
 PARAMETERS.add_parameter(
@@ -33,9 +31,8 @@ PARAMETERS.add_parameter(
     options = [ '--configuration-file-path' ],
     metavar = 'FILE',
     default = os.path.join(CONFIGURATION_DIRECTORY, 'logging.ini'),
-    help = \
-        'Location of the configuration file containing logging parameters.  ' \
-        'Default %(default)s'
+    help = 'Location of the configuration file containing logging parameters. '
+           ' Default %(default)s'
 )
 
 PARAMETERS.parse(only_known = True)

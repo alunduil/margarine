@@ -9,5 +9,6 @@ from test_margarine.test_unit import BaseMargarineTest
 
 logger = logging.getLogger(__name__)
 
+
 class BaseSpreadTest(BaseMargarineTest):
     pass

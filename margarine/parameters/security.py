@@ -13,8 +13,7 @@ PARAMETERS.add_parameter(
     group = 'security',
     options = [ '--opaque' ],
     default = uuid.uuid4().hex,
-    help = \
-        'Opaque token used in HTTP digest authentication.  This should be set' \
-        'to the same string on all blend servers that can interchangeably ' \
-        'respond to requests.  Default random UUID4.'
+    help = 'Opaque token used in HTTP digest authentication.  This should be '
+           'set to the same string on all blend servers that can '
+           'interchangeably respond to requests.  Default random UUID4.'
 )

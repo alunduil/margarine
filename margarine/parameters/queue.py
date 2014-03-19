@@ -11,8 +11,8 @@ PARAMETERS.add_parameter(
     group = 'queue',
     options = [ '--url' ],
     default = 'amqp://guest:guest@localhost',
-    help = \
-        'The URL endpoint of the communication mechanism.  Default %(default)s'
+    help = 'The URL endpoint of the communication mechanism.  Default '
+           '%(default)s'
 )
 
 PARAMETERS.add_parameter(
@@ -20,7 +20,6 @@ PARAMETERS.add_parameter(
     options = [ '--wait' ],
     default = 5,
     type = int,
-    help = \
-        'Number of seconds to wait between connection attempts to the ' \
-        'communication mechanism.  Default %(default)s'
+    help = 'Number of seconds to wait between connection attempts to the '
+           'communication mechanism.  Default %(default)s'
 )

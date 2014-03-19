@@ -22,7 +22,7 @@ from flask import url_for
 
 import margarine.parameters.queue
 import margarine.parameters.blend
-import margarine.parameters.email
+import margarine.parameters.email  # flake8: noqa
 
 from margarine.parameters import PARAMETERS
 from margarine.helpers import URI
@@ -30,6 +30,7 @@ from margarine.helpers import URI
 logger = logging.getLogger(__name__)
 
 CONNECTION_BROKER = None
+
 
 def get_channel():
     """Using the communication.url parameter get a channel for the queue.
@@ -62,11 +63,11 @@ def get_channel():
 
         # TODO Add SSL support?
         connection_parameters = pika.ConnectionParameters(
-                host = uri.host,
-                port = int(uri.port),
-                virtual_host = uri.path,
-                credentials = credentials
-                )
+            host = uri.host,
+            port = int(uri.port),
+            virtual_host = uri.path,
+            credentials = credentials
+        )
 
         while True:
             try:
@@ -77,6 +78,7 @@ def get_channel():
                 time.sleep(PARAMETERS['queue.wait'])
 
     return CONNECTION_BROKER.channel()
+
 
 def send_user_email(user, verification):
     """Send an email for user sign up or another action.
@@ -98,20 +100,20 @@ def send_user_email(user, verification):
 
     # TODO i18n this stuff!
     message_text = \
-            "Thank you for registering for Margarine.  We hope you enjoy " \
-            "the services provided.\n" \
-            "\n" \
-            "Please, verify your human status by visiting the following " \
-            "URL: {verification_url}\n" \
-            "\n" \
-            "\n" \
-            "Thanks,\n" \
-            "\n" \
-            "Margarine\n"
+        "Thank you for registering for Margarine.  We hope you enjoy " \
+        "the services provided.\n" \
+        "\n" \
+        "Please, verify your human status by visiting the following " \
+        "URL: {verification_url}\n" \
+        "\n" \
+        "\n" \
+        "Thanks,\n" \
+        "\n" \
+        "Margarine\n"
 
     logger.debug('blend URL: %s', PARAMETERS['blend.url'])
 
-    from margarine.blend import BLEND # TODO Figure out looping import.
+    from margarine.blend import BLEND  # TODO Figure out looping import.
     BLEND.config["SERVER_NAME"] = PARAMETERS['blend.url']
     with BLEND.app_context():
         message = email.mime.text.MIMEText(message_text.format(verification_url = url_for("user.users_password_api", username = user["username"], verification = verification)))
@@ -133,4 +135,3 @@ def send_user_email(user, verification):
     _.quit()
 
     logger.info("Successfully sent email!")
-

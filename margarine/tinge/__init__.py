@@ -12,13 +12,14 @@ from flask import Flask
 from flask import render_template
 
 import margarine.parameters.blend
-import margarine.parameters.flask
+import margarine.parameters.flask  # flake8: noqa
 
 from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 
 TINGE = Flask(__name__)
+
 
 @TINGE.route('/')
 def home_page():
@@ -32,6 +33,7 @@ def home_page():
     """
 
     return render_template('index.html', blend_url = PARAMETERS['blend.url'])
+
 
 @TINGE.route('/article')
 def view_article():
@@ -78,6 +80,7 @@ def view_article():
 logger.debug("error_handlers: %s", TINGE.error_handler_spec)
 logger.debug("url map: %s", TINGE.url_map)
 
+
 def _extract_flask_parameters(parameters):
     """Extract the flask parameters from Parameters.
 
@@ -100,6 +103,7 @@ def _extract_flask_parameters(parameters):
     flask_parameters["debug"] = parameters["flask.debug"]
 
     return flask_parameters
+
 
 def main():
     PARAMETERS.parse()

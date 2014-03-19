@@ -11,6 +11,7 @@ from margarine.blend import BLEND
 
 logger = logging.getLogger(__name__)
 
+
 class BaseBlendTest(BaseMargarineTest):
     def setUp(self):
         super(BaseBlendTest, self).setUp()

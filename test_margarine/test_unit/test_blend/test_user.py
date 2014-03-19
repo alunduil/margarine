@@ -17,6 +17,7 @@ from margarine.blend import information
 
 logger = logging.getLogger(__name__)
 
+
 class BaseBlendUserTest(BaseBlendTest):
     # TODO Make this simpler.
     mock_mask = BaseBlendTest.mock_mask | set(['container'])
@@ -25,10 +26,11 @@ class BaseBlendUserTest(BaseBlendTest):
         super(BaseBlendUserTest, self).setUp()
 
         self.accounts = {
-                'alunduil': { 'email': 'alunduil@alunduil.com', },
-                }
+            'alunduil': { 'email': 'alunduil@alunduil.com', },
+        }
 
         self.base_url = '/{i.API_VERSION}/users/'.format(i = information)
+
 
 class BlendUserCreateTest(BaseBlendUserTest):
     '''Blend::User Create
@@ -65,11 +67,11 @@ class BlendUserCreateTest(BaseBlendUserTest):
             message = json.dumps(properties)
 
             self.mock_channel.basic_publish.assert_called_once_with(
-                    body = message,
-                    exchange = 'margarine.users.topic',
-                    properties = mock.ANY,
-                    routing_key = 'users.create',
-                    )
+                body = message,
+                exchange = 'margarine.users.topic',
+                properties = mock.ANY,
+                routing_key = 'users.create',
+            )
 
             self.mock_channel.reset_mock()
 
@@ -85,9 +87,9 @@ class BlendUserCreateTest(BaseBlendUserTest):
 
         for account, properties in self.accounts.iteritems():
             self.mock_collection.find_one.return_value = {
-                    '_id': bson.ObjectId(),
-                    'username': account,
-                    }
+                '_id': bson.ObjectId(),
+                'username': account,
+            }
             self.mock_collection.find_one.return_value.update(properties)
 
             response = self.application.put(self.base_url + account, data = properties)
@@ -96,6 +98,7 @@ class BlendUserCreateTest(BaseBlendUserTest):
             self.mock_collection.reset_mock()
 
             self.assertIn('401', response.status)
+
 
 class BlendUserReadTest(BaseBlendUserTest):
     def test_user_read_unsubmitted(self):
@@ -114,9 +117,9 @@ class BlendUserReadTest(BaseBlendUserTest):
 
         for account, properties in self.accounts.iteritems():
             self.mock_collection.find_one.return_value = {
-                    '_id': bson.ObjectId(),
-                    'username': account,
-                    }
+                '_id': bson.ObjectId(),
+                'username': account,
+            }
             self.mock_collection.find_one.return_value.update(properties)
 
             response = self.application.get(self.base_url + account)
@@ -132,6 +135,7 @@ class BlendUserReadTest(BaseBlendUserTest):
 
             # TODO Body Check
 
+
 class BlendUserUpdateTest(BaseBlendUserTest):
     '''Blend::User Update
 
@@ -146,8 +150,8 @@ class BlendUserUpdateTest(BaseBlendUserTest):
         '''Blend::User Update—Submitted,Complete,Authorized'''
 
         modifications = {
-                'alunduil': { 'name': 'Alex Brandt' },
-                }
+            'alunduil': { 'name': 'Alex Brandt' },
+        }
 
         token = 'c2d52150-08d1-4ae3-b19c-323c9e37813d'
         headers = { 'X-Auth-Token': token }
@@ -156,9 +160,9 @@ class BlendUserUpdateTest(BaseBlendUserTest):
             self.mock_keyspace.get.return_value = account
 
             self.mock_collection.find_one.return_value = {
-                    '_id': bson.ObjectId(),
-                    'username': account,
-                    }
+                '_id': bson.ObjectId(),
+                'username': account,
+            }
             self.mock_collection.find_one.return_value.update(properties)
 
             response = self.application.put(self.base_url + account, headers = headers, data = modifications[account])
@@ -176,15 +180,16 @@ class BlendUserUpdateTest(BaseBlendUserTest):
             message = json.dumps(properties)
 
             self.mock_channel.basic_publish.assert_called_once_with(
-                    body = message,
-                    exchange = 'margarine.users.topic',
-                    properties = mock.ANY,
-                    routing_key = 'users.update',
-                    )
+                body = message,
+                exchange = 'margarine.users.topic',
+                properties = mock.ANY,
+                routing_key = 'users.update',
+            )
 
             self.mock_channel.reset_mock()
 
             self.assertIn('202', response.status)
+
 
 class BlendUserDeleteTest(BaseBlendUserTest):
     def test_user_delete_unauthorized(self):

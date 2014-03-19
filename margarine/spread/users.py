@@ -19,6 +19,7 @@ from margarine.communication import send_user_email
 
 logger = logging.getLogger(__name__)
 
+
 def create_user_consumer(channel, method, header, body):
     """Create a user—completing the bottom half of user creation.
 
@@ -33,20 +34,21 @@ def create_user_consumer(channel, method, header, body):
     user = json.loads(body)
 
     try:
-        get_collection("users").insert(user) # TODO Fix race condition of multiple sign-ups.
+        get_collection("users").insert(user)  # TODO Fix race condition of multiple sign-ups.
     except (pymongo.errors.DuplicateKeyError) as e:
         logger.exception(e)
         logger.error("Duplicate user request ignored!")
 
         channel.basic_ack(delivery_tag = method.delivery_tag)
 
-        return # TODO Make this logic more readable.
+        return  # TODO Make this logic more readable.
 
     try:
         password_email_consumer(channel, method, header, body)
     except (RuntimeError) as e:
         logger.exception(e)
         get_collection("users").remove({ "username": user["username"] })
+
 
 def update_user_consumer(channel, method, header, body):
     """Update a user's information.
@@ -56,7 +58,7 @@ def update_user_consumer(channel, method, header, body):
 
     """
 
-    user = dict([ (k,v) for k,v in json.loads(body).iteritems() if v is not None ])
+    user = dict([ (k, v) for k, v in json.loads(body).iteritems() if v is not None ])
 
     # TODO Stop the silent dropping of username changes:
     user.pop("username")
@@ -64,6 +66,7 @@ def update_user_consumer(channel, method, header, body):
     get_collection("users").update({ "username": user.pop("original_username") }, { "$set": user }, upsert = True)
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
+
 
 def password_email_consumer(channel, method, header, body):
     """Send a user the link to reset their password.
@@ -88,6 +91,7 @@ def password_email_consumer(channel, method, header, body):
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
 
+
 def password_change_consumer(channel, method, header, body):
     """Change the password—completing the bottom half of verification.
 
@@ -109,6 +113,7 @@ def password_change_consumer(channel, method, header, body):
     get_collection("users").update({ "username": user["username"] }, { "$set": { "hash": h } }, upsert = True)
 
     channel.basic_ack(delivery_tag = method.delivery_tag)
+
 
 def register(channel):
     """Register the user worker functions on the passed channel.
@@ -143,4 +148,3 @@ def register(channel):
     channel.queue_bind(queue = "margarine.users.password", exchange = "margarine.users.topic", routing_key = "users.password")
 
     channel.basic_consume(password_change_consumer, queue = "margarine.users.password", no_ack = False, consumer_tag = "user.password")
-

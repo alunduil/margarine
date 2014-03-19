@@ -13,6 +13,7 @@ from margarine.blend import information
 
 logger = logging.getLogger(__name__)
 
+
 class BaseBlendTagTest(BaseBlendTest):
     def setUp(self):
         super(BaseBlendTagTest, self).setUp()

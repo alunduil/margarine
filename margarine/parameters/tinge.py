@@ -13,7 +13,6 @@ PARAMETERS.add_parameter(
     group = 'tinge',
     options = [ '--url' ],
     default = 'http://' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),
-    help = \
-        'URL that is used as the endpoint for tinge.  Sets the ' \
-        'Access-Control-Allow-Origin header in blend.  Default %(default)s'
+    help = 'URL that is used as the endpoint for tinge.  Sets the '
+           'Access-Control-Allow-Origin header in blend.  Default %(default)s'
 )
