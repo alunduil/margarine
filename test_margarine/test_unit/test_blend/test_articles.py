@@ -81,7 +81,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(405, response.code)
 
     def test_article_read_patch(self):
-        '''blend.articles—PATCH /articles/? → 405'''
+        '''blend.articles—PATCH  /articles/? → 405'''
 
         for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'PATCH', body = '')
@@ -89,7 +89,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(405, response.code)
 
     def test_article_read_put(self):
-        '''blend.articles—PUT /articles/? → 405'''
+        '''blend.articles—PUT    /articles/? → 405'''
 
         for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'PUT', body = '')
@@ -97,7 +97,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(405, response.code)
 
     def test_article_read_post(self):
-        '''blend.articles—POST /articles/? → 405'''
+        '''blend.articles—POST   /articles/? → 405'''
 
         for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'POST', body = '')
@@ -105,7 +105,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(405, response.code)
 
     def test_article_read_get_unsubmitted(self):
-        '''blend.articles—GET /articles/? → 404—unsubmitted'''
+        '''blend.articles—GET    /articles/? → 404—unsubmitted'''
 
         self.mock_datastore()
 
@@ -115,7 +115,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(404, response.code)
 
     def test_article_read_head_unsubmitted(self):
-        '''blend.articles—HEAD /articles/? → 404—unsubmitted'''
+        '''blend.articles—HEAD   /articles/? → 404—unsubmitted'''
 
         self.mock_datastore()
 
@@ -125,7 +125,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(404, response.code)
 
     def test_article_read_get_submitted_incomplete(self):
-        '''blend.articles—GET /articles/? → 404—submitted,incomplete'''
+        '''blend.articles—GET    /articles/? → 404—submitted,incomplete'''
 
         for article in self.articles['all']:
             del article['bson']['parsed_at']
@@ -138,7 +138,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(404, response.code)
 
     def test_article_read_head_submitted_incomplete(self):
-        '''blend.articles—HEAD /articles/? → 404—submitted,incomplete'''
+        '''blend.articles—HEAD   /articles/? → 404—submitted,incomplete'''
 
         for article in self.articles['all']:
             del article['bson']['parsed_at']
@@ -151,7 +151,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(404, response.code)
 
     def test_article_read_get_submitted_complete(self):
-        '''blend.articles—GET /articles/? → 200—submitted,complete'''
+        '''blend.articles—GET    /articles/? → 200—submitted,complete'''
 
         for article in self.articles['all']:
             if self.mock_datastore():
@@ -177,7 +177,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.maxDiff = _
 
     def test_article_read_head_submitted_complete(self):
-        '''blend.articles—HEAD /articles/? → 200—submitted,complete'''
+        '''blend.articles—HEAD   /articles/? → 200—submitted,complete'''
 
         for article in self.articles['all']:
             if self.mock_datastore():
