@@ -59,7 +59,7 @@ import margarine.parameters.security  # flake8: noqa
 from margarine.blend import information
 from margarine.parameters import PARAMETERS
 from margarine.communication import get_channel
-from margarine.aggregates import get_collection
+from margarine.datastores import get_collection
 from margarine.keystores import get_keyspace
 
 logger = logging.getLogger(__name__)

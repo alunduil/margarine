@@ -14,8 +14,8 @@ import bs4
 import sys
 import uuid
 
-from margarine.aggregates import get_collection
-from margarine.aggregates import get_container
+from margarine.datastores import get_collection
+from margarine.datastores import get_gridfs
 from margarine.communication import get_channel
 
 logger = logging.getLogger(__name__)
@@ -209,7 +209,7 @@ def sanitize_html_consumer(channel, method, header, body):
 
         logger.info("Uploading text to cloudfiles")
 
-        get_container(article["text_container_name"]).store_object(article["text_object_name"], html, content_type = "text/html")
+        article['body'] = get_gridfs().put(html)
 
         logger.info("Uploaded text to cloudfiles")
 

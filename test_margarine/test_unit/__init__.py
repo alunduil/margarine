@@ -14,7 +14,6 @@ MARGARINE_MOCKS = set([
     'channel',
     'collection',
     'keyspace',
-    'container',
 ])
 
 
@@ -104,7 +103,3 @@ class BaseMargarineTest(unittest.TestCase):
         # TODO Update to datastores
         if 'keyspace' in to_mock:
             self.mock_keyspace = self._get_attached_mock(self._get_patch_mock('get_keyspace'))
-
-        # TODO Update to datastores
-        if 'container' in to_mock:
-            self.mock_container = self._get_attached_mock(self._get_patch_mock('get_container'))

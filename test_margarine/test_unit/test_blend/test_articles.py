@@ -37,7 +37,7 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
 
     mocks.add('datastores.get_collection')
 
-    def mock_datastore(self):
+    def mock_get_collection(self):
         if 'datastores.get_collection' in self.mocks_mask:
             return False
 
@@ -45,30 +45,27 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
 
         self.addCleanup(_.stop)
 
-        self.mocked_datastore = _.start()
+        self.mocked_get_collection = _.start()
 
         self.mocked_collection = mock.MagicMock()
-        self.mocked_datastore.return_value = self.mocked_collection
+        self.mocked_get_collection.return_value = self.mocked_collection
 
         return True
 
-    mocks.add('datastores.get_container')
+    mocks.add('datastores.get_gridfs')
 
-    def mock_pyrax(self):
-        if 'datastores.get_container' in self.mocks_mask:
+    def mock_get_gridfs(self):
+        if 'datastores.get_gridfs' in self.mocks_mask:
             return False
 
-        _ = mock.patch('margarine.blend.articles.get_container')
+        _ = mock.patch('margarine.blend.articles.get_gridfs')
 
         self.addCleanup(_.stop)
 
-        self.mocked_pyrax = _.start()
+        self.mocked_get_gridfs = _.start()
 
-        self.mocked_container = mock.MagicMock()
-        self.mocked_pyrax.return_value = self.mocked_container
-
-        self.mocked_object = mock.MagicMock()
-        self.mocked_container.get_object.return_value = self.mocked_object
+        self.mocked_gridfs = mock.MagicMock()
+        self.mocked_get_gridfs.return_value = self.mocked_gridfs
 
         return True
 
@@ -107,22 +104,24 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
     def test_article_read_get_unsubmitted(self):
         '''blend.articles—GET    /articles/? → 404—unsubmitted'''
 
-        self.mock_datastore()
+        self.mock_get_collection()
 
         for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'])
 
             self.assertEqual(404, response.code)
+            self.assertEqual(0, len(response.body))
 
     def test_article_read_head_unsubmitted(self):
         '''blend.articles—HEAD   /articles/? → 404—unsubmitted'''
 
-        self.mock_datastore()
+        self.mock_get_collection()
 
         for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
 
             self.assertEqual(404, response.code)
+            self.assertEqual(0, len(response.body))
 
     def test_article_read_get_submitted_incomplete(self):
         '''blend.articles—GET    /articles/? → 404—submitted,incomplete'''
@@ -130,12 +129,13 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         for article in self.articles['all']:
             del article['bson']['parsed_at']
 
-            if self.mock_datastore():
+            if self.mock_get_collection():
                 self.mocked_collection.find_one.return_value = article['bson']
 
             response = self.fetch(self.base_url + article['uuid'])
 
             self.assertEqual(404, response.code)
+            self.assertEqual(0, len(response.body))
 
     def test_article_read_head_submitted_incomplete(self):
         '''blend.articles—HEAD   /articles/? → 404—submitted,incomplete'''
@@ -143,22 +143,23 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         for article in self.articles['all']:
             del article['bson']['parsed_at']
 
-            if self.mock_datastore():
+            if self.mock_get_collection():
                 self.mocked_collection.find_one.return_value = article['bson']
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
 
             self.assertEqual(404, response.code)
+            self.assertEqual(0, len(response.body))
 
     def test_article_read_get_submitted_complete(self):
         '''blend.articles—GET    /articles/? → 200—submitted,complete'''
 
         for article in self.articles['all']:
-            if self.mock_datastore():
+            if self.mock_get_collection():
                 self.mocked_collection.find_one.return_value = article['bson']
 
-            if self.mock_pyrax():
-                self.mocked_object.fetch.return_value = article['json']['body']
+            if self.mock_get_gridfs():
+                self.mocked_gridfs.get.return_value = article['json']['body']
 
             response = self.fetch(self.base_url + article['uuid'])
 
@@ -180,11 +181,11 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
         '''blend.articles—HEAD   /articles/? → 200—submitted,complete'''
 
         for article in self.articles['all']:
-            if self.mock_datastore():
+            if self.mock_get_collection():
                 self.mocked_collection.find_one.return_value = article['bson']
 
-            if self.mock_pyrax():
-                self.mocked_object.fetch.return_value = article['json']['body']
+            if self.mock_get_gridfs():
+                self.mocked_gridfs.get.return_value = article['json']['body']
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
 
@@ -197,6 +198,8 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual(article['etag'], response.headers.get('ETag'))
             self.assertEqual(article['updated_at'], response.headers.get('Last-Modified'))
             self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
+
+            self.assertEqual(0, len(response.body))
 
 
 class BaseBlendArticleTest(BaseBlendTest):

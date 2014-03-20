@@ -24,9 +24,9 @@ from bson import json_util
 
 import margarine.parameters.tinge  # flake8: noqa
 
-from margarine.aggregates import get_collection
-from margarine.aggregates import get_container
 from margarine.communication import get_channel
+from margarine.datastores import get_collection
+from margarine.datastores import get_gridfs
 from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
@@ -152,12 +152,10 @@ class ArticleReadHandler(tornado.web.RequestHandler):
         if article is None or 'parsed_at' not in article:
             self.send_error(404)
 
-        container_name, object_name = article.pop('cf_container_name'), article.pop('cf_object_name')
-
-        logger.debug('__name__: %s', __name__)
-
         if __name__ != 'head':
-            article['body'] = get_container(container_name).get_object(object_name).fetch()
+            article['body'] = get_gridfs().get(article['body'])
+        else:
+            del article['body']
 
         def _(obj):
             if isinstance(obj, datetime.datetime):

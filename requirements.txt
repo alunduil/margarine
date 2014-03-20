@@ -3,6 +3,5 @@ crumbs>=1.1.2
 Flask
 pika==0.9.12
 pymongo
-pyrax
 redis>=2.7.6
 tornado

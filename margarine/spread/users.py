@@ -13,7 +13,7 @@ import datetime
 import pymongo
 
 from margarine.blend import information
-from margarine.aggregates import get_collection
+from margarine.datastores import get_collection
 from margarine.keystores import get_keyspace
 from margarine.communication import send_user_email
 
