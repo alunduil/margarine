@@ -40,6 +40,8 @@ BLEND_APPLICATION = tornado.web.Application(
 
 
 def run():
+    PARAMETERS.parse()
+
     http_server = tornado.httpserver.HTTPServer(BLEND_APPLICATION)
 
     if PARAMETERS['tornado.debug']:

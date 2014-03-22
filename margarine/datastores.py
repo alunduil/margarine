@@ -60,8 +60,9 @@ def get_database():
     logger.info('STARTING: get database')
 
     mongo_url = PARAMETERS['datastore.url']
+    logger.debug('mongo URL: %s', mongo_url)
 
-    connection = pymongo.MongoClient(url)
+    connection = pymongo.MongoClient(mongo_url)
 
     database_name = URI(mongo_url).path
     logger.debug('database_name: %s', database_name)

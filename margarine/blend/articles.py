@@ -97,7 +97,7 @@ def submit_article():
 class ArticleReadHandler(tornado.web.RequestHandler):
     SUPPORTED_METHODS = ( 'GET', 'HEAD', 'OPTIONS' )
 
-    def write_error(status_code, **kwargs):
+    def write_error(self, status_code, **kwargs):
         pass
 
     def get(self, article_uuid):
