@@ -5,35 +5,18 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import copy
 import json
 import logging
 import mock
-import tornado.testing
-import uuid
 
-from test_margarine.test_fixtures.test_articles import ARTICLES
-from test_margarine.test_unit.test_blend import BaseBlendTest
-
-from margarine.blend import BLEND_APPLICATION
-from margarine.blend import information
+from test_margarine.test_common.test_blend import BaseBlendTest
 
 logger = logging.getLogger(__name__)
 
 
-class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
-    mocks_mask = set()
-    mocks = set()
-
-    def get_app(self):
-        return BLEND_APPLICATION
-
-    def setUp(self):
-        super(BlendArticleReadTest, self).setUp()
-
-        self.articles = copy.deepcopy(ARTICLES)
-
-        self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
+class BlendArticleReadTest(BaseBlendTest):
+    mocks_mask = set().union(BaseBlendTest.mocks_mask)
+    mocks = set().union(BaseBlendTest.mocks)
 
     mocks.add('datastores.get_collection')
 
@@ -200,43 +183,3 @@ class BlendArticleReadTest(tornado.testing.AsyncHTTPTestCase):
             self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
 
             self.assertEqual(0, len(response.body))
-
-
-class BaseBlendArticleTest(BaseBlendTest):
-    # TODO Make this simpler.
-    mock_mask = BaseBlendTest.mock_mask | set(['keyspace'])
-
-    def setUp(self):
-        super(BaseBlendArticleTest, self).setUp()
-
-        self.articles = [
-            'http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html',
-            'http://developer.rackspace.com/blog/got-python-questions.html',
-        ]
-
-        self.articles = dict([ (uuid.uuid5(uuid.NAMESPACE_URL, _), _) for _ in self.articles ])
-
-        self.base_url = '/{i.API_VERSION}/articles/'.format(i = information)
-
-
-class BlendArticleCreateTest(BaseBlendArticleTest):
-    def test_article_create(self):
-        '''Blend::Article Create'''
-
-        for uuid, url in self.articles.iteritems():
-            response = self.application.post(self.base_url, data = {
-                'url': url,
-            })
-
-            self.mock_channel.basic_publish.assert_called_once_with(
-                body = '{"url": "' + url + '", "_id": "' + uuid.hex + '"}',
-                exchange = 'margarine.articles.topic',
-                properties = mock.ANY,
-                routing_key = 'articles.create'
-            )
-
-            self.mock_channel.reset_mock()
-
-            self.assertIn('202', response.status)
-
-            #self.assertIn(self.base_url + str(uuid), response.headers.get('Location'))
