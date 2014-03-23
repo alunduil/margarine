@@ -50,6 +50,9 @@ class BlendArticleReadTest(BaseBlendTest):
         self.mocked_gridfs = mock.MagicMock()
         self.mocked_get_gridfs.return_value = self.mocked_gridfs
 
+        self.mocked_gridout = mock.MagicMock()
+        self.mocked_gridfs.get.return_value = self.mocked_gridout
+
         return True
 
     def test_article_read_delete(self):
@@ -142,7 +145,7 @@ class BlendArticleReadTest(BaseBlendTest):
                 self.mocked_collection.find_one.return_value = article['bson']
 
             if self.mock_get_gridfs():
-                self.mocked_gridfs.get.return_value = article['json']['body']
+                self.mocked_gridout.read.return_value = article['json']['body']
 
             response = self.fetch(self.base_url + article['uuid'])
 
@@ -168,7 +171,7 @@ class BlendArticleReadTest(BaseBlendTest):
                 self.mocked_collection.find_one.return_value = article['bson']
 
             if self.mock_get_gridfs():
-                self.mocked_gridfs.get.return_value = article['json']['body']
+                self.mocked_gridout.read.return_value = article['json']['body']
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
 

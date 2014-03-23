@@ -6,6 +6,7 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import datetime
+import bson.objectid
 
 ARTICLES = {}
 
@@ -13,14 +14,16 @@ ARTICLES['correct'] = []
 
 ARTICLES['correct'].append({
     'bson': {
-        'body': '3f4280501aa04d348181a3c9d7e32497',
+        '_id': '0fb5c88e87535bc3a2514343b63682b0',
+        'body': bson.objectid.ObjectId('532f29a14ee7ca6d41afae50'),
         'etag': '21696f99425b45b28ee9d2c308266beb',
         'original_url': 'http://developer.rackspace.com/blog/got-python-questions.html',
-        'parsed_at': datetime.datetime(2014, 01, 26, 17, 35, 07, 217302),
+        'parsed_at': datetime.datetime(2014, 01, 26, 17, 35, 07, 217000),
         'updated_at': datetime.datetime(1994, 11, 15, 12, 45, 26, 000000),
     },
     'etag': '21696f99425b45b28ee9d2c308266beb',
     'json': {
+        u'_id': u'0fb5c88e87535bc3a2514343b63682b0',
         u'body': u'Mollit pork belly trust fund non. Occaecat hoodie jean shorts '
                  u'Neutra farm-to-table, actually whatever irure XOXO ea anim '
                  u'Truffaut chia. Cosby sweater nulla anim meh. Actually Vice '
@@ -32,7 +35,7 @@ ARTICLES['correct'].append({
                  u'bicycle rights Neutra labore cornhole actually beard enim.',
         u'etag': u'21696f99425b45b28ee9d2c308266beb',
         u'original_url': u'http://developer.rackspace.com/blog/got-python-questions.html',
-        u'parsed_at': u'Sun, 26 Jan 2014 17:35:07.217302+0000',
+        u'parsed_at': u'Sun, 26 Jan 2014 17:35:07.217000+0000',
         u'updated_at': u'Tue, 15 Nov 1994 12:45:26.000000+0000',
     },
     'updated_at': 'Tue, 15 Nov 1994 12:45:26 UTC',

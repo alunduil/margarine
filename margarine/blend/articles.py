@@ -151,13 +151,17 @@ class ArticleReadHandler(tornado.web.RequestHandler):
 
         if article is None or 'parsed_at' not in article:
             self.send_error(404)
+            self.flush()
 
         if __name__ != 'head':
-            article['body'] = get_gridfs().get(article['body'])
+            article['body'] = get_gridfs().get(article['body']).read()
         else:
             del article['body']
 
         def _(obj):
+            logger.debug('type(obj): %s', type(obj))
+            logger.debug('obj: %s', obj)
+
             if isinstance(obj, datetime.datetime):
                 return pytz.utc.localize(obj).strftime('%a, %d %b %Y %H:%M:%S.%f%z')
             raise TypeError
