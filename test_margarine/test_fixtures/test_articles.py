@@ -18,7 +18,7 @@ ARTICLES['correct'].append({
         'body': bson.objectid.ObjectId('532f29a14ee7ca6d41afae50'),
         'etag': '21696f99425b45b28ee9d2c308266beb',
         'original_url': 'http://developer.rackspace.com/blog/got-python-questions.html',
-        'parsed_at': datetime.datetime(2014, 01, 26, 17, 35, 07, 217000),
+        'parsed_at': datetime.datetime(2014, 1, 26, 17, 35, 7, 217000),
         'updated_at': datetime.datetime(1994, 11, 15, 12, 45, 26, 000000),
     },
     'etag': '21696f99425b45b28ee9d2c308266beb',
