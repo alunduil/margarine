@@ -120,7 +120,7 @@ class ArticleReadHandler(tornado.web.RequestHandler):
         --------
 
         1. :request:::
-               GET /{ARTICLE_UUID} HTTP/1.0
+               GET /articles/{ARTICLE_UUID} HTTP/1.0
                [Accept: application/json]
 
            :response:::
@@ -153,10 +153,10 @@ class ArticleReadHandler(tornado.web.RequestHandler):
             self.send_error(404)
             self.flush()
 
-        if __name__ != 'head':
-            article['body'] = get_gridfs().get(article['body']).read()
-        else:
+        if self.request.method == 'HEAD':
             del article['body']
+        else:
+            article['body'] = get_gridfs().get(article['body']).read()
 
         def _(obj):
             logger.debug('type(obj): %s', type(obj))

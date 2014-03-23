@@ -86,7 +86,7 @@ class BlendArticleReadWithDatastoreTest(BaseBlendTest):
             self.assertEqual(0, len(response.body))
 
     def test_article_read_get_submitted_incomplete(self):
-        '''blend.articles—GET    /articles/? → 404—umocked datastores,submitted,incomplete'''
+        '''blend.articles—GET    /articles/? → 404—unmocked datastores,submitted,incomplete'''
 
         for article in self.articles['all']:
             del article['bson']['parsed_at']
