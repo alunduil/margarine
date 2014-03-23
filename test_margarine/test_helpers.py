@@ -3,7 +3,11 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import vagrant
+_vagrant_found = True
+try:
+    import vagrant
+except AssertionError:
+    _vagrant_found = False
 
 
 def is_vagrant_up(box_name):
@@ -21,4 +25,4 @@ def is_vagrant_up(box_name):
 
     '''
 
-    return vagrant.Vagrant().status(box_name).get(box_name, 'not_created') == 'running'
+    return _vagrant_found and vagrant.Vagrant().status(box_name).get(box_name, 'not_created') == 'running'
