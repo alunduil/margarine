@@ -2,6 +2,7 @@ beautifulsoup4
 crumbs
 Flask
 kombu
+pika==0.9.12
 pymongo
 pytz
 redis>=2.7.6
