@@ -39,7 +39,6 @@ on /<username>/token.
 """
 
 import uuid
-import pika
 import json
 import logging
 import werkzeug.exceptions

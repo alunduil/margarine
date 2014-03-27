@@ -54,25 +54,23 @@ def get_database():
 
     global DATASTORE_DATABASE
 
-    if DATASTORE_DATABASE is not None:
-        return DATASTORE_DATABASE
+    if DATASTORE_DATABASE is None:
+        logger.info('STARTING: get database')
 
-    logger.info('STARTING: get database')
+        mongo_url = PARAMETERS['datastore.url']
+        logger.debug('mongo URL: %s', mongo_url)
 
-    mongo_url = PARAMETERS['datastore.url']
-    logger.debug('mongo URL: %s', mongo_url)
+        connection = pymongo.MongoClient(mongo_url)
 
-    connection = pymongo.MongoClient(mongo_url)
+        database_name = URI(mongo_url).path
+        logger.debug('database_name: %s', database_name)
 
-    database_name = URI(mongo_url).path
-    logger.debug('database_name: %s', database_name)
+        if database_name.startswith('/'):
+            database_name = database_name[1:]
 
-    if database_name.startswith('/'):
-        database_name = database_name[1:]
+        DATASTORE_DATABASE = connection[database_name]
 
-    DATASTORE_DATABASE = connection[database_name]
-
-    logger.info('STOPPING: get database')
+        logger.info('STOPPING: get database')
 
     return DATASTORE_DATABASE
 

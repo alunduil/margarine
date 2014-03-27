@@ -8,90 +8,94 @@
 import datetime
 import json
 import logging
-import pika
 import pytz
 import re
 import socket
 import tornado.web
 import uuid
 
-from flask import request
-from flask import Blueprint
-from flask import abort
-from flask import make_response
-from flask import url_for
-from bson import json_util
-
 import margarine.parameters.tinge  # flake8: noqa
 
-from margarine.communication import get_channel
 from margarine.datastores import get_collection
 from margarine.datastores import get_gridfs
 from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 
-ARTICLE = Blueprint("article", __name__)
 
+class ArticleCreateHandler(tornado.web.RequestHandler):
+    SUPPORTED_METHODS = ( 'POST', 'OPTIONS' )
 
-@ARTICLE.route('/', methods = [ "POST" ])
-def submit_article():
-    """Submit a new article for inclusion in margarine.
+    def write_error(self, status_code, **kwargs):
+        pass
 
-    Request
-    -------
+    def post(self):
+        '''Submit an article.
 
-    ::
+        :URL: ``/articles/``
 
-        POST /
-        Content-Type: application/x-www-form-urlencoded
+        Parameters
+        ----------
 
-        url=http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html
+        :``ARTICLE_URL``: URL of article to add.
 
-    ::
+        Possible Status Codes
+        ---------------------
 
-        curl -X POST example.com/ -F url="http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html"
+        :202: Successful submission of article
 
-    Response
-    --------
+        Examples
+        --------
 
-    ::
+        1. :request:::
+               POST /articles/ HTTP/1.0
+               Content-Type: application/x-www-form-urlencoded
 
-        HTTP/1.0 202 Accepted
-        Location: /44d85795-248d-5899-b8ca-ac2bd8233755
+               article_url=http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html
 
-    """
+           :response:::
+               HTTP/1.0 202 Accepted
+               Access-Control-Allow-Origin: http://margarine.io
+               Location: /articles/44d85795-248d-5899-b8ca-ac2bd8233755
 
-    logger.debug("request.form[url]: '%s'", request.form["url"])
-    logger.debug("ASCII: %s", all(ord(c) < 128 for c in request.form["url"]))
-    logger.debug("type(request.form[url]): %s", type(request.form["url"]))
+        2. :request:::
+               POST /articles/?article_url=http://blog.alunduil.com/posts/an-explanation-of-lvm-snapshots.html HTTP/1.0
 
-    _id = uuid.uuid5(uuid.NAMESPACE_URL, request.form["url"].encode('ascii'))
+           :response:::
+               HTTP/1.0 202 Accepted
+               Access-Control-Allow-Origin: http://margarine.io
+               Location: /articles/44d85795-248d-5899-b8ca-ac2bd8233755
 
-    logger.debug("type(_id): %s", type(_id.hex))
-    logger.debug("_id: %s", _id.hex)
+        '''
 
-    message_properties = pika.BasicProperties()
-    message_properties.content_type = "application/json"
-    message_properties.durable = False
+        logger.debug('argument: %s', self.get_argument('article_url', 'NOT FOUND!'))
+        logger.debug('query_argument: %s', self.get_query_argument('article_url', 'NOT FOUND!'))
+        logger.debug('body_argument: %s', self.get_body_argument('article_url', 'NOT FOUND!'))
 
-    message = {
-        "_id": str(_id.hex),
-        "url": request.form["url"],
-    }
+        article = {}
 
-    message = json.dumps(message)
+        article['url'] = self.get_argument('article_url', None)
 
-    channel = get_channel()
-    channel.exchange_declare(exchange = "margarine.articles.topic", type = "topic", auto_delete = False)
-    channel.basic_publish(body = message, exchange = "margarine.articles.topic", properties = message_properties, routing_key = "articles.create")
-    channel.close()
+        logger.info('STARTING: create article %s', article['url'])
 
-    response = make_response("", 202)
-    #response.headers["Location"] = url_for(".read_article", article_uuid = _id)
-    response.headers["Access-Control-Allow-Origin"] = PARAMETERS['tinge.url']
+        article['uuid'] = uuid.uuid5(uuid.NAMESPACE_URL, article_url)
 
-    return response
+        with kombu.pools.producers[queues.get_connection()].acquire(block = True) as producer:
+            producer.publish(
+                article,
+                serializer = 'pickle',
+                compression = 'bzip2',
+                exchange = queue.ARTICLES_TOPIC_EXCHANGE,
+                declare = [ queue.ARTICLES_TOPIC_EXCHANGE ],
+                routing_key = 'articles.create'
+            )
+
+        self.set_status(202)
+
+        self.set_header('Access-Control-Allow-Origin', PARAMETERS['tinge.url'])
+        self.set_header('Location', '/articles/' + article['uuid'])
+
+        logger.info('STOPPING: create article %s', article['url'])
 
 
 class ArticleReadHandler(tornado.web.RequestHandler):

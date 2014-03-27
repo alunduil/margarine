@@ -59,8 +59,10 @@ PARAMS['classifiers'] = [
     'Natural Language :: English',
     'Operating System :: POSIX :: Linux',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2.7',  # only tested on 2.7
-    'Programming Language :: Python :: 2 :: Only',  # pika is not 3.* ready
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.3',
     'Topic :: Internet :: WWW/HTTP :: Site Management',
 ]
 
