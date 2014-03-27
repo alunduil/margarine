@@ -6,7 +6,7 @@
 _vagrant_found = True
 try:
     import vagrant
-except AssertionError:
+except (AssertionError, RuntimeError):
     _vagrant_found = False
 
 
