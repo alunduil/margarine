@@ -21,8 +21,8 @@ PREFIX = r'/{i.API_VERSION}'.format(i = information)
 
 BLEND_APPLICATION = tornado.web.Application(
     [
-        ('/'.join([ PREFIX, r'articles', r'([\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12})' ]), articles.ArticleReadHandler),
-        ('/'.join([ PREFIX, r'articles' ]) + '/', articles.ArticleCreateHandler),
+        ('/'.join([ PREFIX, r'articles', r'([\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12})' ]), articles.ArticleReadHandler, None, 'read_article'),
+        ('/'.join([ PREFIX, r'articles' ]) + '/', articles.ArticleCreateHandler, None, 'create_article'),
     ]
 )
 

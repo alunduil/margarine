@@ -12,10 +12,12 @@ from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 
+ARTICLES_TOPIC_EXCHANGE = kombu.Exchange('articles', type = 'topic', delivery_mode = 'transient')
+
 QUEUE_CONNECTION = None
 
 
-def get_queue_connection():
+def get_connection():
     '''Retrive the queue connection from the configured queue URI.
 
     Creates a new connection if required.

@@ -7,6 +7,8 @@
 
 import datetime
 import json
+import kombu
+import kombu.pools
 import logging
 import pytz
 import re
@@ -16,6 +18,7 @@ import uuid
 
 import margarine.parameters.tinge  # flake8: noqa
 
+from margarine import queues
 from margarine.datastores import get_collection
 from margarine.datastores import get_gridfs
 from margarine.parameters import PARAMETERS
@@ -68,32 +71,30 @@ class ArticleCreateHandler(tornado.web.RequestHandler):
 
         '''
 
-        logger.debug('argument: %s', self.get_argument('article_url', 'NOT FOUND!'))
-        logger.debug('query_argument: %s', self.get_query_argument('article_url', 'NOT FOUND!'))
-        logger.debug('body_argument: %s', self.get_body_argument('article_url', 'NOT FOUND!'))
-
         article = {}
 
         article['url'] = self.get_argument('article_url', None)
 
         logger.info('STARTING: create article %s', article['url'])
 
-        article['uuid'] = uuid.uuid5(uuid.NAMESPACE_URL, article_url)
+        article['uuid'] = uuid.uuid5(uuid.NAMESPACE_URL, article['url'].encode('ascii'))
 
         with kombu.pools.producers[queues.get_connection()].acquire(block = True) as producer:
+            logger.debug('id(producer): %s', id(producer))
+
             producer.publish(
                 article,
                 serializer = 'pickle',
                 compression = 'bzip2',
-                exchange = queue.ARTICLES_TOPIC_EXCHANGE,
-                declare = [ queue.ARTICLES_TOPIC_EXCHANGE ],
+                exchange = queues.ARTICLES_TOPIC_EXCHANGE,
+                declare = [ queues.ARTICLES_TOPIC_EXCHANGE ],
                 routing_key = 'articles.create'
             )
 
         self.set_status(202)
 
         self.set_header('Access-Control-Allow-Origin', PARAMETERS['tinge.url'])
-        self.set_header('Location', '/articles/' + article['uuid'])
+        self.set_header('Location', self.reverse_url('read_article', str(article['uuid'])))
 
         logger.info('STOPPING: create article %s', article['url'])
 

@@ -8,10 +8,111 @@
 import json
 import logging
 import mock
+import urllib
+import uuid
 
 from test_margarine.test_common.test_blend import BaseBlendTest
 
+from margarine import queues
+
 logger = logging.getLogger(__name__)
+
+
+class BlendArticleCreateTest(BaseBlendTest):
+    mocks_mask = set().union(BaseBlendTest.mocks_mask)
+    mocks = set().union(BaseBlendTest.mocks)
+
+    mocks.add('queues')
+
+    def mock_queues(self):
+        if 'queues' in self.mocks_mask:
+            return False
+
+        _ = mock.patch('margarine.blend.articles.kombu.pools.producers')
+
+        self.addCleanup(_.stop)
+
+        self.mocked_producers = _.start()
+
+        _1 = mock.MagicMock()
+        self.mocked_producers.__getitem__.return_value = _1
+
+        _2 = mock.MagicMock()
+        _1.acquire.return_value = _2
+
+        self.mocked_producer = mock.MagicMock()
+        _2.__enter__.return_value = self.mocked_producer
+
+        logger.debug('id(self.mocked_producer): %s', id(self.mocked_producer))
+
+        return True
+
+    def test_article_create_delete(self):
+        '''blend.articles—DELETE /articles/ → 405'''
+
+        for article in self.articles['all']:
+            response = self.fetch(self.base_url, method = 'DELETE')
+
+            self.assertEqual(405, response.code)
+
+    def test_article_create_patch(self):
+        '''blend.articles—PATCH  /articles/ → 405'''
+
+        for article in self.articles['all']:
+            response = self.fetch(self.base_url, method = 'PATCH', body = '')
+
+            self.assertEqual(405, response.code)
+
+    def test_article_create_put(self):
+        '''blend.articles—PUT    /articles/ → 405'''
+
+        for article in self.articles['all']:
+            response = self.fetch(self.base_url, method = 'PUT', body = '')
+
+            self.assertEqual(405, response.code)
+
+    def test_article_create_get(self):
+        '''blend.articles—GET    /articles/ → 405'''
+
+        for article in self.articles['all']:
+            response = self.fetch(self.base_url)
+
+            self.assertEqual(405, response.code)
+
+    def test_article_create_head(self):
+        '''blend.articles—HEAD   /articles/ → 405'''
+
+        for article in self.articles['all']:
+            response = self.fetch(self.base_url, method = 'HEAD')
+
+            self.assertEqual(405, response.code)
+
+    def test_article_create_post(self):
+        '''blend.articles—POST   /articles/ → 202'''
+
+        for article in self.articles['all']:
+            is_queues_mocked = self.mock_queues()
+
+            response = self.fetch(self.base_url, method = 'POST', body = urllib.urlencode({ 'article_url': article['url'] }))
+
+            self.assertEqual(202, response.code)
+
+            self.assertIsNotNone(response.headers.get('Access-Control-Allow-Origin'))
+
+            self.assertEqual(self.base_url + article['uuid'], response.headers.get('Location'))
+
+            if is_queues_mocked:
+                self.mocked_producer.publish.assert_called_once_with(
+                    {
+                        'url': article['url'],
+                        'uuid': uuid.UUID(article['uuid']),
+                    },
+                    serializer = mock.ANY,
+                    compression = mock.ANY,
+                    exchange = queues.ARTICLES_TOPIC_EXCHANGE,
+                    declare = [ queues.ARTICLES_TOPIC_EXCHANGE ],
+                    routing_key = 'articles.create'
+                )
 
 
 class BlendArticleReadTest(BaseBlendTest):
