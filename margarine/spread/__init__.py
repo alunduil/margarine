@@ -3,38 +3,30 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import pika
+import kombu.mixins
 import logging
+import os
 
-from margarine.parameters import PARAMETERS
-
-from margarine.communication import get_channel
-from margarine.spread import users
-from margarine.spread import articles
+from margarine import helpers
+from margarine import queues
 
 logger = logging.getLogger(__name__)
 
+CONSUMERS = []
 
-def main():
-    """Set us up the bomb.
 
-    Create a consuming process for the various backend processes.
+class SpreadWorker(kombu.mixins.ConsumerMixin):
+    def __init__(self):
+        self.connection = queues.get_connection()
 
-    """
+    def get_consumers(self, Consumer, channel):
+        helpers.import_directory(__name__, os.path.dirname(__file__))
 
-    PARAMETERS.parse()
+        return [ Consumer(**kwargs) for kwargs in CONSUMERS ]
 
-    # TODO Manage threads for load balancing.
 
-    while True:
-        try:
-            channel = get_channel()
-
-            users.register(channel)
-            articles.register(channel)
-
-            channel.start_consuming()
-        except (pika.exceptions.ChannelClosed) as e:
-            logger.exception(e)
-        else:
-            channel.close()
+def run():
+    try:
+        SpreadWorker().run()
+    except Exception as error:
+        logger.exception(error)

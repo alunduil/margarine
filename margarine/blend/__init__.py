@@ -44,4 +44,7 @@ def run():
         )
         http_server.start(0)
 
-    tornado.ioloop.IOLoop.instance().start()
+    try:
+        tornado.ioloop.IOLoop.instance().start()
+    except Exception as error:
+        logger.exception(error)

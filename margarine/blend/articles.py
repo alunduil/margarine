@@ -19,8 +19,7 @@ import uuid
 import margarine.parameters.tinge  # flake8: noqa
 
 from margarine import queues
-from margarine.datastores import get_collection
-from margarine.datastores import get_gridfs
+from margarine import datastores
 from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
@@ -80,8 +79,6 @@ class ArticleCreateHandler(tornado.web.RequestHandler):
         article['uuid'] = uuid.uuid5(uuid.NAMESPACE_URL, article['url'].encode('ascii'))
 
         with kombu.pools.producers[queues.get_connection()].acquire(block = True) as producer:
-            logger.debug('id(producer): %s', id(producer))
-
             producer.publish(
                 article,
                 serializer = 'pickle',
@@ -150,7 +147,7 @@ class ArticleReadHandler(tornado.web.RequestHandler):
 
         logger.info('STARTING: read article %s', article_uuid)
 
-        article = get_collection('articles').find_one({ '_id': article_uuid.replace('-', '') })
+        article = datastores.get_collection('articles').find_one({ '_id': article_uuid.replace('-', '') })
 
         logger.debug('article: %s', article)
 
@@ -161,7 +158,7 @@ class ArticleReadHandler(tornado.web.RequestHandler):
         if self.request.method == 'HEAD':
             del article['body']
         else:
-            article['body'] = get_gridfs().get(article['body']).read()
+            article['body'] = datastores.get_gridfs().get(article['body']).read()
 
         def _(obj):
             logger.debug('type(obj): %s', type(obj))

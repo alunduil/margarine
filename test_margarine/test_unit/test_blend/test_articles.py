@@ -9,7 +9,6 @@ import json
 import logging
 import mock
 import urllib
-import uuid
 
 from test_margarine.test_common.test_blend import BaseBlendTest
 
@@ -21,31 +20,6 @@ logger = logging.getLogger(__name__)
 class BlendArticleCreateTest(BaseBlendTest):
     mocks_mask = set().union(BaseBlendTest.mocks_mask)
     mocks = set().union(BaseBlendTest.mocks)
-
-    mocks.add('queues')
-
-    def mock_queues(self):
-        if 'queues' in self.mocks_mask:
-            return False
-
-        _ = mock.patch('margarine.blend.articles.kombu.pools.producers')
-
-        self.addCleanup(_.stop)
-
-        self.mocked_producers = _.start()
-
-        _1 = mock.MagicMock()
-        self.mocked_producers.__getitem__.return_value = _1
-
-        _2 = mock.MagicMock()
-        _1.acquire.return_value = _2
-
-        self.mocked_producer = mock.MagicMock()
-        _2.__enter__.return_value = self.mocked_producer
-
-        logger.debug('id(self.mocked_producer): %s', id(self.mocked_producer))
-
-        return True
 
     def test_article_create_delete(self):
         '''blend.articles—DELETE /articles/ → 405'''
@@ -103,10 +77,7 @@ class BlendArticleCreateTest(BaseBlendTest):
 
             if is_queues_mocked:
                 self.mocked_producer.publish.assert_called_once_with(
-                    {
-                        'url': article['url'],
-                        'uuid': uuid.UUID(article['uuid']),
-                    },
+                    article['message_body'],
                     serializer = mock.ANY,
                     compression = mock.ANY,
                     exchange = queues.ARTICLES_TOPIC_EXCHANGE,
@@ -118,43 +89,6 @@ class BlendArticleCreateTest(BaseBlendTest):
 class BlendArticleReadTest(BaseBlendTest):
     mocks_mask = set().union(BaseBlendTest.mocks_mask)
     mocks = set().union(BaseBlendTest.mocks)
-
-    mocks.add('datastores.get_collection')
-
-    def mock_get_collection(self):
-        if 'datastores.get_collection' in self.mocks_mask:
-            return False
-
-        _ = mock.patch('margarine.blend.articles.get_collection')
-
-        self.addCleanup(_.stop)
-
-        self.mocked_get_collection = _.start()
-
-        self.mocked_collection = mock.MagicMock()
-        self.mocked_get_collection.return_value = self.mocked_collection
-
-        return True
-
-    mocks.add('datastores.get_gridfs')
-
-    def mock_get_gridfs(self):
-        if 'datastores.get_gridfs' in self.mocks_mask:
-            return False
-
-        _ = mock.patch('margarine.blend.articles.get_gridfs')
-
-        self.addCleanup(_.stop)
-
-        self.mocked_get_gridfs = _.start()
-
-        self.mocked_gridfs = mock.MagicMock()
-        self.mocked_get_gridfs.return_value = self.mocked_gridfs
-
-        self.mocked_gridout = mock.MagicMock()
-        self.mocked_gridfs.get.return_value = self.mocked_gridout
-
-        return True
 
     def test_article_read_delete(self):
         '''blend.articles—DELETE /articles/? → 405'''
@@ -191,7 +125,7 @@ class BlendArticleReadTest(BaseBlendTest):
     def test_article_read_get_unsubmitted(self):
         '''blend.articles—GET    /articles/? → 404—unsubmitted'''
 
-        self.mock_get_collection()
+        self.mock_datastores()
 
         for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'])
@@ -202,7 +136,7 @@ class BlendArticleReadTest(BaseBlendTest):
     def test_article_read_head_unsubmitted(self):
         '''blend.articles—HEAD   /articles/? → 404—unsubmitted'''
 
-        self.mock_get_collection()
+        self.mock_datastores()
 
         for article in self.articles['all']:
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
@@ -216,7 +150,7 @@ class BlendArticleReadTest(BaseBlendTest):
         for article in self.articles['all']:
             del article['bson']['parsed_at']
 
-            if self.mock_get_collection():
+            if self.mock_datastores():
                 self.mocked_collection.find_one.return_value = article['bson']
 
             response = self.fetch(self.base_url + article['uuid'])
@@ -230,7 +164,7 @@ class BlendArticleReadTest(BaseBlendTest):
         for article in self.articles['all']:
             del article['bson']['parsed_at']
 
-            if self.mock_get_collection():
+            if self.mock_datastores():
                 self.mocked_collection.find_one.return_value = article['bson']
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
@@ -242,10 +176,8 @@ class BlendArticleReadTest(BaseBlendTest):
         '''blend.articles—GET    /articles/? → 200—submitted,complete'''
 
         for article in self.articles['all']:
-            if self.mock_get_collection():
+            if self.mock_datastores():
                 self.mocked_collection.find_one.return_value = article['bson']
-
-            if self.mock_get_gridfs():
                 self.mocked_gridout.read.return_value = article['json']['body']
 
             response = self.fetch(self.base_url + article['uuid'])
@@ -268,10 +200,8 @@ class BlendArticleReadTest(BaseBlendTest):
         '''blend.articles—HEAD   /articles/? → 200—submitted,complete'''
 
         for article in self.articles['all']:
-            if self.mock_get_collection():
+            if self.mock_datastores():
                 self.mocked_collection.find_one.return_value = article['bson']
-
-            if self.mock_get_gridfs():
                 self.mocked_gridout.read.return_value = article['json']['body']
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')

@@ -3,14 +3,14 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import argparse
-
-import margarine.blend
-import margarine.tinge
-import margarine.spread
-
 
 def run():
+    import argparse
+
+    import margarine.blend
+    import margarine.tinge
+    import margarine.spread
+
     parser = argparse.ArgumentParser(description = 'Margarine Wrapper')
 
     choices = ( 'blend', 'tinge', 'spread' )

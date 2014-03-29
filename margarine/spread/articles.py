@@ -5,96 +5,74 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-import logging
-import json
-import datetime
-import pika
-import urllib2
 import bs4
+import datetime
+import json
+import kombu
+import logging
 import sys
+import urllib2
 import uuid
 
-from margarine.datastores import get_collection
-from margarine.datastores import get_gridfs
-from margarine.communication import get_channel
+from margarine import queues
+from margarine import datastores
+from margarine.spread import CONSUMERS
 
 logger = logging.getLogger(__name__)
 
 
-def create_article_consumer(channel, method, header, body):
-    '''Create an article—completing the bottom half of article creation.
+def create_article(body, message):
+    '''Create the given article.
 
-    This takes the UUID of the article to create and the URL passed through the
-    message queue and fills out the rest of the meta-information as well as
-    submitting a job to sanitize the HTML.
+    Sets up the metadata for the given article and passes along the datastore
+    ID to secondary tasks.
 
-    This process should be idempotent and therefore not have any ill-effect if
-    invoked multiple times (i.e. POSTed by mutliple users).
+    Parameters
+    ----------
 
-    Performs the following specific actions:
-
-    * Updates the etag for the article with a HEAD request.
-    * Initializes parsed_at to Null until parsing is complete.
-
-    The following actions should be performed in parallel by a fanout:
-
-    * Submits a reference job to update automatic notations in this and others.
-    * Submits the sanitization request for the HTML body.
-
-    .. note::
-        The article will need a pre-allocated space in MongoDB for performance
-        reasons.  The way we start with the bare necesities and then add
-        information at a later time means we may get fragmentation in the data
-        stored if we don't pre-allocate enough space.
+    :``UUID``: UUID of the article.
+    :``URL``:  URL of the article.
 
     '''
 
-    logger.info('Consuming Article Submission')
+    logger.info('STARTING: create article: %s', body['url'])
 
-    _ = json.loads(body)
+    article = datastores.get_collection('articles').find_one({ '_id': body['uuid'].hex })
 
-    logger.debug('message: %s', _)
-
-    article = get_collection('articles').find_one({ '_id': _['_id'] })
     if article is None:
-        logger.info('New Article')
-
         article = {}
 
-    logger.debug('stored article: %s', article)
+    article.setdefault('_id', body['uuid'].hex)
+    article.setdefault('created_at', datetime.datetime.now())
+    article.setdefault('original_url', body['url'])
+    article.setdefault('updated_at', datetime.datetime.now())
 
-    article.update(_)
-
-    logger.debug('merged article: %s', article)
+    logger.debug('article: %s', article)
 
     _id = article.pop('_id')
+    datastores.get_collection('articles').update({ '_id': _id }, { '$set': article }, upsert = True)
 
-    if 'created_at' not in article:
-        article['created_at'] = datetime.datetime.now()
+    with kombu.pools.producers[queues.get_connection()].acquire(block = True) as producer:
+        producer.publish(
+            { 'uuid': body['uuid'] },
+            serializer = 'pickle',
+            compression = 'bzip2',
+            exchange = queues.ARTICLES_FANOUT_EXCHANGE,
+            declare = [ queues.ARTICLES_FANOUT_EXCHANGE ]
+        )
 
-    logger.debug('submitted article: %s', article)
+    logger.info('STOPPING: create article: %s', body['url'])
 
-    get_collection("articles").update({ '_id': _id }, { "$set": article }, upsert = True)
+    message.ack()
 
-    logger.info('Inserted Article Stub')
 
-    message_properties = pika.BasicProperties()
-    message_properties.content_type = 'application/json'
-    message_properties.durable = False
-
-    message = json.dumps({ '_id': _id })
-
-    logger.debug('message: %s', message)
-    logger.info('Passing Article Creation to Bottom Half')
-
-    _ = get_channel()
-    _.exchange_declare(exchange = 'margarine.articles.create', type = 'fanout', auto_delete = False)
-    _.basic_publish(body = message, exchange = 'margarine.articles.create', properties = message_properties, routing_key = 'articles.create')
-    _.close()
-
-    channel.basic_ack(delivery_tag = method.delivery_tag)
-
-    logger.info('Confirming Article Stubbed')
+CONSUMERS.append(
+    {
+        'queues': [ queues.ARTICLES_CREATE_QUEUE ],
+        'accept': [ 'pickle' ],
+        'callbacks': [ create_article ],
+    }
+)
 
 
 def update_references_consumer(channel, method, header, body):
@@ -123,7 +101,7 @@ def update_references_consumer(channel, method, header, body):
 
     logger.debug("article: %s", article)
 
-    article = get_collection("articles").find_one({ "_id": article["_id"] })
+    article = datastores.get_collection("articles").find_one({ "_id": article["_id"] })
 
     # TODO Implement the following general algorithm:
     # Retrieve the raw HTML
@@ -163,7 +141,7 @@ def sanitize_html_consumer(channel, method, header, body):
 
     logger.debug("article._id: %s", _id)
 
-    articles = get_collection("articles")
+    articles = datastores.get_collection("articles")
 
     article = articles.find_one({ "_id": _id }, { "_id": 0 })
 
@@ -209,7 +187,7 @@ def sanitize_html_consumer(channel, method, header, body):
 
         logger.info("Uploading text to cloudfiles")
 
-        article['body'] = get_gridfs().put(html)
+        article['body'] = datastores.get_gridfs().put(html)
 
         logger.info("Uploaded text to cloudfiles")
 
@@ -236,8 +214,6 @@ def register(channel):
 
     channel.queue_declare(queue = "margarine.articles.create", auto_delete = False)
     channel.queue_bind(queue = "margarine.articles.create", exchange = "margarine.articles.topic", routing_key = "articles.create")
-
-    channel.basic_consume(create_article_consumer, queue = "margarine.articles.create", no_ack = False, consumer_tag = "article.create")
 
     channel.exchange_declare(exchange = "margarine.articles.create", type = "fanout", auto_delete = False)
 

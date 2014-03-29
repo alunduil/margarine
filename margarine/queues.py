@@ -12,7 +12,11 @@ from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 
-ARTICLES_TOPIC_EXCHANGE = kombu.Exchange('articles', type = 'topic', delivery_mode = 'transient')
+ARTICLES_TOPIC_EXCHANGE = kombu.Exchange('articles.topic', type = 'topic', delivery_mode = 'transient')
+
+ARTICLES_CREATE_QUEUE = kombu.Queue('articles.create', ARTICLES_TOPIC_EXCHANGE, routing_key = 'articles.create')
+
+ARTICLES_FANOUT_EXCHANGE = kombu.Exchange('articles.fanout', type = 'fanout', delivery_mode = 'transient')
 
 QUEUE_CONNECTION = None
 
