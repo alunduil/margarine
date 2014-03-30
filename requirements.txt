@@ -3,6 +3,7 @@ crumbs
 Flask
 kombu
 pika==0.9.12
+pycrypto
 pymongo
 pytz
 redis>=2.7.6

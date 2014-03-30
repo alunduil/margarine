@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Got Python Questions? Ask Our Experts In The Rackspace Community - Rackspace Developer Center</title>
+  <meta name="author" content="">
+
+  
+  <meta name="description" content="EDITOR'S NOTE: Update: We got some great feedback about the first AMA with Jesse, so we're moving the discussion space for Alex's AMA from the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://developer.rackspace.com/blog/got-python-questions.html">
+  <link href="/favicon.ico" rel="icon">
+
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/static/css/normalize.css" type="text/css">
+  <link rel="stylesheet" href="/static/css/styles.css" type="text/css">
+  <link rel="stylesheet" href="/static/css/octo_overrides.css" type="text/css">
+
+  <link href="/atom.xml" rel="alternate" title="Rackspace Developer Center" type="application/atom+xml">
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35639070-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+   <div class="navbar navbar-static-top">
+    <div class="navbar-inner">
+        <div class="container">
+             <a class="brand brand-fixed" href="/">
+                <img alt="Rackspace Developers" height="18" src="/static/img/logo.png" style="margin-bottom: -1px;" width="18"> <span>Rackspace Developers</span>
+             </a>
+             <a href="https://cart.rackspace.com/cloud/" target="_blank" id="join" class="btn btn-invite pull-right">Get Rackspace Cloud</a>
+
+                <ul class="nav">
+                    <li><a href="http://developer.rackspace.com#community">Community</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">SDKs & Tools <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="http://developer.rackspace.com#java">Java</a></li>
+                            <li><a href="http://developer.rackspace.com#dotnet">.NET</a></li>
+                            <li><a href="http://developer.rackspace.com#nodejs">Node.js</a></li>
+                            <li><a href="http://developer.rackspace.com#php">PHP</a></li>
+                            <li><a href="http://developer.rackspace.com#python">Python</a></li>
+                            <li><a href="http://developer.rackspace.com#ruby">Ruby</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="http://developer.rackspace.com#home-services">Services</a></li>
+
+                    <li><a href="http://developer.rackspace.com#home-openstack">OpenStack</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Support <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="https://status.rackspace.com/">System Status</a></li>
+                            <li><a href="https://mycloud.rackspace.com/">Control Panel</a></li>
+                            <li class="divider"></li>
+                            <li><a href="http://www.rackspace.com/cloud/aboutus/contact/">Talk with support</a></li>
+                            <li><a href="http://www.rackspace.com/knowledge_center/">Knowledge Center</a></li>
+                            <li><a href="https://community.rackspace.com/developers/default">Developer Forums</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="http://developer.rackspace.com/blog/">DevOps Blog</a></li>
+                </ul><!--/nav-->
+        </div>
+    </div><!-- /navbar-inner -->
+</div>
+
+  <div class="container">
+    <div class="row-fluid">
+      
+<article class="hentry span9" role="article">
+
+  
+  <header>
+    
+      <h1>Got Python Questions? Ask Our Experts in the Rackspace Community</h1>
+    
+    <p class="author">
+     
+  
+
+<span class="byline author vcard">by <span class="fn">Pat Reynolds</span></span>
+<br />
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/python/'>Python</a>
+  
+</span>
+
+
+   </p>
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-01T08:00:00-05:00" pubdate data-updated="true">Aug 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>EDITOR'S NOTE: Update: We got some great feedback about the first AMA with Jesse, so we're moving the discussion space for Alex's AMA from the Community to <a href="http://reddit.com/r/rackspace">http://reddit.com/r/rackspace</a> – that way it will be easier to follow the conversation and replies. In addition, we're tightening up the timeframe – the AMA will happen on Tuesday ONLY, and not Tuesday through Thursday as originally planned. Finally, some of the other devs who work with Alex will be lending a helping hand, so there will be plenty of developer experience on tap for everyone! Hope to see you all there next Tuesday!</p>
+
+<p>We know technical questions come up from time to time; questions that may require a pretty in-depth response. That's why next week we're launching a new Ask-Me-Anything three-day event series in partnership with the <a href="https://community.rackspace.com">Rackspace Community</a>. It's your opportunity to ask ANY development question you like and solicit feedback from Rackspace experts and others in the field. Ok, maybe not any development question: for this series of virtual events we're focusing mainly on Python.</p>
+
+<p>At Rackspace, we are fortunate to have the best and brightest in the Python community keeping us at the cutting edge, and they want to share some of their expertise and experience with our Community members!<!--More--></p>
+
+<p>Each month, a Racker Python expert will open a post for questions and reply to every (reasonable!) question asked on that post, over the course of three days. Technical questions might require some additional sourcing, so we encourage you to check back often on the post and your question.</p>
+
+<p>Mark your calendars for August 6 through August 8 and join us for the first session with Jesse Noller. We have Alex Gaynor and Ed Leafe lined up to participate in the months following. We hope you can benefit from the conversations over the next few months.</p>
+
+<h2>Python Ask-Me-Anything</h2>
+
+<ul>
+<li>August 6, 7 &amp; 8 - <a href="https://community.rackspace.com/members/jessenoller/default">Jesse Noller</a>: Jesse is actively involved in the Python Software Foundation and organizing PyCon. Learn more about him on <a href="http://jessenoller.com/">his blog</a> or follow him on Twitter <a href="https://twitter.com/jessenoller">@jessenoller</a></li>
+<li>September 3 - <a href="https://community.rackspace.com/members/alex_5f00_gaynor/default">Alex Gaynor</a>: Alex has worked for Rackspace as a software engineer on the Developer Relations Group since May. In his free time he works on many open source software projects, such as Django and PyPy, and serves on the board of directors of the Python Software Foundation. He grew up in Chicago and now lives in San Francisco. Follow him on Twitter <a href="https://twitter.com/alex_gaynor">@alex_gaynor</a>.</li>
+<li>October TBD - <a href="https://community.rackspace.com/members/ed-leafe/default">Ed Leafe</a>: Ed has been a developer for over 20 years, and is one of the original developers involved with OpenStack. After leaving the Microsoft world over a decade ago, he has been primarily a Python developer, and has spoken at several US PyCons. He has worked with Rackspace for the past five years (and he also throws a mean Frisbee). Follow him on Twitter <a href="https://twitter.com/EdLeafe">@EdLeafe</a>.</li>
+</ul>
+
+
+<p>No RSVP is required for these events. Simply show up, post your question and watch the conversation take off. Join us again in September and October as the guests change each month. Hope to see you in the <a href="https://community.rackspace.com">Community</a>!</p>
+
+<h3>About the Author</h3>
+
+<p>Pat is a community manager for Rackspace, He&#8217;s been a Racker since 2004, and he&#8217;s been in San Antonio since 2007 - a long way from home, which for Pat is Ireland. His main goal in the Community is to get great content out to its members. He is a gadget geek, who has a fascination with Android and social media in general. When he&#8217;s not having his brain exploded by trying to keep up with the latest advances in science, he&#8217;s either reading fantasy fiction or out and about Enlightening Ingress portals.</p>
+</div>
+
+
+  <footer>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    
+    <section>
+    
+      <div id="share_buttons">
+      	<a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">Tweet</a>
+      </div>
+
+      <h1>Comments</h1>
+      <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </section>
+    
+    <ul class="pager">
+      
+      <li class="previous"><a class="basic-alignment left"
+        href="/blog/openstack-marconi-api.html" title="Previous Post:
+        OpenStack Marconi API">&laquo; OpenStack Marconi API</a></li>
+      
+      <li><a href="/blog/archives">Blog Archives</a></li>
+      
+      <li class="next"><a class="basic-alignment right" href="/blog/rsyslog-and-elasticsearch.html"
+        title="Next Post: rsyslog &amp; ElasticSearch">rsyslog &amp; ElasticSearch
+        &raquo;</a></li>
+      
+    </ul>
+  </footer>
+</article>
+
+  <aside class="sidebar span3">
+    
+      <section>
+<p><strong>Empowering developers to successfully consume and build on the Rackspace <a href="http://rackspace.com/cloud">Open Cloud</a></strong></p>
+ 
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:developer.rackspace.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+</section>
+<section>
+	<h1>Recent Posts | <a class="btn" href="http://developer.rackspace.com/atom.xml">RSS</a></h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/supporting-non-profits-while-hacking-our-gig-at-the-knowbility-openair-hackathon.html">Supporting Non-profits While Hacking: Our Gig at the Knowbility OpenAIR Hackathon</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/cloud-block-storage-volume-cloning-announced.html">Cloud Block Storage Volume Cloning Announced!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/elasticsearch-autodiscovery-on-the-rackspace-cloud.html">Elasticsearch Autodiscovery on the Rackspace Cloud</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/balloon-mapping-outreach.html">Balloon Mapping and Outreach</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/announcing-gophercloud-0.1.html">Announcing Gophercloud 0.1</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/-net' style='font-size: 101.13207547169812%'>.NET(1)</a> <a href='/blog/categories/accessibilty' style='font-size: 101.13207547169812%'>Accessibilty(1)</a> <a href='/blog/categories/agile' style='font-size: 102.26415094339623%'>Agile(2)</a> <a href='/blog/categories/airbrake' style='font-size: 101.13207547169812%'>Airbrake(1)</a> <a href='/blog/categories/ajax' style='font-size: 101.13207547169812%'>ajax(1)</a> <a href='/blog/categories/america' style='font-size: 101.13207547169812%'>america(1)</a> <a href='/blog/categories/android' style='font-size: 101.13207547169812%'>Android(1)</a> <a href='/blog/categories/announcements' style='font-size: 101.13207547169812%'>announcements(1)</a> <a href='/blog/categories/anomaly-detection' style='font-size: 101.13207547169812%'>anomaly detection(1)</a> <a href='/blog/categories/ansible' style='font-size: 102.26415094339623%'>Ansible(2)</a> <a href='/blog/categories/api' style='font-size: 103.39622641509433%'>API(3)</a> <a href='/blog/categories/apis' style='font-size: 101.13207547169812%'>apis(1)</a> <a href='/blog/categories/application-deployment' style='font-size: 101.13207547169812%'>application deployment(1)</a> <a href='/blog/categories/apps' style='font-size: 101.13207547169812%'>Apps(1)</a> <a href='/blog/categories/assistive-technologies' style='font-size: 101.13207547169812%'>Assistive Technologies(1)</a> <a href='/blog/categories/authentication' style='font-size: 101.13207547169812%'>Authentication(1)</a> <a href='/blog/categories/autodiscovery' style='font-size: 101.13207547169812%'>Autodiscovery(1)</a> <a href='/blog/categories/automation' style='font-size: 105.66037735849056%'>Automation(5)</a> <a href='/blog/categories/automation' style='font-size: 101.13207547169812%'>automation(1)</a> <a href='/blog/categories/autoscale' style='font-size: 101.13207547169812%'>autoscale(1)</a> <a href='/blog/categories/autoscale' style='font-size: 102.26415094339623%'>Autoscale(2)</a> <a href='/blog/categories/bash' style='font-size: 101.13207547169812%'>Bash(1)</a> <a href='/blog/categories/benchmarks' style='font-size: 102.26415094339623%'>benchmarks(2)</a> <a href='/blog/categories/big-data' style='font-size: 103.39622641509433%'>Big Data(3)</a> <a href='/blog/categories/blueflood' style='font-size: 101.13207547169812%'>Blueflood(1)</a> <a href='/blog/categories/cbs' style='font-size: 101.13207547169812%'>cbs(1)</a> <a href='/blog/categories/charity' style='font-size: 101.13207547169812%'>Charity(1)</a> <a href='/blog/categories/chef' style='font-size: 101.13207547169812%'>chef(1)</a> <a href='/blog/categories/chef' style='font-size: 118.11320754716981%'>Chef(16)</a> <a href='/blog/categories/cli' style='font-size: 101.13207547169812%'>CLI(1)</a> <a href='/blog/categories/cloning' style='font-size: 101.13207547169812%'>Cloning(1)</a> <a href='/blog/categories/cloud' style='font-size: 104.52830188679245%'>Cloud(4)</a> <a href='/blog/categories/cloud' style='font-size: 103.39622641509433%'>cloud(3)</a> <a href='/blog/categories/cloud-backup' style='font-size: 101.13207547169812%'>Cloud Backup(1)</a> <a href='/blog/categories/cloud-block-storage' style='font-size: 105.66037735849056%'>Cloud Block Storage(5)</a> <a href='/blog/categories/cloud-databases' style='font-size: 101.13207547169812%'>cloud databases(1)</a> <a href='/blog/categories/cloud-databases' style='font-size: 103.39622641509433%'>Cloud Databases(3)</a> <a href='/blog/categories/cloud-dns' style='font-size: 101.13207547169812%'>Cloud DNS(1)</a> <a href='/blog/categories/cloud-files' style='font-size: 101.13207547169812%'>cloud files(1)</a> <a href='/blog/categories/cloud-files' style='font-size: 109.05660377358491%'>Cloud Files(8)</a> <a href='/blog/categories/cloud-images' style='font-size: 101.13207547169812%'>Cloud Images(1)</a> <a href='/blog/categories/cloud-load-balancers' style='font-size: 101.13207547169812%'>Cloud Load Balancers(1)</a> <a href='/blog/categories/cloud-monitoring' style='font-size: 109.05660377358491%'>Cloud Monitoring(8)</a> <a href='/blog/categories/cloud-monitoring' style='font-size: 101.13207547169812%'>cloud monitoring(1)</a> <a href='/blog/categories/cloud-networks' style='font-size: 109.05660377358491%'>Cloud Networks(8)</a> <a href='/blog/categories/cloud-servers' style='font-size: 101.13207547169812%'>cloud servers(1)</a> <a href='/blog/categories/cloud-servers' style='font-size: 137.35849056603774%'>Cloud Servers(33)</a> <a href='/blog/categories/cloud-tools' style='font-size: 106.79245283018868%'>Cloud Tools(6)</a> <a href='/blog/categories/cloud-files' style='font-size: 101.13207547169812%'>cloud-files(1)</a> <a href='/blog/categories/cloud-init' style='font-size: 101.13207547169812%'>Cloud-init(1)</a> <a href='/blog/categories/cloudexpo' style='font-size: 101.13207547169812%'>CloudExpo(1)</a> <a href='/blog/categories/code' style='font-size: 101.13207547169812%'>code(1)</a> <a href='/blog/categories/community' style='font-size: 105.66037735849056%'>Community(5)</a> <a href='/blog/categories/conferences' style='font-size: 101.13207547169812%'>conferences(1)</a> <a href='/blog/categories/conferences' style='font-size: 101.13207547169812%'>Conferences(1)</a> <a href='/blog/categories/configuration' style='font-size: 101.13207547169812%'>Configuration(1)</a> <a href='/blog/categories/configuration-management' style='font-size: 107.9245283018868%'>Configuration Management(7)</a> <a href='/blog/categories/configuration-management' style='font-size: 101.13207547169812%'>configuration management(1)</a> <a href='/blog/categories/containers' style='font-size: 101.13207547169812%'>containers(1)</a> <a href='/blog/categories/contests' style='font-size: 101.13207547169812%'>Contests(1)</a> <a href='/blog/categories/contests' style='font-size: 101.13207547169812%'>contests(1)</a> <a href='/blog/categories/continuous-integration' style='font-size: 101.13207547169812%'>Continuous Integration(1)</a> <a href='/blog/categories/culture' style='font-size: 101.13207547169812%'>culture(1)</a> <a href='/blog/categories/data-mining' style='font-size: 101.13207547169812%'>data mining(1)</a> <a href='/blog/categories/ddtx14' style='font-size: 101.13207547169812%'>ddtx14(1)</a> <a href='/blog/categories/defcon' style='font-size: 101.13207547169812%'>DEFCON(1)</a> <a href='/blog/categories/deployment' style='font-size: 101.13207547169812%'>deployment(1)</a> <a href='/blog/categories/deployment' style='font-size: 101.13207547169812%'>Deployment(1)</a> <a href='/blog/categories/deployments' style='font-size: 104.52830188679245%'>Deployments(4)</a> <a href='/blog/categories/designate' style='font-size: 102.26415094339623%'>Designate(2)</a> <a href='/blog/categories/developer' style='font-size: 107.9245283018868%'>developer(7)</a> <a href='/blog/categories/developer' style='font-size: 101.13207547169812%'>Developer(1)</a> <a href='/blog/categories/developers' style='font-size: 109.05660377358491%'>Developers(8)</a> <a href='/blog/categories/developers' style='font-size: 104.52830188679245%'>developers(4)</a> <a href='/blog/categories/devops' style='font-size: 101.13207547169812%'>Devops(1)</a> <a href='/blog/categories/devops' style='font-size: 103.39622641509433%'>devops(3)</a> <a href='/blog/categories/devops' style='font-size: 110.18867924528303%'>DevOps(9)</a> <a href='/blog/categories/discount' style='font-size: 102.26415094339623%'>discount(2)</a> <a href='/blog/categories/dns' style='font-size: 102.26415094339623%'>DNS(2)</a> <a href='/blog/categories/docbook' style='font-size: 101.13207547169812%'>docbook(1)</a> <a href='/blog/categories/docker' style='font-size: 101.13207547169812%'>Docker(1)</a> <a href='/blog/categories/docker' style='font-size: 101.13207547169812%'>docker(1)</a> <a href='/blog/categories/documentation' style='font-size: 102.26415094339623%'>Documentation(2)</a> <a href='/blog/categories/drbd' style='font-size: 101.13207547169812%'>DRBD(1)</a> <a href='/blog/categories/elasticsearch' style='font-size: 101.13207547169812%'>Elasticsearch(1)</a> <a href='/blog/categories/elasticsearch' style='font-size: 102.26415094339623%'>ElasticSearch(2)</a> <a href='/blog/categories/event' style='font-size: 101.13207547169812%'>Event(1)</a> <a href='/blog/categories/events' style='font-size: 109.05660377358491%'>Events(8)</a> <a href='/blog/categories/files' style='font-size: 101.13207547169812%'>Files(1)</a> <a href='/blog/categories/five-pillars' style='font-size: 105.66037735849056%'>Five Pillars(5)</a> <a href='/blog/categories/fog' style='font-size: 103.39622641509433%'>Fog(3)</a> <a href='/blog/categories/fog' style='font-size: 103.39622641509433%'>fog(3)</a> <a href='/blog/categories/food-policy-council' style='font-size: 101.13207547169812%'>Food Policy Council(1)</a> <a href='/blog/categories/for' style='font-size: 101.13207547169812%'>for(1)</a> <a href='/blog/categories/foss' style='font-size: 101.13207547169812%'>FOSS(1)</a> <a href='/blog/categories/gce' style='font-size: 101.13207547169812%'>GCE(1)</a> <a href='/blog/categories/general' style='font-size: 109.05660377358491%'>General(8)</a> <a href='/blog/categories/gfs2' style='font-size: 101.13207547169812%'>GFS2(1)</a> <a href='/blog/categories/git' style='font-size: 101.13207547169812%'>Git(1)</a> <a href='/blog/categories/gluecon' style='font-size: 102.26415094339623%'>Gluecon(2)</a> <a href='/blog/categories/glusterfs' style='font-size: 101.13207547169812%'>GlusterFS(1)</a> <a href='/blog/categories/go' style='font-size: 101.13207547169812%'>go(1)</a> <a href='/blog/categories/go' style='font-size: 102.26415094339623%'>Go(2)</a> <a href='/blog/categories/gophercloud' style='font-size: 101.13207547169812%'>gophercloud(1)</a> <a href='/blog/categories/gophercloud' style='font-size: 102.26415094339623%'>Gophercloud(2)</a> <a href='/blog/categories/graphite' style='font-size: 101.13207547169812%'>Graphite(1)</a> <a href='/blog/categories/groovy' style='font-size: 101.13207547169812%'>groovy(1)</a> <a href='/blog/categories/guest-posts' style='font-size: 101.13207547169812%'>Guest Posts(1)</a> <a href='/blog/categories/hackathon' style='font-size: 103.39622641509433%'>Hackathon(3)</a> <a href='/blog/categories/hadoop' style='font-size: 101.13207547169812%'>Hadoop(1)</a> <a href='/blog/categories/haproxy' style='font-size: 101.13207547169812%'>HAProxy(1)</a> <a href='/blog/categories/hardware' style='font-size: 102.26415094339623%'>Hardware(2)</a> <a href='/blog/categories/havana' style='font-size: 102.26415094339623%'>Havana(2)</a> <a href='/blog/categories/heat' style='font-size: 101.13207547169812%'>Heat(1)</a> <a href='/blog/categories/httpie' style='font-size: 101.13207547169812%'>httpie(1)</a> <a href='/blog/categories/iis' style='font-size: 101.13207547169812%'>IIS(1)</a> <a href='/blog/categories/images' style='font-size: 101.13207547169812%'>Images(1)</a> <a href='/blog/categories/internship' style='font-size: 101.13207547169812%'>internship(1)</a> <a href='/blog/categories/ios' style='font-size: 101.13207547169812%'>iOS(1)</a> <a href='/blog/categories/ipxe' style='font-size: 101.13207547169812%'>iPXE(1)</a> <a href='/blog/categories/ipython' style='font-size: 101.13207547169812%'>IPython(1)</a> <a href='/blog/categories/ironmq' style='font-size: 101.13207547169812%'>IronMQ(1)</a> <a href='/blog/categories/java' style='font-size: 105.66037735849056%'>java(5)</a> <a href='/blog/categories/java' style='font-size: 102.26415094339623%'>Java(2)</a> <a href='/blog/categories/javascript' style='font-size: 101.13207547169812%'>javascript(1)</a> <a href='/blog/categories/jclouds' style='font-size: 112.45283018867924%'>jclouds(11)</a> <a href='/blog/categories/jekyll' style='font-size: 101.13207547169812%'>jekyll(1)</a> <a href='/blog/categories/jenkins' style='font-size: 105.66037735849056%'>Jenkins(5)</a> <a href='/blog/categories/jq' style='font-size: 101.13207547169812%'>jq(1)</a> <a href='/blog/categories/knife-backup' style='font-size: 101.13207547169812%'>knife-backup(1)</a> <a href='/blog/categories/knowbility' style='font-size: 101.13207547169812%'>Knowbility(1)</a> <a href='/blog/categories/lean' style='font-size: 101.13207547169812%'>Lean(1)</a> <a href='/blog/categories/libcloud' style='font-size: 102.26415094339623%'>libcloud(2)</a> <a href='/blog/categories/linux' style='font-size: 103.39622641509433%'>Linux(3)</a> <a href='/blog/categories/load-testing' style='font-size: 101.13207547169812%'>Load Testing(1)</a> <a href='/blog/categories/logging' style='font-size: 101.13207547169812%'>Logging(1)</a> <a href='/blog/categories/logrotate' style='font-size: 101.13207547169812%'>logrotate(1)</a> <a href='/blog/categories/logstash' style='font-size: 101.13207547169812%'>Logstash(1)</a> <a href='/blog/categories/mailgun' style='font-size: 109.05660377358491%'>Mailgun(8)</a> <a href='/blog/categories/managed-cloud' style='font-size: 101.13207547169812%'>Managed Cloud(1)</a> <a href='/blog/categories/marconi' style='font-size: 104.52830188679245%'>Marconi(4)</a> <a href='/blog/categories/message-queues' style='font-size: 101.13207547169812%'>Message Queues(1)</a> <a href='/blog/categories/microsoft' style='font-size: 101.13207547169812%'>Microsoft(1)</a> <a href='/blog/categories/mobile' style='font-size: 102.26415094339623%'>Mobile(2)</a> <a href='/blog/categories/mongodb' style='font-size: 102.26415094339623%'>MongoDB(2)</a> <a href='/blog/categories/mysql' style='font-size: 101.13207547169812%'>MySQL(1)</a> <a href='/blog/categories/networking' style='font-size: 105.66037735849056%'>Networking(5)</a> <a href='/blog/categories/networks' style='font-size: 101.13207547169812%'>Networks(1)</a> <a href='/blog/categories/neutron' style='font-size: 107.9245283018868%'>Neutron(7)</a> <a href='/blog/categories/new-products' style='font-size: 101.13207547169812%'>new products(1)</a> <a href='/blog/categories/new-relic' style='font-size: 101.13207547169812%'>New Relic(1)</a> <a href='/blog/categories/nginx' style='font-size: 101.13207547169812%'>nginx(1)</a> <a href='/blog/categories/node-js' style='font-size: 105.66037735849056%'>node.js(5)</a> <a href='/blog/categories/objectrocket' style='font-size: 102.26415094339623%'>ObjectRocket(2)</a> <a href='/blog/categories/open-source' style='font-size: 102.26415094339623%'>Open Source(2)</a> <a href='/blog/categories/openair' style='font-size: 101.13207547169812%'>OpenAIR(1)</a> <a href='/blog/categories/opensource' style='font-size: 102.26415094339623%'>opensource(2)</a> <a href='/blog/categories/openstack' style='font-size: 102.26415094339623%'>openstack(2)</a> <a href='/blog/categories/openstack' style='font-size: 160.0%'>OpenStack(53)</a> <a href='/blog/categories/openstack-swift' style='font-size: 101.13207547169812%'>OpenStack Swift(1)</a> <a href='/blog/categories/openstack-net' style='font-size: 101.13207547169812%'>openstack.net(1)</a> <a href='/blog/categories/ops' style='font-size: 103.39622641509433%'>Ops(3)</a> <a href='/blog/categories/orchestration' style='font-size: 101.13207547169812%'>Orchestration(1)</a> <a href='/blog/categories/orchestration' style='font-size: 101.13207547169812%'>orchestration(1)</a> <a href='/blog/categories/outreach' style='font-size: 102.26415094339623%'>outreach(2)</a> <a href='/blog/categories/pattern-recognition' style='font-size: 101.13207547169812%'>pattern recognition(1)</a> <a href='/blog/categories/perfomance' style='font-size: 101.13207547169812%'>perfomance(1)</a> <a href='/blog/categories/performance' style='font-size: 101.13207547169812%'>performance(1)</a> <a href='/blog/categories/performance' style='font-size: 102.26415094339623%'>Performance(2)</a> <a href='/blog/categories/performance-cloud-servers' style='font-size: 103.39622641509433%'>performance cloud servers(3)</a> <a href='/blog/categories/php' style='font-size: 101.13207547169812%'>php(1)</a> <a href='/blog/categories/php' style='font-size: 101.13207547169812%'>PHP(1)</a> <a href='/blog/categories/php-opencloud' style='font-size: 105.66037735849056%'>php-opencloud(5)</a> <a href='/blog/categories/php-sdk' style='font-size: 102.26415094339623%'>php-sdk(2)</a> <a href='/blog/categories/phpopencloud' style='font-size: 101.13207547169812%'>phpopencloud(1)</a> <a href='/blog/categories/pkgcloud' style='font-size: 105.66037735849056%'>pkgcloud(5)</a> <a href='/blog/categories/postgresql' style='font-size: 101.13207547169812%'>postgresql(1)</a> <a href='/blog/categories/pricing' style='font-size: 101.13207547169812%'>pricing(1)</a> <a href='/blog/categories/private-cloud' style='font-size: 106.79245283018868%'>Private Cloud(6)</a> <a href='/blog/categories/private-cloud' style='font-size: 101.13207547169812%'>private cloud(1)</a> <a href='/blog/categories/profiling' style='font-size: 101.13207547169812%'>profiling(1)</a> <a href='/blog/categories/puppet' style='font-size: 107.9245283018868%'>Puppet(7)</a> <a href='/blog/categories/pycon' style='font-size: 102.26415094339623%'>PyCon(2)</a> <a href='/blog/categories/pyrax' style='font-size: 103.39622641509433%'>pyrax(3)</a> <a href='/blog/categories/python' style='font-size: 111.32075471698113%'>Python(10)</a> <a href='/blog/categories/python' style='font-size: 103.39622641509433%'>python(3)</a> <a href='/blog/categories/qbox' style='font-size: 101.13207547169812%'>Qbox(1)</a> <a href='/blog/categories/rackspace' style='font-size: 101.13207547169812%'>rackspace(1)</a> <a href='/blog/categories/rackspace-deployment-services' style='font-size: 101.13207547169812%'>Rackspace Deployment Services(1)</a> <a href='/blog/categories/raspberrypi' style='font-size: 101.13207547169812%'>RaspberryPi(1)</a> <a href='/blog/categories/redis' style='font-size: 101.13207547169812%'>Redis(1)</a> <a href='/blog/categories/redis' style='font-size: 101.13207547169812%'>redis(1)</a> <a href='/blog/categories/redistogo' style='font-size: 101.13207547169812%'>RedisToGo(1)</a> <a href='/blog/categories/rest' style='font-size: 101.13207547169812%'>REST(1)</a> <a href='/blog/categories/robots' style='font-size: 101.13207547169812%'>robots(1)</a> <a href='/blog/categories/ruby' style='font-size: 104.52830188679245%'>Ruby(4)</a> <a href='/blog/categories/ruby' style='font-size: 101.13207547169812%'>ruby(1)</a> <a href='/blog/categories/rumm' style='font-size: 101.13207547169812%'>rumm(1)</a> <a href='/blog/categories/saltstack' style='font-size: 105.66037735849056%'>SaltStack(5)</a> <a href='/blog/categories/satlstack' style='font-size: 101.13207547169812%'>SatlStack(1)</a> <a href='/blog/categories/scrum' style='font-size: 101.13207547169812%'>Scrum(1)</a> <a href='/blog/categories/sdk' style='font-size: 110.18867924528303%'>SDK(9)</a> <a href='/blog/categories/sdk' style='font-size: 106.79245283018868%'>sdk(6)</a> <a href='/blog/categories/sdks' style='font-size: 102.26415094339623%'>SDKs(2)</a> <a href='/blog/categories/sdn' style='font-size: 102.26415094339623%'>SDN(2)</a> <a href='/blog/categories/security' style='font-size: 103.39622641509433%'>Security(3)</a> <a href='/blog/categories/servers' style='font-size: 101.13207547169812%'>Servers(1)</a> <a href='/blog/categories/service-registry' style='font-size: 104.52830188679245%'>Service Registry(4)</a> <a href='/blog/categories/speed' style='font-size: 102.26415094339623%'>speed(2)</a> <a href='/blog/categories/ssd' style='font-size: 101.13207547169812%'>SSD(1)</a> <a href='/blog/categories/startups' style='font-size: 101.13207547169812%'>Startups(1)</a> <a href='/blog/categories/stem' style='font-size: 101.13207547169812%'>stem(1)</a> <a href='/blog/categories/storage' style='font-size: 101.13207547169812%'>storage(1)</a> <a href='/blog/categories/support-non-profit' style='font-size: 101.13207547169812%'>Support Non-profit(1)</a> <a href='/blog/categories/sxsw' style='font-size: 101.13207547169812%'>SXSW(1)</a> <a href='/blog/categories/template' style='font-size: 101.13207547169812%'>Template(1)</a> <a href='/blog/categories/tools' style='font-size: 101.13207547169812%'>Tools(1)</a> <a href='/blog/categories/trial' style='font-size: 101.13207547169812%'>trial(1)</a> <a href='/blog/categories/unlocked' style='font-size: 102.26415094339623%'>unlocked(2)</a> <a href='/blog/categories/user-management' style='font-size: 101.13207547169812%'>User management(1)</a> <a href='/blog/categories/vagrant' style='font-size: 101.13207547169812%'>Vagrant(1)</a> <a href='/blog/categories/vagrant-rackspace' style='font-size: 101.13207547169812%'>vagrant-rackspace(1)</a> <a href='/blog/categories/version' style='font-size: 101.13207547169812%'>Version(1)</a> <a href='/blog/categories/volunteer' style='font-size: 101.13207547169812%'>Volunteer(1)</a> <a href='/blog/categories/windows' style='font-size: 103.39622641509433%'>Windows(3)</a> <a href='/blog/categories/zend-framework-2' style='font-size: 101.13207547169812%'>zend framework 2(1)</a> <a href='/blog/categories/zf2' style='font-size: 101.13207547169812%'>zf2(1)</a> </span>
+</section>
+
+<section>
+	<h1>Contributors</h1>
+	<span>
+		<div class="row-fluid"><div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/b011731e5a5c8f215b1361f1886d07a9?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/c76300d8dd57b50fdd0e395358f9c28a?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/95ec4d5f2c8b9390cd8e6ca40ae4228b?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/65731062a53942cd4400a01eca947db4?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/2f51c45127024920634d547d378b95d1?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/b60b40c0cfffc0b62f725078ecd7192a?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/ad832daf7ee1972650a59922f46d8c2e?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/d57aec10399cbb252bd890c2bb3fe1c9?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/721e88df3b8c9a2e0bbb9d619000f623?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/ca2eeff97529b33e4c6d06ac8eca7f07?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/c017e16d13af306e44206a1052a97a60?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/972ccaf87673f347e43cca7911cbb546?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/ae75f9179f3d3b6ecc04a6daaf35afe3?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/50dcacaf1a991698786173c4abedd193?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/c1a75adb52f40016a480cee292527895?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/a110107295af46c109c63398bca541d3?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/331c4d897f5ab241a7c9ff78d9197cd2?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/6537080c69e4ffa3c834b0d55dfdc495?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/ba890fdd8abc9f6c88be4aeceab8d894?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/9cc5cb7133ac18382de14bd916cc7b14?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/92ffd58a37d292b8d34c91fa3b9de108?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/138e258f88ac155ddc376bb83c8ecd0d?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/740f9407d66284a9cd8239af2315b011?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/40bfc0c3a6c7a746c6c0f2cefa61e0d7?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/0f5f2377208f942ed5f25da05794711f?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/a163f075d8085138e0b02b1cfa112af3?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/e643b05329cb4d8faec2d71ac94bea74?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/b476ab5b44e26678b3839415d9208dfd?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/1b8014981146e2c9b780267f18b1a5eb?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/9e54dda6522717d8f5fffee5e63f46f4?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/5136be4a554b781ee6506451de8ca5d1?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/d59a5cbbaf6e093b3a6b97adaf712430?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/616cc7b6342769bdfba541c28c59b3c8?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/489d0cf1941a24176e244bb381ec177e?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/f1ff11e233b4dbb08146702fddcebb01?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/fc428b9af69c672bb93f5eb609159468?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/2addaa222581623ce605da06aaa742d5?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/1833d8d8f1e7660b78d4ea050f8fb8d6?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/086d4f16eb11e5a4e9b42dc8cb896d7f?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/7aae9849938a8f36504c97b7a6cfbf96?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/cb016d40137e178a7cebc9d653f1fac5?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/de467058ac0f60d01f52c278b04f0968?s=50"/></div>
+<div class="span3 killmargin"><img src="http://www.gravatar.com/avatar/7fca1071d4192ee03a4bb5c63da21157?s=50"/></div></div>
+	</span>
+</section>
+
+    
+  </aside>
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+    </div>
+  </div>
+  <div id="footer">
+
+  <div id="rackFooter" class="container">
+<div class="row-fluid">
+      <div class="span9">
+        <div class="row-fluid">
+          <div class="col span3">
+            <div class="colheader">
+              <a href="http://rackspace.com/" target="_blank">Rackspace</a>
+            </div>
+            <ul>
+              <li>
+                <a href="http://rackspace.com/information/aboutus/" class="footer" target="_blank">About Rackspace Hosting<sup>®</sup></a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/whyrackspace/support/" class="footer" target="_blank">Fanatical Support<sup>®</sup></a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/hosting_solutions/" class="footer" target="_blank">Hosting Solutions</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/information/hosting101/" class="footer" target="_blank">Web Hosting 101</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/partners/" class="footer" target="_blank">Hosting Partner Programs</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/cloudbuilders/openstack/" class="footer" target="_blank">OpenStack<sup>®</sup></a>
+              </li>
+            </ul>
+          </div>
+          <div class="col span3 ">
+            <div class="colheader">
+              <a href="http://rackspace.com/managed_hosting/" target="_blank">Managed Hosting</a>
+            </div>
+            <ul>
+              <li>
+                <a href="http://rackspace.com/managed_hosting/configurations/" class="footer" target="_blank">Managed Configurations</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/managed_hosting/private_cloud/" class="footer" target="_blank">Managed Private Clouds</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/managed_hosting/managed_colocation/" class="footer" target="_blank">Managed Colocation Servers</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/managed_hosting/dedicated_servers/" class="footer" target="_blank">Dedicated Servers</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/managed_hosting/support/customers/" class="footer" target="_blank">Managed Customers</a>
+              </li>
+              <li>
+                <a href="https://my.rackspace.com" class="footer" rel="nofollow">MyRackspace<sup>®</sup> Portal</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col span3 ">
+            <div class="colheader">
+              <a href="http://rackspace.com/cloud/" target="_blank">Cloud Hosting</a>
+            </div>
+            <ul>
+              <li>
+                <a href="http://rackspace.com/cloud/servers/" class="footer" target="_blank">Cloud Servers™</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/cloud/sites/" class="footer" target="_blank">Cloud Sites™</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/cloud/load-balancing/" class="footer" target="_blank">Cloud Load Balancers</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/cloud/files/" class="footer" target="_blank">Cloud Files™</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/cloud/cloud_hosting_demos/" class="footer" target="_blank">Cloud Hosting Demos</a>
+              </li>
+              <li>
+                <a href="https://manage.rackspacecloud.com/pages/Login.jsp" class="footer" target="_blank">Cloud Control Panel</a>
+              </li>
+              <li>
+                <a href="https://mycloud.rackspace.com" class="footer" target="_blank">The Rackspace Open Cloud</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col span3 ">
+            <div class="colheader">
+              <a href="http://rackspace.com/apps/" target="_blank">Email &amp; Apps</a>
+            </div>
+            <ul>
+              <li>
+                <a href="http://rackspace.com/apps/email_hosting/" class="footer" target="_blank">Rackspace Email Hosting</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/apps/email_hosting/exchange_hosting/" class="footer" target="_blank">Microsoft Hosted Exchange</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/apps/email_hosting/compare/" class="footer" target="_blank">Compare Hosted Products</a>
+              </li>
+              <li>
+                <a href="http://rackspace.com/apps/email_hosting/email_archiving/" class="footer" target="_blank">Email Archiving</a>
+              </li>
+              <li>
+                <a href="http://apps.rackspace.com/" class="footer" target="_blank">Customer Log-in</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="col span3 contact_col">
+        <div class="colheader">
+          <a href="http://rackspace.com/information/contactus/" rel="nofollow">Contact Us</a>
+        </div>
+        <ul>
+          <li class="footerIcon sales"><span style="color:#4F81A6;">Sales</span> 1-800-961-2888</li>
+          <li class="footerIcon support"><span style="color:#4F81A6;">Support</span> 1-800-961-4454</li>
+        </ul>
+
+        <div class="colheader">
+          <a href="http://rackspace.com/information/contactus/" rel="nofollow" target="_blank">Connect With Us</a>
+        </div>
+        <div class="social_container">
+          <a class="social linkedin" href="http://www.linkedin.com/company/rackspace-hosting/" target="_blank"></a>
+          <a class="social facebook" href="http://www.facebook.com/rackspacehost" target="_blank"></a>
+          <a class="social twitter" href="http://twitter.com/rackspace" target="_blank"></a>
+          <a class="social googleplus" href="https://plus.google.com/100698655987920162334" target="_blank"></a>
+          <a class="social linktous" href="http://rackspace.com/information/links/" target="_blank"></a>
+          <a class="social email" href="http://rackspace.com/forms/contactsales/" target="_blank"></a>
+        </div>
+      </div>
+    </div>
+
+    <div id="rackerpowered"></div>
+
+  </div>
+
+
+</div>
+<div id="basement-wrap" class="basement-wrap-nosnap">
+  <div class="container">
+        ©2014 Rackspace, US Inc.
+        <span class="footerlink"><a href="http://rackspace.com/information/aboutus/" class="basement">About Rackspace</a></span> |
+        <span class="footerlink"><a href="http://rackspace.com/whyrackspace/support/" class="basement">Fanatical Support<sup>®</sup></a></span> |
+        <span class="footerlink"><a href="http://rackspace.com/hosting_solutions/" class="basement">Hosting Solutions</a></span> |
+        <span class="footerlink"><a href="http://ir.rackspace.com" class="basement">Investors</a></span> |
+        <span class="footerlink"><a href="http://www.rackertalent.com" class="basement">Careers</a></span> |
+        <span class="footerlink"><a href="http://rackspace.com/information/legal/privacystatement/" class="basement">Privacy Statement</a></span> |
+        <span class="footerlink"><a href="http://rackspace.com/information/legal/websiteterms/" class="basement">Website Terms</a></span> |
+        <span class="footerlink"><a href="http://rackspace.com/information/legal/copyrights_trademarks/" class="basement">Trademarks</a></span> |
+        <span class="footerlink"><a href="http://rackspace.com/sitemap/" class="basement" rel="nofollow">Sitemap</a></span>
+  </div>
+</div>
+
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'devopsrackspace';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://developer.rackspace.com/blog/got-python-questions.html';
+        var disqus_url = 'http://developer.rackspace.com/blog/got-python-questions.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/static/js/libs/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/static/js/libs/modernizr-2.6.2.min.js" type="text/javascript"></script>
+<script src="/static/js/libs/bootstrap.min.js" type="text/javascript"></script>
+<script src="/static/js/plugins.js" type="text/javascript"></script>
+<script src="/static/js/main.js" type="text/javascript"></script>
+<script src="/javascripts/octopress.js" type="text/javascript"></script>
+<!-- BEGIN COREMETRICS SUPPORT -->
+<script type="text/javascript" src="//libs.coremetrics.com/eluminate.js"></script>
+<script type="text/javascript">
+    cmSetClientID('90378974', false, 'dc.rackspace.com', 'rackspace.com');
+</script>
+<script type="text/javascript">
+    cmCreatePageviewTag('Rackspace Developer Center: Got Python Questions? Ask Our Experts In The Rackspace Community');
+</script>
+<!-- END COREMETRICS -->  <!--Needed for Rackspace Analytics-->
+<!-- Google Code for Rackspace Blog Page Visitors (Global Tag) -->
+<!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 1040066332;
+    var google_conversion_label = "wFI2CI7LnQQQnM747wM";
+    var google_custom_params = window.google_tag_params;
+    var google_remarketing_only = true;
+    /* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+    <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1040066332/?value=0&amp;label=wFI2CI7LnQQQnM747wM&amp;guid=ON&amp;script=0"/>
+    </div>
+</noscript>
+ <!--Needed for Marketing referral tracking-->
+
+
+</body>
+</html>

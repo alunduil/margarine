@@ -178,7 +178,10 @@ class BlendArticleReadTest(BaseBlendTest):
         for article in self.articles['all']:
             if self.mock_datastores():
                 self.mocked_collection.find_one.return_value = article['bson']
-                self.mocked_gridout.read.return_value = article['json']['body']
+
+                _ = mock.MagicMock()
+                self.mocked_gridfs.get.return_value = _
+                _.read.return_value = article['json']['body']
 
             response = self.fetch(self.base_url + article['uuid'])
 
@@ -202,7 +205,10 @@ class BlendArticleReadTest(BaseBlendTest):
         for article in self.articles['all']:
             if self.mock_datastores():
                 self.mocked_collection.find_one.return_value = article['bson']
-                self.mocked_gridout.read.return_value = article['json']['body']
+
+                _ = mock.MagicMock()
+                self.mocked_gridfs.get.return_value = _
+                _.read.return_value = article['json']['body']
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
 

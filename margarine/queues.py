@@ -18,6 +18,8 @@ ARTICLES_CREATE_QUEUE = kombu.Queue('articles.create', ARTICLES_TOPIC_EXCHANGE, 
 
 ARTICLES_FANOUT_EXCHANGE = kombu.Exchange('articles.fanout', type = 'fanout', delivery_mode = 'transient')
 
+ARTICLES_SANITIZE_QUEUE = kombu.Queue('articles.sanitize', ARTICLES_FANOUT_EXCHANGE, routing_key = 'articles.secondary')
+
 QUEUE_CONNECTION = None
 
 

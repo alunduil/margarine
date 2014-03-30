@@ -25,6 +25,9 @@ class BaseMargarineTest(unittest.TestCase):
 
         self.articles = copy.deepcopy(ARTICLES)
 
+        for article in self.articles['all']:
+            article['original_html'] = open(article['original_html'], 'r')
+
     @property
     def real_module(self):
         return re.sub(r'\.[^.]+', '', self.__module__.replace('test_', ''), 1)
@@ -60,9 +63,6 @@ class BaseMargarineTest(unittest.TestCase):
 
         self.mocked_gridfs = mock.MagicMock()
         self.mocked_get_gridfs.return_value = self.mocked_gridfs
-
-        self.mocked_gridout = mock.MagicMock()
-        self.mocked_gridfs.get.return_value = self.mocked_gridout
 
         logger.info('STOPPING: mock datastores')
 
