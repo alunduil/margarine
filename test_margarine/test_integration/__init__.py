@@ -9,6 +9,8 @@ import mock
 import pymongo
 import unittest
 
+from margarine import datastores
+
 
 class BaseMargarineIntegrationTest(unittest.TestCase):
     mocks_mask = set()
@@ -28,6 +30,9 @@ class BaseMargarineIntegrationTest(unittest.TestCase):
             }
 
             self.mocked_PARAMETERS.__getitem__.side_effect = lambda _: parameters[_]
+
+        datastores.get_collection('articles').remove()
+        datastores.get_collection('fs').remove()
 
     mocks.add('parameters.PARAMETERS')
 

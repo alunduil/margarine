@@ -33,6 +33,7 @@ class BaseSpreadTest(BaseMargarineTest):
 
             return False
 
+        logger.debug('datetime: %s', self.real_module + '.datetime.datetime')
         _ = mock.patch(self.real_module + '.datetime.datetime')
 
         self.addCleanup(_.stop)

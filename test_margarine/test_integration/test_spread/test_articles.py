@@ -32,11 +32,45 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
         '''spread.articles—create—unmocked datastores,unsubmitted'''
 
         for article in self.articles['all']:
+            if self.mock_datetime():
+                self.mocked_datetime.now.side_effect = [
+                    article['bson']['created_at'],
+                    article['bson']['updated_at'],
+                ]
+
+            is_queue_mocked = self.mock_queues()
+
+            create_article(article['message_body'], self.mocked_message)
+
+            del article['bson']['body']
+            del article['bson']['etag']
+            del article['bson']['parsed_at']
+
+            _, self.maxDiff = self.maxDiff, None
+            self.assertEqual(article['bson'], datastores.get_collection('articles').find_one(article['message_body']['uuid'].hex))
+            self.maxDiff = _
+
+            if is_queue_mocked:
+                self.mocked_producer.publish.assert_called_once_with(
+                    { 'uuid': uuid.UUID(article['uuid']) },
+                    serializer = mock.ANY,
+                    compression = mock.ANY,
+                    exchange = queues.ARTICLES_FANOUT_EXCHANGE,
+                    declare = [ queues.ARTICLES_FANOUT_EXCHANGE ],
+                    routing_key = 'articles.secondary'
+                )
+
+            self.mocked_message.ack.assert_called_once_with()
+
+    def test_article_create_submitted(self):
+        '''spread.articles—create—unmocked datastores,submitted'''
+
+        for article in self.articles['all']:
             self.add_fixture_to_datastore(article)
 
             if self.mock_datetime():
                 self.mocked_datetime.now.side_effect = [
-                    article['bson']['parsed_at'],
+                    article['bson']['created_at'],
                     article['bson']['updated_at'],
                 ]
 

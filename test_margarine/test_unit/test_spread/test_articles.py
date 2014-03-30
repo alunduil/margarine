@@ -71,15 +71,13 @@ class SpreadArticleCreateTest(BaseSpreadTest):
         for article in self.articles['all']:
             is_datastore_mocked = self.mock_datastores()
             if is_datastore_mocked:
-                self.mocked_collection.find_one.return_value = article['bson']
+                self.mocked_collection.find_one.return_value = copy.deepcopy(article['bson'])
 
             is_queue_mocked = self.mock_queues()
 
             create_article(article['message_body'], self.mocked_message)
 
-            article['bson'].pop('body')
-            article['bson'].pop('etag')
-            article['bson'].pop('parsed_at')
+            del article['bson']['_id']
 
             if is_datastore_mocked:
                 self.mocked_collection.update.assert_called_once_with(
