@@ -16,6 +16,7 @@ from test_margarine.test_integration import BaseMargarineIntegrationTest
 from margarine import datastores
 from margarine import queues
 from margarine.spread.articles import create_article
+from margarine.spread.articles import sanitize_article
 
 
 @unittest.skipUnless(test_helpers.is_vagrant_up('datastore'), 'vagrant up datastore')
@@ -44,6 +45,7 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
 
             del article['bson']['body']
             del article['bson']['etag']
+            del article['bson']['original_etag']
             del article['bson']['parsed_at']
 
             _, self.maxDiff = self.maxDiff, None
@@ -89,5 +91,43 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
                     declare = [ queues.ARTICLES_FANOUT_EXCHANGE ],
                     routing_key = 'articles.secondary'
                 )
+
+            self.mocked_message.ack.assert_called_once_with()
+
+
+@unittest.skipUnless(test_helpers.is_vagrant_up('datastore'), 'vagrant up datastore')
+class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrationTest):
+    mocks_mask = set()
+    mocks_mask = mocks_mask.union(BaseSpreadTest.mocks_mask)
+    mocks_mask = mocks_mask.union(BaseMargarineIntegrationTest.mocks_mask)
+
+    mocks = set()
+    mocks = mocks.union(BaseSpreadTest.mocks)
+    mocks = mocks.union(BaseMargarineIntegrationTest.mocks)
+
+    def test_article_create_unsubmitted(self):
+        '''spread.articles—sanitize—unmocked datastores,not modified'''
+
+        for article in self.articles['all']:
+            if self.mock_tornado():
+                headers = {
+                    'ETag': article['original_etag']
+                }
+
+                self.mocked_response.headers.__getitem__.side_effect = lambda _: headers[_]
+
+                type(self.mocked_response).buffer = mock.PropertyMock(return_value = article['original_html'])
+
+            if self.mock_datetime():
+                self.mocked_datetime.now.side_effect = [
+                    article['bson']['created_at'],
+                    article['bson']['updated_at'],
+                ]
+
+            self.add_fixture_to_datastore(article)
+
+            sanitize_article({ 'uuid': article['message_body']['uuid'] }, self.mocked_message)
+
+            self.assertEqual(article['bson'], datastores.get_collection('articles').find_one(article['message_body']['uuid'].hex))
 
             self.mocked_message.ack.assert_called_once_with()

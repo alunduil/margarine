@@ -17,33 +17,36 @@ ARTICLES = {}
 ARTICLES['correct'] = []
 
 ARTICLES['correct'].append({
-    'bson': {
-        '_id': '0fb5c88e87535bc3a2514343b63682b0',
-        'body': bson.objectid.ObjectId('532f29a14ee7ca6d41afae50'),
-        'created_at': datetime.datetime(1994, 11, 15, 12, 45, 26, 000000),
-        'etag': 'd0dbbb6ba01a95c3bfeca3f46e3d15b03873fff4a4b780700c8bc23994329f0f',
-        'original_url': 'http://developer.rackspace.com/blog/got-python-questions.html',
-        'parsed_at': datetime.datetime(2014, 1, 26, 17, 35, 7, 217000),
-        'updated_at': datetime.datetime(2014, 1, 26, 17, 35, 7, 217000),
+    u'bson': {
+        u'_id': u'0fb5c88e87535bc3a2514343b63682b0',
+        u'body': bson.objectid.ObjectId('532f29a14ee7ca6d41afae50'),
+        u'created_at': datetime.datetime(1994, 11, 15, 12, 45, 26, 000000),
+        u'etag': u'd0dbbb6ba01a95c3bfeca3f46e3d15b03873fff4a4b780700c8bc23994329f0f',
+        u'original_etag': u'cee086c837e3a8f3496addee84a2e136',
+        u'original_url': u'http://developer.rackspace.com/blog/got-python-questions.html',
+        u'parsed_at': datetime.datetime(2014, 1, 26, 17, 35, 7, 217000),
+        u'updated_at': datetime.datetime(2014, 1, 26, 17, 35, 7, 217000),
     },
-    'etag': 'd0dbbb6ba01a95c3bfeca3f46e3d15b03873fff4a4b780700c8bc23994329f0f',
-    'json': {
+    u'etag': u'd0dbbb6ba01a95c3bfeca3f46e3d15b03873fff4a4b780700c8bc23994329f0f',
+    u'json': {
         u'_id': u'0fb5c88e87535bc3a2514343b63682b0',
         u'body': unicode(open(os.path.join(FIXTURE_DIRECTORY, 'got-python-questions.html.sanitized'), 'r').read(), 'utf-8'),
         u'created_at': u'Tue, 15 Nov 1994 12:45:26.000000+0000',
         u'etag': u'd0dbbb6ba01a95c3bfeca3f46e3d15b03873fff4a4b780700c8bc23994329f0f',
+        u'original_etag': u'cee086c837e3a8f3496addee84a2e136',
         u'original_url': u'http://developer.rackspace.com/blog/got-python-questions.html',
         u'parsed_at': u'Sun, 26 Jan 2014 17:35:07.217000+0000',
         u'updated_at': u'Sun, 26 Jan 2014 17:35:07.217000+0000',
     },
-    'message_body': {
-        'url': 'http://developer.rackspace.com/blog/got-python-questions.html',
-        'uuid': uuid.UUID('0fb5c88e-8753-5bc3-a251-4343b63682b0'),
+    u'message_body': {
+        u'url': u'http://developer.rackspace.com/blog/got-python-questions.html',
+        u'uuid': uuid.UUID('0fb5c88e-8753-5bc3-a251-4343b63682b0'),
     },
-    'original_html': os.path.join(FIXTURE_DIRECTORY, 'got-python-questions.html'),
-    'updated_at': 'Sun, 26 Jan 2014 17:35:07 UTC',
-    'url': 'http://developer.rackspace.com/blog/got-python-questions.html',
-    'uuid': '0fb5c88e-8753-5bc3-a251-4343b63682b0',
+    u'original_etag': u'cee086c837e3a8f3496addee84a2e136',
+    u'original_html': os.path.join(FIXTURE_DIRECTORY, u'got-python-questions.html'),
+    u'updated_at': u'Sun, 26 Jan 2014 17:35:07 UTC',
+    u'url': u'http://developer.rackspace.com/blog/got-python-questions.html',
+    u'uuid': u'0fb5c88e-8753-5bc3-a251-4343b63682b0',
 })
 
 ARTICLES['all'] = []

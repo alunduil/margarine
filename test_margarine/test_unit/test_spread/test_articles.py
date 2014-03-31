@@ -44,6 +44,7 @@ class SpreadArticleCreateTest(BaseSpreadTest):
             del article['bson']['_id']
             del article['bson']['body']
             del article['bson']['etag']
+            del article['bson']['original_etag']
             del article['bson']['parsed_at']
 
             if is_datastore_mocked:
@@ -103,41 +104,13 @@ class SpreadArticleSanitizeTest(BaseSpreadTest):
     mocks_mask = set().union(BaseSpreadTest.mocks_mask)
     mocks = set().union(BaseSpreadTest.mocks)
 
-    mocks.add('tornado')
-
-    def mock_tornado(self):
-        logger.info('STARTING: mock tornado')
-
-        if 'tornado' in self.mocks_mask:
-            logger.info('STOPPING: mock tornado—MASKED')
-
-            return False
-
-        _ = mock.patch(self.real_module + '.tornado.httpclient.HTTPClient')
-
-        self.addCleanup(_.stop)
-
-        mocked_httpclient_constructer = _.start()
-
-        self.mocked_httpclient = mock.MagicMock()
-        mocked_httpclient_constructer.return_value = self.mocked_httpclient
-
-        self.mocked_response = mock.MagicMock()
-        self.mocked_httpclient.fetch.return_value = self.mocked_response
-
-        logger.info('STOPPING: mock tornado')
-
-        return True
-
     def test_article_sanitize_parsed_not_modified(self):
         '''spread.articles—sanitize—not modified'''
 
         for article in self.articles['all']:
-            article['bson']['original_etag'] = 'cee086c837e3a8f3496addee84a2e136'
-
             if self.mock_tornado():
                 headers = {
-                    'ETag': article['bson']['original_etag']
+                    'ETag': article['original_etag']
                 }
 
                 self.mocked_response.headers.__getitem__.side_effect = lambda _: headers[_]
@@ -171,11 +144,9 @@ class SpreadArticleSanitizeTest(BaseSpreadTest):
         '''
 
         for article in self.articles['all']:
-            original_etag = 'cee086c837e3a8f3496addee84a2e136'
-
             if self.mock_tornado():
                 headers = {
-                    'ETag': original_etag,
+                    'ETag': article['original_etag'],
                 }
 
                 self.mocked_response.headers.__getitem__.side_effect = lambda _: headers[_]
@@ -188,6 +159,8 @@ class SpreadArticleSanitizeTest(BaseSpreadTest):
                     article['bson']['updated_at'],
                 ]
 
+            del article['bson']['original_etag']
+
             is_datastore_mocked = self.mock_datastores()
             if is_datastore_mocked:
                 self.mocked_collection.find_one.return_value = copy.deepcopy(article['bson'])
@@ -196,7 +169,7 @@ class SpreadArticleSanitizeTest(BaseSpreadTest):
             sanitize_article({ 'uuid': article['message_body']['uuid'] }, self.mocked_message)
 
             del article['bson']['_id']
-            article['bson']['original_etag'] = original_etag
+            article['bson']['original_etag'] = article['original_etag']
 
             if is_datastore_mocked:
                 self.mocked_collection.update.assert_called_once_with(

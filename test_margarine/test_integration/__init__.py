@@ -4,12 +4,13 @@
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import functools
-import gridfs
+import logging
 import mock
-import pymongo
 import unittest
 
 from margarine import datastores
+
+logger = logging.getLogger(__name__)
 
 
 class BaseMargarineIntegrationTest(unittest.TestCase):
@@ -31,6 +32,7 @@ class BaseMargarineIntegrationTest(unittest.TestCase):
 
             self.mocked_PARAMETERS.__getitem__.side_effect = lambda _: parameters[_]
 
+        logger.info('cleaning datastores')
         datastores.get_collection('articles').remove()
         datastores.get_collection('fs').remove()
 
@@ -49,14 +51,17 @@ class BaseMargarineIntegrationTest(unittest.TestCase):
         return True
 
     def add_fixture_to_datastore(self, fixture):
-        database = pymongo.MongoClient(self.datastore_url)[self.datastore_url.rsplit('/', 1)[-1]]
+        grid = datastores.get_gridfs()
 
-        grid = gridfs.GridFS(database)
+        logger.debug('body: %s', fixture['json']['body'])
+        logger.debug('_id: %s', fixture['bson']['body'])
 
         fixture['bson']['body'] = grid.put(fixture['json']['body'], _id = fixture['bson']['body'], encoding = 'utf-8')
 
+        logger.debug('grid object: %s', fixture['bson']['body'])
+
         self.addCleanup(functools.partial(grid.delete, fixture['bson']['body']))
 
-        database['articles'].insert(fixture['bson'])
-
-        self.addCleanup(functools.partial(database['articles'].remove, fixture['bson']['_id']))
+        collection = datastores.get_collection('articles')
+        collection.insert(fixture['bson'])
+        self.addCleanup(functools.partial(collection.remove, fixture['bson']['_id']))

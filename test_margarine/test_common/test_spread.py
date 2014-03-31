@@ -13,6 +13,12 @@ from test_margarine.test_common import BaseMargarineTest
 
 logger = logging.getLogger(__name__)
 
+UNMOCKED = {
+    'datetime.datetime': datetime.datetime,
+    'datetime.datetime.now': datetime.datetime.now,
+    'datetime.datetime.utcnow': datetime.datetime.utcnow,
+}
+
 
 class BaseSpreadTest(BaseMargarineTest):
     mocks_mask = set().union(BaseMargarineTest.mocks_mask)
@@ -39,8 +45,37 @@ class BaseSpreadTest(BaseMargarineTest):
         self.addCleanup(_.stop)
 
         self.mocked_datetime = _.start()
-        self.mocked_datetime.side_effect = lambda *args, **kwargs: datetime.datetime(*args, **kwargs)
+
+        self.mocked_datetime.side_effect = lambda *args, **kwargs: UNMOCKED['datetime.datetime'](*args, **kwargs)
+        self.mocked_datetime.now.side_effect = lambda *args, **kwargs: UNMOCKED['datetime.datetime.now'](*args, **kwargs)
+        self.mocked_datetime.utcnow.side_effect = lambda *args, **kwargs: UNMOCKED['datetime.datetime.utcnow'](*args, **kwargs)
 
         logger.info('STOPPING: mock datetime')
+
+        return True
+
+    mocks.add('tornado')
+
+    def mock_tornado(self):
+        logger.info('STARTING: mock tornado')
+
+        if 'tornado' in self.mocks_mask:
+            logger.info('STOPPING: mock tornado—MASKED')
+
+            return False
+
+        _ = mock.patch(self.real_module + '.tornado.httpclient.HTTPClient')
+
+        self.addCleanup(_.stop)
+
+        mocked_httpclient_constructer = _.start()
+
+        self.mocked_httpclient = mock.MagicMock()
+        mocked_httpclient_constructer.return_value = self.mocked_httpclient
+
+        self.mocked_response = mock.MagicMock()
+        self.mocked_httpclient.fetch.return_value = self.mocked_response
+
+        logger.info('STOPPING: mock tornado')
 
         return True
