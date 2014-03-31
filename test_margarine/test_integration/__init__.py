@@ -52,14 +52,7 @@ class BaseMargarineIntegrationTest(unittest.TestCase):
 
     def add_fixture_to_datastore(self, fixture):
         grid = datastores.get_gridfs()
-
-        logger.debug('body: %s', fixture['json']['body'])
-        logger.debug('_id: %s', fixture['bson']['body'])
-
         fixture['bson']['body'] = grid.put(fixture['json']['body'], _id = fixture['bson']['body'], encoding = 'utf-8')
-
-        logger.debug('grid object: %s', fixture['bson']['body'])
-
         self.addCleanup(functools.partial(grid.delete, fixture['bson']['body']))
 
         collection = datastores.get_collection('articles')

@@ -131,3 +131,36 @@ class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegr
             self.assertEqual(article['bson'], datastores.get_collection('articles').find_one(article['message_body']['uuid'].hex))
 
             self.mocked_message.ack.assert_called_once_with()
+
+    def test_article_sanitize_unparsed(self):
+        '''spread.articles—sanitize—unmocked datastores,not parsed
+
+        identical cases:
+
+        1. spread.articles—sanitize—unmocked datastore,parsed,modified
+
+        '''
+
+        for article in self.articles['all']:
+            if self.mock_tornado():
+                headers = {
+                    'ETag': article['original_etag'],
+                }
+
+                self.mocked_response.headers.__getitem__.side_effect = lambda _: headers[_]
+
+                type(self.mocked_response).buffer = mock.PropertyMock(return_value = article['original_html'])
+
+            if self.mock_datetime():
+                self.mocked_datetime.now.side_effect = [
+                    article['bson']['parsed_at'],
+                    article['bson']['updated_at'],
+                ]
+
+            self.add_fixture_to_datastore(article)
+
+            sanitize_article({ 'uuid': article['message_body']['uuid'] }, self.mocked_message)
+
+            self.assertEqual(article['bson'], datastores.get_collection('articles').find_one(article['message_body']['uuid'].hex))
+
+            self.mocked_message.ack.assert_called_once_with()
