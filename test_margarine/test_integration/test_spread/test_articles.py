@@ -5,9 +5,9 @@
 # margarine is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+import bson.objectid
 import mock
 import unittest
-import uuid
 
 from test_margarine import test_helpers
 from test_margarine.test_common.test_spread import BaseSpreadTest
@@ -29,32 +29,27 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
     mocks = mocks.union(BaseSpreadTest.mocks)
     mocks = mocks.union(BaseMargarineIntegrationTest.mocks)
 
-    def test_article_create_unsubmitted(self):
-        '''spread.articles—create—unmocked datastores,unsubmitted'''
+    def test_article_create_uncreated(self):
+        '''spread.articles—create—unmocked datastores,uncreated'''
 
         for article in self.articles['all']:
             if self.mock_datetime():
                 self.mocked_datetime.now.side_effect = [
-                    article['bson']['created_at'],
-                    article['bson']['updated_at'],
+                    article['bson']['post_create']['created_at'],
+                    article['bson']['post_create']['updated_at'],
                 ]
 
             is_queue_mocked = self.mock_queues()
 
-            create_article(article['message_body'], self.mocked_message)
-
-            del article['bson']['body']
-            del article['bson']['etag']
-            del article['bson']['original_etag']
-            del article['bson']['parsed_at']
+            create_article(article['message_body']['pre_create'], self.mocked_message)
 
             _, self.maxDiff = self.maxDiff, None
-            self.assertEqual(article['bson'], datastores.get_collection('articles').find_one(article['message_body']['uuid'].hex))
+            self.assertEqual(article['bson']['post_create'], datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
             self.maxDiff = _
 
             if is_queue_mocked:
                 self.mocked_producer.publish.assert_called_once_with(
-                    { 'uuid': uuid.UUID(article['uuid']) },
+                    article['message_body']['post_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,
                     exchange = queues.ARTICLES_FANOUT_EXCHANGE,
@@ -64,27 +59,27 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
 
             self.mocked_message.ack.assert_called_once_with()
 
-    def test_article_create_submitted(self):
-        '''spread.articles—create—unmocked datastores,submitted'''
+    def test_article_create_created(self):
+        '''spread.articles—create—unmocked datastores,created'''
 
         for article in self.articles['all']:
-            self.add_fixture_to_datastore(article)
+            self.add_fixture_to_datastore(article['bson']['post_create'])
 
             if self.mock_datetime():
                 self.mocked_datetime.now.side_effect = [
-                    article['bson']['created_at'],
-                    article['bson']['updated_at'],
+                    article['bson']['post_create']['created_at'],
+                    article['bson']['post_create']['updated_at'],
                 ]
 
             is_queue_mocked = self.mock_queues()
 
-            create_article(article['message_body'], self.mocked_message)
+            create_article(article['message_body']['pre_create'], self.mocked_message)
 
-            self.assertEqual(article['bson'], datastores.get_collection('articles').find_one(article['message_body']['uuid'].hex))
+            self.assertEqual(article['bson']['post_create'], datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
 
             if is_queue_mocked:
                 self.mocked_producer.publish.assert_called_once_with(
-                    { 'uuid': uuid.UUID(article['uuid']) },
+                    article['message_body']['post_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,
                     exchange = queues.ARTICLES_FANOUT_EXCHANGE,
@@ -105,62 +100,108 @@ class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegr
     mocks = mocks.union(BaseSpreadTest.mocks)
     mocks = mocks.union(BaseMargarineIntegrationTest.mocks)
 
-    def test_article_create_unsubmitted(self):
-        '''spread.articles—sanitize—unmocked datastores,not modified'''
+    def test_article_sanitize_unsanitized(self):
+        '''spread.articles—sanitize—unmocked datastores,not sanitized'''
 
         for article in self.articles['all']:
             if self.mock_tornado():
                 headers = {
-                    'ETag': article['original_etag']
+                    'ETag': article['response']['etag'],
                 }
 
                 self.mocked_response.headers.__getitem__.side_effect = lambda _: headers[_]
 
-                type(self.mocked_response).buffer = mock.PropertyMock(return_value = article['original_html'])
+                type(self.mocked_response).buffer = mock.PropertyMock(return_value = article['response']['html'])
 
             if self.mock_datetime():
                 self.mocked_datetime.now.side_effect = [
-                    article['bson']['created_at'],
-                    article['bson']['updated_at'],
+                    article['bson']['post_sanitize']['parsed_at'],
+                    article['bson']['post_sanitize']['updated_at'],
                 ]
 
-            self.add_fixture_to_datastore(article)
+                self.add_fixture_to_datastore(article['bson']['post_create'], article['bson']['post_sanitize']['body'])
 
-            sanitize_article({ 'uuid': article['message_body']['uuid'] }, self.mocked_message)
+            sanitize_article(article['message_body']['post_create'], self.mocked_message)
 
-            self.assertEqual(article['bson'], datastores.get_collection('articles').find_one(article['message_body']['uuid'].hex))
+            _ = {}
+            _.update(article['bson']['post_create'])
+            _.update(article['bson']['post_sanitize'])
+
+            result = datastores.get_collection('articles').find_one(article['uuid'].replace('-', ''))
+
+            self.assertIsInstance(result['body'], bson.objectid.ObjectId)
+            self.assertEqual(_, result)
 
             self.mocked_message.ack.assert_called_once_with()
 
-    def test_article_sanitize_unparsed(self):
-        '''spread.articles—sanitize—unmocked datastores,not parsed
-
-        identical cases:
-
-        1. spread.articles—sanitize—unmocked datastore,parsed,modified
-
-        '''
+    def test_article_sanitize_sanitized_not_modified(self):
+        '''spread.articles—sanitize—unmocked datastores,sanitized,not modified'''
 
         for article in self.articles['all']:
             if self.mock_tornado():
                 headers = {
-                    'ETag': article['original_etag'],
+                    'ETag': article['response']['etag']
                 }
 
                 self.mocked_response.headers.__getitem__.side_effect = lambda _: headers[_]
 
-                type(self.mocked_response).buffer = mock.PropertyMock(return_value = article['original_html'])
+                type(self.mocked_response).buffer = mock.PropertyMock(return_value = article['response']['html'])
 
             if self.mock_datetime():
                 self.mocked_datetime.now.side_effect = [
-                    article['bson']['parsed_at'],
-                    article['bson']['updated_at'],
+                    article['bson']['post_sanitize']['parsed_at'],
+                    article['bson']['post_sanitize']['updated_at'],
                 ]
 
-            self.add_fixture_to_datastore(article)
+            _ = {}
+            _.update(article['bson']['post_create'])
+            _.update(article['bson']['post_sanitize'])
+            self.add_fixture_to_datastore(_)
 
-            sanitize_article({ 'uuid': article['message_body']['uuid'] }, self.mocked_message)
+            sanitize_article(article['message_body']['post_create'], self.mocked_message)
 
-            self.assertEqual(article['bson'], datastores.get_collection('articles').find_one(article['message_body']['uuid'].hex))
+            _ = {}
+            _.update(article['bson']['post_create'])
+            _.update(article['bson']['post_sanitize'])
+
+            self.assertEqual(_, datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
+
+            self.mocked_message.ack.assert_called_once_with()
+
+    def test_article_sanitize_sanitized(self):
+        '''spread.articles—sanitize—unmocked datastores,sanitized,modified'''
+
+        for article in self.articles['all']:
+            if self.mock_tornado():
+                headers = {
+                    'ETag': 'd0dbbb6ba01a95c3bfeca3f46e3d15b',
+                }
+
+                self.mocked_response.headers.__getitem__.side_effect = lambda _: headers[_]
+
+                type(self.mocked_response).buffer = mock.PropertyMock(return_value = article['response']['html'])
+
+            if self.mock_datetime():
+                self.mocked_datetime.now.side_effect = [
+                    article['bson']['post_sanitize']['parsed_at'],
+                    article['bson']['post_sanitize']['updated_at'],
+                ]
+
+            _ = {}
+            _.update(article['bson']['post_create'])
+            _.update(article['bson']['post_sanitize'])
+            self.add_fixture_to_datastore(_, article['bson']['post_sanitize']['body'])
+
+            sanitize_article(article['message_body']['post_create'], self.mocked_message)
+
+            _ = {}
+            _.update(article['bson']['post_create'])
+            _.update(article['bson']['post_sanitize'])
+            _[u'previous_bodies'] = [ _['body'] ]
+            _[u'etag'] = u'3ddd80984969be128d91d752f198a6006dbbb162ebdd9d0589aea85f3b1fdbb4'
+            _[u'original_etag'] = u'd0dbbb6ba01a95c3bfeca3f46e3d15b'
+
+            self.maxDiff = None
+            self.assertEqual(_, datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
 
             self.mocked_message.ack.assert_called_once_with()

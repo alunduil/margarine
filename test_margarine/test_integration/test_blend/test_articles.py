@@ -44,37 +44,36 @@ class BlendArticleReadWithDatastoreTest(BaseBlendTest, BaseMargarineIntegrationT
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_get_submitted_incomplete(self):
-        '''blend.articles—GET    /articles/? → 404—unmocked datastores,submitted,incomplete'''
+    def test_article_read_get_submitted_unsanitized(self):
+        '''blend.articles—GET    /articles/? → 404—unmocked datastores,submitted,unsanitized'''
 
         for article in self.articles['all']:
-            del article['bson']['parsed_at']
-
-            self.add_fixture_to_datastore(article)
+            self.add_fixture_to_datastore(article['bson']['post_create'])
 
             response = self.fetch(self.base_url + article['uuid'])
 
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_head_submitted_incomplete(self):
-        '''blend.articles—HEAD   /articles/? → 404—unmocked datastores,submitted,incomplete'''
+    def test_article_read_head_submitted_unsanitized(self):
+        '''blend.articles—HEAD   /articles/? → 404—unmocked datastores,submitted,unsanitized'''
 
         for article in self.articles['all']:
-            del article['bson']['parsed_at']
-
-            self.add_fixture_to_datastore(article)
+            self.add_fixture_to_datastore(article['bson']['post_create'])
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
 
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_get_submitted_complete(self):
-        '''blend.articles—GET    /articles/? → 200—ummocked datastores,submitted,complete'''
+    def test_article_read_get_submitted_sanitized(self):
+        '''blend.articles—GET    /articles/? → 200—ummocked datastores,submitted,sanitized'''
 
         for article in self.articles['all']:
-            self.add_fixture_to_datastore(article)
+            _ = {}
+            _.update(article['bson']['post_create'])
+            _.update(article['bson']['post_sanitize'])
+            self.add_fixture_to_datastore(_, article['json']['body'])
 
             response = self.fetch(self.base_url + article['uuid'])
 
@@ -84,19 +83,22 @@ class BlendArticleReadWithDatastoreTest(BaseBlendTest, BaseMargarineIntegrationT
 
             self.assertEqual('application/json', response.headers.get('Content-Type'))
 
-            self.assertEqual(article['etag'], response.headers.get('ETag'))
-            self.assertEqual(article['updated_at'], response.headers.get('Last-Modified'))
+            self.assertEqual(article['generated_headers']['etag'], response.headers.get('ETag'))
+            self.assertEqual(article['generated_headers']['last_modified'], response.headers.get('Last-Modified'))
             self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
 
             _, self.maxDiff = self.maxDiff, None
             self.assertEqual(article['json'], json.loads(response.body))
             self.maxDiff = _
 
-    def test_article_read_head_submitted_complete(self):
-        '''blend.articles—HEAD   /articles/? → 200—unmocked datastores,submitted,complete'''
+    def test_article_read_head_submitted_sanitized(self):
+        '''blend.articles—HEAD   /articles/? → 200—unmocked datastores,submitted,sanitized'''
 
         for article in self.articles['all']:
-            self.add_fixture_to_datastore(article)
+            _ = {}
+            _.update(article['bson']['post_create'])
+            _.update(article['bson']['post_sanitize'])
+            self.add_fixture_to_datastore(_, article['json']['body'])
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
 
@@ -106,8 +108,8 @@ class BlendArticleReadWithDatastoreTest(BaseBlendTest, BaseMargarineIntegrationT
 
             self.assertEqual('application/json', response.headers.get('Content-Type'))
 
-            self.assertEqual(article['etag'], response.headers.get('ETag'))
-            self.assertEqual(article['updated_at'], response.headers.get('Last-Modified'))
+            self.assertEqual(article['generated_headers']['etag'], response.headers.get('ETag'))
+            self.assertEqual(article['generated_headers']['last_modified'], response.headers.get('Last-Modified'))
             self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
 
             self.assertEqual(0, len(response.body))

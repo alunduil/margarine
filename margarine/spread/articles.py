@@ -109,7 +109,9 @@ def sanitize_article(body, message):
         if 'body' in article:
             article.setdefault('previous_bodies', []).append(article['body'])
 
-        article['body'] = datastores.get_gridfs().put(soup.get_text())
+        article['body'] = datastores.get_gridfs().put(soup.get_text(), encoding = 'utf-8')
+
+        logger.debug('article[body]: %r', article['body'])
 
         article['parsed_at'] = datetime.datetime.now()
         article['updated_at'] = datetime.datetime.now()
@@ -118,6 +120,8 @@ def sanitize_article(body, message):
 
         article['etag'] = Crypto.Hash.SHA256.new(''.join(sorted([ str(_) for _ in article.values() ]))).hexdigest()
         logger.debug('etag: %s', article['etag'])
+
+        logger.debug('article: %s', article)
 
         _id = article.pop('_id')
 

@@ -22,7 +22,7 @@ ARTICLES['correct'].append({
 
     u'response': {
         u'etag': u'cee086c837e3a8f3496addee84a2e136',
-        u'html': os.path.join(FIXTURE_DIRECTORY, u'got-python-questions.html'),
+        u'html': unicode(open(os.path.join(FIXTURE_DIRECTORY, u'got-python-questions.html'), 'r').read(), 'utf-8'),
     },
 
     u'message_body': {
