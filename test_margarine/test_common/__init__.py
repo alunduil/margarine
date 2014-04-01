@@ -26,7 +26,7 @@ class BaseMargarineTest(unittest.TestCase):
         self.articles = copy.deepcopy(ARTICLES)
 
         for article in self.articles['all']:
-            article['original_html'] = open(article['original_html'], 'r')
+            article['response']['html'] = open(article['response']['html'], 'r')
 
     @property
     def real_module(self):

@@ -11,7 +11,7 @@ This module includes queue channel acquisition and email handlers.
 
 """
 
-import pika
+#import pika
 import logging
 import socket
 import smtplib

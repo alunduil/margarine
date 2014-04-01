@@ -106,12 +106,15 @@ def sanitize_article(body, message):
         response = client.fetch(article['original_url'])
         soup = bs4.BeautifulSoup(response.buffer)
 
+        if 'body' in article:
+            article.setdefault('previous_bodies', []).append(article['body'])
+
         article['body'] = datastores.get_gridfs().put(soup.get_text())
 
         article['parsed_at'] = datetime.datetime.now()
         article['updated_at'] = datetime.datetime.now()
 
-        del article['etag']  # Don't include etag in etag calculation.
+        article.pop('etag', None)  # Don't include etag in etag calculation.
 
         article['etag'] = Crypto.Hash.SHA256.new(''.join(sorted([ str(_) for _ in article.values() ]))).hexdigest()
         logger.debug('etag: %s', article['etag'])

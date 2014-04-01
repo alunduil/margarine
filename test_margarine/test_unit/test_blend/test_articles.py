@@ -77,7 +77,7 @@ class BlendArticleCreateTest(BaseBlendTest):
 
             if is_queues_mocked:
                 self.mocked_producer.publish.assert_called_once_with(
-                    article['message_body'],
+                    article['message_body']['pre_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,
                     exchange = queues.ARTICLES_TOPIC_EXCHANGE,
@@ -133,8 +133,14 @@ class BlendArticleReadTest(BaseBlendTest):
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_head_unsubmitted(self):
-        '''blend.articles—HEAD   /articles/? → 404—unsubmitted'''
+    def test_article_read_head_uncreated(self):
+        '''blend.articles—HEAD   /articles/? → 404—uncreated
+
+        identical cases:
+
+        1. blend.articles—HEAD   /articles/? → 404—unsubmitted
+
+        '''
 
         self.mock_datastores()
 
@@ -144,40 +150,39 @@ class BlendArticleReadTest(BaseBlendTest):
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_get_submitted_incomplete(self):
-        '''blend.articles—GET    /articles/? → 404—submitted,incomplete'''
+    def test_article_read_get_created_not_sanitized(self):
+        '''blend.articles—GET    /articles/? → 404—created,not sanitized'''
 
         for article in self.articles['all']:
-            del article['bson']['parsed_at']
-
             if self.mock_datastores():
-                self.mocked_collection.find_one.return_value = article['bson']
+                self.mocked_collection.find_one.return_value = article['bson']['post_create']
 
             response = self.fetch(self.base_url + article['uuid'])
 
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_head_submitted_incomplete(self):
-        '''blend.articles—HEAD   /articles/? → 404—submitted,incomplete'''
+    def test_article_read_head_created_not_sanitized(self):
+        '''blend.articles—HEAD   /articles/? → 404—created,not sanitized'''
 
         for article in self.articles['all']:
-            del article['bson']['parsed_at']
-
             if self.mock_datastores():
-                self.mocked_collection.find_one.return_value = article['bson']
+                self.mocked_collection.find_one.return_value = article['bson']['post_create']
 
             response = self.fetch(self.base_url + article['uuid'], method = 'HEAD')
 
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_get_submitted_complete(self):
+    def test_article_read_get_submitted_created_sanitized(self):
         '''blend.articles—GET    /articles/? → 200—submitted,complete'''
 
         for article in self.articles['all']:
             if self.mock_datastores():
-                self.mocked_collection.find_one.return_value = article['bson']
+                _ = {}
+                _.update(article['bson']['post_create'])
+                _.update(article['bson']['post_sanitize'])
+                self.mocked_collection.find_one.return_value = _
 
                 _ = mock.MagicMock()
                 self.mocked_gridfs.get.return_value = _
@@ -191,20 +196,23 @@ class BlendArticleReadTest(BaseBlendTest):
 
             self.assertEqual('application/json', response.headers.get('Content-Type'))
 
-            self.assertEqual(article['etag'], response.headers.get('ETag'))
-            self.assertEqual(article['updated_at'], response.headers.get('Last-Modified'))
+            self.assertEqual(article['generated_headers']['etag'], response.headers.get('ETag'))
+            self.assertEqual(article['generated_headers']['last_modified'], response.headers.get('Last-Modified'))
             self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
 
             _, self.maxDiff = self.maxDiff, None
             self.assertEqual(article['json'], json.loads(response.body))
             self.maxDiff = _
 
-    def test_article_read_head_submitted_complete(self):
-        '''blend.articles—HEAD   /articles/? → 200—submitted,complete'''
+    def test_article_read_head_created_sanitized(self):
+        '''blend.articles—HEAD   /articles/? → 200—created,sanitized'''
 
         for article in self.articles['all']:
             if self.mock_datastores():
-                self.mocked_collection.find_one.return_value = article['bson']
+                _ = {}
+                _.update(article['bson']['post_create'])
+                _.update(article['bson']['post_sanitize'])
+                self.mocked_collection.find_one.return_value = _
 
                 _ = mock.MagicMock()
                 self.mocked_gridfs.get.return_value = _
@@ -218,8 +226,8 @@ class BlendArticleReadTest(BaseBlendTest):
 
             self.assertEqual('application/json', response.headers.get('Content-Type'))
 
-            self.assertEqual(article['etag'], response.headers.get('ETag'))
-            self.assertEqual(article['updated_at'], response.headers.get('Last-Modified'))
+            self.assertEqual(article['generated_headers']['etag'], response.headers.get('ETag'))
+            self.assertEqual(article['generated_headers']['last_modified'], response.headers.get('Last-Modified'))
             self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
 
             self.assertEqual(0, len(response.body))
