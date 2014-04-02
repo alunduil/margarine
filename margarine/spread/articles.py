@@ -10,7 +10,7 @@ import Crypto.Hash.SHA256
 import datetime
 import kombu
 import logging
-import tornado
+import tornado.httpclient
 
 from margarine import queues
 from margarine import datastores

@@ -72,7 +72,7 @@ class ArticleCreateHandler(tornado.web.RequestHandler):
 
         article = {}
 
-        article['url'] = self.get_argument('article_url', None)
+        article['url'] = self.get_argument('article_url')
 
         logger.info('STARTING: create article %s', article['url'])
 

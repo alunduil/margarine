@@ -112,6 +112,9 @@ def import_directory(module_basename, directory, update_path = False):
             _ = _.replace('.py', '')
             _ = _.replace('/', '.')
 
+            if not len(_):
+                continue
+
             _ = module_basename + '.' + _
 
             known_symbols = set()
