@@ -9,6 +9,7 @@ import os
 
 from margarine import helpers
 from margarine import queues
+from margarine.parameters import PARAMETERS
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +27,8 @@ class SpreadWorker(kombu.mixins.ConsumerMixin):
 
 
 def run():
+    PARAMETERS.parse()
+
     try:
         SpreadWorker().run()
     except Exception as error:
