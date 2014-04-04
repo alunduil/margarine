@@ -58,6 +58,7 @@ Authors
 
 * Alex Brandt <alunduil@alunduil.com>
 * Hart Hoover <hart.hoover@gmail.com>
+* Wayne Walls <wayneawalls@gmail.com>
 
 Known Issues
 ============
