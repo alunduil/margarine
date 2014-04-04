@@ -4,7 +4,12 @@ MAINTAINER Alex Brandt <alunduil@alunduil.com>
 RUN apt-get update
 RUN apt-get upgrade -y -qq
 
-RUN apt-get install -y -qq python-pip
+RUN apt-get install -y -qq python-pip build-essential python-dev
+
+RUN useradd -c 'added by docker for margarine' -d /usr/local/src/margarine -r margarine
+USER margarine
+
+EXPOSE 5000
 
 ADD conf /etc/margarine
 
@@ -15,11 +20,6 @@ RUN pip install -q -r /usr/local/src/margarine/requirements.txt
 WORKDIR /usr/local/src/margarine
 
 RUN python setup.py -q install
-
-RUN useradd -c 'added by docker for margarine' -d /usr/local/src/margarine -r margarine
-USER margarine
-
-EXPOSE 5000
 
 ENTRYPOINT [ "/usr/local/bin/margarine" ]
 CMD [ "tinge", "blend", "spread" ]
