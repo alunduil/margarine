@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 
 class BaseMargarineIntegrationTest(unittest.TestCase):
     mocks_mask = set()
-
     mocks_mask = mocks_mask.union('datastores')
 
     mocks = set()

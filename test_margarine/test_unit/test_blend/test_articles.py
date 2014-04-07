@@ -133,14 +133,8 @@ class BlendArticleReadTest(BaseBlendTest):
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_head_uncreated(self):
-        '''blend.articles—HEAD   /articles/? → 404—uncreated
-
-        identical cases:
-
-        1. blend.articles—HEAD   /articles/? → 404—unsubmitted
-
-        '''
+    def test_article_read_head_unsubmitted(self):
+        '''blend.articles—HEAD   /articles/? → 404—unsubmitted'''
 
         self.mock_datastores()
 
@@ -150,8 +144,8 @@ class BlendArticleReadTest(BaseBlendTest):
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_get_created_not_sanitized(self):
-        '''blend.articles—GET    /articles/? → 404—created,not sanitized'''
+    def test_article_read_get_submitted_created_unsanitized(self):
+        '''blend.articles—GET    /articles/? → 404—submitted,created,unsanitized'''
 
         for article in self.articles['all']:
             if self.mock_datastores():
@@ -162,8 +156,8 @@ class BlendArticleReadTest(BaseBlendTest):
             self.assertEqual(404, response.code)
             self.assertEqual(0, len(response.body))
 
-    def test_article_read_head_created_not_sanitized(self):
-        '''blend.articles—HEAD   /articles/? → 404—created,not sanitized'''
+    def test_article_read_head_submitted_created_unsanitized(self):
+        '''blend.articles—HEAD   /articles/? → 404—submitted,created,unsanitized'''
 
         for article in self.articles['all']:
             if self.mock_datastores():
@@ -175,7 +169,7 @@ class BlendArticleReadTest(BaseBlendTest):
             self.assertEqual(0, len(response.body))
 
     def test_article_read_get_submitted_created_sanitized(self):
-        '''blend.articles—GET    /articles/? → 200—submitted,complete'''
+        '''blend.articles—GET    /articles/? → 200—submitted,created,sanitized'''
 
         for article in self.articles['all']:
             if self.mock_datastores():
@@ -204,8 +198,8 @@ class BlendArticleReadTest(BaseBlendTest):
             self.assertEqual(article['json'], json.loads(response.body))
             self.maxDiff = _
 
-    def test_article_read_head_created_sanitized(self):
-        '''blend.articles—HEAD   /articles/? → 200—created,sanitized'''
+    def test_article_read_head_submitted_created_sanitized(self):
+        '''blend.articles—HEAD   /articles/? → 200—submitted,created,sanitized'''
 
         for article in self.articles['all']:
             if self.mock_datastores():

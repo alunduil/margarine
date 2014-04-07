@@ -136,8 +136,8 @@ class SpreadArticleSanitizeTest(BaseSpreadTest):
 
             self.mocked_message.ack.assert_called_once_with()
 
-    def test_article_sanitize_sanitized_not_modified(self):
-        '''spread.articles—sanitize—sanitized,not modified'''
+    def test_article_sanitize_sanitized_unmodified(self):
+        '''spread.articles—sanitize—sanitized,unmodified'''
 
         for article in self.articles['all']:
             if self.mock_tornado():
@@ -169,7 +169,7 @@ class SpreadArticleSanitizeTest(BaseSpreadTest):
 
             self.mocked_message.ack.assert_called_once_with()
 
-    def test_article_sanitize_sanitized(self):
+    def test_article_sanitize_sanitized_modified(self):
         '''spread.articles—sanitize—sanitized,modified'''
 
         for article in self.articles['all']:

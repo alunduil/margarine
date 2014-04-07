@@ -101,7 +101,7 @@ class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegr
     mocks = mocks.union(BaseMargarineIntegrationTest.mocks)
 
     def test_article_sanitize_unsanitized(self):
-        '''spread.articles—sanitize—unmocked datastores,not sanitized'''
+        '''spread.articles—sanitize—unmocked datastores,unsanitized'''
 
         for article in self.articles['all']:
             if self.mock_tornado():
@@ -134,8 +134,8 @@ class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegr
 
             self.mocked_message.ack.assert_called_once_with()
 
-    def test_article_sanitize_sanitized_not_modified(self):
-        '''spread.articles—sanitize—unmocked datastores,sanitized,not modified'''
+    def test_article_sanitize_sanitized_unmodified(self):
+        '''spread.articles—sanitize—unmocked datastores,sanitized,unmodified'''
 
         for article in self.articles['all']:
             if self.mock_tornado():
@@ -168,7 +168,7 @@ class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegr
 
             self.mocked_message.ack.assert_called_once_with()
 
-    def test_article_sanitize_sanitized(self):
+    def test_article_sanitize_sanitized_modified(self):
         '''spread.articles—sanitize—unmocked datastores,sanitized,modified'''
 
         for article in self.articles['all']:
