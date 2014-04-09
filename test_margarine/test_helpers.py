@@ -6,22 +6,20 @@
 import vagrant
 
 
-def is_vagrant_up(box_name):
-    '''Checks if the specified host is up in the vagrant environment.
+class Box(object):
+    def __init__(self, name):
+        self.name = name
+        self.vagrant = vagrant.Vagrant()
 
-    Parameters
-    ----------
+    @property
+    def is_up(self):
+        try:
+            return self.vagrant.status(self.name).get(self.name, 'not_created') == 'running'
+        except RuntimeError:
+            return False
 
-    :``box_name``: Vagrant box name to check the status of
+    def destroy(self):
+        self.vagrant.destroy(vm_name = self.name)
 
-    Return
-    ------
-
-    True if the specified host is up; otherwise, False.
-
-    '''
-
-    try:
-        return vagrant.Vagrant().status(box_name).get(box_name, 'not_created') == 'running'
-    except RuntimeError:
-        return False
+    def up(self):
+        self.vagrant.up(vm_name = self.name)

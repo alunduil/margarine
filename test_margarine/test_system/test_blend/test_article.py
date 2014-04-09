@@ -18,10 +18,10 @@ from test_margarine.test_common.test_blend import BaseBlendTest
 logger = logging.getLogger(__name__)
 
 
-@unittest.skipUnless(test_helpers.is_vagrant_up('datastore'), 'vagrant up datastore')
-@unittest.skipUnless(test_helpers.is_vagrant_up('queue'), 'vagrant up queue')
-@unittest.skipUnless(test_helpers.is_vagrant_up('spread'), 'vagrant up spread')
-@unittest.skipUnless(test_helpers.is_vagrant_up('blend'), 'vagrant up blend')
+@unittest.skipUnless(test_helpers.Box('datastore').is_up, 'vagrant up datastore')
+@unittest.skipUnless(test_helpers.Box('queue').is_up, 'vagrant up queue')
+@unittest.skipUnless(test_helpers.Box('spread').is_up, 'vagrant up spread')
+@unittest.skipUnless(test_helpers.Box('blend').is_up, 'vagrant up blend')
 class BlendArticleSystemTest(BaseBlendTest):
     mocks_mask = set().union(BaseBlendTest.mocks_mask)
     mocks = set().union(BaseBlendTest.mocks)

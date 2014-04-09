@@ -7,11 +7,10 @@
 
 import bson.objectid
 import mock
-import unittest
 
-from test_margarine import test_helpers
 from test_margarine.test_common.test_spread import BaseSpreadTest
-from test_margarine.test_integration import BaseMargarineIntegrationTest
+from test_margarine.test_integration import BaseDatastoreIntegrationTest
+from test_margarine.test_integration import BaseQueueIntegrationTest
 
 from margarine import datastores
 from margarine import queues
@@ -19,15 +18,14 @@ from margarine.spread.articles import create_article
 from margarine.spread.articles import sanitize_article
 
 
-@unittest.skipUnless(test_helpers.is_vagrant_up('datastore'), 'vagrant up datastore')
-class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrationTest):
+class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseDatastoreIntegrationTest):
     mocks_mask = set()
     mocks_mask = mocks_mask.union(BaseSpreadTest.mocks_mask)
-    mocks_mask = mocks_mask.union(BaseMargarineIntegrationTest.mocks_mask)
+    mocks_mask = mocks_mask.union(BaseDatastoreIntegrationTest.mocks_mask)
 
     mocks = set()
     mocks = mocks.union(BaseSpreadTest.mocks)
-    mocks = mocks.union(BaseMargarineIntegrationTest.mocks)
+    mocks = mocks.union(BaseDatastoreIntegrationTest.mocks)
 
     def test_article_create_uncreated(self):
         '''spread.articles—create—unmocked datastores,uncreated'''
@@ -39,25 +37,13 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
                     article['bson']['post_create']['updated_at'],
                 ]
 
-            is_queue_mocked = self.mock_queues()
+            self.mock_queues()
 
             create_article(article['message_body']['pre_create'], self.mocked_message)
 
             _, self.maxDiff = self.maxDiff, None
             self.assertEqual(article['bson']['post_create'], datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
             self.maxDiff = _
-
-            if is_queue_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
-                    article['message_body']['post_create'],
-                    serializer = mock.ANY,
-                    compression = mock.ANY,
-                    exchange = queues.ARTICLES_FANOUT_EXCHANGE,
-                    declare = [ queues.ARTICLES_FANOUT_EXCHANGE ],
-                    routing_key = 'articles.secondary'
-                )
-
-            self.mocked_message.ack.assert_called_once_with()
 
     def test_article_create_created(self):
         '''spread.articles—create—unmocked datastores,created'''
@@ -71,34 +57,21 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
                     article['bson']['post_create']['updated_at'],
                 ]
 
-            is_queue_mocked = self.mock_queues()
+            self.mock_queues()
 
             create_article(article['message_body']['pre_create'], self.mocked_message)
 
             self.assertEqual(article['bson']['post_create'], datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
 
-            if is_queue_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
-                    article['message_body']['post_create'],
-                    serializer = mock.ANY,
-                    compression = mock.ANY,
-                    exchange = queues.ARTICLES_FANOUT_EXCHANGE,
-                    declare = [ queues.ARTICLES_FANOUT_EXCHANGE ],
-                    routing_key = 'articles.secondary'
-                )
 
-            self.mocked_message.ack.assert_called_once_with()
-
-
-@unittest.skipUnless(test_helpers.is_vagrant_up('datastore'), 'vagrant up datastore')
-class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrationTest):
+class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseDatastoreIntegrationTest):
     mocks_mask = set()
     mocks_mask = mocks_mask.union(BaseSpreadTest.mocks_mask)
-    mocks_mask = mocks_mask.union(BaseMargarineIntegrationTest.mocks_mask)
+    mocks_mask = mocks_mask.union(BaseDatastoreIntegrationTest.mocks_mask)
 
     mocks = set()
     mocks = mocks.union(BaseSpreadTest.mocks)
-    mocks = mocks.union(BaseMargarineIntegrationTest.mocks)
+    mocks = mocks.union(BaseDatastoreIntegrationTest.mocks)
 
     def test_article_sanitize_unsanitized(self):
         '''spread.articles—sanitize—unmocked datastores,unsanitized'''
@@ -132,8 +105,6 @@ class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegr
             self.assertIsInstance(result['body'], bson.objectid.ObjectId)
             self.assertEqual(_, result)
 
-            self.mocked_message.ack.assert_called_once_with()
-
     def test_article_sanitize_sanitized_unmodified(self):
         '''spread.articles—sanitize—unmocked datastores,sanitized,unmodified'''
 
@@ -165,8 +136,6 @@ class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegr
             _.update(article['bson']['post_sanitize'])
 
             self.assertEqual(_, datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
-
-            self.mocked_message.ack.assert_called_once_with()
 
     def test_article_sanitize_sanitized_modified(self):
         '''spread.articles—sanitize—unmocked datastores,sanitized,modified'''
@@ -204,4 +173,29 @@ class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegr
             self.maxDiff = None
             self.assertEqual(_, datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
 
-            self.mocked_message.ack.assert_called_once_with()
+
+class SpreadArticleCreateWithQueueTest(BaseSpreadTest, BaseQueueIntegrationTest):
+    mocks_mask = set()
+    mocks_mask = mocks_mask.union(BaseSpreadTest.mocks_mask)
+    mocks_mask = mocks_mask.union(BaseQueueIntegrationTest.mocks_mask)
+
+    mocks = set()
+    mocks = mocks.union(BaseSpreadTest.mocks)
+    mocks = mocks.union(BaseQueueIntegrationTest.mocks)
+
+    def test_article_create_message_sent(self):
+        '''spread.articles—create—unmocked queues,message submitted'''
+
+        for article in self.articles['all']:
+            if self.mock_datetime():
+                self.mocked_datetime.now.side_effect = [
+                    article['bson']['post_create']['created_at'],
+                    article['bson']['post_create']['updated_at'],
+                ]
+
+            if self.mock_datastores():
+                self.mocked_collection.find_one.return_value = None
+
+            create_article(article['message_body']['pre_create'], self.mocked_message)
+
+            self.assertEqual(article['message_body']['post_create'], self.intercept_message(queues.ARTICLES_SANITIZE_QUEUE, timeout = 2))

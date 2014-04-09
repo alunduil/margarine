@@ -7,24 +7,25 @@
 
 import json
 import logging
-import unittest
+import urllib
 
-from test_margarine import test_helpers
 from test_margarine.test_common.test_blend import BaseBlendTest
-from test_margarine.test_integration import BaseMargarineIntegrationTest
+from test_margarine.test_integration import BaseDatastoreIntegrationTest
+from test_margarine.test_integration import BaseQueueIntegrationTest
+
+from margarine import queues
 
 logger = logging.getLogger(__name__)
 
 
-@unittest.skipUnless(test_helpers.is_vagrant_up('datastore'), 'vagrant up datastore')
-class BlendArticleReadWithDatastoreTest(BaseBlendTest, BaseMargarineIntegrationTest):
+class BlendArticleReadWithDatastoreTest(BaseBlendTest, BaseDatastoreIntegrationTest):
     mocks_mask = set()
     mocks_mask = mocks_mask.union(BaseBlendTest.mocks_mask)
-    mocks_mask = mocks_mask.union(BaseMargarineIntegrationTest.mocks_mask)
+    mocks_mask = mocks_mask.union(BaseDatastoreIntegrationTest.mocks_mask)
 
     mocks = set()
     mocks = mocks.union(BaseBlendTest.mocks)
-    mocks = mocks.union(BaseMargarineIntegrationTest.mocks)
+    mocks = mocks.union(BaseDatastoreIntegrationTest.mocks)
 
     def test_article_read_get_unsubmitted(self):
         '''blend.articles—GET    /articles/? → 404—unmocked datastores,unsubmitted'''
@@ -113,3 +114,21 @@ class BlendArticleReadWithDatastoreTest(BaseBlendTest, BaseMargarineIntegrationT
             self.assertEqual('<{0}>; rel="original"'.format(article['url']), response.headers.get('Link'))
 
             self.assertEqual(0, len(response.body))
+
+
+class BlendArticleCreateWithQueueTest(BaseBlendTest, BaseQueueIntegrationTest):
+    mocks_mask = set()
+    mocks_mask = mocks_mask.union(BaseBlendTest.mocks_mask)
+    mocks_mask = mocks_mask.union(BaseQueueIntegrationTest.mocks_mask)
+
+    mocks = set()
+    mocks = mocks.union(BaseBlendTest.mocks)
+    mocks = mocks.union(BaseQueueIntegrationTest.mocks)
+
+    def test_article_create_message_sent(self):
+        '''blend.articles—POST   /articles/ → 202—unmocked queues,message submitted'''
+
+        for article in self.articles['all']:
+            self.fetch(self.base_url, method = 'POST', body = urllib.urlencode({ 'article_url': article['url'] }))
+
+            self.assertEqual(article['message_body']['pre_create'], self.intercept_message(queues.ARTICLES_CREATE_QUEUE))
