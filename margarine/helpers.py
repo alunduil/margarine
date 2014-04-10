@@ -105,20 +105,20 @@ def import_directory(module_basename, directory, update_path = False):
     module_names = []
     for filename in filenames:
         if filename.endswith('.py'):
-            _ = filename
+            name = filename
 
-            _ = _.replace(directory + '/', '')
-            _ = _.replace('__init__.py', '')
-            _ = _.replace('.py', '')
-            _ = _.replace('/', '.')
+            name = name.replace(directory + '/', '')
+            name = name.replace('__init__.py', '')
+            name = name.replace('.py', '')
+            name = name.replace('/', '.')
 
-            if not len(_):
+            if not len(name):
                 continue
 
-            _ = module_basename + '.' + _
+            name = module_basename + '.' + name
 
             known_symbols = set()
-            _ = '.'.join([ _ for _ in _.split('.') if _ not in known_symbols and not known_symbols.add(_) ])
+            name = '.'.join([ _ for _ in _.split('.') if _ not in known_symbols and not known_symbols.add(_) ])
 
             if len(_):
                 module_names.append(_)
