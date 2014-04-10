@@ -79,7 +79,8 @@ class ArticleCreateHandler(tornado.web.RequestHandler):
         article['uuid'] = uuid.uuid5(uuid.NAMESPACE_URL, article['url'].encode('ascii'))
 
         with kombu.pools.producers[queues.get_connection()].acquire(block = True) as producer:
-            producer.publish(
+            publish = queues.get_connection().ensure(producer, producer.publish, max_retries = PARAMETERS['queue.retries'])
+            publish(
                 article,
                 serializer = 'pickle',
                 compression = 'bzip2',

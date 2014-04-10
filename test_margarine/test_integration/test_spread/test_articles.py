@@ -40,6 +40,9 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
                 ]
 
             is_queue_mocked = self.mock_queues()
+            if is_queue_mocked:
+                self.mocked_ensure = mock.MagicMock()
+                self.mocked_queue_connection.ensure.return_value = self.mocked_ensure
 
             create_article(article['message_body']['pre_create'], self.mocked_message)
 
@@ -48,7 +51,7 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
             self.maxDiff = _
 
             if is_queue_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
+                self.mocked_ensure.assert_called_once_with(
                     article['message_body']['post_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,
@@ -72,13 +75,16 @@ class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrat
                 ]
 
             is_queue_mocked = self.mock_queues()
+            if is_queue_mocked:
+                self.mocked_ensure = mock.MagicMock()
+                self.mocked_queue_connection.ensure.return_value = self.mocked_ensure
 
             create_article(article['message_body']['pre_create'], self.mocked_message)
 
             self.assertEqual(article['bson']['post_create'], datastores.get_collection('articles').find_one(article['uuid'].replace('-', '')))
 
             if is_queue_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
+                self.mocked_ensure.assert_called_once_with(
                     article['message_body']['post_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,

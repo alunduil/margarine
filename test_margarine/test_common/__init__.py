@@ -75,6 +75,14 @@ class BaseMargarineTest(unittest.TestCase):
 
             return False
 
+        logger.debug('connection: %s', self.real_module + '.queues.get_connection')
+        _ = mock.patch(self.real_module + '.queues.get_connection')
+
+        self.mocked_queue_get_connection = _.start()
+
+        self.mocked_queue_connection = mock.MagicMock()
+        self.mocked_queue_get_connection.return_value = self.mocked_queue_connection
+
         logger.debug('producers: %s', self.real_module + '.kombu.pools.producers')
         _ = mock.patch(self.real_module + '.kombu.pools.producers')
 

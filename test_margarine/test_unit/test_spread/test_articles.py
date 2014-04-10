@@ -37,6 +37,9 @@ class SpreadArticleCreateTest(BaseSpreadTest):
                 self.mocked_collection.find_one.return_value = None
 
             is_queue_mocked = self.mock_queues()
+            if is_queue_mocked:
+                self.mocked_ensure = mock.MagicMock()
+                self.mocked_queue_connection.ensure.return_value = self.mocked_ensure
 
             create_article(article['message_body']['pre_create'], self.mocked_message)
 
@@ -50,7 +53,7 @@ class SpreadArticleCreateTest(BaseSpreadTest):
                 )
 
             if is_queue_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
+                self.mocked_ensure.assert_called_once_with(
                     article['message_body']['post_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,
@@ -70,6 +73,9 @@ class SpreadArticleCreateTest(BaseSpreadTest):
                 self.mocked_collection.find_one.return_value = copy.deepcopy(article['bson']['post_create'])
 
             is_queue_mocked = self.mock_queues()
+            if is_queue_mocked:
+                self.mocked_ensure = mock.MagicMock()
+                self.mocked_queue_connection.ensure.return_value = self.mocked_ensure
 
             create_article(article['message_body']['pre_create'], self.mocked_message)
 
@@ -83,7 +89,7 @@ class SpreadArticleCreateTest(BaseSpreadTest):
                 )
 
             if is_queue_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
+                self.mocked_ensure.assert_called_once_with(
                     article['message_body']['post_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,
