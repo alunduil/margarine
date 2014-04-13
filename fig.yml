@@ -1,0 +1,26 @@
+queue:
+  image: jamescarr/rabbitmq
+datastore:
+  image: dockerfile/mongodb
+tinge:
+  build: .
+  command: tinge
+  links:
+    - blend
+  ports:
+    - "5000:5000"
+blend:
+  build: .
+  command: blend
+  links:
+    - tinge
+    - queue
+    - datastore
+  ports:
+    - "5001:5000"
+spread:
+  build: .
+  command: spread
+  links:
+    - queue
+    - datastore

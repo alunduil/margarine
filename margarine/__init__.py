@@ -6,6 +6,7 @@
 
 def run():
     import argparse
+    import sys
 
     import margarine.blend
     import margarine.tinge
@@ -23,7 +24,16 @@ def run():
         metavar = 'APP'
     )
 
-    arguments = parser.parse_args()
+    arguments = parser.parse_known_args()
 
     for application in arguments.applications:
+        if sys.argv.count('blend'):
+            sys.argv.remove('blend')
+
+        if sys.argv.count('tinge'):
+            sys.argv.remove('tinge')
+
+        if sys.argv.count('spread'):
+            sys.argv.remove('spread')
+
         getattr(margarine, application).run()
