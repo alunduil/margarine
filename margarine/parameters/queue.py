@@ -17,9 +17,9 @@ PARAMETERS.add_parameter(
 
 PARAMETERS.add_parameter(
     group = 'queue',
-    options = [ '--wait' ],
-    default = 5,
+    options = [ '--retries' ],
+    default = 3,
     type = int,
-    help = 'Number of seconds to wait between connection attempts to the '
-           'communication mechanism.  Default %(default)s'
+    help = 'Number of times to automatically retry publishing messages.  '
+           'Default %(default)s'
 )

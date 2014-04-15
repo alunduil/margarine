@@ -14,6 +14,7 @@ import tornado.httpclient
 
 from margarine import queues
 from margarine import datastores
+from margarine.parameters import PARAMETERS
 from margarine.spread import CONSUMERS
 
 logger = logging.getLogger(__name__)
@@ -51,7 +52,8 @@ def create_article(body, message):
     datastores.get_collection('articles').update({ '_id': _id }, { '$set': article }, upsert = True)
 
     with kombu.pools.producers[queues.get_connection()].acquire(block = True) as producer:
-        producer.publish(
+        publish = queues.get_connection().ensure(producer, producer.publish, max_retries = PARAMETERS['queue.retries'])
+        publish(
             { 'uuid': body['uuid'] },
             serializer = 'pickle',
             compression = 'bzip2',

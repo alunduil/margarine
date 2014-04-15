@@ -198,4 +198,4 @@ class SpreadArticleCreateWithQueueTest(BaseSpreadTest, BaseQueueIntegrationTest)
 
             create_article(article['message_body']['pre_create'], self.mocked_message)
 
-            self.assertEqual(article['message_body']['post_create'], self.intercept_message(queues.ARTICLES_SANITIZE_QUEUE, timeout = 2))
+            self.assertEqual(article['message_body']['post_create'], self.intercept_message(queues.ARTICLES_SANITIZE_QUEUE))

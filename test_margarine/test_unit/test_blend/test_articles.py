@@ -66,6 +66,9 @@ class BlendArticleCreateTest(BaseBlendTest):
 
         for article in self.articles['all']:
             is_queues_mocked = self.mock_queues()
+            if is_queues_mocked:
+                self.mocked_ensure = mock.MagicMock()
+                self.mocked_queue_connection.ensure.return_value = self.mocked_ensure
 
             response = self.fetch(self.base_url, method = 'POST', body = urllib.urlencode({ 'article_url': article['url'] }))
 
@@ -76,7 +79,7 @@ class BlendArticleCreateTest(BaseBlendTest):
             self.assertEqual(self.base_url + article['uuid'], response.headers.get('Location'))
 
             if is_queues_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
+                self.mocked_ensure.assert_called_once_with(
                     article['message_body']['pre_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,

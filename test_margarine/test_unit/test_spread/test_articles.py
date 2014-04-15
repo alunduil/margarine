@@ -50,7 +50,7 @@ class SpreadArticleCreateTest(BaseSpreadTest):
                 )
 
             if is_queue_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
+                self.mocked_ensure.assert_called_once_with(
                     article['message_body']['post_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,
@@ -83,7 +83,7 @@ class SpreadArticleCreateTest(BaseSpreadTest):
                 )
 
             if is_queue_mocked:
-                self.mocked_producer.publish.assert_called_once_with(
+                self.mocked_ensure.assert_called_once_with(
                     article['message_body']['post_create'],
                     serializer = mock.ANY,
                     compression = mock.ANY,

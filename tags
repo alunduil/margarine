@@ -1,0 +1,350 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+API_VERSION	margarine/blend/information.py	/^API_VERSION = "v1"$/;"	v
+ARTICLES	test_margarine/test_fixtures/test_articles.py	/^ARTICLES = {}$/;"	v
+ARTICLES_CREATE_QUEUE	margarine/queues.py	/^ARTICLES_CREATE_QUEUE = kombu.Queue('articles.create', ARTICLES_TOPIC_EXCHANGE, routing_key = 'articles.create')$/;"	v
+ARTICLES_FANOUT_EXCHANGE	margarine/queues.py	/^ARTICLES_FANOUT_EXCHANGE = kombu.Exchange('articles.fanout', type = 'fanout', delivery_mode = 'transient')$/;"	v
+ARTICLES_SANITIZE_QUEUE	margarine/queues.py	/^ARTICLES_SANITIZE_QUEUE = kombu.Queue('articles.sanitize', ARTICLES_FANOUT_EXCHANGE, routing_key = 'articles.secondary')$/;"	v
+ARTICLES_TOPIC_EXCHANGE	margarine/queues.py	/^ARTICLES_TOPIC_EXCHANGE = kombu.Exchange('articles.topic', type = 'topic', delivery_mode = 'transient')$/;"	v
+AUTHENTICATION_REALM	margarine/blend/information.py	/^AUTHENTICATION_REALM = "margarine.api"$/;"	v
+AUTHOR	margarine/information.py	/^AUTHOR = "Alex Brandt"$/;"	v
+AUTHOR_EMAIL	margarine/information.py	/^AUTHOR_EMAIL = "alunduil@alunduil.com"$/;"	v
+ArticleCreateHandler	margarine/blend/articles.py	/^class ArticleCreateHandler(tornado.web.RequestHandler):$/;"	c
+ArticleReadHandler	margarine/blend/articles.py	/^class ArticleReadHandler(tornado.web.RequestHandler):$/;"	c
+BLEND_APPLICATION	margarine/blend/__init__.py	/^BLEND_APPLICATION = tornado.web.Application($/;"	v
+BaseBlendTest	test_margarine/test_common/test_blend.py	/^class BaseBlendTest(BaseMargarineTest, tornado.testing.AsyncHTTPTestCase):$/;"	c
+BaseMargarineIntegrationTest	test_margarine/test_integration/__init__.py	/^class BaseMargarineIntegrationTest(unittest.TestCase):$/;"	c
+BaseMargarineTest	test_margarine/test_common/__init__.py	/^class BaseMargarineTest(unittest.TestCase):$/;"	c
+BaseMargarineTest	test_margarine/test_unit/__init__.py	/^class BaseMargarineTest(unittest.TestCase):$/;"	c
+BaseSpreadTest	test_margarine/test_common/test_spread.py	/^class BaseSpreadTest(BaseMargarineTest):$/;"	c
+BaseSpreadTest	test_margarine/test_unit/test_spread/__init__.py	/^class BaseSpreadTest(BaseMargarineTest):$/;"	c
+BaseSpreadUserTest	test_margarine/test_unit/test_spread/test_users.py	/^class BaseSpreadUserTest(BaseSpreadTest):$/;"	c
+BlendArticleCreateTest	test_margarine/test_unit/test_blend/test_articles.py	/^class BlendArticleCreateTest(BaseBlendTest):$/;"	c
+BlendArticleReadTest	test_margarine/test_unit/test_blend/test_articles.py	/^class BlendArticleReadTest(BaseBlendTest):$/;"	c
+BlendArticleReadWithDatastoreTest	test_margarine/test_integration/test_blend/test_articles.py	/^class BlendArticleReadWithDatastoreTest(BaseBlendTest, BaseMargarineIntegrationTest):$/;"	c
+BlendArticleSystemTest	test_margarine/test_system/test_blend/test_article.py	/^class BlendArticleSystemTest(BaseBlendTest):$/;"	c
+CONFIGURATION_DIRECTORY	margarine/parameters/__init__.py	/^CONFIGURATION_DIRECTORY = os.path.join(os.path.sep, 'etc', 'margarine')$/;"	v
+CONNECTION_BROKER	margarine/communication.py	/^CONNECTION_BROKER = None$/;"	v
+CONSUMERS	margarine/spread/__init__.py	/^CONSUMERS = []$/;"	v
+COPY_YEAR	margarine/information.py	/^COPY_YEAR = "2014"$/;"	v
+DATASTORE_DATABASE	margarine/datastores.py	/^DATASTORE_DATABASE = None$/;"	v
+DEFAULT_URL	ez_setup.py	/^DEFAULT_URL = "https:\/\/pypi.python.org\/packages\/source\/s\/setuptools\/"$/;"	v
+DEFAULT_VERSION	ez_setup.py	/^DEFAULT_VERSION = "0.9.6"$/;"	v
+DESCRIPTION	margarine/information.py	/^              "display cloud application design."$/;"	v
+FIXTURE_DIRECTORY	test_margarine/test_fixtures/__init__.py	/^FIXTURE_DIRECTORY = os.path.dirname(__file__)$/;"	v
+KEYSTORE_CONNECTIONS	margarine/keystores.py	/^KEYSTORE_CONNECTIONS = {}$/;"	v
+LICENSE	margarine/information.py	/^LICENSE = "MIT"$/;"	v
+LONG_DESCRIPTION	margarine/information.py	/^                   "readability."$/;"	v
+MARGARINE_MOCKS	test_margarine/test_unit/__init__.py	/^MARGARINE_MOCKS = set([$/;"	v
+NAME	margarine/information.py	/^NAME = "margarine"$/;"	v
+PARAMETERS	margarine/parameters/__init__.py	/^PARAMETERS = Parameters(conflict_handler = 'resolve', inotify = True)$/;"	v
+PARAMS	setup.py	/^PARAMS = {}$/;"	v
+PREFIX	margarine/blend/__init__.py	/^PREFIX = r'\/{i.API_VERSION}'.format(i = information)$/;"	v
+QUEUE_CONNECTION	margarine/queues.py	/^QUEUE_CONNECTION = None$/;"	v
+SUPPORTED_METHODS	margarine/blend/articles.py	/^    SUPPORTED_METHODS = ( 'GET', 'HEAD', 'OPTIONS' )$/;"	v	class:ArticleReadHandler
+SUPPORTED_METHODS	margarine/blend/articles.py	/^    SUPPORTED_METHODS = ( 'POST', 'OPTIONS' )$/;"	v	class:ArticleCreateHandler
+SpreadArticleCreateTest	test_margarine/test_unit/test_spread/test_articles.py	/^class SpreadArticleCreateTest(BaseSpreadTest):$/;"	c
+SpreadArticleCreateWithDatastoreTest	test_margarine/test_integration/test_spread/test_articles.py	/^class SpreadArticleCreateWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrationTest):$/;"	c
+SpreadArticleSanitizeTest	test_margarine/test_unit/test_spread/test_articles.py	/^class SpreadArticleSanitizeTest(BaseSpreadTest):$/;"	c
+SpreadArticleSanitizeWithDatastoreTest	test_margarine/test_integration/test_spread/test_articles.py	/^class SpreadArticleSanitizeWithDatastoreTest(BaseSpreadTest, BaseMargarineIntegrationTest):$/;"	c
+SpreadPasswordChangeTest	test_margarine/test_unit/test_spread/test_users.py	/^class SpreadPasswordChangeTest(BaseSpreadUserTest):$/;"	c
+SpreadPasswordEmailTest	test_margarine/test_unit/test_spread/test_users.py	/^class SpreadPasswordEmailTest(BaseSpreadUserTest):$/;"	c
+SpreadUserCreateTest	test_margarine/test_unit/test_spread/test_users.py	/^class SpreadUserCreateTest(BaseSpreadUserTest):$/;"	c
+SpreadUserUpdateTest	test_margarine/test_unit/test_spread/test_users.py	/^class SpreadUserUpdateTest(BaseSpreadUserTest):$/;"	c
+SpreadWorker	margarine/spread/__init__.py	/^class SpreadWorker(kombu.mixins.ConsumerMixin):$/;"	c
+TINGE	margarine/tinge/__init__.py	/^TINGE = Flask(__name__)$/;"	v
+UNMOCKED	test_margarine/test_common/test_spread.py	/^UNMOCKED = {$/;"	v
+URI	margarine/helpers.py	/^class URI(object):$/;"	c
+URITest	test_margarine/test_unit/test_helpers.py	/^class URITest(unittest.TestCase):$/;"	c
+URL	margarine/information.py	/^URL = "https:\/\/github.com\/alunduil\/margarine"$/;"	v
+USER	margarine/blend/user.py	/^USER = Blueprint("user", __name__)$/;"	v
+USER_SITE	ez_setup.py	/^    USER_SITE = None$/;"	v
+UnauthorizedError	margarine/blend/user.py	/^class UnauthorizedError(werkzeug.exceptions.Unauthorized):$/;"	c
+UserInterface	margarine/blend/user.py	/^class UserInterface(MethodView):$/;"	c
+UserPasswordInterface	margarine/blend/user.py	/^class UserPasswordInterface(MethodView):$/;"	c
+VERSION	margarine/information.py	/^VERSION = "9999"$/;"	v
+_	margarine/blend/articles.py	/^        def _(obj):$/;"	f	function:ArticleReadHandler.get
+__init__	margarine/blend/user.py	/^    def __init__(self, description = None, response = None, username = None):$/;"	m	class:UnauthorizedError
+__init__	margarine/helpers.py	/^    def __init__(self, uri):$/;"	m	class:URI
+__init__	margarine/spread/__init__.py	/^    def __init__(self):$/;"	m	class:SpreadWorker
+__str__	margarine/helpers.py	/^    def __str__(self):$/;"	m	class:URI	file:
+_build_egg	ez_setup.py	/^def _build_egg(egg, tarball, to_dir):$/;"	f
+_build_install_args	ez_setup.py	/^def _build_install_args(options):$/;"	f
+_do_download	ez_setup.py	/^def _do_download(version, download_base, to_dir, download_delay):$/;"	f
+_extract_flask_parameters	margarine/tinge/__init__.py	/^def _extract_flask_parameters(parameters):$/;"	f
+_extractall	ez_setup.py	/^def _extractall(self, path=".", members=None):$/;"	f
+_get_attached_mock	test_margarine/test_unit/__init__.py	/^    def _get_attached_mock(self, mock_function):$/;"	m	class:BaseMargarineTest
+_get_patch_mock	test_margarine/test_unit/__init__.py	/^    def _get_patch_mock(self, mock_function):$/;"	m	class:BaseMargarineTest
+_install	ez_setup.py	/^def _install(tarball, install_args=()):$/;"	f
+_parse_args	ez_setup.py	/^def _parse_args():$/;"	f
+_python_cmd	ez_setup.py	/^def _python_cmd(*args):$/;"	f
+_set_up_mocks	test_margarine/test_unit/__init__.py	/^    def _set_up_mocks(self, mock_mask = ()):$/;"	m	class:BaseMargarineTest
+_verify_uri	test_margarine/test_unit/test_helpers.py	/^    def _verify_uri(self, uri, components = ()):$/;"	m	class:URITest
+action	margarine/parameters/flask.py	/^    action = 'store_true',$/;"	v
+action	margarine/parameters/tornado.py	/^    action = 'store_true',$/;"	v
+add_fixture_to_datastore	test_margarine/test_integration/__init__.py	/^    def add_fixture_to_datastore(self, fixture, body = None):$/;"	m	class:BaseMargarineIntegrationTest
+copyright	doc/source/conf.py	/^copyright = '2013, Alex Brandt'$/;"	v
+create_article	margarine/spread/articles.py	/^def create_article(body, message):$/;"	f
+create_user_consumer	margarine/spread/users.py	/^def create_user_consumer(channel, method, header, body):$/;"	f
+default	margarine/parameters/__init__.py	/^    default = os.path.join(CONFIGURATION_DIRECTORY, 'logging.ini'),$/;"	v
+default	margarine/parameters/__init__.py	/^    default = os.path.join(CONFIGURATION_DIRECTORY, 'margarine.ini'),$/;"	v
+default	margarine/parameters/blend.py	/^    default = 'http:\/\/api.' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),$/;"	v
+default	margarine/parameters/datastores.py	/^    default = 'mongodb:\/\/localhost\/test',$/;"	v
+default	margarine/parameters/email.py	/^    default = 'noreply@' + socket.gethostname(),$/;"	v
+default	margarine/parameters/email.py	/^    default = 'smtp:\/\/localhost',$/;"	v
+default	margarine/parameters/flask.py	/^    default = '127.0.0.1',$/;"	v
+default	margarine/parameters/flask.py	/^    default = 5000,$/;"	v
+default	margarine/parameters/flask.py	/^    default = False,$/;"	v
+default	margarine/parameters/keystore.py	/^    default = 'redis:\/\/localhost',$/;"	v
+default	margarine/parameters/queue.py	/^    default = 'amqp:\/\/guest:guest@localhost',$/;"	v
+default	margarine/parameters/queue.py	/^    default = 5,$/;"	v
+default	margarine/parameters/security.py	/^    default = uuid.uuid4().hex,$/;"	v
+default	margarine/parameters/tinge.py	/^    default = 'http:\/\/' + '.'.join(socket.gethostname().rsplit('.', 2)[1:]),$/;"	v
+default	margarine/parameters/tornado.py	/^    default = '127.0.0.1',$/;"	v
+default	margarine/parameters/tornado.py	/^    default = 5000,$/;"	v
+default	margarine/parameters/tornado.py	/^    default = False,$/;"	v
+delete	margarine/blend/user.py	/^    def delete(self, username):$/;"	m	class:UserInterface
+download_setuptools	ez_setup.py	/^def download_setuptools(version=DEFAULT_VERSION, download_base=DEFAULT_URL,$/;"	f
+epub_author	doc/source/conf.py	/^epub_author = 'Alex Brandt'$/;"	v
+epub_copyright	doc/source/conf.py	/^epub_copyright = '2013, Alex Brandt'$/;"	v
+epub_publisher	doc/source/conf.py	/^epub_publisher = 'Alex Brandt'$/;"	v
+epub_title	doc/source/conf.py	/^epub_title = 'Cloud Applications Architect\\'s Handbook'$/;"	v
+exclude_patterns	doc/source/conf.py	/^exclude_patterns = []$/;"	v
+extensions	doc/source/conf.py	/^extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.pngmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode']$/;"	v
+find_margarine_directory	doc/source/conf.py	/^def find_margarine_directory():$/;"	f
+get	margarine/blend/articles.py	/^    def get(self, article_uuid):$/;"	m	class:ArticleReadHandler
+get	margarine/blend/user.py	/^    def get(self, username):$/;"	m	class:UserInterface
+get	margarine/blend/user.py	/^    def get(self, username):$/;"	m	class:UserPasswordInterface
+get_app	test_margarine/test_common/test_blend.py	/^    def get_app(self):$/;"	m	class:BaseBlendTest
+get_channel	margarine/communication.py	/^def get_channel():$/;"	f
+get_collection	margarine/datastores.py	/^def get_collection(collection_name):$/;"	f
+get_connection	margarine/queues.py	/^def get_connection():$/;"	f
+get_consumers	margarine/spread/__init__.py	/^    def get_consumers(self, Consumer, channel):$/;"	m	class:SpreadWorker
+get_database	margarine/datastores.py	/^def get_database():$/;"	f
+get_gridfs	margarine/datastores.py	/^def get_gridfs():$/;"	f
+get_keyspace	margarine/keystores.py	/^def get_keyspace(keyspace):$/;"	f
+group	margarine/parameters/__init__.py	/^    group = 'logging',$/;"	v
+group	margarine/parameters/__init__.py	/^    group = 'margarine',$/;"	v
+group	margarine/parameters/blend.py	/^    group = 'blend',$/;"	v
+group	margarine/parameters/datastores.py	/^    group = 'datastore',$/;"	v
+group	margarine/parameters/email.py	/^    group = 'email',$/;"	v
+group	margarine/parameters/flask.py	/^    group = 'flask',$/;"	v
+group	margarine/parameters/keystore.py	/^    group = 'keystore',$/;"	v
+group	margarine/parameters/queue.py	/^    group = 'queue',$/;"	v
+group	margarine/parameters/security.py	/^    group = 'security',$/;"	v
+group	margarine/parameters/tinge.py	/^    group = 'tinge',$/;"	v
+group	margarine/parameters/tornado.py	/^    group = 'tornado',$/;"	v
+head	margarine/blend/articles.py	/^    head = get$/;"	v	class:ArticleReadHandler
+help	margarine/parameters/__init__.py	/^    help = 'Location of the configuration file containing logging parameters. '$/;"	v
+help	margarine/parameters/__init__.py	/^    help = 'Location of the configuration file containing margarine '$/;"	v
+help	margarine/parameters/blend.py	/^    help = 'URL that is used as the endpoint for blend.  Default %(default)s.'$/;"	v
+help	margarine/parameters/datastores.py	/^    help = 'URL of the datastore.  Default %(default)s.'$/;"	v
+help	margarine/parameters/email.py	/^    help = 'Email address used as the FROM address on sent emails.  Default '$/;"	v
+help	margarine/parameters/email.py	/^    help = 'URL of email relay server. Default %(default)s'$/;"	v
+help	margarine/parameters/flask.py	/^    help = 'IP to which flask should be bound.  Default %(default)s.'$/;"	v
+help	margarine/parameters/flask.py	/^    help = 'Port to which flask should be bound.  Default $(default)s.'$/;"	v
+help	margarine/parameters/flask.py	/^    help = 'Turn on flask application debugging.'$/;"	v
+help	margarine/parameters/keystore.py	/^    help = 'URL endpoint for the keystore where various tokens are kept.  '$/;"	v
+help	margarine/parameters/queue.py	/^    help = 'Number of seconds to wait between connection attempts to the '$/;"	v
+help	margarine/parameters/queue.py	/^    help = 'The URL endpoint of the communication mechanism.  Default '$/;"	v
+help	margarine/parameters/security.py	/^    help = 'Opaque token used in HTTP digest authentication.  This should be '$/;"	v
+help	margarine/parameters/tinge.py	/^    help = 'URL that is used as the endpoint for tinge.  Sets the '$/;"	v
+help	margarine/parameters/tornado.py	/^    help = 'IP to which tornado should be bound.  Default %(default)s.'$/;"	v
+help	margarine/parameters/tornado.py	/^    help = 'Port to which tornado should be bound.  Default $(default)s.'$/;"	v
+help	margarine/parameters/tornado.py	/^    help = 'Turn on tornado application debugging.'$/;"	v
+home_page	margarine/tinge/__init__.py	/^def home_page():$/;"	f
+html_static_path	doc/source/conf.py	/^html_static_path = ['_static']$/;"	v
+html_theme	doc/source/conf.py	/^html_theme = 'agogo'$/;"	v
+html_title	doc/source/conf.py	/^html_title = 'Cloud Application Architect\\'s Handbook'$/;"	v
+htmlhelp_basename	doc/source/conf.py	/^htmlhelp_basename = 'Margarinedoc'$/;"	v
+http_401_handler	margarine/blend/user.py	/^def http_401_handler(error):$/;"	f
+import_directory	margarine/helpers.py	/^def import_directory(module_basename, directory, update_path = False):$/;"	f
+intersphinx_mapping	doc/source/conf.py	/^intersphinx_mapping = {'http:\/\/docs.python.org\/': None}$/;"	v
+is_vagrant_up	test_margarine/test_helpers.py	/^def is_vagrant_up(box_name):$/;"	f
+latex_documents	doc/source/conf.py	/^latex_documents = [$/;"	v
+latex_elements	doc/source/conf.py	/^latex_elements = {$/;"	v
+logger	margarine/blend/__init__.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/blend/articles.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/blend/user.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/communication.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/datastores.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/helpers.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/keystores.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/parameters/__init__.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/queues.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/spread/__init__.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/spread/articles.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/spread/users.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	margarine/tinge/__init__.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_common/__init__.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_common/test_spread.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_integration/__init__.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_integration/test_blend/test_articles.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_system/test_blend/test_article.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_unit/__init__.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_unit/test_blend/test_articles.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_unit/test_helpers.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_unit/test_spread/__init__.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_unit/test_spread/test_articles.py	/^logger = logging.getLogger(__name__)$/;"	v
+logger	test_margarine/test_unit/test_spread/test_users.py	/^logger = logging.getLogger(__name__)$/;"	v
+login	margarine/blend/user.py	/^def login(username):$/;"	f
+main	ez_setup.py	/^def main(version=DEFAULT_VERSION):$/;"	f
+main	margarine/tinge/__init__.py	/^def main():$/;"	f
+man_pages	doc/source/conf.py	/^man_pages = [$/;"	v
+margarine_directory	doc/source/conf.py	/^margarine_directory = find_margarine_directory()$/;"	v
+master_doc	doc/source/conf.py	/^master_doc = 'index'$/;"	v
+metavar	margarine/parameters/__init__.py	/^    metavar = 'FILE',$/;"	v
+metavar	margarine/parameters/keystore.py	/^    metavar = 'URL',$/;"	v
+mock_datastores	test_margarine/test_common/__init__.py	/^    def mock_datastores(self):$/;"	m	class:BaseMargarineTest
+mock_datetime	test_margarine/test_common/test_spread.py	/^    def mock_datetime(self):$/;"	m	class:BaseSpreadTest
+mock_mask	test_margarine/test_unit/__init__.py	/^    mock_mask = set()$/;"	v	class:BaseMargarineTest
+mock_mask	test_margarine/test_unit/test_spread/test_users.py	/^    mock_mask = BaseSpreadTest.mock_mask | set([$/;"	v	class:BaseSpreadUserTest
+mock_parameters	test_margarine/test_integration/__init__.py	/^    def mock_parameters(self):$/;"	m	class:BaseMargarineIntegrationTest
+mock_queues	test_margarine/test_common/__init__.py	/^    def mock_queues(self):$/;"	m	class:BaseMargarineTest
+mock_tornado	test_margarine/test_common/test_spread.py	/^    def mock_tornado(self):$/;"	m	class:BaseSpreadTest
+mocks	test_margarine/test_common/__init__.py	/^    mocks = set()$/;"	v	class:BaseMargarineTest
+mocks	test_margarine/test_common/test_blend.py	/^    mocks = set().union(BaseMargarineTest.mocks)$/;"	v	class:BaseBlendTest
+mocks	test_margarine/test_common/test_spread.py	/^    mocks = set().union(BaseMargarineTest.mocks)$/;"	v	class:BaseSpreadTest
+mocks	test_margarine/test_integration/__init__.py	/^    mocks = set()$/;"	v	class:BaseMargarineIntegrationTest
+mocks	test_margarine/test_integration/test_blend/test_articles.py	/^    mocks = mocks.union(BaseBlendTest.mocks)$/;"	v	class:BlendArticleReadWithDatastoreTest
+mocks	test_margarine/test_integration/test_blend/test_articles.py	/^    mocks = mocks.union(BaseMargarineIntegrationTest.mocks)$/;"	v	class:BlendArticleReadWithDatastoreTest
+mocks	test_margarine/test_integration/test_blend/test_articles.py	/^    mocks = set()$/;"	v	class:BlendArticleReadWithDatastoreTest
+mocks	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks = mocks.union(BaseMargarineIntegrationTest.mocks)$/;"	v	class:SpreadArticleCreateWithDatastoreTest
+mocks	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks = mocks.union(BaseMargarineIntegrationTest.mocks)$/;"	v	class:SpreadArticleSanitizeWithDatastoreTest
+mocks	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks = mocks.union(BaseSpreadTest.mocks)$/;"	v	class:SpreadArticleCreateWithDatastoreTest
+mocks	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks = mocks.union(BaseSpreadTest.mocks)$/;"	v	class:SpreadArticleSanitizeWithDatastoreTest
+mocks	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks = set()$/;"	v	class:SpreadArticleCreateWithDatastoreTest
+mocks	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks = set()$/;"	v	class:SpreadArticleSanitizeWithDatastoreTest
+mocks	test_margarine/test_system/test_blend/test_article.py	/^    mocks = set().union(BaseBlendTest.mocks)$/;"	v	class:BlendArticleSystemTest
+mocks	test_margarine/test_unit/__init__.py	/^    mocks = MARGARINE_MOCKS$/;"	v	class:BaseMargarineTest
+mocks	test_margarine/test_unit/test_blend/test_articles.py	/^    mocks = set().union(BaseBlendTest.mocks)$/;"	v	class:BlendArticleCreateTest
+mocks	test_margarine/test_unit/test_blend/test_articles.py	/^    mocks = set().union(BaseBlendTest.mocks)$/;"	v	class:BlendArticleReadTest
+mocks	test_margarine/test_unit/test_spread/test_articles.py	/^    mocks = set().union(BaseSpreadTest.mocks)$/;"	v	class:SpreadArticleCreateTest
+mocks	test_margarine/test_unit/test_spread/test_articles.py	/^    mocks = set().union(BaseSpreadTest.mocks)$/;"	v	class:SpreadArticleSanitizeTest
+mocks_mask	test_margarine/test_common/__init__.py	/^    mocks_mask = set()$/;"	v	class:BaseMargarineTest
+mocks_mask	test_margarine/test_common/test_blend.py	/^    mocks_mask = set().union(BaseMargarineTest.mocks_mask)$/;"	v	class:BaseBlendTest
+mocks_mask	test_margarine/test_common/test_spread.py	/^    mocks_mask = set().union(BaseMargarineTest.mocks_mask)$/;"	v	class:BaseSpreadTest
+mocks_mask	test_margarine/test_integration/__init__.py	/^    mocks_mask = mocks_mask.union('datastores')$/;"	v	class:BaseMargarineIntegrationTest
+mocks_mask	test_margarine/test_integration/__init__.py	/^    mocks_mask = set()$/;"	v	class:BaseMargarineIntegrationTest
+mocks_mask	test_margarine/test_integration/test_blend/test_articles.py	/^    mocks_mask = mocks_mask.union(BaseBlendTest.mocks_mask)$/;"	v	class:BlendArticleReadWithDatastoreTest
+mocks_mask	test_margarine/test_integration/test_blend/test_articles.py	/^    mocks_mask = mocks_mask.union(BaseMargarineIntegrationTest.mocks_mask)$/;"	v	class:BlendArticleReadWithDatastoreTest
+mocks_mask	test_margarine/test_integration/test_blend/test_articles.py	/^    mocks_mask = set()$/;"	v	class:BlendArticleReadWithDatastoreTest
+mocks_mask	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks_mask = mocks_mask.union(BaseMargarineIntegrationTest.mocks_mask)$/;"	v	class:SpreadArticleCreateWithDatastoreTest
+mocks_mask	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks_mask = mocks_mask.union(BaseMargarineIntegrationTest.mocks_mask)$/;"	v	class:SpreadArticleSanitizeWithDatastoreTest
+mocks_mask	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks_mask = mocks_mask.union(BaseSpreadTest.mocks_mask)$/;"	v	class:SpreadArticleCreateWithDatastoreTest
+mocks_mask	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks_mask = mocks_mask.union(BaseSpreadTest.mocks_mask)$/;"	v	class:SpreadArticleSanitizeWithDatastoreTest
+mocks_mask	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks_mask = set()$/;"	v	class:SpreadArticleCreateWithDatastoreTest
+mocks_mask	test_margarine/test_integration/test_spread/test_articles.py	/^    mocks_mask = set()$/;"	v	class:SpreadArticleSanitizeWithDatastoreTest
+mocks_mask	test_margarine/test_system/test_blend/test_article.py	/^    mocks_mask = set().union(BaseBlendTest.mocks_mask)$/;"	v	class:BlendArticleSystemTest
+mocks_mask	test_margarine/test_unit/test_blend/test_articles.py	/^    mocks_mask = set().union(BaseBlendTest.mocks_mask)$/;"	v	class:BlendArticleCreateTest
+mocks_mask	test_margarine/test_unit/test_blend/test_articles.py	/^    mocks_mask = set().union(BaseBlendTest.mocks_mask)$/;"	v	class:BlendArticleReadTest
+mocks_mask	test_margarine/test_unit/test_spread/test_articles.py	/^    mocks_mask = set().union(BaseSpreadTest.mocks_mask)$/;"	v	class:SpreadArticleCreateTest
+mocks_mask	test_margarine/test_unit/test_spread/test_articles.py	/^    mocks_mask = set().union(BaseSpreadTest.mocks_mask)$/;"	v	class:SpreadArticleSanitizeTest
+monkey_sections	setup.py	/^def monkey_sections(self):$/;"	f
+options	margarine/parameters/__init__.py	/^    options = [ '--configuration-file-path' ],$/;"	v
+options	margarine/parameters/__init__.py	/^    options = [ '--configuration-file-path', '-c' ],$/;"	v
+options	margarine/parameters/blend.py	/^    options = [ '--url' ],$/;"	v
+options	margarine/parameters/datastores.py	/^    options = [ '--url' ],$/;"	v
+options	margarine/parameters/email.py	/^    options = [ '--from' ],$/;"	v
+options	margarine/parameters/email.py	/^    options = [ '--url' ],$/;"	v
+options	margarine/parameters/flask.py	/^    options = [ '--debug' ],$/;"	v
+options	margarine/parameters/flask.py	/^    options = [ '--host' ],$/;"	v
+options	margarine/parameters/flask.py	/^    options = [ '--port' ],$/;"	v
+options	margarine/parameters/keystore.py	/^    options = [ '--url' ],$/;"	v
+options	margarine/parameters/queue.py	/^    options = [ '--url' ],$/;"	v
+options	margarine/parameters/queue.py	/^    options = [ '--wait' ],$/;"	v
+options	margarine/parameters/security.py	/^    options = [ '--opaque' ],$/;"	v
+options	margarine/parameters/tinge.py	/^    options = [ '--url' ],$/;"	v
+options	margarine/parameters/tornado.py	/^    options = [ '--address' ],$/;"	v
+options	margarine/parameters/tornado.py	/^    options = [ '--debug' ],$/;"	v
+options	margarine/parameters/tornado.py	/^    options = [ '--port' ],$/;"	v
+original_sections	setup.py	/^original_sections = sys.modules['ConfigParser'].ConfigParser.sections$/;"	v
+password_change_consumer	margarine/spread/users.py	/^def password_change_consumer(channel, method, header, body):$/;"	f
+password_email_consumer	margarine/spread/users.py	/^def password_email_consumer(channel, method, header, body):$/;"	f
+post	margarine/blend/articles.py	/^    def post(self):$/;"	m	class:ArticleCreateHandler
+post	margarine/blend/user.py	/^    def post(self, username):$/;"	m	class:UserPasswordInterface
+project	doc/source/conf.py	/^project = 'Margarine'$/;"	v
+put	margarine/blend/user.py	/^    def put(self, username):$/;"	m	class:UserInterface
+pygments_style	doc/source/conf.py	/^pygments_style = 'sphinx'$/;"	v
+real_module	test_margarine/test_common/__init__.py	/^    def real_module(self):$/;"	m	class:BaseMargarineTest
+register	margarine/spread/users.py	/^def register(channel):$/;"	f
+release	doc/source/conf.py	/^release = information.VERSION$/;"	v
+run	margarine/__init__.py	/^def run():$/;"	f
+run	margarine/blend/__init__.py	/^def run():$/;"	f
+run	margarine/spread/__init__.py	/^def run():$/;"	f
+sanitize_article	margarine/spread/articles.py	/^def sanitize_article(body, message):$/;"	f
+send_user_email	margarine/communication.py	/^def send_user_email(user, verification):$/;"	f
+setUp	test_margarine/test_common/__init__.py	/^    def setUp(self):$/;"	m	class:BaseMargarineTest
+setUp	test_margarine/test_common/test_blend.py	/^    def setUp(self):$/;"	m	class:BaseBlendTest
+setUp	test_margarine/test_common/test_spread.py	/^    def setUp(self):$/;"	m	class:BaseSpreadTest
+setUp	test_margarine/test_integration/__init__.py	/^    def setUp(self):$/;"	m	class:BaseMargarineIntegrationTest
+setUp	test_margarine/test_system/test_blend/test_article.py	/^    def setUp(self):$/;"	m	class:BlendArticleSystemTest
+setUp	test_margarine/test_unit/__init__.py	/^    def setUp(self):$/;"	m	class:BaseMargarineTest
+setUp	test_margarine/test_unit/test_spread/test_users.py	/^    def setUp(self):$/;"	m	class:BaseSpreadUserTest
+setUp	test_margarine/test_unit/test_spread/test_users.py	/^    def setUp(self):$/;"	m	class:SpreadPasswordChangeTest
+setUp	test_margarine/test_unit/test_spread/test_users.py	/^    def setUp(self):$/;"	m	class:SpreadPasswordEmailTest
+setUp	test_margarine/test_unit/test_spread/test_users.py	/^    def setUp(self):$/;"	m	class:SpreadUserCreateTest
+setUp	test_margarine/test_unit/test_spread/test_users.py	/^    def setUp(self):$/;"	m	class:SpreadUserUpdateTest
+sorter	ez_setup.py	/^        def sorter(dir1, dir2):$/;"	f	function:_extractall
+source_suffix	doc/source/conf.py	/^source_suffix = '.rst'$/;"	v
+templates_path	doc/source/conf.py	/^templates_path = ['_templates']$/;"	v
+test_article_create_created	test_margarine/test_integration/test_spread/test_articles.py	/^    def test_article_create_created(self):$/;"	m	class:SpreadArticleCreateWithDatastoreTest
+test_article_create_created	test_margarine/test_unit/test_spread/test_articles.py	/^    def test_article_create_created(self):$/;"	m	class:SpreadArticleCreateTest
+test_article_create_delete	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_create_delete(self):$/;"	m	class:BlendArticleCreateTest
+test_article_create_get	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_create_get(self):$/;"	m	class:BlendArticleCreateTest
+test_article_create_head	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_create_head(self):$/;"	m	class:BlendArticleCreateTest
+test_article_create_patch	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_create_patch(self):$/;"	m	class:BlendArticleCreateTest
+test_article_create_post	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_create_post(self):$/;"	m	class:BlendArticleCreateTest
+test_article_create_put	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_create_put(self):$/;"	m	class:BlendArticleCreateTest
+test_article_create_read	test_margarine/test_system/test_blend/test_article.py	/^    def test_article_create_read(self):$/;"	m	class:BlendArticleSystemTest
+test_article_create_uncreated	test_margarine/test_integration/test_spread/test_articles.py	/^    def test_article_create_uncreated(self):$/;"	m	class:SpreadArticleCreateWithDatastoreTest
+test_article_create_uncreated	test_margarine/test_unit/test_spread/test_articles.py	/^    def test_article_create_uncreated(self):$/;"	m	class:SpreadArticleCreateTest
+test_article_read_delete	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_delete(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_get_created_not_sanitized	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_get_created_not_sanitized(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_get_submitted_created_sanitized	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_get_submitted_created_sanitized(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_get_submitted_sanitized	test_margarine/test_integration/test_blend/test_articles.py	/^    def test_article_read_get_submitted_sanitized(self):$/;"	m	class:BlendArticleReadWithDatastoreTest
+test_article_read_get_submitted_unsanitized	test_margarine/test_integration/test_blend/test_articles.py	/^    def test_article_read_get_submitted_unsanitized(self):$/;"	m	class:BlendArticleReadWithDatastoreTest
+test_article_read_get_unsubmitted	test_margarine/test_integration/test_blend/test_articles.py	/^    def test_article_read_get_unsubmitted(self):$/;"	m	class:BlendArticleReadWithDatastoreTest
+test_article_read_get_unsubmitted	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_get_unsubmitted(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_head_created_not_sanitized	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_head_created_not_sanitized(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_head_created_sanitized	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_head_created_sanitized(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_head_submitted_sanitized	test_margarine/test_integration/test_blend/test_articles.py	/^    def test_article_read_head_submitted_sanitized(self):$/;"	m	class:BlendArticleReadWithDatastoreTest
+test_article_read_head_submitted_unsanitized	test_margarine/test_integration/test_blend/test_articles.py	/^    def test_article_read_head_submitted_unsanitized(self):$/;"	m	class:BlendArticleReadWithDatastoreTest
+test_article_read_head_uncreated	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_head_uncreated(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_head_unsubmitted	test_margarine/test_integration/test_blend/test_articles.py	/^    def test_article_read_head_unsubmitted(self):$/;"	m	class:BlendArticleReadWithDatastoreTest
+test_article_read_patch	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_patch(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_post	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_post(self):$/;"	m	class:BlendArticleReadTest
+test_article_read_put	test_margarine/test_unit/test_blend/test_articles.py	/^    def test_article_read_put(self):$/;"	m	class:BlendArticleReadTest
+test_article_sanitize_sanitized	test_margarine/test_integration/test_spread/test_articles.py	/^    def test_article_sanitize_sanitized(self):$/;"	m	class:SpreadArticleSanitizeWithDatastoreTest
+test_article_sanitize_sanitized	test_margarine/test_unit/test_spread/test_articles.py	/^    def test_article_sanitize_sanitized(self):$/;"	m	class:SpreadArticleSanitizeTest
+test_article_sanitize_sanitized_not_modified	test_margarine/test_integration/test_spread/test_articles.py	/^    def test_article_sanitize_sanitized_not_modified(self):$/;"	m	class:SpreadArticleSanitizeWithDatastoreTest
+test_article_sanitize_sanitized_not_modified	test_margarine/test_unit/test_spread/test_articles.py	/^    def test_article_sanitize_sanitized_not_modified(self):$/;"	m	class:SpreadArticleSanitizeTest
+test_article_sanitize_unsanitized	test_margarine/test_integration/test_spread/test_articles.py	/^    def test_article_sanitize_unsanitized(self):$/;"	m	class:SpreadArticleSanitizeWithDatastoreTest
+test_article_sanitize_unsanitized	test_margarine/test_unit/test_spread/test_articles.py	/^    def test_article_sanitize_unsanitized(self):$/;"	m	class:SpreadArticleSanitizeTest
+test_uri_components_0	test_margarine/test_unit/test_helpers.py	/^    def test_uri_components_0(self):$/;"	m	class:URITest
+test_uri_components_1	test_margarine/test_unit/test_helpers.py	/^    def test_uri_components_1(self):$/;"	m	class:URITest
+test_uri_components_2	test_margarine/test_unit/test_helpers.py	/^    def test_uri_components_2(self):$/;"	m	class:URITest
+test_uri_components_3	test_margarine/test_unit/test_helpers.py	/^    def test_uri_components_3(self):$/;"	m	class:URITest
+test_uri_components_4	test_margarine/test_unit/test_helpers.py	/^    def test_uri_components_4(self):$/;"	m	class:URITest
+test_uri_components_5	test_margarine/test_unit/test_helpers.py	/^    def test_uri_components_5(self):$/;"	m	class:URITest
+test_uri_components_6	test_margarine/test_unit/test_helpers.py	/^    def test_uri_components_6(self):$/;"	m	class:URITest
+test_user_create_submitted_complete	test_margarine/test_unit/test_spread/test_users.py	/^    def test_user_create_submitted_complete(self):$/;"	m	class:SpreadUserCreateTest
+test_user_create_unsubmitted	test_margarine/test_unit/test_spread/test_users.py	/^    def test_user_create_unsubmitted(self):$/;"	m	class:SpreadUserCreateTest
+test_user_password_change	test_margarine/test_unit/test_spread/test_users.py	/^    def test_user_password_change(self):$/;"	m	class:SpreadPasswordChangeTest
+test_user_password_email	test_margarine/test_unit/test_spread/test_users.py	/^    def test_user_password_email(self):$/;"	m	class:SpreadPasswordEmailTest
+test_user_update	test_margarine/test_unit/test_spread/test_users.py	/^    def test_user_update(self):$/;"	m	class:SpreadUserUpdateTest
+texinfo_documents	doc/source/conf.py	/^texinfo_documents = [$/;"	v
+type	margarine/parameters/flask.py	/^    type = int,$/;"	v
+type	margarine/parameters/queue.py	/^    type = int,$/;"	v
+type	margarine/parameters/tornado.py	/^    type = int,$/;"	v
+update_user_consumer	margarine/spread/users.py	/^def update_user_consumer(channel, method, header, body):$/;"	f
+use_setuptools	ez_setup.py	/^def use_setuptools(version=DEFAULT_VERSION, download_base=DEFAULT_URL,$/;"	f
+username	margarine/blend/user.py	/^    def username(self):$/;"	m	class:UnauthorizedError
+version	doc/source/conf.py	/^version = release.rsplit('.', 1)[0]$/;"	v
+view_article	margarine/tinge/__init__.py	/^def view_article():$/;"	f
+write_error	margarine/blend/articles.py	/^    def write_error(self, status_code, **kwargs):$/;"	m	class:ArticleCreateHandler
+write_error	margarine/blend/articles.py	/^    def write_error(self, status_code, **kwargs):$/;"	m	class:ArticleReadHandler

@@ -126,10 +126,10 @@ class BaseQueueIntegrationTest(BaseMargarineIntegrationTest):
         if self.mock_parameters():
             self.mocked_PARAMETERS.__getitem__.side_effect = lambda _: self.parameters[_]
 
-    def intercept_message(self, queue, timeout = 1):
+    def intercept_message(self, queue):
         _ = queues.get_connection().SimpleQueue(queue, serializer = 'pickle')
 
         self.addCleanup(_.clear)
 
         _.consumer.accept = kombu.serialization.prepare_accept_content(['pickle'])
-        return _.get(timeout = timeout).payload
+        return _.get().payload
