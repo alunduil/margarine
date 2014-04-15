@@ -15,11 +15,7 @@ ADD conf /etc/margarine
 
 ADD . /usr/local/src/margarine
 
-RUN pip install -q -r /usr/local/src/margarine/requirements.txt
-
-WORKDIR /usr/local/src/margarine
-
-RUN python setup.py -q install
+RUN pip install -q -e /usr/local/src/margarine
 
 ENTRYPOINT [ "/usr/local/bin/margarine" ]
 CMD [ "tinge", "blend", "spread" ]

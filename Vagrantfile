@@ -94,8 +94,7 @@ Vagrant.configure('2') do |config|
         apt-get -qq update
         apt-get -qq -y install python-pip build-essential python-dev
         ln -snf /vagrant/conf /etc/margarine
-        pip install -q -r /vagrant/requirements.txt
-        pushd /vagrant && python setup.py -q develop && popd
+        pip install -q -e /vagrant 
         start-stop-daemon -Sbmp /run/#{component}.pid --exec /usr/local/bin/#{component}
       EOF
     end
