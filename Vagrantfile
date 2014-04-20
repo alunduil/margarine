@@ -20,8 +20,8 @@ ip_addresses = {
 }
 
 Vagrant.configure('2') do |config|
-  config.vm.box = 'precise64'
-  config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
+  config.vm.box = 'ubuntu/trusty64'
+  config.vm.box_url = 'http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box'
 
   config.vm.define 'token_store' do |token_store|
     token_store.vm.network :private_network, ip: ip_addresses[:token_store]
