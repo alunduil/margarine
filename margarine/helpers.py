@@ -118,10 +118,10 @@ def import_directory(module_basename, directory, update_path = False):
             name = module_basename + '.' + name
 
             known_symbols = set()
-            name = '.'.join([ _ for _ in _.split('.') if _ not in known_symbols and not known_symbols.add(_) ])
+            name = '.'.join([ _ for _ in name.split('.') if _ not in known_symbols and not known_symbols.add(_) ])
 
-            if len(_):
-                module_names.append(_)
+            if len(name):
+                module_names.append(name)
 
     logger.debug('modules found: %s', list(module_names))
 
